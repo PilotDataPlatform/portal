@@ -1,0 +1,48 @@
+.notification-list {
+  :global {
+    .ant-list {
+      .ant-spin-nested-loading {
+        .ant-spin-container {
+          .ant-list-items {
+            .ant-list-item {
+              height: 45px;
+              cursor: pointer;
+              padding: 5px 24px;
+              &:last-child {
+                border-bottom: 1px solid #f0f0f0;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+.new-notification-listItem {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #0000001a;
+  height: 45px;
+  cursor: pointer;
+  &__icon {
+    margin-left: 20px;
+    margin-right: 10px;
+  }
+}
+.list-content {
+  display: flex;
+  p {
+    margin-bottom: 0px;
+  }
+  &__icon {
+    margin-right: 10px;
+  }
+  &__status {
+    font-size: 10px;
+    color: #5b8c00;
+  }
+}
+
+.list-item-backgroundColor {
+  background-color: #e6f5ff;
+}
