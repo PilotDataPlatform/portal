@@ -25,8 +25,10 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
       - run: npm ci
+      - run: npm install -g serve pm2
       - run: cp .github/env_data .env
-      - run: npm start
+      - run: npm run build-dev
+      - run: pm2 serve build 3000 --spa
       - name: Create users.js
         run: echo ${{ secrets.USER_CREDENTIALS }} > e2e/users.js
       - run: npm test

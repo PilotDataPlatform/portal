@@ -9,7 +9,7 @@ module.exports = {
     {
       displayName: 'Parallel Test Cases',
       preset: 'jest-puppeteer',
-      testMatch: ['<rootDir>/e2e/tests/**/2.1.test.js'],
+      testMatch: ['<rootDir>/e2e/tests/sample.test.js'],
     },
   ],
 };
