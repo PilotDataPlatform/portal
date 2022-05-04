@@ -1,15 +1,15 @@
 module.exports = {
   projects: [
-    {
-      displayName: 'Serial Test Cases',
-      preset: 'jest-puppeteer',
-      runner: 'jest-serial-runner',
-      testMatch: ['<rootDir>/e2e/tests/**/?(*.)+(serial-test).js'],
-    },
+    // {
+    //   displayName: 'Serial Test Cases',
+    //   preset: 'jest-puppeteer',
+    //   runner: 'jest-serial-runner',
+    //   testMatch: ['<rootDir>/e2e/tests/**/?(*.)+(serial-test).js'],
+    // },
     {
       displayName: 'Parallel Test Cases',
       preset: 'jest-puppeteer',
-      testMatch: ['<rootDir>/e2e/tests/*/FileCopy'],
+      testMatch: ['<rootDir>/e2e/tests/**/2.1.test.js'],
     },
   ],
 };
