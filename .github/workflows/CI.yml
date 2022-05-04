@@ -23,16 +23,12 @@ jobs:
         run: |
           npm ci
           npm install -g serve pm2
-      - name: Create env file from environment secrets
-        run: |
-          echo '${{ secrets.ENV }}' > .env
-          cat .env
+      - name: Create .env file
+        run: echo '${{ secrets.ENV }}' > .env
       - name: Build and serve
         run: |
           CI=false npm run build-dev
           pm2 serve build 3000 --spa
       - name: Create users.js
-        run: |
-          echo '${{ secrets.USER_CREDENTIALS }}' > e2e/users.js
-          cat e2e/users.js
+        run: echo '${{ secrets.USER_CREDENTIALS }}' > e2e/users.js
       - run: npm test
