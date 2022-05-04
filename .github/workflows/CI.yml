@@ -27,7 +27,7 @@ jobs:
       - run: npm ci
       - run: npm install -g serve pm2
       - run: echo ${{ secrets.ENV }} > .env
-      - run: npm run build-dev
+      - run: CI=false npm run build-dev
       - run: pm2 serve build 3000 --spa
       - name: Create users.js
         run: echo ${{ secrets.USER_CREDENTIALS }} > e2e/users.js
