@@ -34,9 +34,9 @@ describe('1.1.0 One or more file upload', () => {
   });
 
   it('1.1.0.1 - Should be able to upload one or more than one file', async () => {
-    const fileNames = fs.readdirSync(`./Tests/uploads/${folderName}`);
+    const fileNames = fs.readdirSync(`./tests/uploads/${folderName}`);
     const filePaths = fileNames.map(
-      (file) => `${process.cwd()}/Tests/uploads/${folderName}/${file}`,
+      (file) => `${process.cwd()}/tests/uploads/${folderName}/${file}`,
     );
     await uploadMultipleFiles(page, filePaths, fileNames);
   });

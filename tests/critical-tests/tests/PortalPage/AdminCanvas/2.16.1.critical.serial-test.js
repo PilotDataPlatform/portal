@@ -54,7 +54,7 @@ describe('2.16.1', () => {
       await createSimpleManifest(page, manifestName);
     }
     await page.goto(`${baseUrl}project/${projectId}/canvas`);
-    if (!fs.existsSync(`${process.cwd()}/Tests/uploads/test/${fileName}`)) {
+    if (!fs.existsSync(`${process.cwd()}/tests/uploads/test/${fileName}`)) {
       await createDummyFile('test', fileName, '10kb');
     }
     await uploadFile(page, 'test', fileName);

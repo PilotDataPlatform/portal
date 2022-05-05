@@ -46,7 +46,7 @@ describe('1.8 Upload files in generate project', () => {
     await page.type('#form_in_modal_gid_repeat', idText);
     const uploadInputField = await page.waitForSelector('#form_in_modal_file');
     await uploadInputField.uploadFile(
-      `${process.cwd()}/Tests/uploads/${folderName}/${fileName}`,
+      `${process.cwd()}/tests/uploads/${folderName}/${fileName}`,
     );
     await page.click('#file_upload_submit_btn');
 

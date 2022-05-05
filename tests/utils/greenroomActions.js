@@ -407,7 +407,7 @@ const uploadFile = async (page, folderName, fileName) => {
   await uploadAction(page);
   const uploadInputField = await page.waitForSelector('#form_in_modal_file');
   await uploadInputField.uploadFile(
-    `${process.cwd()}/Tests/uploads/${folderName}/${fileName}`,
+    `${process.cwd()}/tests/uploads/${folderName}/${fileName}`,
   );
   await page.click('#file_upload_submit_btn');
 
@@ -467,14 +467,14 @@ const uploadFolder = async (page, folderName) => {
   await page.waitForTimeout(3000);
 
   const folderFiles = fs.readdirSync(
-    `${process.cwd()}/Tests/uploads/${folderName}`,
+    `${process.cwd()}/tests/uploads/${folderName}`,
   );
   const uploadPromises = [];
   for (let fileUpload of folderFiles) {
     await uploadAction(page);
     const uploadInputField = await page.waitForSelector('#form_in_modal_file');
     await uploadInputField.uploadFile(
-      `${process.cwd()}/Tests/uploads/${folderName}/${fileUpload}`,
+      `${process.cwd()}/tests/uploads/${folderName}/${fileUpload}`,
     );
 
     await page.click('#file_upload_submit_btn');

@@ -58,7 +58,7 @@ describe('1.1.2 File upload with attribute', () => {
     await uploadAction(page);
     const uploadInputField = await page.waitForSelector('#form_in_modal_file');
     await uploadInputField.uploadFile(
-      `${process.cwd()}/Tests/uploads/${folderName}/${fileName}`,
+      `${process.cwd()}/tests/uploads/${folderName}/${fileName}`,
     );
 
     await selectManifestDuringUpload(page, manifestName, ATTR_VALS[0]);

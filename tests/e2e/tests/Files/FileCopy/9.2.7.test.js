@@ -34,7 +34,7 @@ describe('9.2 File Copy', () => {
   it('9.2.7 - User should be able to download file from VRE Core', async () => {
     await page._client.send('Page.setDownloadBehavior', {
       behavior: 'allow',
-      downloadPath: './Tests/downloads',
+      downloadPath: './tests/downloads',
     });
     await selectGreenroomFile(page, fileName);
     const downloadButton = await page.waitForXPath(
@@ -43,7 +43,7 @@ describe('9.2 File Copy', () => {
     await downloadButton.click();
     await page.waitForTimeout(10000);
 
-    fs.readFileSync(`./Tests/downloads/${fileName}`);
-    fs.unlinkSync(`./Tests/downloads/${fileName}`);
+    fs.readFileSync(`./tests/downloads/${fileName}`);
+    fs.unlinkSync(`./tests/downloads/${fileName}`);
   });
 });

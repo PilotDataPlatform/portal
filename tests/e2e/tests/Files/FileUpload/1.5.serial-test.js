@@ -41,7 +41,7 @@ describe('1.5 Upload file/folder to existing folder', () => {
     await createFolder(page, folderName);
     await navigateInsideFolder(page, folderName);
     if (
-      !fs.existsSync(`${process.cwd()}/Tests/uploads/FileUpload/${fileName}`)
+      !fs.existsSync(`${process.cwd()}/tests/uploads/FileUpload/${fileName}`)
     ) {
       await createDummyFile('FileUpload', fileName, '1gb');
     }
