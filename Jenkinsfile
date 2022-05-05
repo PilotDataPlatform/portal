@@ -6,7 +6,9 @@ pipeline {
       registryCredential = 'pilot-ghcr'
       dockerImage = ''
     }
+
     stages {
+
       stage('Git clone for dev') {
           when {branch "develop"}
           steps{
@@ -17,40 +19,40 @@ pipeline {
               }
           }
       }
-      stage('DEV unit test') {
-        when {branch "develop"}
-        steps{
-         withCredentials([
-              usernamePassword(credentialsId:'readonly', usernameVariable: 'PIP_USERNAME', passwordVariable: 'PIP_PASSWORD'),
-              string(credentialsId:'VAULT_TOKEN', variable: 'VAULT_TOKEN'),
-              string(credentialsId:'VAULT_URL', variable: 'VAULT_URL'),
-              file(credentialsId:'VAULT_CRT', variable: 'VAULT_CRT'),
-              usernamePassword(credentialsId:'collabTestPass', usernameVariable: 'COLLAB_TEST_PASS_USERNAME', passwordVariable: 'COLLAB_TEST_PASS_PASSWORD')
-            ]) {
-              sh """
-              export VAULT_TOKEN=${VAULT_TOKEN}
-              export VAULT_URL=${VAULT_URL}
-              export VAULT_CRT=${VAULT_CRT}
-              export PROJECT_NAME="VRE"
-              export CORE_ZONE_LABEL="VRECore"
-              export GREENROOM_ZONE_LABEL="Greenroom"
-              export AD_USER_GROUP="vre-users"
-              export AD_PROJECT_GROUP_PREFIX="vre-"
-              export KONG_PATH="/vre/"
-              export EMAIL_SUPPORT="jzhang@indocresearch.org"
-              export EMAIL_ADMIN="cchen@indocresearch.org"
-              export EMAIL_HELPDESK="helpdesk@vre"
-              export COLLAB_TEST_PASS=${COLLAB_TEST_PASS_PASSWORD}
-              cd backend
-              pip install --user poetry==1.1.12
-              ${HOME}/.local/bin/poetry config virtualenvs.in-project true
-              ${HOME}/.local/bin/poetry config http-basic.pilot ${PIP_USERNAME} ${PIP_PASSWORD}
-              ${HOME}/.local/bin/poetry install --no-root --no-interaction
-              ${HOME}/.local/bin/poetry run pytest --verbose -c tests/pytest.ini
-              """
-          }
-        }
-      }
+      // stage('DEV unit test') {
+      //   when {branch "develop"}
+      //   steps{
+      //    withCredentials([
+      //         usernamePassword(credentialsId:'readonly', usernameVariable: 'PIP_USERNAME', passwordVariable: 'PIP_PASSWORD'),
+      //         string(credentialsId:'VAULT_TOKEN', variable: 'VAULT_TOKEN'),
+      //         string(credentialsId:'VAULT_URL', variable: 'VAULT_URL'),
+      //         file(credentialsId:'VAULT_CRT', variable: 'VAULT_CRT'),
+      //         usernamePassword(credentialsId:'collabTestPass', usernameVariable: 'COLLAB_TEST_PASS_USERNAME', passwordVariable: 'COLLAB_TEST_PASS_PASSWORD')
+      //       ]) {
+      //         sh """
+      //         export VAULT_TOKEN=${VAULT_TOKEN}
+      //         export VAULT_URL=${VAULT_URL}
+      //         export VAULT_CRT=${VAULT_CRT}
+      //         export PROJECT_NAME="VRE"
+      //         export CORE_ZONE_LABEL="VRECore"
+      //         export GREENROOM_ZONE_LABEL="Greenroom"
+      //         export AD_USER_GROUP="vre-users"
+      //         export AD_PROJECT_GROUP_PREFIX="vre-"
+      //         export KONG_PATH="/vre/"
+      //         export EMAIL_SUPPORT="jzhang@indocresearch.org"
+      //         export EMAIL_ADMIN="cchen@indocresearch.org"
+      //         export EMAIL_HELPDESK="helpdesk@vre"
+      //         export COLLAB_TEST_PASS=${COLLAB_TEST_PASS_PASSWORD}
+      //         cd backend
+      //         pip install --user poetry==1.1.12
+      //         ${HOME}/.local/bin/poetry config virtualenvs.in-project true
+      //         ${HOME}/.local/bin/poetry config http-basic.pilot ${PIP_USERNAME} ${PIP_PASSWORD}
+      //         ${HOME}/.local/bin/poetry install --no-root --no-interaction
+      //         ${HOME}/.local/bin/poetry run pytest --verbose -c tests/pytest.ini
+      //         """
+      //     }
+      //   }
+      // }
   
       stage('DEV Build and push portal-dev image') {
         steps{
