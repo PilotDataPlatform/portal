@@ -12,23 +12,23 @@ jobs:
   build:
     runs-on: macos-latest
 
-    strategy:
-      matrix:
-        node-version: [14.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
     steps:
       - uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js 14.x
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 14.x
           cache: 'npm'
-      - run: npm ci
-      - run: npm install -g serve pm2
-      - run: echo ${{ secrets.ENV }} > .env
-      - run: CI=false npm run build-dev
-      - run: pm2 serve build 3000 --spa
+      - name: Install dependencies 
+        run: |
+          npm ci
+          npm install -g serve pm2
+      - name: Create .env file
+        run: echo '${{ secrets.ENV }}' > .env
+      - name: Build and serve
+        run: |
+          CI=false npm run build-dev
+          pm2 serve build 3000 --spa
       - name: Create users.js
-        run: echo ${{ secrets.USER_CREDENTIALS }} > e2e/users.js
+        run: echo '${{ secrets.USER_CREDENTIALS }}' > e2e/users.js
       - run: npm test
