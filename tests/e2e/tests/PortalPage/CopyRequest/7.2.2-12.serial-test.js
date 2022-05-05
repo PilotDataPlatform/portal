@@ -18,7 +18,7 @@ describe('CopyRequest', () => {
     page = await context.newPage();
     await page._client.send('Page.setDownloadBehavior', {
       behavior: 'allow',
-      downloadPath: './Tests/downloads',
+      downloadPath: './tests/downloads',
     });
     await page.goto(baseUrl);
     await page.setViewport({ width: 1920, height: 1080 });
@@ -440,9 +440,9 @@ describe('CopyRequest', () => {
         return firstItemInTable.children[2].textContent;
     }, firstItemInTable);
     // if no error raised, that means the file has been downloaded
-    await fs.readFileSync(`./Tests/downloads/${fileName}`);
+    await fs.readFileSync(`./tests/downloads/${fileName}`);
     //remove file when test ends
-    await fs.unlinkSync(`./Tests/downloads/${fileName}`);
+    await fs.unlinkSync(`./tests/downloads/${fileName}`);
   });
   it('7.2.5 Project admin should be able to select files/folders and approve. Once approved the copy will start immediately', async () => {
     await page.goto(`${baseUrl}project/${projectId}/requestToCore`);

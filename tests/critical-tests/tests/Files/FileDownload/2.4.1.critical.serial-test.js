@@ -52,7 +52,7 @@ describe('2.4 Folder Download', () => {
   it('2.4.1 Folder contains only 1 file should also be downloaded as a zip file', async () => {
     await page._client.send('Page.setDownloadBehavior', {
       behavior: 'allow',
-      downloadPath: './Tests/downloads',
+      downloadPath: './tests/downloads',
     });
 
     await waitForFileExplorer(page, admin.username);
@@ -63,10 +63,10 @@ describe('2.4 Folder Download', () => {
     await downloadButton.click();
     await page.waitForTimeout(10000);
 
-    const [ downloadedFile ] = fs.readdirSync(`./Tests/downloads/`);
+    const [ downloadedFile ] = fs.readdirSync(`./tests/downloads/`);
     expect(downloadedFile.includes('.zip')).toBeTruthy();
     // remove file
-    fs.unlinkSync(`./Tests/downloads/${downloadedFile}`);
+    fs.unlinkSync(`./tests/downloads/${downloadedFile}`);
   });
 
   it('Cleanup greenroom', async () => {

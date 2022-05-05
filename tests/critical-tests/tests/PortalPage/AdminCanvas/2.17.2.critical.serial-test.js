@@ -26,7 +26,7 @@ describe('2.17.2', () => {
     page = await context.newPage();
     await page._client.send('Page.setDownloadBehavior', {
       behavior: 'allow',
-      downloadPath: './Tests/downloads',
+      downloadPath: './tests/downloads',
     });
     await page.goto(baseUrl);
     await page.setViewport({ width: 1500, height: 1080 });
@@ -39,7 +39,7 @@ describe('2.17.2', () => {
   });
   it('prepare file for test', async () => {
     await page.goto(`${baseUrl}project/${projectId}/canvas`);
-    if (!fs.existsSync(`${process.cwd()}/Tests/uploads/test/${fileName}`)) {
+    if (!fs.existsSync(`${process.cwd()}/tests/uploads/test/${fileName}`)) {
       await createDummyFile('Test Files', fileName, '10kb');
     }
     await uploadFile(page, 'Test Files', fileName);
@@ -100,8 +100,8 @@ describe('2.17.2', () => {
     await downloadBtn.click();
     await page.waitForTimeout(10000);
     // if no error raised, that means the file has been downloaded
-    await fs.readFileSync(`./Tests/downloads/${fileName}`);
+    await fs.readFileSync(`./tests/downloads/${fileName}`);
     //remove file when test ends
-    await fs.unlinkSync(`./Tests/downloads/${fileName}`);
+    await fs.unlinkSync(`./tests/downloads/${fileName}`);
   });
 });

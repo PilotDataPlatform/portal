@@ -44,7 +44,7 @@ describe('1.1.1 Files upload with tags', () => {
     await uploadAction(page);
     const uploadInputField = await page.waitForSelector('#form_in_modal_file');
     await uploadInputField.uploadFile(
-      `${process.cwd()}/Tests/uploads/${folderName}/${fileName}`,
+      `${process.cwd()}/tests/uploads/${folderName}/${fileName}`,
     );
     const tagInput = await page.waitForXPath(
       '//div[contains(@class, "ant-modal-body")]/form/descendant::input[@id="form_in_modal_tags"]',

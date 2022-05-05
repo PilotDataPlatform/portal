@@ -43,7 +43,7 @@ async function createDummyFile(folderName, filename, size) {
   const kbMatch = size.match(/^(\d+)kb$/i);
   const mbMatch = size.match(/^(\d+)mb/i);
   const gbMatch = size.match(/^(\d+)gb/i);
-  const filepath = `${process.cwd()}/Tests/uploads/${folderName}/${filename}`;
+  const filepath = `${process.cwd()}/tests/uploads/${folderName}/${filename}`;
   let chunkSize = 0;
 
   if (bMatch) size = +bMatch[1];
