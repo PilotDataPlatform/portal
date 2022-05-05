@@ -3,9 +3,9 @@ dotenv.config();
 
 const PORTAL_PREFIX = process.env.REACT_APP_PORTAL_PATH;
 
-const baseUrl = `http://10.3.7.220${PORTAL_PREFIX}/`;
-const mailHogHost = '10.3.7.106';
-const mailHogPort = 8025;
+baseUrl = `http://localhost:3000${PORTAL_PREFIX}/`;
+mailHogHost = '10.3.7.106';
+mailHogPort = 8025;
 const dataConfig = {
   copyReq: {
     projectId: 60023,
