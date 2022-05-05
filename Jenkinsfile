@@ -54,23 +54,6 @@ pipeline {
       //   }
       // }
   
-      stage('DEV Build and push portal-dev image') {
-        steps{
-          script {
-              docker.withRegistry('https://ghcr.io', registryCredential) {
-                  customImage = docker.build("$imagename:$commit")
-                  customImage.push()
-              }
-          }
-        }
-      }
-  
-      stage('DEV Remove portal-dev image') {
-        steps{
-          sh "docker rmi $imagename:$commit"
-        }
-      }
-  
       stage('DEV Build and push portal image') {
         steps{
           script {
