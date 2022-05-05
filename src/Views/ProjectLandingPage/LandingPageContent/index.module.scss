@@ -1,0 +1,200 @@
+.formItem {
+  padding-left: 16px !important;
+  padding-right: 16px !important;
+}
+
+.range {
+  padding-right: 20px !important;
+}
+.card {
+  margin-bottom: 10px;
+  background: white;
+  padding: 20px !important;
+  overflow: auto;
+}
+
+.buttonMargin {
+  margin-right: 10px;
+}
+
+.wrapper {
+  width: 100%;
+  padding: 30px 45px 20px 30px !important;
+}
+
+.paragraph {
+  max-width: calc(100% - 54px);
+  font-size: 20px;
+  margin-bottom: 4px;
+  overflow-wrap: break-word;
+}
+
+.tab {
+  background-color: #ffffff;
+  border-radius: 10px;
+}
+
+.tab {
+  :global {
+    .ant-tabs-nav-container {
+      padding: 0px 45px;
+      line-height: 35px;
+      font-size: 16px;
+    }
+  }
+}
+
+.tab {
+  :global {
+    .ant-dropdown-trigger > .anticon.anticon-down,
+    .ant-dropdown-link > .anticon.anticon-down {
+      font-size: 16px;
+    }
+    .ant-tabs-nav-container {
+      .ant-tabs-tab {
+        margin: 0px 80px 0px 0px !important;
+      }
+    }
+    .ant-tabs-extra-content {
+      line-height: 56px;
+      font-size: 16px;
+      padding-right: 10px;
+    }
+  }
+}
+
+/* .ant-layout {
+  margin-left: 0px !important;
+  padding: 25px 25px;
+} */
+
+:global {
+  .ant-tabs-extra-content {
+    .ant-btn {
+      border-radius: 6px;
+      margin-right: 10px;
+      margin-left: 10px;
+    }
+  }
+}
+
+.createNewProjectCard {
+  :global {
+    .ant-card {
+      margin: 10px 75px 0px 75px !important;
+      border-radius: 8px;
+      box-shadow: 0px 1px 7px #0000001a;
+      opacity: 1;
+      padding-top: 10px;
+    }
+    .ant-card-body {
+      width: 100%;
+      padding-left: 10px;
+      padding-right: 35px;
+      padding-top: 25px;
+      padding-bottom: 45px;
+    }
+  }
+}
+
+.searchCard {
+  :global {
+    .ant-card {
+      border-radius: 0px 0px 6px 6px;
+      box-shadow: 0px 1px 7px #0000001a;
+      opacity: 1;
+      position: absolute !important;
+      top: 57px;
+      right: 45px;
+      left: 45px;
+      .ant-card-body {
+        padding: 35px 30px;
+      }
+    }
+  }
+
+  .firstInputLine {
+    width: 100%;
+    font-size: 15px;
+    display: flex;
+    > div {
+      display: inline-block;
+      margin-right: 1%;
+    }
+    > div:last-child {
+      margin-right: 0;
+      flex: 1;
+    }
+    :global {
+      p {
+        margin-bottom: 5px;
+      }
+      .ant-input {
+        border-radius: 6px;
+        height: 38px;
+      }
+      .ant-picker {
+        border-radius: 6px;
+        height: 38px;
+      }
+      .ant-select {
+        border-radius: 6px;
+      }
+      .ant-select-selector {
+        border-radius: 6px !important;
+        height: 38px;
+      }
+    }
+  }
+  .secondInputLine {
+    display: flex;
+    font-size: 15px;
+    align-items: flex-end;
+    :global {
+      p {
+        margin-bottom: 5px;
+      }
+      .ant-input {
+        border-radius: 6px;
+        height: 38px;
+      }
+      .ant-btn {
+        border-radius: 6px !important;
+        margin-right: 2%;
+      }
+    }
+  }
+}
+
+.newProjectForm {
+  :global {
+    p {
+      margin-bottom: 0;
+    }
+    .form-line {
+      display: flex;
+      margin-bottom: 10px;
+      align-items: center;
+    }
+    .ant-form-item {
+      margin-bottom: 0;
+    }
+    .ant-input {
+      border-radius: 6px;
+      height: 38px;
+    }
+    .ant-select-selector {
+      height: 38px;
+      border-radius: 6px !important;
+    }
+  }
+}
+
+.buttonItem {
+  margin-top: -48px;
+  :global {
+    .ant-btn-loading {
+      width: 130px !important;
+    }
+  }
+}

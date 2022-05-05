@@ -1,0 +1,51 @@
+.tags-container {
+  position: absolute;
+  bottom: 30px;
+  right: 0px;
+  width: max-content;
+  :global {
+    .ant-tag {
+      margin-left: 8px;
+      margin-right: 0 !important;
+    }
+  }
+}
+
+.statistics-container{
+  // margin-left: 50px;
+
+.statistics {
+  margin-left: 26px;
+  line-height: 32px;
+  .statistics-title {
+    color: #818181;
+    font-size: 12px;
+    font-weight: 300;
+  }
+
+  .statistics-value {
+    color: #003262;
+    font-weight: bold;
+    margin-left: 9px;
+    font-size: 16px;
+  }
+}
+}
+
+
+@media only screen and (min-width: 1366px) {
+  .statistics-container{
+  
+  .statistics {
+    line-height: 32px;
+    .statistics-title {
+      font-size: 15px;
+    }
+  
+    .statistics-value {
+      font-size: 20px;
+    }
+  }
+  }
+}
+

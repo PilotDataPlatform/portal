@@ -1,0 +1,115 @@
+const { login, logout } = require('../../../../utils/login.js');
+const { clearInput, clearSelector } = require('../../../../utils/inputBox.js');
+const { init } = require('../../../../utils/commonActions.js');
+const { baseUrl, dataConfig } = require('../../../config');
+const { projectId } = dataConfig.canvas;
+jest.setTimeout(700000);
+/**
+ * Before running this test, plese make sure you have following files under your user folder
+ *  - one folder named test-folder-files with 2 files within
+ *  - one file
+ */
+describe('2.1.2', () => {
+  let page;
+  let newName;
+  const newTag = 'test';
+  const newDescription = 'dummy text';
+  beforeAll(async () => {
+    const context = await browser.createIncognitoBrowserContext();
+    page = await context.newPage();
+    await page.goto(baseUrl);
+    await page.setViewport({ width: 1520, height: 1080 });
+    await login(page, 'admin');
+    await init(page, { closeBanners: false });
+  });
+  afterAll(async () => {
+    await logout(page);
+    await page.waitForTimeout(3000);
+  });
+  async function testDisplayInfo() {
+    const projectNameNode = await page.waitForXPath(
+      '//form//div[position()=1]//div[@class="ant-form-item-control-input"]//p',
+    );
+    const projectName = await page.evaluate((node) => {
+      return node.textContent;
+    }, projectNameNode);
+    expect(projectName).not.toBe(newName);
+    const tagNode = await page.$x(
+      `//span[text()="${newTag}" and @class="ant-tag"]`,
+    );
+    expect(tagNode.length).toBe(0);
+    const projectDesNode = await page.waitForXPath(
+      '//form//div[position()=4]//div[@class="ant-form-item-control-input"]//p',
+    );
+    const projectDes = await page.evaluate((node) => {
+      return node.textContent;
+    }, projectDesNode);
+    expect(projectDes).not.toBe(newDescription);
+  }
+  async function testInputInfo() {
+    const editBtn = await page.waitForXPath(
+      '//div[contains(@class, "ant-tabs-top-bar")]//button',
+    );
+    await editBtn.click();
+    const nameInputNode = await page.waitForXPath(
+      '//form[contains(@class, "Settings_custom_general_info_form")]//div[position()=1]//input',
+    );
+    const nameInput = await page.evaluate((node) => {
+      return node.value;
+    }, nameInputNode);
+    expect(nameInput).not.toBe(newName);
+    const tagNode = await page.$x(
+      `//span[text()="${newTag}" and @class="ant-tag"]`,
+    );
+    expect(tagNode.length).toBe(0);
+    const projectDesNode = await page.waitForXPath(
+      '//form[contains(@class, "Settings_custom_general_info_form")]//div[position()=4]//textarea',
+    );
+    const projectDes = await page.evaluate((node) => {
+      return node.textContent;
+    }, projectDesNode);
+    expect(projectDes).not.toBe(newDescription);
+  }
+  it('Project administrator cancel input', async () => {
+    await page.goto(`${baseUrl}project/${projectId}/settings`);
+    await page.waitForXPath('//form//label[text()="Project Name"]');
+    let editBtn = await page.waitForXPath(
+      '//div[contains(@class, "ant-tabs-top-bar")]//button',
+    );
+    await editBtn.click();
+
+    // input some infos for project
+    const nameInput = await page.waitForXPath(
+      '//form[contains(@class, "Settings_custom_general_info_form")]//div[contains(@class, "ant-form-item") and position()=1]//input',
+    );
+    const previousName = await page.evaluate((nameInput) => {
+      return nameInput.value;
+    }, nameInput);
+    await clearInput(
+      page,
+      'form > div > .ant-row .ant-form-item-control-input-content input',
+    );
+    let newName = 'Frontend Automation - ' + parseInt(Math.random() * 1000);
+    while (newName === previousName) {
+      newName = 'Frontend Automation - ' + parseInt(Math.random() * 1000);
+    }
+    await nameInput.type(newName);
+    await clearSelector(page, 'form .ant-form-item .ant-select-selector');
+    await page.type('form .ant-form-item .ant-select-selector', newTag);
+    await page.click('.ant-form-item-control-input-content textarea', {
+      clickCount: 3,
+    });
+    await page.keyboard.press('Backspace');
+    await page.type(
+      '.ant-form-item-control-input-content textarea',
+      newDescription,
+    );
+    const cancelBtn = await page.waitForXPath(
+      '//button//span[text()="Cancel"]',
+    );
+    await cancelBtn.click();
+
+    await testDisplayInfo();
+    await testInputInfo();
+  });
+});
