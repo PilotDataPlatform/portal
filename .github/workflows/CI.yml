@@ -25,6 +25,10 @@ jobs:
           npm ci
       - name: Create .env file
         run: echo '${{ secrets.ENV }}' > .env
+      - name: Use Docker
+        uses: actions-hub/docker/cli@master
+        env:
+          SKIP_LOGIN: true
       - name: Build and Run Docker Image
         run: |
           docker build -t web .
