@@ -22,13 +22,12 @@ jobs:
       - name: Install dependencies
         run: |
           npm ci
-          npm install -g serve pm2
       - name: Create .env file
         run: echo '${{ secrets.ENV }}' > .env
-      - name: Build and serve
+      - name: Build and Run Docker Image
         run: |
-          CI=false npm run build-dev
-          pm2 serve build 3000 --spa
+          docker build -t web .
+          docker run web
       - name: Create users.js
         run: echo '${{ secrets.USER_CREDENTIALS }}' > tests/users.js
       - run: npm run test:local
