@@ -25,15 +25,19 @@ jobs:
           npm ci
       - name: Create .env file
         run: echo '${{ secrets.ENV }}' > .env
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
-      - name: Set up Docker Buildx
-        id: buildx
-        uses: docker/setup-buildx-action@v2
-      - name: Build and Run Docker Image
+      # - name: Set up QEMU
+      #   uses: docker/setup-qemu-action@v2
+      # - name: Set up Docker Buildx
+      #   id: buildx
+      #   uses: docker/setup-buildx-action@v2
+      # - name: Build and Run Docker Image
+      #   run: |
+      #     docker build -t web .
+      #     docker run web
+      - name: Build and serve
         run: |
-          docker build -t web .
-          docker run web
+          CI=false npm run build-dev
+          pm2 serve build 3000 --spa
       - name: Create users.js
         run: echo '${{ secrets.USER_CREDENTIALS }}' > tests/users.js
       - run: npm run test:local
