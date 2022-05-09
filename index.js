@@ -5,10 +5,10 @@ var proxy = httpProxy.createProxyServer({});
 require('dotenv').config();
 const { DOMAIN, PROXY_ROUTE } = require('./src/config');
 const server = http.createServer((request, response) => {
-  // You pass two more arguments for config and middleware
-  // More details here: https://github.com/zeit/serve-handler#options
   if (request.url.indexOf(PROXY_ROUTE) !== -1) {
-    return proxy.web(request, response, { target: 'http://' + DOMAIN });
+    proxy.web(request, response, { target: 'http://' + DOMAIN }, function (e) {
+      console.log('proxy error.', e);
+    });
   } else {
     return handler(request, response, {
       public: './build',
