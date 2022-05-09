@@ -34,6 +34,6 @@ jobs:
           sleep 60s
       - name: Create users.js
         run: echo '${{ secrets.USER_CREDENTIALS }}' > tests/users.js
-      - name: Install Chromium
-        run: sudo apt-get install chromium-browser
+      # - name: Install Chromium
+      #   run: sudo apt-get install chromium-browser
       - run: npm run test:local
