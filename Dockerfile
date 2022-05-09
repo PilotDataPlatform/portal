@@ -3,8 +3,7 @@ COPY package.json ./
 COPY package-lock.json  ./
 COPY yarn.lock ./
 RUN npm install
-RUN npm install -g supervisor
 COPY .  ./
 
 EXPOSE 3000
-CMD npm run build && supervisor index.js
+CMD npm run build && node index.js
