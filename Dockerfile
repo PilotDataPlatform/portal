@@ -7,4 +7,4 @@ RUN npm install -g supervisor
 COPY .  ./
 
 EXPOSE 3000
-CMD npm run build && node index.js
+CMD npm run build && supervisor index.js
