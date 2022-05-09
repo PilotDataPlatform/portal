@@ -2,11 +2,6 @@
   "name": "portal",
   "version": "1.8.0",
   "private": true,
-  "proxy": {
-    "/vre/api": {
-      "target": "http://10.3.7.220"
-    }
-  },
   "dependencies": {
     "@antv/g6": "^4.6.1",
     "@antv/graphin": "^1.4.1",
