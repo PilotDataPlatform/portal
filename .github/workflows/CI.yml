@@ -11,7 +11,7 @@ on:
 
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
@@ -21,18 +21,21 @@ jobs:
           node-version: 14.x
           cache: 'npm'
       - name: Install dependencies
-        run: |
-          npm ci
+        run: npm ci
       - name: Create .env file
         run: echo '${{ secrets.ENV }}' > .env
-      - name: Setup Docker
-        uses: docker-practice/actions-setup-docker@master
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v2
       - name: Build and Run Docker Image
         run: |
-          set -x
-          docker version
           docker build -t web .
-          docker run web
+          docker run -d -p 3000:3000 web
+          sleep 60s
       - name: Create users.js
         run: echo '${{ secrets.USER_CREDENTIALS }}' > tests/users.js
+      # - name: Install Chromium
+      #   run: sudo apt-get install chromium-browser
       - run: npm run test:local

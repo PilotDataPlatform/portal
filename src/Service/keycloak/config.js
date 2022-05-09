@@ -4,10 +4,7 @@ console.log(DOMAIN);
 
 const keycloakConfig = {
   realm: KEYCLOAK_REALM,
-  url:
-    process.env.NODE_ENV === 'development'
-      ? `http://${DOMAIN}${DEFAULT_AUTH_URL}/`
-      : DEFAULT_AUTH_URL + '/',
+  url: DEFAULT_AUTH_URL + '/',
   'ssl-required': 'external',
   resource: 'react-app',
   'public-client': true,
