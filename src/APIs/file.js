@@ -253,10 +253,10 @@ async function getRequestFiles(
 
 async function getRequestFilesDetailByGeid(geids) {
   return axios({
-    url: `/v1/files/bulk/detail`,
+    url: `/v2/files/bulk/detail`,
     method: 'POST',
     data: {
-      geids,
+      id: geids,
     },
   });
 }

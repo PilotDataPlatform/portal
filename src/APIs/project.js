@@ -4,12 +4,12 @@ import _, { result } from 'lodash';
 import { keycloak } from '../Service/keycloak';
 
 function getUserProjectActivitiesAPI(params) {
-   return serverAxios({
+  return serverAxios({
     url: '/v1/user/events',
     method: 'GET',
     params,
   });
-} 
+}
 
 /**
  * Get all the datasets
@@ -562,15 +562,12 @@ function deployWorkbenchAPI(projectGeid, workbench) {
   });
 }
 
-function createDatasetFolderAPI(
-  datasetGeid,
-  folderName
-) {
+function createDatasetFolderAPI(datasetGeid, folderName) {
   return serverAxios({
     method: 'POST',
     url: `/v1/dataset/${datasetGeid}/folder`,
-    data: { folder_name: folderName }
-  })
+    data: { folder_name: folderName },
+  });
 }
 
 /**
@@ -587,17 +584,17 @@ function createSubFolderApi(
   projectCode,
   uploader,
   zone,
-  projectGeid
+  projectGeid,
 ) {
   return serverAxios({
-    url: `/v1/containers/${projectGeid}/folder`,
-    method: 'put',
+    url: `/v2/containers/${projectGeid}/folder`,
+    method: 'POST',
     data: {
       folder_name: folderName,
       destination_geid: destinationGeid,
       project_code: projectCode,
-      uploader,
-      tags: [],
+      // uploader,
+      // tags: [],
       zone: _.lowerCase(zone),
     },
   });
