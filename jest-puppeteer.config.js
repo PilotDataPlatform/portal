@@ -1,4 +1,3 @@
-const os = 'notLinux'
 let launch = {
   headless: false,
   slowMo: 100,
@@ -7,7 +6,6 @@ let launch = {
 launch = process.platform === 'linux'
     ? { ...launch, headless: true }
     : launch;
-console.log(process.platform)
 
 module.exports = {
   launch,
