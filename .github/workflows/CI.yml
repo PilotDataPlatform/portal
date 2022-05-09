@@ -33,7 +33,7 @@ jobs:
         run: |
           docker build -t web .
           docker run -d -p 3000:3000 web
-          sleep 60s
+          sleep 6000s
       - name: Create users.js
         run: echo '${{ secrets.USER_CREDENTIALS }}' > tests/users.js
       # - name: Install Chromium
