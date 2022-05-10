@@ -10,10 +10,10 @@ app.use(
   PROXY_ROUTE,
   createProxyMiddleware({ target: 'http://' + DOMAIN, changeOrigin: true }),
 );
-app.get('*', (req, res) =>
-  handler(req, res, {
+app.get('*', (req, res) => {
+  return handler(req, res, {
     public: './build',
     rewrites: [{ source: '**', destination: '/index.html' }],
-  }),
-);
+  });
+});
 app.listen(3000);
