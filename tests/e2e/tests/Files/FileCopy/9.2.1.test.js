@@ -1,7 +1,7 @@
 const { login } = require('../../../../utils/login.js');
 const { init } = require('../../../../utils/commonActions.js');
-const { baseUrl } = require('../../../config');
-const { adminProjectId2 } = dataConfig.fileCopy;
+const { baseUrl, dataConfig } = require('../../../config');
+const { adminProjectId } = dataConfig.fileCopy;
 
 describe('9.2 File Copy', () => {
   let page;

@@ -1,7 +1,7 @@
 const { login } = require('../../../../utils/login.js');
 const { init } = require('../../../../utils/commonActions.js');
 const { admin } = require('../../../../users');
-const { baseUrl } = require('../../../config');
+const { baseUrl, dataConfig } = require('../../../config');
 const {
   fileName,
   folderName,
@@ -14,7 +14,7 @@ const {
   waitForFileExplorer,
   cleanupCore,
 } = require('../../../../utils/greenroomActions.js');
-const { adminProjectId2 } = dataConfig.fileCopy;
+const { adminProjectId } = dataConfig.fileCopy;
 
 describe('9.2 File Copy', () => {
   let page;

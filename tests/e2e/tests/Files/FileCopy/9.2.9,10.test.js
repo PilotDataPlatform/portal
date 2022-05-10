@@ -1,7 +1,7 @@
 const { admin } = require('../../../../users');
 const { login } = require('../../../../utils/login.js');
 const { init } = require('../../../../utils/commonActions.js');
-const { baseUrl } = require('../../../config');
+const { baseUrl, dataConfig } = require('../../../config');
 
 const { adminProjectId } = dataConfig.fileCopy;
 

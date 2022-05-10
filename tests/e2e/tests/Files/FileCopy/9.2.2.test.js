@@ -1,7 +1,7 @@
 const { login } = require('../../../../utils/login.js');
 const { init } = require('../../../../utils/commonActions.js');
 const { collaborator } = require('../../../../users');
-const { baseUrl, mailHogHost, mailHogPort } = require('../../../config');
+const { baseUrl, dataConfig, mailHogHost, mailHogPort } = require('../../../config');
 const {
   requestToCore,
   fileName,
