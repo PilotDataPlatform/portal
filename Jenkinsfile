@@ -80,7 +80,7 @@ pipeline {
           ])
         }
       }
-  
+/**  
       stage('Git clone staging') {
           when {branch "main"}
           steps{
@@ -125,6 +125,7 @@ pipeline {
         }
       }
     }
+**/ 
     post {
       failure {
           slackSend color: '#FF0000', message: "Build Failed! - ${env.JOB_NAME} commit_hash:$commit  (<${env.BUILD_URL}|Open>)", channel: 'jenkins-dev-staging-monitor'     
