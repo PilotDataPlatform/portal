@@ -1,4 +1,3 @@
-// const handler = require('serve-handler');
 require('dotenv').config();
 const path = require('path');
 const { DOMAIN, PROXY_ROUTE } = require('./src/config');
@@ -15,10 +14,4 @@ app.use(express.static(path.join(__dirname, 'build')));
 app.get('*', function (req, res) {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
-// app.get('*', (req, res) => {
-//   return handler(req, res, {
-//     public: './build',
-//     rewrites: [{ source: '**', destination: '/index.html' }],
-//   });
-// });
 app.listen(3000);
