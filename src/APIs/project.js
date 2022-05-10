@@ -591,7 +591,7 @@ function createSubFolderApi(
     method: 'POST',
     data: {
       folder_name: folderName,
-      destination_geid: destinationGeid,
+      destination_id: destinationGeid,
       project_code: projectCode,
       // uploader,
       // tags: [],
