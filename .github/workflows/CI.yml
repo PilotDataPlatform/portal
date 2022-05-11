@@ -46,7 +46,7 @@ jobs:
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2
         with:
-          directory: './coverage',
+          directory: './coverage'
           files: './coverage-summary.json'
           flags: 'e2e poc'
 
