@@ -360,7 +360,7 @@ function RawTable(props) {
                 dispatch(setTableLayoutReset(panelKey));
                 refreshFiles({
                   geid: recordGeid,
-                  sourceType: 'Folder',
+                  sourceType: 'folder',
                   node: { nodeLabel: record.nodeLabel },
                   resetTable: true,
                 });
@@ -698,7 +698,7 @@ function RawTable(props) {
             routeToGo.displayPath === props.username
               ? null
               : routeToGo.globalEntityId,
-          sourceType: 'Folder',
+          sourceType: 'folder',
           node: { nodeLabel: routeToGo.labels },
           resetTable: true,
         });
@@ -736,14 +736,14 @@ function RawTable(props) {
     }
     const getSourceTypeParam = () => {
       if (checkIsVirtualFolder(panelKey)) {
-        return 'Collection';
+        return 'collection';
       } else if (panelKey.toLowerCase().includes('trash')) {
-        return 'TrashFile';
+        return 'trash';
       }
       if (checkRootFolder(panelKey)) {
-        return 'Project';
+        return 'project';
       } else {
-        return 'Folder';
+        return 'folder';
       }
     };
     refreshFiles({
@@ -991,11 +991,11 @@ function RawTable(props) {
     const isVFolder = checkIsVirtualFolder(panelKey);
 
     if (isVFolder) {
-      sourceType = 'Collection';
+      sourceType = 'collection';
     } else if (panelKey.toLowerCase().includes('trash')) {
-      sourceType = 'TrashFile';
+      sourceType = 'trash';
     } else {
-      sourceType = 'Project';
+      sourceType = 'project';
     }
 
     await refreshFiles({
@@ -1007,16 +1007,16 @@ function RawTable(props) {
 
   const getSourceType = () => {
     if (checkIsVirtualFolder(panelKey)) {
-      return 'Collection';
+      return 'collection';
     } else if (panelKey.toLowerCase().includes('trash')) {
-      return 'TrashFile';
+      return 'trash';
     }
 
     // this check is for table columns sorting and get source type when clicing on refresh button.
     if (checkGreenAndCore(panelKey) && currentRouting?.length > 0) {
-      return 'Folder';
+      return 'folder';
     } else {
-      return 'Project';
+      return 'project';
     }
   };
 
@@ -1068,7 +1068,7 @@ function RawTable(props) {
         sourceType,
         partial,
         panelKey,
-        datasetGeid,
+        currentDataset?.code,
       );
       res = await insertManifest(res);
       const { files, total } = resKeyConvert(res);
@@ -1383,7 +1383,7 @@ function RawTable(props) {
                           clearFilesSelection();
                           refreshFiles({
                             geid,
-                            sourceType: 'Folder',
+                            sourceType: 'folder',
                             resetTable: true,
                             node: { nodeLabel: v.labels },
                           });

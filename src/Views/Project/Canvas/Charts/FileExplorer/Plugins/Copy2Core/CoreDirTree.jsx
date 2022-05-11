@@ -126,10 +126,10 @@ function CoreDirTree(props) {
       'asc',
       { archived: false },
       'Core',
-      isHome ? 'Project' : 'Folder',
+      isHome ? 'project' : 'folder',
       null,
       PanelKey.CORE_HOME,
-      currentDataset.globalEntityId,
+      currentDataset.code,
     );
     folders = res.data.result.data.filter(
       (v) => v.labels.indexOf('Folder') !== -1,

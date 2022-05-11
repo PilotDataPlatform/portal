@@ -263,7 +263,7 @@ async function getRequestFilesDetailByGeid(geids) {
 
 /**
  * ticket-1314
- * @param {string} geid the geid of a virtual folder or folder, like bcae46e0-916c-11eb-be94-eaff9e667817-1617118177
+ * @param {string} parentPath the parent path of the request files
  * @param {number} page the nth page. start from ?
  * @param {number} pageSize the number of items in each page
  * @param {string} orderBy order by which column. should be one of the column name
@@ -274,7 +274,7 @@ async function getRequestFilesDetailByGeid(geids) {
  * @param {string[]} partial what queries should be partial search.
  */
 async function getFiles(
-  geid,
+  parentPath,
   page,
   pageSize,
   orderBy,
@@ -284,26 +284,28 @@ async function getFiles(
   sourceType,
   partial,
   panelKey,
-  projectGeid,
+  projectCode,
 ) {
   const archived = panelKey.toLowerCase().includes('trash') ? true : false;
   filters['archived'] = archived;
-  let url;
-  if (checkGreenAndCore(panelKey) && geid === null) {
-    url = `/v1/files/entity/meta/`;
-  } else {
-    url = `/v1/files/entity/meta/${geid}`;
-  }
+  filters = _.omit(filters, ['tags']);
+  let url = `/v1/files/entity/meta`;
+  // if (checkGreenAndCore(panelKey) && geid === null) {
+  //   url = `/v1/files/entity/meta/`;
+  // } else {
+  //   url = `/v1/files/entity/meta/${geid}`;
+  // }
   const params = {
     page,
     page_size: pageSize,
     order_by: orderBy,
     order_type: orderType,
-    partial,
-    query: _.omit(filters, ['tags']),
     zone: zone,
-    sourceType,
-    project_geid: projectGeid,
+    project_code: projectCode,
+    parent_path: parentPath,
+    source_type: sourceType,
+    ...filters,
+    // query: _.omit(filters, ['tags']),
   };
   let res;
   res = await axios({
