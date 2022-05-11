@@ -78,16 +78,13 @@
     "build-production": "export REACT_APP_ENV=production; react-scripts build",
     "eject": "react-scripts eject",
     "e2e": "jest --runInBand ./e2e",
-    "test": "export REACT_APP_TEST_ENV=dev; jest --clearCache && jest --maxWorkers=5",
-    "test:local": "export REACT_APP_TEST_ENV=local; jest --clearCache && jest --maxWorkers=5",
+    "test": "export REACT_APP_TEST_ENV=dev; jest --clearCache && jest --maxWorkers=5 --watchAll=false",
+    "test:local": "export REACT_APP_TEST_ENV=local; jest --clearCache && jest --maxWorkers=5 --watchAll=false",
     "test:dev": "export REACT_APP_TEST_ENV=dev; jest --clearCache && jest --maxWorkers=5",
-    "test:staging": "export REACT_APP_TEST_ENV=staging; jest --clearCache && jest --maxWorkers=5"
+    "test:staging": "export REACT_APP_TEST_ENV=staging; jest --clearCache && jest --maxWorkers=5",
   },
   "eslintConfig": {
     "extends": "react-app"
-  },
-  "jest": {
-    "preset": "jest-puppeteer"
   },
   "browserslist": {
     "production": [
@@ -102,13 +99,16 @@
     ]
   },
   "devDependencies": {
+    "@babel/core": "^7.17.10",
+    "@babel/plugin-syntax-jsx": "^7.16.7",
     "cross-env": "^7.0.3",
     "cz-conventional-changelog": "^3.2.0",
     "dotenv": "^15.0.0",
     "jest": "^24.9.0",
     "jest-puppeteer": "^4.4.0",
     "jest-serial-runner": "^1.2.0",
-    "puppeteer": "^5.3.1"
+    "puppeteer": "^5.3.1",
+    "puppeteer-to-istanbul": "^1.4.0"
   },
   "config": {
     "commitizen": {

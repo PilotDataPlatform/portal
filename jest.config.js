@@ -1,4 +1,5 @@
 module.exports = {
+  preset: 'jest-puppeteer',
   projects: [
     // {
     //   displayName: 'Serial Test Cases',
@@ -14,7 +15,7 @@ module.exports = {
     //   preset: 'jest-puppeteer',
     //   testMatch: [
     //     '<rootDir>/tests/e2e/tests/**/*.test.js',
-    //     '<rootDir>/tests/critical-tests/tests/**/*.critical.test.js',
+    //     '<rootDir>/tests/critical-tests/tests/*/AdminCanvas/*.critical.test.js',
     //   ],
     // },
     {
