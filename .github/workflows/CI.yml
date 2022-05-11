@@ -47,6 +47,6 @@ jobs:
         uses: codecov/codecov-action@v2
         with:
           directory: './coverage'
-          files: './coverage-summary.json'
+          files: './coverage/coverage-summary.json'
           flags: 'e2e poc'
 
