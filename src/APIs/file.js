@@ -376,7 +376,7 @@ async function getFiles(
     });
   }
   res.data.result.routing = routingFormated;
-  if (routingFormated.length) {
+  if (routingFormated && routingFormated.length) {
     res.data.result.routing[routingFormated.length - 1].globalEntityId =
       parentId4Routing;
   }

@@ -337,7 +337,7 @@ function FilesContent(props) {
         }
       }
     }
-  };3
+  };
 
   const onUpdateCollectionFormFinish = async (values) => {
     try {
@@ -359,7 +359,12 @@ function FilesContent(props) {
         }
       });
       setUpdateBtnLoading(true);
-      const res = await updateVirtualFolder(projectGeid, props.username, projectCode, updateCollectionList);
+      const res = await updateVirtualFolder(
+        projectGeid,
+        props.username,
+        projectCode,
+        updateCollectionList,
+      );
       if (res.data.result.length > 0) {
         setUpdateTimes(updateTimes + 1);
 
@@ -680,14 +685,7 @@ function FilesContent(props) {
   return (
     <>
       <Row style={{ minWidth: 750 }}>
-        <Col
-          xs={24}
-          sm={24}
-          md={24}
-          lg={24}
-          xl={4}
-          className={styles.file_dir}
-        >
+        <Col xs={24} sm={24} md={24} lg={24} xl={4} className={styles.file_dir}>
           <div className={styles.greenroom_section}>
             <div
               style={
@@ -752,7 +750,7 @@ function FilesContent(props) {
                     <CloudServerOutlined style={{ marginRight: '10px' }} />
                     <span
                       className={styles.core_title}
-                      id='core_title'
+                      id="core_title"
                       onClick={(e) =>
                         onSelect([PanelKey.CORE], {
                           node: {

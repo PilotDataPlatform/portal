@@ -38,7 +38,7 @@ const VirtualFolderModal = ({ visible, setVisible, files }) => {
     dispatch(setCurrentProjectTreeVFolder(vfoldersNodes));
   }
   function handleOk() {}
-  function closeMdodal() {
+  function closeModal() {
     setVisible(false);
     setOpenCreatePanel(false);
     setSentBtnLoading(false);
@@ -55,7 +55,7 @@ const VirtualFolderModal = ({ visible, setVisible, files }) => {
       if (visible) {
         const allVirtualRes = await listAllVirtualFolder(
           project.profile?.code,
-          username
+          username,
         );
         const virualFolders = allVirtualRes.data.result;
         setVFolders(virualFolders);
@@ -113,7 +113,7 @@ const VirtualFolderModal = ({ visible, setVisible, files }) => {
       await addToVirtualFolder(folderGeid, files);
       const allVirtualRes = await listAllVirtualFolder(
         project.profile?.code,
-        username
+        username,
       );
       const virualFolders = allVirtualRes.data.result;
       updateVFolder(virualFolders);
