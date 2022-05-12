@@ -750,7 +750,6 @@ function RawTable(props) {
         return 'folder';
       }
     };
-    debugger;
     refreshFiles({
       parentPath: pathParam, // TODO: or dataset or folder Geid
       sourceType: getSourceTypeParam(),
@@ -1017,7 +1016,6 @@ function RawTable(props) {
       return 'trash';
     }
 
-    debugger;
     // this check is for table columns sorting and get source type when clicing on refresh button.
     if (checkGreenAndCore(panelKey) && currentRouting?.length > 0) {
       return 'folder';
