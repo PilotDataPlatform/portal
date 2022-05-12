@@ -270,7 +270,7 @@ async function getRequestFilesDetailByGeid(geids) {
  * @param {"desc"|"asc"} orderType
  * @param {*} filters the query filter like {"name":"hello"}
  * @param {"Greenroom"|"Core"|"All"} zone if the sourceType is "Trash", the zone is All
- * @param {"Project"|"Folder"|"TrashFile"|"Collection"} sourceType The Folder are the folders inside file explorer.
+ * @param {"project"|"folder"|"trash"|"collection"} sourceType The Folder are the folders inside file explorer.
  * @param {string[]} partial what queries should be partial search.
  */
 async function getFiles(
@@ -289,7 +289,7 @@ async function getFiles(
   const archived = panelKey.toLowerCase().includes('trash') ? true : false;
   filters['archived'] = archived;
   filters = _.omit(filters, ['tags']);
-  let url = `/v1/files/entity/meta`;
+  let url = `/v2/files/meta`;
   // if (checkGreenAndCore(panelKey) && geid === null) {
   //   url = `/v1/files/entity/meta/`;
   // } else {
@@ -300,47 +300,69 @@ async function getFiles(
     page_size: pageSize,
     order_by: orderBy,
     order_type: orderType,
-    zone: zone,
+    zone: zone.toLowerCase(),
     project_code: projectCode,
     parent_path: parentPath,
     source_type: sourceType,
     ...filters,
-    // query: _.omit(filters, ['tags']),
   };
   let res;
   res = await axios({
     url,
     params: objectKeysToSnakeCase(params),
   });
-  res.data.result.entities = res.data.result.data;
-  res.data.result.entities = res.data.result.entities.map((item) => {
-    res.data.result.approximateCount = res.data.total;
+
+  function generateLabels(item) {
+    const labels = [];
+    if (item.zone === 'greenroom') {
+      labels.push('Greenroom');
+    }
+    if (item.zone === 'core') {
+      labels.push('Core');
+    }
+    if (item.archived) {
+      labels.push('TrashFile');
+    }
+    if (item.type === 'folder') {
+      labels.push('Folder');
+    } else {
+      labels.push('File');
+    }
+    return labels;
+  }
+  const objFormatted = {
+    entities: res.data.result,
+    approximateCount: res.data.total,
+  };
+
+  objFormatted.entities = objFormatted.entities.map((item) => {
     let formatRes = {
-      guid: item.guid,
-      geid: item.globalEntityId,
+      guid: item.id,
+      geid: item.id,
       archived: item.archived,
       attributes: {
-        createTime: item.timeCreated,
-        nodeLabel: item.labels,
-        displayPath: item.displayPath,
+        createTime: item.createdTime,
+        nodeLabel: generateLabels(item),
+        displayPath: item.parent_path,
         fileName: item.name,
-        fileSize: item.fileSize,
-        owner: item.uploader,
-        path: item.path,
-        location: item.location,
-        folderRelativePath: item.folderRelativePath,
+        fileSize: item.size,
+        owner: item.owner,
+        location: item.storage.location_uri,
         dcmId:
           item['dcmId'] && typeof item['dcmId'] !== 'undefined'
             ? item['dcmId']
             : 'undefined',
       },
       labels:
-        item.systemTags && item.systemTags.length
-          ? item.tags.concat(item.systemTags)
-          : item.tags,
+        item.extended.extra &&
+        item.extended.extra.systemTags &&
+        item.extended.extra.systemTags.length
+          ? item.extended.extra.tags.concat(item.extended.extra.systemTags)
+          : item.extended.extra.tags,
     };
     return formatRes;
   });
+  res.data.result = objFormatted;
   return res;
 }
 

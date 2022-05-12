@@ -85,6 +85,7 @@ import { FILE_OPERATIONS } from './FileOperationValues';
 import { JOB_STATUS } from '../../../../../Components/Layout/FilePanel/jobStatus';
 import { hideButton } from './hideButtons';
 import { dcmProjectCode, DcmSpaceID } from '../../../../../config';
+import username from '../../../../../Redux/Reducers/username';
 const { Panel } = Collapse;
 const { Title } = Typography;
 const _ = require('lodash');
@@ -694,7 +695,7 @@ function RawTable(props) {
       if (routeToGo) {
         setRefreshing(true);
         await refreshFiles({
-          geid:
+          parentPath:
             routeToGo.displayPath === props.username
               ? null
               : routeToGo.globalEntityId,
@@ -707,9 +708,12 @@ function RawTable(props) {
       }
     } else {
       setRefreshing(true);
+
+      const sourceTypePara = getSourceType();
       await refreshFiles({
-        geid: isVFolder ? geid : datasetGeid, // TODO: or dataset or folder Geid
-        sourceType: getSourceType(),
+        // parentPath: isVFolder ? geid : null, // TODO: or dataset or folder Geid
+        parentPath: null,
+        sourceType: sourceTypePara,
         resetTable: true,
       });
       dispatch(setTableLayoutReset(panelKey));
@@ -724,14 +728,14 @@ function RawTable(props) {
   }, [props.successNum, datasetGeid]);
 
   async function firstTimeLoad() {
-    let geidParam;
+    let pathParam;
     if (isVFolder) {
-      geidParam = geid;
+      pathParam = geid;
     } else {
       if (checkUserHomeFolder(panelKey)) {
-        geidParam = null;
+        pathParam = props.username;
       } else {
-        geidParam = datasetGeid;
+        pathParam = null;
       }
     }
     const getSourceTypeParam = () => {
@@ -746,8 +750,9 @@ function RawTable(props) {
         return 'folder';
       }
     };
+    debugger;
     refreshFiles({
-      geid: geidParam, // TODO: or dataset or folder Geid
+      parentPath: pathParam, // TODO: or dataset or folder Geid
       sourceType: getSourceTypeParam(),
       resetTable: true,
     });
@@ -1012,6 +1017,7 @@ function RawTable(props) {
       return 'trash';
     }
 
+    debugger;
     // this check is for table columns sorting and get source type when clicing on refresh button.
     if (checkGreenAndCore(panelKey) && currentRouting?.length > 0) {
       return 'folder';
@@ -1035,7 +1041,7 @@ function RawTable(props) {
    */
   async function refreshFiles(params) {
     let {
-      geid,
+      parentPath,
       page = 0,
       pageSize = 10,
       orderBy = 'createTime',
@@ -1049,7 +1055,6 @@ function RawTable(props) {
     if (tableLoading) return;
     setTableLoading(true);
     let res;
-
     try {
       if (!partial) {
         partial = [];
@@ -1058,7 +1063,7 @@ function RawTable(props) {
         });
       }
       res = await getFiles(
-        geid,
+        parentPath,
         page,
         pageSize,
         mapColumnKey(orderBy),
@@ -1767,10 +1772,10 @@ function resKeyConvert(res) {
 
 const mapColumnKey = (column) => {
   const columnMap = {
-    createTime: 'time_created',
+    createTime: 'created_time',
     fileName: 'name',
-    owner: 'uploader',
-    fileSize: 'file_size',
+    owner: 'owner',
+    fileSize: 'size',
     dcmID: 'dcm_id',
   };
   return columnMap[column] || column;
