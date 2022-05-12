@@ -47,7 +47,6 @@ function getCurrentProject(datasetId) {
     const currentProject = _.find(containersPermission, (item) => {
         return parseInt(item.id) === parseInt(datasetId);
     });
-    console.log(currentProject.code)
     return currentProject;
 }
 

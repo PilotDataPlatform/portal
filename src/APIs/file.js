@@ -601,7 +601,7 @@ function addToVirtualFolder(collectionGeid, geids) {
     url: `/v1/collections/${collectionGeid}/files`,
     method: 'POST',
     data: {
-      file_geids: geids,
+      item_ids: geids,
     },
   });
 }
@@ -617,7 +617,7 @@ function removeFromVirtualFolder(collectionGeid, geids) {
     url: `/v1/collections/${collectionGeid}/files`,
     method: 'DELETE',
     data: {
-      file_geids: geids,
+      item_ids: geids,
     },
   });
 }
