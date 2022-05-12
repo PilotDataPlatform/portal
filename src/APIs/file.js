@@ -323,7 +323,7 @@ async function getFiles(
     if (item.archived) {
       labels.push('TrashFile');
     }
-    if (item.type === 'folder') {
+    if (item.type === 'folder' || item.type === 'name_folder') {
       labels.push('Folder');
     } else {
       labels.push('File');
@@ -366,7 +366,7 @@ async function getFiles(
     return formatRes;
   });
   res.data.result = objFormatted;
-  const routingArr = parentPath4Routing.split('.');
+  const routingArr = parentPath4Routing ? parentPath4Routing.split('.') : [];
   const routingFormated = [];
   for (let i = 0; i < routingArr.length; i++) {
     routingFormated.push({
@@ -376,8 +376,11 @@ async function getFiles(
     });
   }
   res.data.result.routing = routingFormated;
-  res.data.result.routing[routingFormated.length - 1].globalEntityId =
-    parentId4Routing;
+  if (routingFormated.length) {
+    res.data.result.routing[routingFormated.length - 1].globalEntityId =
+      parentId4Routing;
+  }
+
   return res;
 }
 
