@@ -334,8 +334,11 @@ async function getFiles(
     entities: res.data.result,
     approximateCount: res.data.total,
   };
-
+  let parentPath4Routing;
+  let parentId4Routing;
   objFormatted.entities = objFormatted.entities.map((item) => {
+    parentPath4Routing = item.parentPath;
+    parentId4Routing = item.parent;
     let formatRes = {
       guid: item.id,
       geid: item.id,
@@ -343,11 +346,11 @@ async function getFiles(
       attributes: {
         createTime: item.createdTime,
         nodeLabel: generateLabels(item),
-        displayPath: item.parent_path,
+        displayPath: item.parentPath,
         fileName: item.name,
         fileSize: item.size,
         owner: item.owner,
-        location: item.storage.location_uri,
+        location: item.storage.locationUri,
         dcmId:
           item['dcmId'] && typeof item['dcmId'] !== 'undefined'
             ? item['dcmId']
@@ -363,6 +366,18 @@ async function getFiles(
     return formatRes;
   });
   res.data.result = objFormatted;
+  const routingArr = parentPath4Routing.split('.');
+  const routingFormated = [];
+  for (let i = 0; i < routingArr.length; i++) {
+    routingFormated.push({
+      folderLevel: i,
+      name: routingArr[i],
+      displayPath: routingFormated.map((v) => v.name).join('.'),
+    });
+  }
+  res.data.result.routing = routingFormated;
+  res.data.result.routing[routingFormated.length - 1].globalEntityId =
+    parentId4Routing;
   return res;
 }
 

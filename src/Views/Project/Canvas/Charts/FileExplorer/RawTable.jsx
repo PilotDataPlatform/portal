@@ -130,11 +130,13 @@ function RawTable(props) {
   const folderRouting = useSelector(
     (state) => state.fileExplorer && state.fileExplorer.folderRouting,
   );
+  console.log('folderRouting', folderRouting, folderRouting[panelKey]);
   const currentRouting = folderRouting[panelKey]
     ? folderRouting[panelKey].filter(
         (r) => typeof r.folderLevel !== 'undefined',
       )
     : folderRouting[panelKey];
+  console.log();
   const deletedFileList = useSelector((state) => state.deletedFileList);
   const currentRecordNameSync = useRef(undefined);
   let permission = false;
@@ -349,18 +351,20 @@ function RawTable(props) {
               ) {
                 return;
               }
-              let recordGeid = record.geid;
-              if (
-                checkGreenAndCore(panelKey) &&
-                currentRouting?.length === 0 &&
-                record.name === props.username
-              ) {
-                recordGeid = null;
-              }
+              // let recordGeid = record.geid;
+              // if (
+              //   checkGreenAndCore(panelKey) &&
+              //   currentRouting?.length === 0 &&
+              //   record.name === props.username
+              // ) {
+              //   recordGeid = null;
+              // }
               if (record.nodeLabel.indexOf('Folder') !== -1) {
                 dispatch(setTableLayoutReset(panelKey));
                 refreshFiles({
-                  geid: recordGeid,
+                  parentPath: record.displayPath
+                    ? record.displayPath + '.' + record.name
+                    : record.name,
                   sourceType: 'folder',
                   node: { nodeLabel: record.nodeLabel },
                   resetTable: true,
@@ -1003,7 +1007,8 @@ function RawTable(props) {
     }
 
     await refreshFiles({
-      geid: isVFolder ? geid : datasetGeid,
+      // geid: isVFolder ? geid : datasetGeid,
+      parentPath: null,
       sourceType,
       resetTable: true,
     });
@@ -1319,6 +1324,7 @@ function RawTable(props) {
       ),
     },
   ];
+  console.log('currentRouting', currentRouting);
   const ToolTipsAndTable = (
     <div style={{ position: 'relative' }}>
       <div
@@ -1363,7 +1369,7 @@ function RawTable(props) {
                 ) : null}
                 {orderRouting
                   .slice(checkIsVirtualFolder(panelKey) ? -1 : -3)
-                  .map((v) => {
+                  .map((v, index) => {
                     let geid = v.globalEntityId;
                     if (v.displayPath === props.username) {
                       geid = null;
@@ -1371,21 +1377,20 @@ function RawTable(props) {
                     return (
                       <Breadcrumb.Item
                         style={
-                          v.globalEntityId ===
-                          orderRouting[orderRouting.length - 1].globalEntityId
+                          index === orderRouting.length - 1
                             ? null
                             : { cursor: 'pointer' }
                         }
                         onClick={() => {
-                          if (
-                            v.globalEntityId ===
-                            orderRouting[orderRouting.length - 1].globalEntityId
-                          ) {
+                          if (index === orderRouting.length - 1) {
                             return;
                           }
                           clearFilesSelection();
+                          debugger;
                           refreshFiles({
-                            geid,
+                            parentPath: v.displayPath
+                              ? v.displayPath + '.' + v.name
+                              : v.name,
                             sourceType: 'folder',
                             resetTable: true,
                             node: { nodeLabel: v.labels },
