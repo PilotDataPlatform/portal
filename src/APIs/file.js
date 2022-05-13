@@ -334,10 +334,10 @@ async function getFiles(
     entities: res.data.result,
     approximateCount: res.data.total,
   };
-  let parentPath4Routing;
+  let parentPath4Routing = parentPath;
   let parentId4Routing;
+  let parentZone = objFormatted.entities[0] && objFormatted.entities[0].zone;
   objFormatted.entities = objFormatted.entities.map((item) => {
-    parentPath4Routing = item.parentPath;
     parentId4Routing = item.parent;
     let formatRes = {
       guid: item.id,
@@ -366,6 +366,7 @@ async function getFiles(
     return formatRes;
   });
   res.data.result = objFormatted;
+
   const routingArr = parentPath4Routing ? parentPath4Routing.split('.') : [];
   const routingFormated = [];
   for (let i = 0; i < routingArr.length; i++) {
@@ -373,6 +374,7 @@ async function getFiles(
       folderLevel: i,
       name: routingArr[i],
       displayPath: routingFormated.map((v) => v.name).join('.'),
+      labels: parentZone ? [_.capitalize(parentZone)] : [],
     });
   }
   res.data.result.routing = routingFormated;

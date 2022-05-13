@@ -78,7 +78,7 @@ class FilesTable extends React.Component {
     if (this.props.activePane !== nextProps.activePane) {
       const curSourceType = this.getCurrentSourceType();
       const params = {
-        geid: this.props.getCurrentGeid(),
+        parentPath: this.props.getParentPath(),
         page: this.state.page,
         pageSize: this.state.pageSize,
         orderBy: this.state.sortColumn,
@@ -216,7 +216,7 @@ class FilesTable extends React.Component {
 
     const curSourceType = this.getCurrentSourceType();
     const params = {
-      geid: this.props.getCurrentGeid(),
+      parentPath: this.props.getParentPath(),
       page: pagination.current - 1,
       pageSize: pagination.pageSize,
       orderBy: sorter.columnKey,
