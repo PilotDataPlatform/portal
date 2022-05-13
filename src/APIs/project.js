@@ -4,12 +4,12 @@ import _, { result } from 'lodash';
 import { keycloak } from '../Service/keycloak';
 
 function getUserProjectActivitiesAPI(params) {
-   return serverAxios({
+  return serverAxios({
     url: '/v1/user/events',
     method: 'GET',
     params,
   });
-} 
+}
 
 /**
  * Get all the datasets
@@ -220,19 +220,26 @@ function updateDatasetIcon(projectGeid, base64Img) {
   });
 }
 
-function updateVirtualFolder(projectGeid, payload) {
+function updateVirtualFolder(
+  projectGeid,
+  username,
+  projectCode,
+  collectionList,
+) {
   return serverAxios({
     url: `/v1/project/${projectGeid}/collections`,
     method: 'PUT',
     data: {
-      collections: payload,
+      owner: username,
+      container_code: projectCode,
+      collections: collectionList,
     },
   });
 }
 
-async function listAllVirtualFolder(projectGeid) {
+async function listAllVirtualFolder(projectCode, username) {
   const res = await serverAxios({
-    url: `/v1/collections?project_geid=${projectGeid}`,
+    url: `/v1/collections?project_code=${projectCode}&owner=${username}`,
     method: 'GET',
   });
   const vfolders = res.data.result.map((v) => {
@@ -246,13 +253,23 @@ async function listAllVirtualFolder(projectGeid) {
   return res;
 }
 
-function createVirtualFolder(projectGeid, name) {
+async function listVirtualFolderFiles(collection_geid, pageSize = 10) {
+  const res = await serverAxios({
+    url: `/v1/collections/${collection_geid}/files?page=0&page_size=${pageSize}&order_by=time_created&order_type=desc`,
+    method: 'GET',
+  });
+  return res;
+}
+
+function createVirtualFolder(projectCode, collectionName, username, id) {
   return serverAxios({
     url: `/v1/collections`,
     method: 'POST',
     data: {
-      name: name,
-      project_geid: projectGeid,
+      project_code: projectCode,
+      name: collectionName,
+      username,
+      id,
     },
   });
 }
@@ -562,15 +579,12 @@ function deployWorkbenchAPI(projectGeid, workbench) {
   });
 }
 
-function createDatasetFolderAPI(
-  datasetGeid,
-  folderName
-) {
+function createDatasetFolderAPI(datasetGeid, folderName) {
   return serverAxios({
     method: 'POST',
     url: `/v1/dataset/${datasetGeid}/folder`,
-    data: { folder_name: folderName }
-  })
+    data: { folder_name: folderName },
+  });
 }
 
 /**
@@ -587,17 +601,17 @@ function createSubFolderApi(
   projectCode,
   uploader,
   zone,
-  projectGeid
+  projectGeid,
 ) {
   return serverAxios({
-    url: `/v1/containers/${projectGeid}/folder`,
-    method: 'put',
+    url: `/v2/containers/${projectGeid}/folder`,
+    method: 'POST',
     data: {
       folder_name: folderName,
-      destination_geid: destinationGeid,
+      destination_id: destinationGeid,
       project_code: projectCode,
-      uploader,
-      tags: [],
+      // uploader,
+      // tags: [],
       zone: _.lowerCase(zone),
     },
   });
@@ -713,6 +727,7 @@ export {
   getSystemTagsAPI,
   createVirtualFolder,
   listAllVirtualFolder,
+  listVirtualFolderFiles,
   updateVirtualFolder,
   deleteVirtualFolder,
   listUsersContainersPermission,

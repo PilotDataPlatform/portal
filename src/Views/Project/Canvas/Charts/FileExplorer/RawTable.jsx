@@ -85,6 +85,7 @@ import { FILE_OPERATIONS } from './FileOperationValues';
 import { JOB_STATUS } from '../../../../../Components/Layout/FilePanel/jobStatus';
 import { hideButton } from './hideButtons';
 import { dcmProjectCode, DcmSpaceID } from '../../../../../config';
+import username from '../../../../../Redux/Reducers/username';
 const { Panel } = Collapse;
 const { Title } = Typography;
 const _ = require('lodash');
@@ -149,21 +150,15 @@ function RawTable(props) {
     currentRouting &&
     currentRouting.length === 0;
 
-  const getCurrentGeid = () => {
-    let currentGeid;
+  const getParentPath = () => {
     if (currentRouting && currentRouting.length) {
-      currentGeid = currentRouting[currentRouting.length - 1].globalEntityId;
-      if (currentRouting[currentRouting.length - 1].name === props.username) {
-        currentGeid = null;
-      }
+      return currentRouting.map((v) => v.name).join('.');
     } else {
       if (isVFolder) {
         return geid;
       }
-      currentGeid = datasetGeid;
+      return null;
     }
-
-    return currentGeid;
   };
   const currentRouteLength = 0 || currentRouting?.length;
 
@@ -348,19 +343,21 @@ function RawTable(props) {
               ) {
                 return;
               }
-              let recordGeid = record.geid;
-              if (
-                checkGreenAndCore(panelKey) &&
-                currentRouting?.length === 0 &&
-                record.name === props.username
-              ) {
-                recordGeid = null;
-              }
+              // let recordGeid = record.geid;
+              // if (
+              //   checkGreenAndCore(panelKey) &&
+              //   currentRouting?.length === 0 &&
+              //   record.name === props.username
+              // ) {
+              //   recordGeid = null;
+              // }
               if (record.nodeLabel.indexOf('Folder') !== -1) {
                 dispatch(setTableLayoutReset(panelKey));
                 refreshFiles({
-                  geid: recordGeid,
-                  sourceType: 'Folder',
+                  parentPath: record.displayPath
+                    ? record.displayPath + '.' + record.name
+                    : record.name,
+                  sourceType: 'folder',
                   node: { nodeLabel: record.nodeLabel },
                   resetTable: true,
                 });
@@ -687,29 +684,23 @@ function RawTable(props) {
   const datasetGeid = currentDataset?.globalEntityId;
   async function fetchData() {
     if (currentRouting && currentRouting.length) {
-      const leveledRoutes = currentRouting.sort((a, b) => {
-        return a.folderLevel - b.folderLevel;
-      });
-      const routeToGo = leveledRoutes.pop();
-      if (routeToGo) {
-        setRefreshing(true);
-        await refreshFiles({
-          geid:
-            routeToGo.displayPath === props.username
-              ? null
-              : routeToGo.globalEntityId,
-          sourceType: 'Folder',
-          node: { nodeLabel: routeToGo.labels },
-          resetTable: true,
-        });
-        dispatch(setTableLayoutReset(panelKey));
-        setRefreshing(false);
-      }
-    } else {
       setRefreshing(true);
       await refreshFiles({
-        geid: isVFolder ? geid : datasetGeid, // TODO: or dataset or folder Geid
-        sourceType: getSourceType(),
+        parentPath: currentRouting.map((v) => v.name).join('.'),
+        sourceType: 'folder',
+        node: { nodeLabel: currentRouting[currentRouting.length - 1].labels },
+        resetTable: true,
+      });
+      dispatch(setTableLayoutReset(panelKey));
+      setRefreshing(false);
+    } else {
+      setRefreshing(true);
+
+      const sourceTypePara = getSourceType();
+      await refreshFiles({
+        // parentPath: isVFolder ? geid : null, // TODO: or dataset or folder Geid
+        parentPath: null,
+        sourceType: sourceTypePara,
         resetTable: true,
       });
       dispatch(setTableLayoutReset(panelKey));
@@ -724,30 +715,30 @@ function RawTable(props) {
   }, [props.successNum, datasetGeid]);
 
   async function firstTimeLoad() {
-    let geidParam;
+    let pathParam;
     if (isVFolder) {
-      geidParam = geid;
+      pathParam = geid;
     } else {
       if (checkUserHomeFolder(panelKey)) {
-        geidParam = null;
+        pathParam = props.username;
       } else {
-        geidParam = datasetGeid;
+        pathParam = null;
       }
     }
     const getSourceTypeParam = () => {
       if (checkIsVirtualFolder(panelKey)) {
-        return 'Collection';
+        return 'collection';
       } else if (panelKey.toLowerCase().includes('trash')) {
-        return 'TrashFile';
+        return 'trash';
       }
       if (checkRootFolder(panelKey)) {
-        return 'Project';
+        return 'project';
       } else {
-        return 'Folder';
+        return 'folder';
       }
     };
     refreshFiles({
-      geid: geidParam, // TODO: or dataset or folder Geid
+      parentPath: pathParam, // TODO: or dataset or folder Geid
       sourceType: getSourceTypeParam(),
       resetTable: true,
     });
@@ -991,15 +982,16 @@ function RawTable(props) {
     const isVFolder = checkIsVirtualFolder(panelKey);
 
     if (isVFolder) {
-      sourceType = 'Collection';
+      sourceType = 'collection';
     } else if (panelKey.toLowerCase().includes('trash')) {
-      sourceType = 'TrashFile';
+      sourceType = 'trash';
     } else {
-      sourceType = 'Project';
+      sourceType = 'project';
     }
 
     await refreshFiles({
-      geid: isVFolder ? geid : datasetGeid,
+      // geid: isVFolder ? geid : datasetGeid,
+      parentPath: null,
       sourceType,
       resetTable: true,
     });
@@ -1007,16 +999,16 @@ function RawTable(props) {
 
   const getSourceType = () => {
     if (checkIsVirtualFolder(panelKey)) {
-      return 'Collection';
+      return 'collection';
     } else if (panelKey.toLowerCase().includes('trash')) {
-      return 'TrashFile';
+      return 'trash';
     }
 
     // this check is for table columns sorting and get source type when clicing on refresh button.
     if (checkGreenAndCore(panelKey) && currentRouting?.length > 0) {
-      return 'Folder';
+      return 'folder';
     } else {
-      return 'Project';
+      return 'project';
     }
   };
 
@@ -1035,7 +1027,7 @@ function RawTable(props) {
    */
   async function refreshFiles(params) {
     let {
-      geid,
+      parentPath,
       page = 0,
       pageSize = 10,
       orderBy = 'createTime',
@@ -1049,7 +1041,6 @@ function RawTable(props) {
     if (tableLoading) return;
     setTableLoading(true);
     let res;
-
     try {
       if (!partial) {
         partial = [];
@@ -1058,7 +1049,7 @@ function RawTable(props) {
         });
       }
       res = await getFiles(
-        geid,
+        parentPath,
         page,
         pageSize,
         mapColumnKey(orderBy),
@@ -1068,7 +1059,7 @@ function RawTable(props) {
         sourceType,
         partial,
         panelKey,
-        datasetGeid,
+        currentDataset?.code,
       );
       res = await insertManifest(res);
       const { files, total } = resKeyConvert(res);
@@ -1360,7 +1351,7 @@ function RawTable(props) {
                 ) : null}
                 {orderRouting
                   .slice(checkIsVirtualFolder(panelKey) ? -1 : -3)
-                  .map((v) => {
+                  .map((v, index) => {
                     let geid = v.globalEntityId;
                     if (v.displayPath === props.username) {
                       geid = null;
@@ -1368,22 +1359,20 @@ function RawTable(props) {
                     return (
                       <Breadcrumb.Item
                         style={
-                          v.globalEntityId ===
-                          orderRouting[orderRouting.length - 1].globalEntityId
+                          index === orderRouting.length - 1
                             ? null
                             : { cursor: 'pointer' }
                         }
                         onClick={() => {
-                          if (
-                            v.globalEntityId ===
-                            orderRouting[orderRouting.length - 1].globalEntityId
-                          ) {
+                          if (index === orderRouting.length - 1) {
                             return;
                           }
                           clearFilesSelection();
                           refreshFiles({
-                            geid,
-                            sourceType: 'Folder',
+                            parentPath: v.displayPath
+                              ? v.displayPath + '.' + v.name
+                              : v.name,
+                            sourceType: 'folder',
                             resetTable: true,
                             node: { nodeLabel: v.labels },
                           });
@@ -1493,7 +1482,7 @@ function RawTable(props) {
         tags={value}
         selectedRecord={currentRecord}
         tableState={tableState}
-        getCurrentGeid={getCurrentGeid}
+        getParentPath={getParentPath}
         tableLoading={tableLoading}
         currentRouting={currentRouting}
       />
@@ -1767,10 +1756,10 @@ function resKeyConvert(res) {
 
 const mapColumnKey = (column) => {
   const columnMap = {
-    createTime: 'time_created',
+    createTime: 'created_time',
     fileName: 'name',
-    owner: 'uploader',
-    fileSize: 'file_size',
+    owner: 'owner',
+    fileSize: 'size',
     dcmID: 'dcm_id',
   };
   return columnMap[column] || column;

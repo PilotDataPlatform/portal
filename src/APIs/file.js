@@ -253,28 +253,28 @@ async function getRequestFiles(
 
 async function getRequestFilesDetailByGeid(geids) {
   return axios({
-    url: `/v1/files/bulk/detail`,
+    url: `/v2/files/bulk/detail`,
     method: 'POST',
     data: {
-      geids,
+      id: geids,
     },
   });
 }
 
 /**
  * ticket-1314
- * @param {string} geid the geid of a virtual folder or folder, like bcae46e0-916c-11eb-be94-eaff9e667817-1617118177
+ * @param {string} parentPath the parent path of the request files
  * @param {number} page the nth page. start from ?
  * @param {number} pageSize the number of items in each page
  * @param {string} orderBy order by which column. should be one of the column name
  * @param {"desc"|"asc"} orderType
  * @param {*} filters the query filter like {"name":"hello"}
  * @param {"Greenroom"|"Core"|"All"} zone if the sourceType is "Trash", the zone is All
- * @param {"Project"|"Folder"|"TrashFile"|"Collection"} sourceType The Folder are the folders inside file explorer.
+ * @param {"project"|"folder"|"trash"|"collection"} sourceType The Folder are the folders inside file explorer.
  * @param {string[]} partial what queries should be partial search.
  */
 async function getFiles(
-  geid,
+  parentPath,
   page,
   pageSize,
   orderBy,
@@ -284,61 +284,105 @@ async function getFiles(
   sourceType,
   partial,
   panelKey,
-  projectGeid,
+  projectCode,
 ) {
   const archived = panelKey.toLowerCase().includes('trash') ? true : false;
   filters['archived'] = archived;
-  let url;
-  if (checkGreenAndCore(panelKey) && geid === null) {
-    url = `/v1/files/entity/meta/`;
-  } else {
-    url = `/v1/files/entity/meta/${geid}`;
-  }
+  filters = _.omit(filters, ['tags']);
+  let url = `/v2/files/meta`;
+  // if (checkGreenAndCore(panelKey) && geid === null) {
+  //   url = `/v1/files/entity/meta/`;
+  // } else {
+  //   url = `/v1/files/entity/meta/${geid}`;
+  // }
   const params = {
     page,
     page_size: pageSize,
     order_by: orderBy,
     order_type: orderType,
-    partial,
-    query: _.omit(filters, ['tags']),
-    zone: zone,
-    sourceType,
-    project_geid: projectGeid,
+    zone: zone.toLowerCase(),
+    project_code: projectCode,
+    parent_path: parentPath,
+    source_type: sourceType,
+    ...filters,
   };
   let res;
   res = await axios({
     url,
     params: objectKeysToSnakeCase(params),
   });
-  res.data.result.entities = res.data.result.data;
-  res.data.result.entities = res.data.result.entities.map((item) => {
-    res.data.result.approximateCount = res.data.total;
+
+  function generateLabels(item) {
+    const labels = [];
+    if (item.zone === 'greenroom') {
+      labels.push('Greenroom');
+    }
+    if (item.zone === 'core') {
+      labels.push('Core');
+    }
+    if (item.archived) {
+      labels.push('TrashFile');
+    }
+    if (item.type === 'folder' || item.type === 'name_folder') {
+      labels.push('Folder');
+    } else {
+      labels.push('File');
+    }
+    return labels;
+  }
+  const objFormatted = {
+    entities: res.data.result,
+    approximateCount: res.data.total,
+  };
+  let parentPath4Routing = parentPath;
+  let parentId4Routing;
+  let parentZone = objFormatted.entities[0] && objFormatted.entities[0].zone;
+  objFormatted.entities = objFormatted.entities.map((item) => {
+    parentId4Routing = item.parent;
     let formatRes = {
-      guid: item.guid,
-      geid: item.globalEntityId,
+      guid: item.id,
+      geid: item.id,
       archived: item.archived,
       attributes: {
-        createTime: item.timeCreated,
-        nodeLabel: item.labels,
-        displayPath: item.displayPath,
+        createTime: item.createdTime,
+        nodeLabel: generateLabels(item),
+        displayPath: item.parentPath,
         fileName: item.name,
-        fileSize: item.fileSize,
-        owner: item.uploader,
-        path: item.path,
-        location: item.location,
-        folderRelativePath: item.folderRelativePath,
+        fileSize: item.size,
+        owner: item.owner,
+        location: item.storage.locationUri,
         dcmId:
           item['dcmId'] && typeof item['dcmId'] !== 'undefined'
             ? item['dcmId']
             : 'undefined',
       },
       labels:
-        item.systemTags && item.systemTags.length
-          ? item.tags.concat(item.systemTags)
-          : item.tags,
+        item.extended.extra &&
+        item.extended.extra.systemTags &&
+        item.extended.extra.systemTags.length
+          ? item.extended.extra.tags.concat(item.extended.extra.systemTags)
+          : item.extended.extra.tags,
     };
     return formatRes;
   });
+  res.data.result = objFormatted;
+
+  const routingArr = parentPath4Routing ? parentPath4Routing.split('.') : [];
+  const routingFormated = [];
+  for (let i = 0; i < routingArr.length; i++) {
+    routingFormated.push({
+      folderLevel: i,
+      name: routingArr[i],
+      displayPath: routingFormated.map((v) => v.name).join('.'),
+      labels: parentZone ? [_.capitalize(parentZone)] : [],
+    });
+  }
+  res.data.result.routing = routingFormated;
+  if (routingFormated && routingFormated.length) {
+    res.data.result.routing[routingFormated.length - 1].globalEntityId =
+      parentId4Routing;
+  }
+
   return res;
 }
 
@@ -559,7 +603,7 @@ function addToVirtualFolder(collectionGeid, geids) {
     url: `/v1/collections/${collectionGeid}/files`,
     method: 'POST',
     data: {
-      file_geids: geids,
+      item_ids: geids,
     },
   });
 }
@@ -575,7 +619,7 @@ function removeFromVirtualFolder(collectionGeid, geids) {
     url: `/v1/collections/${collectionGeid}/files`,
     method: 'DELETE',
     data: {
-      file_geids: geids,
+      item_ids: geids,
     },
   });
 }

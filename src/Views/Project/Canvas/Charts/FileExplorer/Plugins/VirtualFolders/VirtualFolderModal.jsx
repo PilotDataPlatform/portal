@@ -21,6 +21,7 @@ const VirtualFolderModal = ({ visible, setVisible, files }) => {
   const [vfolders, setVFolders] = useState([]);
   const dispatch = useDispatch();
   const project = useSelector((state) => state.project);
+  const username = useSelector((state) => state.username);
   function updateVFolder(vfolders) {
     const vfoldersNodes = vfolders.map((folder) => {
       return {
@@ -53,7 +54,8 @@ const VirtualFolderModal = ({ visible, setVisible, files }) => {
     async function loadVFolders() {
       if (visible) {
         const allVirtualRes = await listAllVirtualFolder(
-          project.profile?.globalEntityId,
+          project.profile?.code,
+          username,
         );
         const virualFolders = allVirtualRes.data.result;
         setVFolders(virualFolders);
@@ -89,9 +91,11 @@ const VirtualFolderModal = ({ visible, setVisible, files }) => {
   async function addToNewFolder(values) {
     const collection = trimString(values.Name);
     try {
+      //TODO: missing id argument - waiting for updated geid
       const res = await createVirtualFolder(
-        project.profile?.globalEntityId,
+        project.profile.code,
         collection,
+        username,
       );
       if (parseInt(res.data.code / 100) !== 2) {
         setSentBtnLoading(false);
@@ -108,7 +112,8 @@ const VirtualFolderModal = ({ visible, setVisible, files }) => {
       }
       await addToVirtualFolder(folderGeid, files);
       const allVirtualRes = await listAllVirtualFolder(
-        project.profile?.globalEntityId,
+        project.profile?.code,
+        username,
       );
       const virualFolders = allVirtualRes.data.result;
       updateVFolder(virualFolders);

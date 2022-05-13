@@ -96,6 +96,7 @@ function FilesContent(props) {
   const currentRole = currentDataset?.permission;
   const projectGeid = currentDataset?.globalEntityId;
   const projectId = currentDataset.id;
+  const projectCode = currentDataset.code;
   const greenRoomData = [
     {
       title: 'Home',
@@ -209,7 +210,7 @@ function FilesContent(props) {
 
   async function updateVfolders() {
     try {
-      const res = await listAllVirtualFolder(projectGeid);
+      const res = await listAllVirtualFolder(projectCode, props.username);
       const virualFolders = res.data.result;
       setVfolders(virualFolders);
       return virualFolders;
@@ -308,7 +309,8 @@ function FilesContent(props) {
     const { newCollectionName } = values;
     try {
       setSaveBtnLoading(true);
-      await createVirtualFolder(projectGeid, newCollectionName);
+      //TODO: missing id argument - waiting for updated geid
+      await createVirtualFolder(projectCode, newCollectionName, props.username);
       updateVfolders();
     } catch (error) {
       setSaveBtnLoading(false);
@@ -357,7 +359,12 @@ function FilesContent(props) {
         }
       });
       setUpdateBtnLoading(true);
-      const res = await updateVirtualFolder(projectGeid, updateCollectionList);
+      const res = await updateVirtualFolder(
+        projectGeid,
+        props.username,
+        projectCode,
+        updateCollectionList,
+      );
       if (res.data.result.length > 0) {
         setUpdateTimes(updateTimes + 1);
 
@@ -678,14 +685,7 @@ function FilesContent(props) {
   return (
     <>
       <Row style={{ minWidth: 750 }}>
-        <Col
-          xs={24}
-          sm={24}
-          md={24}
-          lg={24}
-          xl={4}
-          className={styles.file_dir}
-        >
+        <Col xs={24} sm={24} md={24} lg={24} xl={4} className={styles.file_dir}>
           <div className={styles.greenroom_section}>
             <div
               style={
@@ -750,7 +750,7 @@ function FilesContent(props) {
                     <CloudServerOutlined style={{ marginRight: '10px' }} />
                     <span
                       className={styles.core_title}
-                      id='core_title'
+                      id="core_title"
                       onClick={(e) =>
                         onSelect([PanelKey.CORE], {
                           node: {

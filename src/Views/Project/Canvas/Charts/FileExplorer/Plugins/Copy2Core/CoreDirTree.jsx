@@ -117,27 +117,29 @@ function CoreDirTree(props) {
           : info.node.key.split('/')[0];
     }
     const res = await getFiles(
-      foundTreeNodePath.length === 1 && foundTreeNodePath[0].title === username
-        ? null
-        : targetGeid,
+      foundTreeNodePath.map((v) => v.title).join('.'),
       page,
       PAGE_SIZE,
       'name',
       'asc',
       { archived: false },
       'Core',
-      isHome ? 'Project' : 'Folder',
+      isHome ? 'project' : 'folder',
       null,
       PanelKey.CORE_HOME,
-      currentDataset.globalEntityId,
+      currentDataset.code,
     );
-    folders = res.data.result.data.filter(
-      (v) => v.labels.indexOf('Folder') !== -1,
-    );
+    folders = res.data.result.entities
+      ? res.data.result.entities.filter(
+          (v) =>
+            v.attributes.nodeLabel &&
+            v.attributes.nodeLabel.indexOf('Folder') !== -1,
+        )
+      : [];
     folders = folders.map((v) => {
       return {
-        title: getTitle(v.name),
-        key: v.globalEntityId,
+        title: getTitle(v.attributes.fileName),
+        key: v.geid,
         // when click on "Core" or "...", all subfolders should show user icon.
         icon:
           foundTreeNodePath.length === 0 ||
