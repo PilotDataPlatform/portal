@@ -91,7 +91,6 @@ const VirtualFolderModal = ({ visible, setVisible, files }) => {
   async function addToNewFolder(values) {
     const collection = trimString(values.Name);
     try {
-      //TODO: missing id argument - waiting for updated geid
       const res = await createVirtualFolder(
         project.profile.code,
         collection,
