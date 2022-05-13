@@ -49,4 +49,5 @@ jobs:
           directory: './coverage'
           files: './coverage/coverage-summary.json'
           flags: 'e2e poc'
+          token: ${{ secrets.CODECOV_TOKEN }}
 
