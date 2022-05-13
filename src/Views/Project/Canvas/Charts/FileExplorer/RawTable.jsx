@@ -130,13 +130,11 @@ function RawTable(props) {
   const folderRouting = useSelector(
     (state) => state.fileExplorer && state.fileExplorer.folderRouting,
   );
-  console.log('folderRouting', folderRouting, folderRouting[panelKey]);
   const currentRouting = folderRouting[panelKey]
     ? folderRouting[panelKey].filter(
         (r) => typeof r.folderLevel !== 'undefined',
       )
     : folderRouting[panelKey];
-  console.log();
   const deletedFileList = useSelector((state) => state.deletedFileList);
   const currentRecordNameSync = useRef(undefined);
   let permission = false;
@@ -1324,7 +1322,6 @@ function RawTable(props) {
       ),
     },
   ];
-  console.log('currentRouting', currentRouting);
   const ToolTipsAndTable = (
     <div style={{ position: 'relative' }}>
       <div
