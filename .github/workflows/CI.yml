@@ -44,7 +44,7 @@ jobs:
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2
         with:
-          files: './coverage/coverage-summary.json'
+          files: './coverage/coverage-final.json'
           flags: 'e2e poc'
           token: ${{ secrets.CODECOV_TOKEN }}
 
