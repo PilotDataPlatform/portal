@@ -40,13 +40,10 @@ jobs:
       - name: Install NYC and generate coverage report 
         run: |
           npm i -g nyc
-          nyc report --reporter=json-summary
-      # - name: Download CodeCov uploader ##linux specific##
-      #   run: curl -Os https://uploader.codecov.io/latest/linux/codecov chmod +x codecov ./codecov
+          nyc report --reporter=json
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2
         with:
-          directory: './coverage'
           files: './coverage/coverage-summary.json'
           flags: 'e2e poc'
           token: ${{ secrets.CODECOV_TOKEN }}
