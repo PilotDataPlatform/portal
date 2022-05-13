@@ -130,13 +130,11 @@ function RawTable(props) {
   const folderRouting = useSelector(
     (state) => state.fileExplorer && state.fileExplorer.folderRouting,
   );
-  console.log('folderRouting', folderRouting, folderRouting[panelKey]);
   const currentRouting = folderRouting[panelKey]
     ? folderRouting[panelKey].filter(
         (r) => typeof r.folderLevel !== 'undefined',
       )
     : folderRouting[panelKey];
-  console.log();
   const deletedFileList = useSelector((state) => state.deletedFileList);
   const currentRecordNameSync = useRef(undefined);
   let permission = false;
@@ -152,21 +150,15 @@ function RawTable(props) {
     currentRouting &&
     currentRouting.length === 0;
 
-  const getCurrentGeid = () => {
-    let currentGeid;
+  const getParentPath = () => {
     if (currentRouting && currentRouting.length) {
-      currentGeid = currentRouting[currentRouting.length - 1].globalEntityId;
-      if (currentRouting[currentRouting.length - 1].name === props.username) {
-        currentGeid = null;
-      }
+      return currentRouting.map((v) => v.name).join('.');
     } else {
       if (isVFolder) {
         return geid;
       }
-      currentGeid = datasetGeid;
+      return null;
     }
-
-    return currentGeid;
   };
   const currentRouteLength = 0 || currentRouting?.length;
 
@@ -692,24 +684,15 @@ function RawTable(props) {
   const datasetGeid = currentDataset?.globalEntityId;
   async function fetchData() {
     if (currentRouting && currentRouting.length) {
-      const leveledRoutes = currentRouting.sort((a, b) => {
-        return a.folderLevel - b.folderLevel;
+      setRefreshing(true);
+      await refreshFiles({
+        parentPath: currentRouting.map((v) => v.name).join('.'),
+        sourceType: 'folder',
+        node: { nodeLabel: currentRouting[currentRouting.length - 1].labels },
+        resetTable: true,
       });
-      const routeToGo = leveledRoutes.pop();
-      if (routeToGo) {
-        setRefreshing(true);
-        await refreshFiles({
-          parentPath:
-            routeToGo.displayPath === props.username
-              ? null
-              : routeToGo.globalEntityId,
-          sourceType: 'folder',
-          node: { nodeLabel: routeToGo.labels },
-          resetTable: true,
-        });
-        dispatch(setTableLayoutReset(panelKey));
-        setRefreshing(false);
-      }
+      dispatch(setTableLayoutReset(panelKey));
+      setRefreshing(false);
     } else {
       setRefreshing(true);
 
@@ -1324,7 +1307,6 @@ function RawTable(props) {
       ),
     },
   ];
-  console.log('currentRouting', currentRouting);
   const ToolTipsAndTable = (
     <div style={{ position: 'relative' }}>
       <div
@@ -1386,7 +1368,6 @@ function RawTable(props) {
                             return;
                           }
                           clearFilesSelection();
-                          debugger;
                           refreshFiles({
                             parentPath: v.displayPath
                               ? v.displayPath + '.' + v.name
@@ -1501,7 +1482,7 @@ function RawTable(props) {
         tags={value}
         selectedRecord={currentRecord}
         tableState={tableState}
-        getCurrentGeid={getCurrentGeid}
+        getParentPath={getParentPath}
         tableLoading={tableLoading}
         currentRouting={currentRouting}
       />
