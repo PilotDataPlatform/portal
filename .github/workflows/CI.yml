@@ -42,7 +42,7 @@ jobs:
           npm i -g nyc
           nyc report --reporter=cobertura
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v2
+        uses: codecov/codecov-action@v1
         with:
           file: ./coverage/cobertura-coverage.xml
           fail_ci_if_error: false
