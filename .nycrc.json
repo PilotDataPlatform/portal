@@ -1,4 +1,0 @@
-{
-  "reporter": ["cobertura"],
-  "report-dir": "./.nyc_output"
-}
