@@ -2,7 +2,7 @@ const { baseUrl } = require('../config');
 const pti = require('puppeteer-to-istanbul');
 const fs = require('fs');
 
-jest.setTimeout(700000);
+jest.setTimeout(30000);
 /*
 this test runs as a project admin test
 Create a project admin account first
@@ -27,6 +27,12 @@ describe('Admin Canvas', () => {
 
   it('see login button', async () => {
     await page.goto(`${baseUrl}login`);
+    await page.waitForTimeout(4000);
+  });
+  it('see account assitant', async () => {
+    await page.goto(`${baseUrl}account-assistant`);
+    const backBtn = await page.waitForXPath('//button[@type="submit"]');
+    await backBtn.click();
     await page.waitForTimeout(4000);
   });
 });
