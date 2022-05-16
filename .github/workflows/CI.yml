@@ -45,7 +45,5 @@ jobs:
         uses: codecov/codecov-action@v2
         with:
           files: ./coverage/cobertura-coverage.xml
-          gcov: true
-          gcov_include: ./.nyc_output/
-          # directory: ./.nyc_output/
+          working-directory: ./.nyc_output/
           fail_ci_if_error: false
