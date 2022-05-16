@@ -41,6 +41,7 @@ jobs:
         run: |
           npm i -g nyc
           nyc report --reporter=cobertura
+          cp -r .nyc_output ./coverage
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2
         with:
