@@ -45,5 +45,6 @@ jobs:
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2
         with:
-          file: ./coverage/cobertura-coverage.xml
+          files: ./coverage/cobertura-coverage.xml
+          directory: ./.nyc_output/
           fail_ci_if_error: false
