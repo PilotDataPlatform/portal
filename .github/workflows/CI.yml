@@ -36,6 +36,7 @@ jobs:
           sleep 480s
       - name: Create users.js
         run: echo '${{ secrets.USER_CREDENTIALS }}' > tests/users.js
+      - run: sed -e '/^\.nyc_output$/d' .gitignore | tee .gitignore
       - run: npm run test:local
       - name: Install NYC and generate coverage report
         run: |
