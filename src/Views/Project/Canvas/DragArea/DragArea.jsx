@@ -59,6 +59,7 @@ export default class DragArea extends React.Component {
             style={{
               marginTop: 10,
             }}
+            isResizable={false}
             layouts={this.state.layouts}
             onBreakpointChange={this.onBreakpointChange}
             draggableHandle={'.dragarea'}
