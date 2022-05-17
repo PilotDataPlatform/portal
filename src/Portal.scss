@@ -2,6 +2,15 @@
 @import './Styles/BootstrapPostion.css';
 @import './Styles/links.css';
 @import '~animate.css/animate.css';
+
+html {
+  font-size: 62.5%; //10px
+
+  @media (min-width: 1440px) {
+    font-size: 75%; //12px
+  }
+}
+
 .toggle {
   background-color: #1b9cd0;
   padding: 10px 5px;

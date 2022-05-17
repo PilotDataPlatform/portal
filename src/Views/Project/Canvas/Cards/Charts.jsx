@@ -3,7 +3,8 @@ import {
   FileTextOutlined,
   HddOutlined,
   CloudUploadOutlined,
-  DownloadOutlined
+  DownloadOutlined,
+  TeamOutlined,
 } from '@ant-design/icons';
 import { projectFileCountTotal } from '../../../../APIs';
 import moment from 'moment';
@@ -29,7 +30,7 @@ function Charts(props) {
             <span>Total Files</span>
             <div className={styles['meta-stat']}>
               <FileTextOutlined />
-              <span>26</span>
+              <span>226</span>
             </div>
           </div>
         </li>
@@ -38,7 +39,16 @@ function Charts(props) {
             <span>Total File Size</span>
             <div className={styles['meta-stat']}>
               <HddOutlined />
-              <span>189Mb</span>
+              <span>1.7TB</span>
+            </div>
+          </div>
+        </li>
+        <li className={styles['charts-meta__project-members']}>
+          <div>
+            <span>Uploaded</span>
+            <div className={styles['meta-stat']}>
+              <TeamOutlined />
+              <span>28</span>
             </div>
           </div>
         </li>
@@ -47,7 +57,7 @@ function Charts(props) {
             <span>Uploaded</span>
             <div className={styles['meta-stat']}>
               <CloudUploadOutlined />
-              <span>28</span>
+              <span>150</span>
             </div>
           </div>
         </li>
@@ -56,7 +66,7 @@ function Charts(props) {
             <span>Downloaded</span>
             <div className={styles['meta-stat']}>
               <DownloadOutlined />
-              <span>15</span>
+              <span>180</span>
             </div>
           </div>
         </li>

@@ -107,20 +107,21 @@
     display: flex;
     justify-content: space-around;
     list-style: none;
-    padding: 0 0.75rem 0.75rem 0.75rem;
-    margin: 0 -0.75rem;
+    padding: 0 1.2rem 1.2rem 1.2rem;
+    margin: 0 -1.2rem;
     border-bottom: 1px solid #f0f0f0;
 
     li {
-      font-size: 0.75rem;
+      font-size: 1.2rem;
 
       span:first-of-type {
-        margin-bottom: -0.25rem;
+        margin-bottom: -0.4rem;
       }
     }
 
     &__files,
-    &__file-size {
+    &__file-size,
+    &__project-members {
       .meta-stat {
         color: #003262;
       }
@@ -139,11 +140,11 @@
     }
 
     .meta-stat {
-      font-size: 1.25rem;
+      font-size: 2rem;
       font-weight: 600;
 
       span[role='img'] {
-        margin-right: 0.5rem;
+        margin-right: 0.8rem;
       }
     }
   }
