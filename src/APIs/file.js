@@ -254,7 +254,7 @@ async function getRequestFiles(
 async function getRequestFilesDetailByGeid(geids) {
   return axios({
     url: `/v2/files/bulk/detail`,
-    method: 'POST',
+    method: 'GET',
     data: {
       id: geids,
     },
@@ -264,6 +264,7 @@ async function getRequestFilesDetailByGeid(geids) {
 /**
  * ticket-1314
  * @param {string} parentPath the parent path of the request files
+ * @param {string} parentId collection id if request virtual folder
  * @param {number} page the nth page. start from ?
  * @param {number} pageSize the number of items in each page
  * @param {string} orderBy order by which column. should be one of the column name
@@ -275,6 +276,7 @@ async function getRequestFilesDetailByGeid(geids) {
  */
 async function getFiles(
   parentPath,
+  parentId,
   page,
   pageSize,
   orderBy,
@@ -306,6 +308,9 @@ async function getFiles(
     source_type: sourceType,
     ...filters,
   };
+  if (parentId) {
+    params['parent_id'] = parentId;
+  }
   let res;
   res = await axios({
     url,

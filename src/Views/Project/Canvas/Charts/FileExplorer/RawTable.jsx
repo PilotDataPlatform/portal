@@ -343,14 +343,6 @@ function RawTable(props) {
               ) {
                 return;
               }
-              // let recordGeid = record.geid;
-              // if (
-              //   checkGreenAndCore(panelKey) &&
-              //   currentRouting?.length === 0 &&
-              //   record.name === props.username
-              // ) {
-              //   recordGeid = null;
-              // }
               if (record.nodeLabel.indexOf('Folder') !== -1) {
                 dispatch(setTableLayoutReset(panelKey));
                 refreshFiles({
@@ -698,7 +690,7 @@ function RawTable(props) {
 
       const sourceTypePara = getSourceType();
       await refreshFiles({
-        // parentPath: isVFolder ? geid : null, // TODO: or dataset or folder Geid
+        parentId: isVFolder ? geid : null, // TODO: or dataset or folder Geid
         parentPath: null,
         sourceType: sourceTypePara,
         resetTable: true,
@@ -716,8 +708,10 @@ function RawTable(props) {
 
   async function firstTimeLoad() {
     let pathParam;
+    let parentId;
     if (isVFolder) {
-      pathParam = geid;
+      pathParam = null;
+      parentId = geid;
     } else {
       if (checkUserHomeFolder(panelKey)) {
         pathParam = props.username;
@@ -738,6 +732,7 @@ function RawTable(props) {
       }
     };
     refreshFiles({
+      parentId: parentId,
       parentPath: pathParam, // TODO: or dataset or folder Geid
       sourceType: getSourceTypeParam(),
       resetTable: true,
@@ -990,7 +985,7 @@ function RawTable(props) {
     }
 
     await refreshFiles({
-      // geid: isVFolder ? geid : datasetGeid,
+      parentId: isVFolder ? geid : null,
       parentPath: null,
       sourceType,
       resetTable: true,
@@ -1028,6 +1023,7 @@ function RawTable(props) {
   async function refreshFiles(params) {
     let {
       parentPath,
+      parentId,
       page = 0,
       pageSize = 10,
       orderBy = 'createTime',
@@ -1050,6 +1046,7 @@ function RawTable(props) {
       }
       res = await getFiles(
         parentPath,
+        parentId,
         page,
         pageSize,
         mapColumnKey(orderBy),
@@ -1352,7 +1349,6 @@ function RawTable(props) {
                 {orderRouting
                   .slice(checkIsVirtualFolder(panelKey) ? -1 : -3)
                   .map((v, index) => {
-                    let geid = v.globalEntityId;
                     if (v.displayPath === props.username) {
                       geid = null;
                     }
