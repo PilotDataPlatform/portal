@@ -12,6 +12,7 @@ import FileExplorer from './Charts/FileExplorer/FileExplorer';
 import Description from './Charts/Description/Description';
 import FileStats from './Cards/FileStats';
 import UserStats from './Cards/UserStats';
+import Charts from './Cards/Charts';
 import FileStatModal from '../Canvas/Modals/FileStatModal';
 import Superset from './Cards/Superset';
 
@@ -35,7 +36,7 @@ const getcard = (card, data, actions, state, handleExpand) => {
             currentUser: state.currentUser,
             isAdmin: state.currentRole === 'admin',
           }),
-          "File Stream Advanced Search"||card.title,
+          'File Stream Advanced Search' || card.title,
           '55vw',
         );
       res = (
@@ -86,6 +87,9 @@ const getcard = (card, data, actions, state, handleExpand) => {
       };
       break;
     }
+    case 'charts':
+      res = <Charts />;
+      break;
     case 'datasets': {
       res = (size, exportState, onExportClick) => (
         <List

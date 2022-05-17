@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { Card, Button, Row, Col } from 'antd';
+import { Card, Button, Row, Col, Tooltip } from 'antd';
 import styles from './index.module.scss';
 import {
   FullscreenOutlined,
   DownloadOutlined,
   DragOutlined,
   SearchOutlined,
+  QuestionCircleOutlined,
 } from '@ant-design/icons';
 
 export default class BasicCard extends Component {
@@ -27,10 +28,26 @@ export default class BasicCard extends Component {
 
   render() {
     const { exportable, expandable, content, title, defaultSize } = this.props;
-    const cardTitle = <span className={styles.cardTitle}>{title}</span>;
+    const getTooltip = (text = 'Tooltip goes here') => (
+      <Tooltip title={text}>
+        <QuestionCircleOutlined
+          style={{
+            marginLeft: '0.375rem',
+            color: '#818181',
+          }}
+        />
+      </Tooltip>
+    );
+    const cardTitle = (
+      <>
+        <span className={styles.cardTitle}>{title}</span>
+        {getTooltip()}
+      </>
+    );
     const fileStreamTitle = (
       <div>
         <span className={styles.fileStreamTitle}>{title}</span>
+        {getTooltip()}
         <span style={{ margin: '0 26px', color: '#595959' }}>|</span>
         <div
           style={{ display: 'inline-block', cursor: 'pointer' }}
