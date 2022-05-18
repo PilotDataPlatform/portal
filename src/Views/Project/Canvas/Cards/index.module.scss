@@ -108,7 +108,7 @@
     justify-content: space-around;
     list-style: none;
     padding: 0 1.2rem 1.2rem 1.2rem;
-    margin: 0 -1.2rem;
+    margin: 0 -12px; // offset 12px padding in .ant-card-body
     border-bottom: 1px solid #f0f0f0;
 
     li {

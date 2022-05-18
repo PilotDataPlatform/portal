@@ -64,7 +64,7 @@ const cardsAttr = {
       ...userStats,
       title: 'Contributor Statistics',
     },
-    files,
+    charts,
   ],
   collaborator: [
     fileStats,
@@ -72,7 +72,7 @@ const cardsAttr = {
       ...userStats,
       title: 'Collaborator Statistics',
     },
-    files,
+    charts,
   ],
   member: [
     info,
@@ -80,7 +80,7 @@ const cardsAttr = {
       ...userStats,
       title: 'Contributor Statistics',
     },
-    files,
+    charts,
   ],
 };
 
