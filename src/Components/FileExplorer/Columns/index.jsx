@@ -5,7 +5,6 @@ import FileNameDefault from './FileName/FileNameDefault';
 import LabelDefault from './Label/LabelDefult';
 import OwnerDefault from './Owner/OwnerDefult';
 import SizeDefault from './Size/SizeDefult';
-import DcmIDDefault from './DcmID/DcmIDDefault';
 import ReviewedByDefault from './ReviewedBy/ReviewedByDefault';
 import ReviewedAtDefault from './ReviewedAt/ReviewedAtDefault';
 import Action from './Action/Action';
@@ -15,7 +14,6 @@ export const ColumnDefaultComponents = {
   LabelDefault: LabelDefault,
   OwnerDefault: OwnerDefault,
   SizeDefault: SizeDefault,
-  DcmIDDefault: DcmIDDefault,
   ReviewedAtDefault: ReviewedAtDefault,
   ReviewedByDefault: ReviewedByDefault,
 };
@@ -30,7 +28,6 @@ export const DEFAULT_COLUMN_COMP_MAP = {
   label: 'LabelDefault',
   owner: 'OwnerDefault',
   fileSize: 'SizeDefault',
-  dcmId: 'DcmIDDefault',
   reviewedAt: 'ReviewedAtDefault',
   reviewedBy: 'ReviewedByDefault',
 };

@@ -225,10 +225,6 @@ async function getRequestFiles(
       path: item.path,
       location: item.location,
       folderRelativePath: item.folderRelativePath,
-      dcmId:
-        item['dcmId'] && typeof item['dcmId'] !== 'undefined'
-          ? item['dcmId']
-          : undefined,
       tags: [],
       reviewedAt: item.reviewedAt,
       reviewedBy: item.reviewedBy,
@@ -356,10 +352,6 @@ async function getFiles(
         fileSize: item.size,
         owner: item.owner,
         location: item.storage.locationUri,
-        dcmId:
-          item['dcmId'] && typeof item['dcmId'] !== 'undefined'
-            ? item['dcmId']
-            : 'undefined',
       },
       labels:
         item.extended.extra &&

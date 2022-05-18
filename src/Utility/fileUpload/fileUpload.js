@@ -16,7 +16,6 @@ import { tokenManager } from '../../Service/tokenManager';
 import _ from 'lodash';
 import { objectKeysToSnakeCase } from '../';
 import { getPath } from './getPath';
-import { dcmId } from '../../config';
 
 const USER_LOGOUT = 'user logged out';
 const MAX_LENGTH = 1024 * 1024 * 2;

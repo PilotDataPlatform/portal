@@ -45,7 +45,7 @@ import TermsOfUse from './Views/TermsOfUse/TermsOfUse';
 import semver from 'semver';
 import AccountDisabled from './Views/AccountDisabled/AccountDisabled';
 import { JOB_STATUS } from './Components/Layout/FilePanel/jobStatus';
-import { dcmID, PORTAL_PREFIX } from './config';
+import { PORTAL_PREFIX } from './config';
 
 // router change
 history.listen(() => {

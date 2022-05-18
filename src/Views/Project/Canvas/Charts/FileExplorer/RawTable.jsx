@@ -84,8 +84,6 @@ import i18n from '../../../../../i18n';
 import { FILE_OPERATIONS } from './FileOperationValues';
 import { JOB_STATUS } from '../../../../../Components/Layout/FilePanel/jobStatus';
 import { hideButton } from './hideButtons';
-import { dcmProjectCode, DcmSpaceID } from '../../../../../config';
-import username from '../../../../../Redux/Reducers/username';
 const { Panel } = Collapse;
 const { Title } = Typography;
 const _ = require('lodash');
@@ -214,13 +212,7 @@ function RawTable(props) {
     }
   }, [rawFiles.data]);
 
-  const getColumnWidth = (
-    panelKey,
-    isDCM,
-    isRootFolder,
-    sidepanelOpen,
-    columnKey,
-  ) => {
+  const getColumnWidth = (panelKey, isRootFolder, sidepanelOpen, columnKey) => {
     const OPEN_SIDE = {
       name: '65%',
       action: 100,
@@ -252,14 +244,6 @@ function RawTable(props) {
       owner: '35%',
       createTime: '25%',
     };
-    const GREENROOM_CORE_NOMAL_GEN = {
-      name: '25%',
-      owner: '17%',
-      dcmID: 140,
-      createTime: 120,
-      size: 100,
-      action: 80,
-    };
     if (sidepanelOpen) {
       return OPEN_SIDE[columnKey];
     }
@@ -274,11 +258,7 @@ function RawTable(props) {
       if (isRootFolder) {
         return GREENROOM_CORE_ROOT[columnKey];
       } else {
-        if (isDCM) {
-          return GREENROOM_CORE_NOMAL_GEN[columnKey];
-        } else {
-          return GREENROOM_CORE_NOMAL[columnKey];
-        }
+        return GREENROOM_CORE_NOMAL[columnKey];
       }
     }
   };
@@ -305,13 +285,7 @@ function RawTable(props) {
       dataIndex: 'fileName',
       key: 'fileName',
       sorter: true,
-      width: getColumnWidth(
-        panelKey,
-        currentDataset.code === dcmProjectCode,
-        isRootFolder,
-        sidepanel,
-        'name',
-      ),
+      width: getColumnWidth(panelKey, isRootFolder, sidepanel, 'name'),
       searchKey: !panelKey.startsWith('vfolder-') ? 'name' : null,
       render: (text, record) => {
         let filename = text;
@@ -397,13 +371,7 @@ function RawTable(props) {
         ['collaborator', 'contributor'].includes(permission)
           ? false
           : true,
-      width: getColumnWidth(
-        panelKey,
-        currentDataset.code === dcmProjectCode,
-        isRootFolder,
-        sidepanel,
-        'owner',
-      ),
+      width: getColumnWidth(panelKey, isRootFolder, sidepanel, 'owner'),
       searchKey:
         (projectActivePanel &&
           projectActivePanel.startsWith('greenroom-') &&
@@ -413,33 +381,6 @@ function RawTable(props) {
           : 'owner',
       ellipsis: true,
     },
-    currentDataset &&
-    currentDataset.code === dcmProjectCode &&
-    !panelKey.includes('trash') &&
-    !panelKey.startsWith('vfolder-')
-      ? {
-          title: DcmSpaceID,
-          dataIndex: 'dcmId',
-          key: 'dcmID',
-          sorter: true,
-          width: getColumnWidth(
-            panelKey,
-            currentDataset.code === dcmProjectCode,
-            isRootFolder,
-            sidepanel,
-            'dcmID',
-          ),
-          searchKey: 'dcmID',
-          ellipsis: true,
-          render: (text, record) => {
-            if (text === 'undefined') {
-              return '';
-            } else {
-              return text;
-            }
-          },
-        }
-      : {},
     !panelKey.includes('trash')
       ? {
           title: 'Created',
@@ -448,7 +389,6 @@ function RawTable(props) {
           sorter: true,
           width: getColumnWidth(
             panelKey,
-            currentDataset.code === dcmProjectCode,
             isRootFolder,
             sidepanel,
             'createTime',
@@ -467,7 +407,6 @@ function RawTable(props) {
           sorter: true,
           width: getColumnWidth(
             panelKey,
-            currentDataset.code === dcmProjectCode,
             isRootFolder,
             sidepanel,
             'deleteTime',
@@ -498,7 +437,6 @@ function RawTable(props) {
           ellipsis: true,
           width: getColumnWidth(
             panelKey,
-            currentDataset.code === dcmProjectCode,
             isRootFolder,
             sidepanel,
             'originalLocation',
@@ -519,13 +457,7 @@ function RawTable(props) {
           },
           sorter: true,
           ellipsis: true,
-          width: getColumnWidth(
-            panelKey,
-            currentDataset.code === dcmProjectCode,
-            isRootFolder,
-            sidepanel,
-            'size',
-          ),
+          width: getColumnWidth(panelKey, isRootFolder, sidepanel, 'size'),
         }
       : {},
     (checkGreenAndCore(panelKey) && !isRootFolder) ||
@@ -533,13 +465,7 @@ function RawTable(props) {
       ? {
           title: 'Action',
           key: 'action',
-          width: getColumnWidth(
-            panelKey,
-            currentDataset.code === dcmProjectCode,
-            isRootFolder,
-            sidepanel,
-            'action',
-          ),
+          width: getColumnWidth(panelKey, isRootFolder, sidepanel, 'action'),
           render: (text, record) => {
             let file = record.name;
             var folder = file && file.substring(0, file.lastIndexOf('/') + 1);
@@ -1759,7 +1685,6 @@ const mapColumnKey = (column) => {
     fileName: 'name',
     owner: 'owner',
     fileSize: 'size',
-    dcmID: 'dcm_id',
   };
   return columnMap[column] || column;
 };
