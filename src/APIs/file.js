@@ -210,8 +210,8 @@ async function getRequestFiles(
   res.data.result.entities = res.data.result.data.map((item) => {
     res.data.result.approximateCount = res.data.total;
     let formatRes = {
-      geid: item.entityGeid,
-      key: item.entityGeid,
+      geid: item.entityId,
+      key: item.entityId,
       archived: item.archived,
       createTime: item.uploadedAt,
       nodeLabel:
@@ -255,8 +255,8 @@ async function getRequestFilesDetailByGeid(geids) {
   return axios({
     url: `/v2/files/bulk/detail`,
     method: 'GET',
-    data: {
-      id: geids,
+    params: {
+      ids: geids,
     },
   });
 }
