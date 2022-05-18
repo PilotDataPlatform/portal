@@ -138,7 +138,7 @@ function FilesContent(props) {
           disabled: false,
           children: null,
           createdTime: folder.timeCreated,
-          geid: folder.geid,
+          geid: folder.id,
         };
       });
       props.setCurrentProjectTree({
@@ -164,7 +164,7 @@ function FilesContent(props) {
         disabled: false,
         children: null,
         createdTime: folder.timeCreated,
-        geid: folder.geid,
+        geid: folder.id,
       };
     });
 
@@ -207,7 +207,6 @@ function FilesContent(props) {
       );
     }
   }, [vfolders.length, updateTimes]);
-
 
   async function updateVfolders() {
     try {
@@ -260,9 +259,9 @@ function FilesContent(props) {
         newActiveKey = panesFiltered[0].key;
       }
     }
+    removePane(targetKey);
     props.setCurrentProjectActivePane(newActiveKey);
     activatePane(newActiveKey);
-    removePane(targetKey);
   };
 
   const onSelect = async (selectedKeys, info) => {
@@ -398,7 +397,7 @@ function FilesContent(props) {
         );
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
       setUpdateBtnLoading(false);
       message.error(`${i18n.t('errormessages:updateVirtualFolder.default.0')}`);
     }

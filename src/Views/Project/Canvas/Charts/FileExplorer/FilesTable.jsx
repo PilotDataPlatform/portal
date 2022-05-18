@@ -77,8 +77,9 @@ class FilesTable extends React.Component {
   componentWillReceiveProps(nextProps, nextState) {
     if (this.props.activePane !== nextProps.activePane) {
       const curSourceType = this.getCurrentSourceType();
+      const parentInfo = this.props.getParentPathAndId();
       const params = {
-        parentPath: this.props.getParentPath(),
+        ...parentInfo,
         page: this.state.page,
         pageSize: this.state.pageSize,
         orderBy: this.state.sortColumn,
@@ -215,8 +216,9 @@ class FilesTable extends React.Component {
     this.setState({ searchText: searchText });
 
     const curSourceType = this.getCurrentSourceType();
+    const parentInfo = this.props.getParentPathAndId();
     const params = {
-      parentPath: this.props.getParentPath(),
+      ...parentInfo,
       page: pagination.current - 1,
       pageSize: pagination.pageSize,
       orderBy: sorter.columnKey,

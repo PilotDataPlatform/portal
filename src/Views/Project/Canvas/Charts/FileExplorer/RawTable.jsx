@@ -150,14 +150,20 @@ function RawTable(props) {
     currentRouting &&
     currentRouting.length === 0;
 
-  const getParentPath = () => {
+  const getParentPathAndId = () => {
     if (currentRouting && currentRouting.length) {
-      return currentRouting.map((v) => v.name).join('.');
+      return {
+        parentPath: currentRouting.map((v) => v.name).join('.'),
+      };
     } else {
       if (isVFolder) {
-        return geid;
+        return {
+          parentId: geid,
+        };
       }
-      return null;
+      return {
+        parentPath: null,
+      };
     }
   };
   const currentRouteLength = 0 || currentRouting?.length;
@@ -1475,7 +1481,7 @@ function RawTable(props) {
         tags={value}
         selectedRecord={currentRecord}
         tableState={tableState}
-        getParentPath={getParentPath}
+        getParentPathAndId={getParentPathAndId}
         tableLoading={tableLoading}
         currentRouting={currentRouting}
       />
