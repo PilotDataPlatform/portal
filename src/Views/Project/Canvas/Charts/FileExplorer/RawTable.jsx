@@ -1349,9 +1349,6 @@ function RawTable(props) {
                 {orderRouting
                   .slice(checkIsVirtualFolder(panelKey) ? -1 : -3)
                   .map((v, index) => {
-                    if (v.displayPath === props.username) {
-                      geid = null;
-                    }
                     return (
                       <Breadcrumb.Item
                         style={
