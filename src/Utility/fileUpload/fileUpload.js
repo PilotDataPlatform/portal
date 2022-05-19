@@ -67,7 +67,6 @@ function slice(file, piece = 1024 * 1024 * 5) {
 async function fileUpload(data, resolve, reject) {
   const {
     uploadKey,
-    dcmID,
     datasetId,
     uploader,
     file,
@@ -121,8 +120,6 @@ async function fileUpload(data, resolve, reject) {
       resumableFilename: file.name.normalize('NFD'),
       resumableRelativePath: relativePath,
       resumableTotalChunks: totalChunks,
-      //subPath:subPath||'',
-      dcmId: dcmID,
       operator: uploader, // Add uploader
       tags,
       projectCode,
@@ -170,7 +167,6 @@ async function fileUpload(data, resolve, reject) {
         resumableTotalChunks: chunks.length,
         resumableTotalSize: file.size,
         tags,
-        dcmId: dcmID,
       };
 
       const result = await combineChunksApi(

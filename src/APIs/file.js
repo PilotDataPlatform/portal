@@ -11,7 +11,7 @@ import { objectKeysToSnakeCase, checkGreenAndCore } from '../Utility';
 import { message } from 'antd';
 import _ from 'lodash';
 import { keycloak } from '../Service/keycloak';
-import { API_PATH, dcmId, dcm_id } from '../config';
+import { API_PATH } from '../config';
 
 function uploadFileApi(containerId, data, cancelToken) {
   return devOpAxios({

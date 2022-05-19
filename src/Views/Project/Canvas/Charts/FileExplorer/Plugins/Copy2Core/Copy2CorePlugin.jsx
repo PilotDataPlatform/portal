@@ -24,8 +24,6 @@ function Copy2CorePlugin({
         uploader: v.owner,
         geid: v.geid,
         nodeLabel: v.nodeLabel,
-        dcm_id:
-          v["dcmId"] && v["dcmId"] !== 'undefined' ? v["dcmId"] : null,
       };
     })
     .filter((v) => !!v);

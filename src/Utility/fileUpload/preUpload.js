@@ -10,7 +10,6 @@ import { getPath } from './getPath';
  * @param {string[]} folderTags
  * @param {file[]} fileList resumableFilename is the filename, resumableRelativePath is the path, with no slash(/) on the start, and also No ending with filename
  * @param {string} uploadMessage
- * @param {string} dcmIdValue the dcmIdValue, if available
  */
 export function preUpload(
   projectCode,
@@ -19,7 +18,6 @@ export function preUpload(
   folderTags,
   files,
   uploadMessage,
-  dcmIdValue,
   toExistingFolder,
   folderPath,
 ) {
@@ -38,7 +36,6 @@ export function preUpload(
       resumableFilename: file.originFileObj.name,
       resumableRelativePath: relativePath,
     };
-    if (dcmIdValue) fileInfo['dcmId'] = dcmIdValue;
     return fileInfo;
   });
   let currentFolderNode = '';

@@ -407,14 +407,6 @@ function Portal(props) {
           if (code === 200) {
             for (let pendingFile of pendingArr) {
               let fileName = pendingFile.fileName;
-              if (pendingFile['dcmID']) {
-                let fileNameArr = pendingFile.fileName.split('/');
-                let fileNameTxt = fileNameArr[fileNameArr.length - 1];
-                fileNameArr[
-                  fileNameArr.length - 1
-                ] = `${pendingFile['dcmID']}_${fileNameTxt}`;
-                fileName = fileNameArr.join('/');
-              }
               const fileStatus = result?.find(
                 (el) => el.jobId === pendingFile.jobId,
               );
