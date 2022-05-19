@@ -437,7 +437,6 @@ function checkDownloadStatusAPI(
 async function downloadFilesAPI(
   containerId,
   files,
-  setLoading,
   appendDownloadListCreator,
   sessionId,
   projectCode,
@@ -445,16 +444,16 @@ async function downloadFilesAPI(
   namespace,
   requestId, // only for request to core table
 ) {
-  console.log(namespace);
   const options = {
     url: `/v2/download/pre`,
     method: 'post',
     headers: { 'Refresh-token': keycloak.refreshToken },
     data: {
       files,
-      project_code: projectCode,
+      container_type: 'project',
+      container_code: projectCode,
       operator: operator,
-      session_id: sessionId,
+      // session_id: sessionId,
     },
   };
   if (requestId) {

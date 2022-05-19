@@ -216,23 +216,20 @@ export function checkDatasetDownloadStatusAPI(hashCode) {
     method: 'GET',
   });
 }
-export function downloadDatasetFiles(
-  datasetGeid,
-  fileGeids,
-  operator,
-  sessionId,
-) {
-  return serverAxios({
+export function downloadDatasetFiles(datasetCode, files, operator, sessionId) {
+  const options = {
     url: `/v2/download/pre`,
-    method: 'POST',
+    method: 'post',
     headers: { 'Refresh-token': keycloak.refreshToken },
     data: {
-      dataset_geid: datasetGeid,
-      files: fileGeids,
-      session_id: sessionId,
+      files,
+      container_type: 'dataset',
+      container_code: datasetCode,
       operator: operator,
+      // session_id: sessionId,
     },
-  });
+  };
+  return serverAxios(options);
 }
 
 export function previewDatasetFile(datasetGeid, fileGeid) {

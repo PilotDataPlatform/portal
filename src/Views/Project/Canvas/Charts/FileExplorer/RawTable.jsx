@@ -468,15 +468,12 @@ function RawTable(props) {
           width: getColumnWidth(panelKey, isRootFolder, sidepanel, 'action'),
           render: (text, record) => {
             let file = record.name;
-            var folder = file && file.substring(0, file.lastIndexOf('/') + 1);
-            var filename =
-              file && file.substring(file.lastIndexOf('/') + 1, file.length);
+            // var folder = record.displayPath;
+            // var filename =
+            //   file && file.substring(file.lastIndexOf('/') + 1, file.length);
             let files = [
               {
-                file: filename,
-                path: folder,
-                geid: record.geid,
-                project_code: currentDataset.code,
+                id: record.geid,
               },
             ];
 
@@ -512,7 +509,6 @@ function RawTable(props) {
                       downloadFilesAPI(
                         props.projectId,
                         files,
-                        null,
                         props.appendDownloadListCreator,
                         sessionId,
                         currentDataset.code,
@@ -779,16 +775,13 @@ function RawTable(props) {
     selectedRows.forEach((i) => {
       let file = i;
       files.push({
-        owner: file.owner,
-        geid: file.geid,
-        project_code: currentDataset.code,
-        location: file.location,
+        id: file.geid,
       });
     });
     downloadFilesAPI(
       props.projectId,
       files,
-      setLoading,
+      'project',
       props.appendDownloadListCreator,
       sessionId,
       currentDataset.code,
