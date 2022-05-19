@@ -16,8 +16,6 @@ const ORGANIZATION_PORTAL_DOMAIN =
 const PLATFORM_INTRODUCTION_URL =
   process.env.REACT_APP_PLATFORM_INTRODUCTION_URL;
 const ORGANIZATION_DOMAIN = process.env.REACT_APP_ORGANIZATION_DOMAIN;
-const DcmSpaceID = process.env.REACT_APP_DcmSpaceID;
-const dcmProjectCode = process.env.REACT_APP_dcmProjectCode;
 
 if (!KEYCLOAK_REALM) throw new Error(`keycloak realm is empty`);
 
@@ -38,6 +36,4 @@ module.exports = {
   ORGANIZATION_PORTAL_DOMAIN,
   PLATFORM_INTRODUCTION_URL,
   ORGANIZATION_DOMAIN,
-  DcmSpaceID,
-  dcmProjectCode,
 };

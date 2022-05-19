@@ -8,7 +8,6 @@ import { message } from 'antd';
 import { FILE_OPERATIONS } from '../../Views/Project/Canvas/Charts/FileExplorer/FileOperationValues';
 import { ErrorMessager, namespace } from '../../ErrorMessages';
 import { getPath } from './getPath';
-import { dcmID } from '../../config';
 const [appendUploadListDispatcher, updateUploadItemDispatcher] =
   reduxActionWrapper([appendUploadListCreator, updateUploadItemCreator]);
 
@@ -34,7 +33,6 @@ const uploadStarter = async (data, q) => {
         ? data.folderPath + '/' + relativePath + '/' + file.name
         : data.folderPath + '/' + file.name,
       projectName: data.projectName,
-      dcmID: data.gid ? data.gid : null,
       projectCode: data.projectCode,
       createdTime: Date.now(),
     };
@@ -68,7 +66,6 @@ const uploadStarter = async (data, q) => {
           newFileList.map((item) => ({
             file: item.originFileObj,
             uploadKey: getUploadKey(item, timeStamp),
-            dcmID: data.gid,
             datasetId: data.dataset,
             uploader: data.uploader,
             projectCode: data.projectCode,

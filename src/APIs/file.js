@@ -11,7 +11,7 @@ import { objectKeysToSnakeCase, checkGreenAndCore } from '../Utility';
 import { message } from 'antd';
 import _ from 'lodash';
 import { keycloak } from '../Service/keycloak';
-import { API_PATH, dcmId, dcm_id } from '../config';
+import { API_PATH } from '../config';
 
 function uploadFileApi(containerId, data, cancelToken) {
   return devOpAxios({
@@ -225,10 +225,6 @@ async function getRequestFiles(
       path: item.path,
       location: item.location,
       folderRelativePath: item.folderRelativePath,
-      dcmId:
-        item['dcmId'] && typeof item['dcmId'] !== 'undefined'
-          ? item['dcmId']
-          : undefined,
       tags: [],
       reviewedAt: item.reviewedAt,
       reviewedBy: item.reviewedBy,
@@ -356,10 +352,6 @@ async function getFiles(
         fileSize: item.size,
         owner: item.owner,
         location: item.storage.locationUri,
-        dcmId:
-          item['dcmId'] && typeof item['dcmId'] !== 'undefined'
-            ? item['dcmId']
-            : 'undefined',
       },
       labels:
         item.extended.extra &&

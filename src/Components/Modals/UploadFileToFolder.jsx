@@ -11,8 +11,6 @@ import {
 import _ from 'lodash';
 import { uploadStarter, useCurrentProject } from '../../Utility';
 import { UploadQueueContext } from '../../Context';
-import { QuestionCircleOutlined } from '@ant-design/icons';
-import { dcmProjectCode, DcmSpaceID } from '../../config';
 
 const { Option } = Select;
 
@@ -124,85 +122,6 @@ const UploadFileToFolder = ({
                 ))}
             </Select>
           </Form.Item>
-          {currentDataset && currentDataset.code === dcmProjectCode ? (
-            <>
-              <Form.Item
-                label={
-                  <span>
-                    {DcmSpaceID}&nbsp;
-                    <Tooltip
-                      title={`The format of ${DcmSpaceID} should follow: ABC-1234`}
-                    >
-                      <QuestionCircleOutlined />
-                    </Tooltip>
-                  </span>
-                }
-                required
-              >
-                <Form.Item
-                  name="gid"
-                  style={{ marginBottom: '0px' }}
-                  rules={[
-                    {
-                      required: true,
-                      message: `Please input your ${DcmSpaceID}`,
-                    },
-                    {
-                      pattern: new RegExp(/^([A-Z]{3})-([0-9]{4})$/g), // Format BXT-1234
-                      message: `Please input correct ${DcmSpaceID}`,
-                    },
-                  ]}
-                  hasFeedback
-                >
-                  <Input
-                    onCopy={(e) => {
-                      e.preventDefault();
-                    }}
-                    onPaste={(e) => {
-                      e.preventDefault();
-                    }}
-                    onCut={(e) => {
-                      e.preventDefault();
-                    }}
-                  />
-                </Form.Item>
-              </Form.Item>
-              <Form.Item
-                name="gid_repeat"
-                label={`Confirm ${DcmSpaceID}`}
-                dependencies={['gid']}
-                hasFeedback
-                rules={[
-                  {
-                    required: true,
-                    message: `Please confirm your ${DcmSpaceID}!`,
-                  },
-                  ({ getFieldValue }) => ({
-                    validator(rule, value) {
-                      if (!value || getFieldValue('gid') === value) {
-                        return Promise.resolve();
-                      }
-                      return Promise.reject(
-                        `The two ${DcmSpaceID} that you entered do not match!`,
-                      );
-                    },
-                  }),
-                ]}
-              >
-                <Input
-                  onCopy={(e) => {
-                    e.preventDefault();
-                  }}
-                  onPaste={(e) => {
-                    e.preventDefault();
-                  }}
-                  onCut={(e) => {
-                    e.preventDefault();
-                  }}
-                />
-              </Form.Item>
-            </>
-          ) : null}
           <Form.Item
             rules={[
               {
