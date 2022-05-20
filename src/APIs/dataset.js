@@ -197,13 +197,13 @@ export function getDatasetActivityLogsAPI(datasetGeid, params) {
   });
 }
 
-export function downloadDataset(datasetGeid, operator, sessionId) {
+export function downloadDataset(datasetCode, operator, sessionId) {
   return serverAxios({
     url: `/v2/dataset/download/pre`,
     method: 'POST',
     headers: { 'Refresh-token': keycloak.refreshToken },
     data: {
-      dataset_geid: datasetGeid,
+      dataset_code: datasetCode,
       session_id: sessionId,
       operator: operator,
     },
