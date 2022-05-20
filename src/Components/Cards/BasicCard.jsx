@@ -58,9 +58,9 @@ export default class BasicCard extends Component {
           }}
         >
           <SearchOutlined style={{ color: '#595959' }} />
-          <span style={{ marginLeft: '10px', color: '#595959' }}>
+          {window.innerWidth>1366?<span style={{ marginLeft: '10px', color: '#595959' }}>
             Advanced Search
-          </span>
+          </span>:null}
         </div>
       </div>
     );
@@ -68,9 +68,7 @@ export default class BasicCard extends Component {
       <Card
         className={styles.basic}
         title={
-          title === 'Recent File Stream' ||
-          title === 'Contributor Statistics' ||
-          title === 'Collaborator Statistics'
+          title === 'Recent File Stream'
             ? fileStreamTitle
             : cardTitle
         }

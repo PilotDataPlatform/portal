@@ -20,7 +20,7 @@ const charts = {
 const fileStats = {
   type: 'fileStats',
   key: '2',
-  title: 'File Statistics',
+  title: 'Go To',
   defaultSize: 'm',
   expandable: false,
   exportable: false,
@@ -62,7 +62,7 @@ const cardsAttr = {
     fileStats,
     {
       ...userStats,
-      title: 'Contributor Statistics',
+      title: 'Recent File Stream',
     },
     charts,
   ],
@@ -70,7 +70,7 @@ const cardsAttr = {
     fileStats,
     {
       ...userStats,
-      title: 'Collaborator Statistics',
+      title: 'Recent File Stream',
     },
     charts,
   ],
@@ -78,7 +78,7 @@ const cardsAttr = {
     info,
     {
       ...userStats,
-      title: 'Contributor Statistics',
+      title: 'Recent File Stream',
     },
     charts,
   ],
