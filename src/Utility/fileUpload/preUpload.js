@@ -2,7 +2,6 @@ import { preUploadApi } from '../../APIs';
 import { tokenManager } from '../../Service/tokenManager';
 import { objectKeysToSnakeCase } from '../';
 import { getPath } from './getPath';
-import { dcmId } from '../../config';
 /**
  * get the jobId the resumable_identifier from the backend before upload
  * @param {string} projectCode
@@ -11,7 +10,6 @@ import { dcmId } from '../../config';
  * @param {string[]} folderTags
  * @param {file[]} fileList resumableFilename is the filename, resumableRelativePath is the path, with no slash(/) on the start, and also No ending with filename
  * @param {string} uploadMessage
- * @param {string} dcmIdValue the dcmIdValue, if available
  */
 export function preUpload(
   projectCode,
@@ -20,7 +18,6 @@ export function preUpload(
   folderTags,
   files,
   uploadMessage,
-  dcmIdValue ,
   toExistingFolder,
   folderPath,
 ) {
@@ -39,7 +36,6 @@ export function preUpload(
       resumableFilename: file.originFileObj.name,
       resumableRelativePath: relativePath,
     };
-    if (dcmIdValue) fileInfo["dcmId"] = dcmIdValue;
     return fileInfo;
   });
   let currentFolderNode = '';

@@ -242,17 +242,10 @@ async function listAllVirtualFolder(projectCode, username) {
     url: `/v1/collections?project_code=${projectCode}&owner=${username}`,
     method: 'GET',
   });
-  const vfolders = res.data.result.map((v) => {
-    return {
-      geid: v.globalEntityId,
-      labels: v.labels,
-      ...v.properties,
-    };
-  });
-  res.data.result = vfolders;
   return res;
 }
 
+// TODO: might not be needed  
 async function listVirtualFolderFiles(collection_geid, pageSize = 10) {
   const res = await serverAxios({
     url: `/v1/collections/${collection_geid}/files?page=0&page_size=${pageSize}&order_by=time_created&order_type=desc`,
@@ -261,15 +254,14 @@ async function listVirtualFolderFiles(collection_geid, pageSize = 10) {
   return res;
 }
 
-function createVirtualFolder(projectCode, collectionName, username, id) {
+function createVirtualFolder(projectCode, collectionName, username) {
   return serverAxios({
     url: `/v1/collections`,
     method: 'POST',
     data: {
       project_code: projectCode,
       name: collectionName,
-      username,
-      id,
+      username: username,
     },
   });
 }

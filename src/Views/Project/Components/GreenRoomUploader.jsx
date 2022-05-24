@@ -36,8 +36,6 @@ import UploaderManifest from './UploaderManifest';
 import { validateForm } from '../../../Components/Form/Manifest/FormValidate';
 import styles from './index.module.scss';
 import { UploadFolder } from '../../../Components/Input';
-import { PanelKey } from '../Canvas/Charts/FileExplorer/RawTableValues';
-import { dcmProjectCode, DcmSpaceID } from '../../../config';
 const { Option } = Select;
 
 const GreenRoomUploader = ({
@@ -70,7 +68,6 @@ const GreenRoomUploader = ({
   const currentRouting =
     folderRouting[panelKey] &&
     folderRouting[panelKey].filter((r) => typeof r.folderLevel !== 'undefined');
-  const isDcm = currentDataset?.code === dcmProjectCode;
   useEffect(() => {
     async function loadManifest() {
       const manifests = await getProjectManifestList(currentDataset.code);
@@ -207,7 +204,6 @@ const GreenRoomUploader = ({
             setAttrForm({});
           }}
           id="form_in_modal_select_file"
-          disabled={isDcm}
         >
           <FolderOutlined />
           Select Folder
@@ -295,86 +291,6 @@ const GreenRoomUploader = ({
                 ))}
             </Select>
           </Form.Item>
-          {currentDataset && currentDataset.code === dcmProjectCode ? (
-            <>
-              <Form.Item label={DcmSpaceID} required>
-                <Form.Item
-                  name="gid"
-                  style={{ marginBottom: '0px' }}
-                  rules={[
-                    {
-                      required: true,
-                      message: t('formErrorMessages:project.dcm.id.empty', {
-                        DcmSpaceID: DcmSpaceID,
-                      }),
-                    },
-                    {
-                      pattern: new RegExp(/^([A-Z]{3})-([0-9]{4})$/g), // Format BXT-1234
-                      message: t('formErrorMessages:project.dcm.id.valid', {
-                        DcmSpaceID: DcmSpaceID,
-                      }),
-                    },
-                  ]}
-                  hasFeedback
-                >
-                  <Input
-                    className={styles.inputBorder}
-                    onCopy={(e) => {
-                      e.preventDefault();
-                    }}
-                    onPaste={(e) => {
-                      e.preventDefault();
-                    }}
-                    onCut={(e) => {
-                      e.preventDefault();
-                    }}
-                  />
-                </Form.Item>
-                <small>{t('upload.dcm_id', { DcmSpaceID })}</small>
-              </Form.Item>
-
-              <Form.Item
-                name="gid_repeat"
-                label={`Confirm ${DcmSpaceID}`}
-                dependencies={['gid']}
-                hasFeedback
-                rules={[
-                  {
-                    required: true,
-                    message: t(
-                      'formErrorMessages:project.dcm.confirmId.empty',
-                      { DcmSpaceID },
-                    ),
-                  },
-                  ({ getFieldValue }) => ({
-                    validator(rule, value) {
-                      if (!value || getFieldValue('gid') === value) {
-                        return Promise.resolve();
-                      }
-                      return Promise.reject(
-                        t('formErrorMessages:project.dcm.confirmId.valid', {
-                          DcmSpaceID,
-                        }),
-                      );
-                    },
-                  }),
-                ]}
-              >
-                <Input
-                  className={styles.inputBorder}
-                  onCopy={(e) => {
-                    e.preventDefault();
-                  }}
-                  onPaste={(e) => {
-                    e.preventDefault();
-                  }}
-                  onCut={(e) => {
-                    e.preventDefault();
-                  }}
-                />
-              </Form.Item>
-            </>
-          ) : null}
 
           <Form.Item>
             <div style={{ display: 'flex', alignItems: 'center' }}>

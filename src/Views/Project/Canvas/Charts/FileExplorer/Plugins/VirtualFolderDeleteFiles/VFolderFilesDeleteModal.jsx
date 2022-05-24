@@ -30,7 +30,7 @@ const VFolderFilesDeleteModal = ({
     const vfolder = vfolders.find((v) => v.name === vfolderName);
     if (vfolder) {
       try {
-        await removeFromVirtualFolder(vfolder.geid, files);
+        await removeFromVirtualFolder(vfolder.id, files);
         clearSelection();
         message.success(`${i18n.t('success:virtualFolder.removeFiles')}`, 3);
         dispatch(setSuccessNum(successNum - files.length));

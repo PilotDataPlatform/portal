@@ -77,8 +77,9 @@ class FilesTable extends React.Component {
   componentWillReceiveProps(nextProps, nextState) {
     if (this.props.activePane !== nextProps.activePane) {
       const curSourceType = this.getCurrentSourceType();
+      const parentInfo = this.props.getParentPathAndId();
       const params = {
-        parentPath: this.props.getParentPath(),
+        ...parentInfo,
         page: this.state.page,
         pageSize: this.state.pageSize,
         orderBy: this.state.sortColumn,
@@ -194,14 +195,6 @@ class FilesTable extends React.Component {
         value: filters.fileName[0],
       });
     }
-    if (filters['dcmID'] && filters['dcmID'].length > 0) {
-      isSearchingFile = true;
-
-      searchText.push({
-        value: filters['dcmID'][0],
-        key: 'dcmID',
-      });
-    }
 
     if (filters.owner && filters.owner.length > 0) {
       isSearchingFile = true;
@@ -215,8 +208,9 @@ class FilesTable extends React.Component {
     this.setState({ searchText: searchText });
 
     const curSourceType = this.getCurrentSourceType();
+    const parentInfo = this.props.getParentPathAndId();
     const params = {
-      parentPath: this.props.getParentPath(),
+      ...parentInfo,
       page: pagination.current - 1,
       pageSize: pagination.pageSize,
       orderBy: sorter.columnKey,

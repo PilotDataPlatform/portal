@@ -49,7 +49,7 @@ export default function DatasetHeaderLeft(props) {
     let res;
     setDownloading(true);
     try {
-      res = await downloadDataset(geid, username, sessionId);
+      res = await downloadDataset(code, username, sessionId);
     } catch (e) {
       message.error(t('errormessages:downloadDataset.default.0'));
       setDownloading(false);
@@ -108,7 +108,7 @@ export default function DatasetHeaderLeft(props) {
       </div> */}
       <>
         <div className={styles['createdTime']}>
-          <b >
+          <b>
             {' '}
             Dataset Code: {code} / Created on{' '}
             {moment.utc(timeCreated).local().format('YYYY-MM-DD')}
@@ -145,8 +145,8 @@ const getTitle = (title, setDatasetDrawerVisibility) => {
             margin: '0px 0px 0px 20px',
             fontSize: '12px',
             textDecoration: 'underline',
-            color:'#595959',
-            fontWeight:500
+            color: '#595959',
+            fontWeight: 500,
           }}
           onClick={() => setDatasetDrawerVisibility(true)}
         >
@@ -164,8 +164,8 @@ const getTitle = (title, setDatasetDrawerVisibility) => {
             margin: '0px 0px 0px 20px',
             fontSize: '12px',
             textDecoration: 'underline',
-            color:'#595959',
-            fontWeight:500
+            color: '#595959',
+            fontWeight: 500,
           }}
           onClick={() => setDatasetDrawerVisibility(true)}
         >
