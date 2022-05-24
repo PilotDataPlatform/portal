@@ -197,13 +197,13 @@ export function getDatasetActivityLogsAPI(datasetGeid, params) {
   });
 }
 
-export function downloadDataset(datasetGeid, operator, sessionId) {
+export function downloadDataset(datasetCode, operator, sessionId) {
   return serverAxios({
     url: `/v2/dataset/download/pre`,
     method: 'POST',
     headers: { 'Refresh-token': keycloak.refreshToken },
     data: {
-      dataset_geid: datasetGeid,
+      dataset_code: datasetCode,
       session_id: sessionId,
       operator: operator,
     },
@@ -216,23 +216,19 @@ export function checkDatasetDownloadStatusAPI(hashCode) {
     method: 'GET',
   });
 }
-export function downloadDatasetFiles(
-  datasetGeid,
-  fileGeids,
-  operator,
-  sessionId,
-) {
-  return downloadGRAxios({
-    url: `/v2/download/pre`,
-    method: 'POST',
+export function downloadDatasetFiles(datasetCode, files, operator, sessionId) {
+  const options = {
+    url: `/v2/download/pre/`,
+    method: 'post',
     headers: { 'Refresh-token': keycloak.refreshToken },
     data: {
-      dataset_geid: datasetGeid,
-      files: fileGeids,
-      session_id: sessionId,
+      files,
+      container_type: 'dataset',
+      container_code: datasetCode,
       operator: operator,
     },
-  });
+  };
+  return downloadGRAxios(options);
 }
 
 export function previewDatasetFile(datasetGeid, fileGeid) {

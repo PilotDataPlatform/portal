@@ -70,8 +70,8 @@ export default function ExplorerTreeActionBar({
     setDownloading(true);
     try {
       res = await downloadDatasetFiles(
-        datasetGeid,
-        [{ geid: nodeKey }],
+        datasetInfo.code,
+        [{ id: nodeKey }],
         username,
         sessionId,
       );
@@ -88,22 +88,22 @@ export default function ExplorerTreeActionBar({
     }
   };
   useEffect(() => {
-     const checkDownload = async (timer) => {
-       const res = await checkDatasetDownloadStatusAPI(downloadHash);
-       const { status } = res.data.result;
-       if (status === 'READY_FOR_DOWNLOADING') {
-         setDownloadHash(null);
-         setDownloading(false);
-         clearInterval(timer);
-         const hashCode = res.data.result?.payload?.hashCode;
-         if (hashCode) {
-           const url = API_PATH + DOWNLOAD_PREFIX_V1 + '/' + hashCode;
-           window.open(url, '_blank');
-         } else {
-           message.error(t('errormessages:datasetDownloadFile.default.0'));
-         }
-       }
-     };
+    const checkDownload = async (timer) => {
+      const res = await checkDatasetDownloadStatusAPI(downloadHash);
+      const { status } = res.data.result;
+      if (status === 'READY_FOR_DOWNLOADING') {
+        setDownloadHash(null);
+        setDownloading(false);
+        clearInterval(timer);
+        const hashCode = res.data.result?.payload?.hashCode;
+        if (hashCode) {
+          const url = API_PATH + DOWNLOAD_PREFIX_V1 + '/' + hashCode;
+          window.open(url, '_blank');
+        } else {
+          message.error(t('errormessages:datasetDownloadFile.default.0'));
+        }
+      }
+    };
     if (downloadHash) {
       const timer = setInterval(() => {
         checkDownload(timer);
