@@ -1,7 +1,9 @@
 const BRANDING_PREFIX = process.env.REACT_APP_BRANDING_PATH || '';
 const PORTAL_PREFIX = process.env.REACT_APP_PORTAL_PATH || '';
-const DOWNLOAD_PREFIX = process.env.REACT_APP_DOWNLOAD_URL || ''; // use as PORTAL_PREFIX + DOWNLOAD_PREFIX
+const DOWNLOAD_PREFIX_V2 = process.env.REACT_APP_DOWNLOAD_URL_V2 || '';
 const DOWNLOAD_PREFIX_V1 = process.env.REACT_APP_DOWNLOAD_URL_V1 || '';
+const DOWNLOAD_GR = process.env.REACT_APP_DOWNLOAD_GR || '';
+const DOWNLOAD_CORE = process.env.REACT_APP_DOWNLOAD_CORE || '';
 const KEYCLOAK_REALM = process.env.REACT_APP_KEYCLOAK_REALM;
 const DEFAULT_AUTH_URL = process.env.REACT_APP_DEFAULT_AUTH_URL || '';
 const API_PATH = process.env.REACT_APP_API_PATH || '';
@@ -22,8 +24,10 @@ if (!KEYCLOAK_REALM) throw new Error(`keycloak realm is empty`);
 module.exports = {
   BRANDING_PREFIX,
   PORTAL_PREFIX,
-  DOWNLOAD_PREFIX,
+  DOWNLOAD_PREFIX_V2,
   DOWNLOAD_PREFIX_V1,
+  DOWNLOAD_GR,
+  DOWNLOAD_CORE,
   KEYCLOAK_REALM,
   DEFAULT_AUTH_URL,
   API_PATH,

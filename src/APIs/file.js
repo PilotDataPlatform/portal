@@ -6,12 +6,12 @@ import {
   kongAPI,
   uploadAxios,
   serverAxios,
+  downloadGRAxios,
 } from './config';
 import { objectKeysToSnakeCase, checkGreenAndCore } from '../Utility';
-import { message } from 'antd';
 import _ from 'lodash';
 import { keycloak } from '../Service/keycloak';
-import { API_PATH } from '../config';
+import { API_PATH, DOWNLOAD_GR, DOWNLOAD_CORE } from '../config';
 
 function uploadFileApi(containerId, data, cancelToken) {
   return devOpAxios({
@@ -100,8 +100,8 @@ function checkDownloadStatus(sessionId, projectCode, operator) {
 }
 
 function deleteDownloadStatus(sessionId) {
-  return axios({
-    url: `/download/gr/v1/download/status`,
+  return downloadGRAxios({
+    url: `/v1/download/status`,
     method: 'DELETE',
     headers: {
       'Session-ID': `${sessionId}`,
@@ -397,8 +397,8 @@ function checkDownloadStatusAPI(
   setSuccessNumDispatcher,
   successNum,
 ) {
-  return axios({
-    url: `/download/gr/v1/download/status/${hashCode}`,
+  return downloadGRAxios({
+    url: `/v1/download/status/${hashCode}`,
     method: 'GET',
   })
     .then((res) => {
@@ -408,10 +408,14 @@ function checkDownloadStatusAPI(
           namespace.toLowerCase() === 'greenroom' ? 'gr' : 'core';
         updateDownloadItemDispatch({ key: taskId, status: 'success' });
         const hashCode = res.data.result?.payload?.hashCode;
-        const url =
-          API_PATH + `/download/${namespaceUrl}/v1/download/${hashCode}`;
+        let url;
+        if (namespaceUrl === 'gr') {
+          url = DOWNLOAD_GR + `/v1/download/${hashCode}`;
+        }
+        if (namespaceUrl === 'core') {
+          url = DOWNLOAD_CORE + `/v1/download/${hashCode}`;
+        }
         // Start to download zip file
-        console.log(API_PATH, url);
         window.open(url, '_blank');
         setTimeout(() => {
           setSuccessNumDispatcher(successNum + 1);
@@ -447,7 +451,7 @@ async function downloadFilesAPI(
 ) {
   console.log(namespace);
   const options = {
-    url: `/v2/download/pre`,
+    url: `/v2/download/pre/`,
     method: 'post',
     headers: { 'Refresh-token': keycloak.refreshToken },
     data: {
@@ -460,17 +464,24 @@ async function downloadFilesAPI(
   if (requestId) {
     options.data['approval_request_id'] = requestId;
   }
-  return axios(options).then((res) => {
+
+  return downloadGRAxios(options).then((res) => {
     let fileName = res.data.result.source;
     const status = res.data.result.status;
     const fileNamesArr = fileName.split('/') || [];
     fileName = fileNamesArr.length && fileNamesArr[fileNamesArr.length - 1];
     const namespaceUrl =
       namespace.toLowerCase() === 'greenroom' ? 'gr' : 'core';
+
     if (status === 'READY_FOR_DOWNLOADING') {
       const hashCode = res.data.result.payload.hashCode;
-      const url =
-        API_PATH + `/download/${namespaceUrl}/v1/download/${hashCode}`;
+      let url;
+      if (namespaceUrl === 'gr') {
+        url = DOWNLOAD_GR + `/v1/download/${hashCode}`;
+      }
+      if (namespaceUrl === 'core') {
+        url = DOWNLOAD_CORE + `/v1/download/${hashCode}`;
+      }
       return url;
     }
 

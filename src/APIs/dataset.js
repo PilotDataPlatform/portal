@@ -1,7 +1,7 @@
-import { serverAxios, serverAxiosNoIntercept } from './config';
+import { serverAxios, serverAxiosNoIntercept, downloadGRAxios } from './config';
 import { keycloak } from '../Service/keycloak';
 import _ from 'lodash';
-import { API_PATH, DOWNLOAD_PREFIX, DOWNLOAD_PREFIX_V1 } from '../config';
+import { API_PATH, DOWNLOAD_PREFIX_V2, DOWNLOAD_PREFIX_V1 } from '../config';
 
 /**
  * ticket-1645
@@ -222,7 +222,7 @@ export function downloadDatasetFiles(
   operator,
   sessionId,
 ) {
-  return serverAxios({
+  return downloadGRAxios({
     url: `/v2/download/pre`,
     method: 'POST',
     headers: { 'Refresh-token': keycloak.refreshToken },
@@ -308,11 +308,11 @@ export function datasetDownloadReturnURLAPI(datasetGeid, version) {
 
 export function datasetDownloadAPI(hash) {
   return serverAxios({
-    url: `${DOWNLOAD_PREFIX}/${hash}`,
+    url: `${DOWNLOAD_PREFIX_V2}/${hash}`,
     method: 'GET',
     headers: { 'Refresh-token': keycloak.refreshToken },
   }).then((res) => {
-    const url = API_PATH + DOWNLOAD_PREFIX + '/' + hash;
+    const url = API_PATH + DOWNLOAD_PREFIX_V2 + '/' + hash;
     window.open(url, '_blank');
   });
 }

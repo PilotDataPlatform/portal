@@ -4,7 +4,13 @@ import _ from 'lodash';
 import camelcaseKeys from 'camelcase-keys';
 import { activeManager } from '../Service/activeManager';
 import { keycloak } from '../Service/keycloak';
-import { API_PATH, PORTAL_PREFIX, UPLOAD_URL } from '../config';
+import {
+  API_PATH,
+  PORTAL_PREFIX,
+  UPLOAD_URL,
+  DOWNLOAD_GR,
+  DOWNLOAD_CORE,
+} from '../config';
 
 /**
  * For axios to handle the success response
@@ -154,6 +160,17 @@ uploadAxios.defaults.timeout = 10000;
 useHeader(uploadAxios);
 uploadAxios.interceptors.response.use(successHandler, errorHandler);
 
+const downloadGRAxios = axios.create({ baseURL: DOWNLOAD_GR });
+downloadGRAxios.defaults.headers.post['Content-Type'] = 'application/json';
+downloadGRAxios.defaults.timeout = 10000;
+useHeader(downloadGRAxios);
+downloadGRAxios.interceptors.response.use(successHandler, errorHandler);
+
+const downloadCoreAxios = axios.create({ baseURL: DOWNLOAD_CORE });
+downloadCoreAxios.defaults.headers.post['Content-Type'] = 'application/json';
+downloadCoreAxios.defaults.timeout = 10000;
+useHeader(downloadCoreAxios);
+downloadCoreAxios.interceptors.response.use(successHandler, errorHandler);
 export {
   axios,
   serverAxios,
@@ -166,4 +183,6 @@ export {
   devOpServerNoIntercept,
   kongAPI,
   uploadAxios,
+  downloadGRAxios,
+  downloadCoreAxios,
 };
