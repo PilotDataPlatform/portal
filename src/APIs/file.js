@@ -457,7 +457,6 @@ async function downloadFilesAPI(
       container_type: 'project',
       container_code: projectCode,
       operator: operator,
-      // session_id: sessionId,
     },
   };
   if (requestId) {
