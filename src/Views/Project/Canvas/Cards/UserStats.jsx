@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Pagination,Col, Row, Empty, Tooltip } from 'antd';
+import { Pagination, Col, Row, Empty, Tooltip } from 'antd';
 import { useSelector } from 'react-redux';
 import {
   CloudUploadOutlined,
@@ -137,13 +137,13 @@ function UserStats(props) {
   );
   const fileStreamIcon = (tag) => {
     if (tag === 'upload') {
-      return <CloudUploadOutlined style={{color:'#1E607E'}}/>;
+      return <CloudUploadOutlined style={{ color: '#1E607E' }} />;
     } else if (tag === 'download') {
-      return <DownloadOutlined style={{color:'#5B8C00'}} />;
+      return <DownloadOutlined style={{ color: '#5B8C00' }} />;
     } else if (tag === 'copy') {
-      return <CopyOutlined style={{color:'#FF8B18'}}/>;
+      return <CopyOutlined style={{ color: '#FF8B18' }} />;
     } else if (tag === 'delete') {
-      return <DeleteOutlined style={{color:'#7E1E1E'}} />;
+      return <DeleteOutlined style={{ color: '#7E1E1E' }} />;
     }
   };
 
@@ -169,13 +169,13 @@ function UserStats(props) {
     }
   };
 
-  const onShowSizeChange = (current, pageSize) =>{
+  const onShowSizeChange = (current, pageSize) => {
     console.log(current, pageSize);
-  }
+  };
 
   return (
     <div>
-      <Col span={24} style={{position:'relative', margin: '10px 0' }}>
+      <Col span={24} style={{ position: 'relative', margin: '10px 0' }}>
         {sortedAllFileStreams.length === 0 ? (
           <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
         ) : (
@@ -197,16 +197,22 @@ function UserStats(props) {
                     )}
                   </span>
                 </Row>
-                <Row  style={{marginTop:'-0.5rem',marginLeft:'3.0rem'}}>
+                <Row>
+                  <div className={styles['connect-line']}></div>
                   <span className={styles.userName}>{el && el.operator}</span>
-                  <span className={styles.userName} style={{margin:'0 0.5rem'}}>/</span>
+                  <span
+                    className={styles.userName}
+                    style={{ margin: '-0.4rem 0.5rem' }}
+                  >
+                    {' '}
+                    /{' '}
+                  </span>
                   <span className={styles.time}>
                     {el &&
                       el.createdTime &&
                       moment.unix(el.createdTime).format(format)}
                   </span>
                 </Row>
-              
               </div>
             );
           })
@@ -214,12 +220,17 @@ function UserStats(props) {
       </Col>
       <div className={styles.pageination}>
         <Pagination
-          style={{marginBottom:'0.8rem',marginTop:'0.7rem',marginRight:'0.2rem',float:'right'}}
+          style={{
+            marginBottom: '0.8rem',
+            marginTop: '0.7rem',
+            marginRight: '0.2rem',
+            float: 'right',
+          }}
           total={sortedAllFileStreams.length}
           size="small"
           current={1}
           showSizeChanger={true}
-          onShowSizeChange={onShowSizeChange}
+          onChange={onShowSizeChange}
         />
       </div>
     </div>

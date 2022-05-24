@@ -74,14 +74,35 @@
   margin-bottom: 0;
 }
 
-.cardTitle {
+.card-title {
   font-size: 14px;
   color: #003262;
-  font-weight: bold;
+  font-weight: 500;
+  margin-left: 6px;
+}
+
+.go-to_title {
+  font-size: 14px;
+  color: #003262;
+  font-weight: 500;
+  margin-left: 3px;
 }
 
 .fileStreamTitle {
   font-size: 14px;
   color: #003262;
-  font-weight: bold;
+  font-weight: 500;
+  margin-left: 6px;
+}
+
+.file-stream-subtitle {
+  margin-left: '0px';
+  color: #fff;
+}
+
+@media only screen and (min-width: 1480px) {
+  .file-stream-subtitle {
+    margin-left: '10px';
+    color: #595959;
+  }
 }

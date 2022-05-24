@@ -32,7 +32,7 @@ export default class BasicCard extends Component {
       <Tooltip title={text}>
         <QuestionCircleOutlined
           style={{
-            marginLeft: '0.375rem',
+            marginLeft: '0.7rem',
             color: '#818181',
           }}
         />
@@ -40,7 +40,13 @@ export default class BasicCard extends Component {
     );
     const cardTitle = (
       <>
-        <span className={styles.cardTitle}>{title}</span>
+        <span
+          className={
+            title == 'Go To' ? styles['go-to_title'] : styles['card-title']
+          }
+        >
+          {title}
+        </span>
         {getTooltip()}
       </>
     );
@@ -48,7 +54,16 @@ export default class BasicCard extends Component {
       <div>
         <span className={styles.fileStreamTitle}>{title}</span>
         {getTooltip()}
-        <span style={{ margin: '0 26px', color: '#595959' }}>|</span>
+        <span
+          style={{
+            margin: '0 26px',
+            color: '#707070',
+            fontWeight: '200',
+            fontSize: '22px',
+          }}
+        >
+          |
+        </span>
         <div
           style={{ display: 'inline-block', cursor: 'pointer' }}
           onClick={(e) => {
@@ -58,20 +73,17 @@ export default class BasicCard extends Component {
           }}
         >
           <SearchOutlined style={{ color: '#595959' }} />
-          {window.innerWidth>1366?<span style={{ marginLeft: '10px', color: '#595959' }}>
+
+          <span className={styles['file-stream-subtitle']}>
             Advanced Search
-          </span>:null}
+          </span>
         </div>
       </div>
     );
     return (
       <Card
         className={styles.basic}
-        title={
-          title === 'Recent File Stream'
-            ? fileStreamTitle
-            : cardTitle
-        }
+        title={title === 'Recent File Stream' ? fileStreamTitle : cardTitle}
         size="small"
         bordered="false"
         extra={

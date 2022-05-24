@@ -3,7 +3,7 @@ import { Row, Col, Card } from 'antd';
 import {
   HomeOutlined,
   PaperClipOutlined,
-  CloudServerOutlined
+  CloudServerOutlined,
 } from '@ant-design/icons';
 import { projectFileCountTotal } from '../../../../APIs';
 import moment from 'moment';
@@ -60,31 +60,38 @@ function FileStats(props) {
   }, [currentDataset, props.successNum]);
 
   return currentDataset ? (
-    <div style={{ flexDirection:'column',display: 'flex'}}>
+    <div style={{ flexDirection: 'column', display: 'flex' }}>
       <div className={styles.shortcut}>
-          <span className={styles.iconColumn}>
-            <HomeOutlined className={styles.icon} style={{color:'#A5CF00'}} />
-          </span>
-          <span className={styles.fileFont}>Green Room</span>
-          <span className={styles.fileNumber}>Files {greenRoomCount}</span>
-          
+        <span className={styles.iconColumn}>
+          <HomeOutlined className={styles.icon} style={{ color: '#A5CF00' }} />
+        </span>
+        <span className={styles.fileFont}>Green Room</span>
+        <span className={styles.fileNumber}>Files {greenRoomCount}</span>
       </div>
-      {props.projectRole !== 'collaborator' && coreCount !== null ?<div className={styles.shortcut}>
+      {props.projectRole !== 'collaborator' && coreCount !== null ? (
+        <div className={styles.shortcut}>
           <span className={styles.iconColumn}>
-            <CloudServerOutlined className={styles.icon} style={{color:'#1890FF'}} />
+            <CloudServerOutlined
+              className={styles.icon}
+              style={{ color: '#1E607E' }}
+            />
           </span>
           <span className={styles.fileFont}>Core</span>
           <span className={styles.fileNumber}>Files {coreCount}</span>
-          
-      </div>:null}
-      {props.projectRole !== 'collaborator' ?<div className={styles.shortcut}>
+        </div>
+      ) : null}
+      {props.projectRole !== 'collaborator' ? (
+        <div className={styles.shortcut}>
           <span className={styles.iconColumn}>
-            <PaperClipOutlined className={styles.icon} style={{color:'#FFC118'}} />
+            <PaperClipOutlined
+              className={styles.icon}
+              style={{ color: '#FFC118' }}
+            />
           </span>
           <span className={styles.fileFont}>Collections</span>
           <span className={styles.fileNumber}>Files {greenRoomCount}</span>
-          
-      </div>:null}
+        </div>
+      ) : null}
     </div>
   ) : null;
 }
