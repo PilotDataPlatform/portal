@@ -79,7 +79,6 @@ export default function Action({ text, record }) {
               fileExplorerContext.projectGeid,
               files,
               (item) => dispatch(appendDownloadListCreator(item)),
-              sessionId,
               currentProject.code,
               username,
               'greenroom',

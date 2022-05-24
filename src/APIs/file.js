@@ -442,7 +442,6 @@ async function downloadFilesAPI(
   containerId,
   files,
   appendDownloadListCreator,
-  sessionId,
   projectCode,
   operator,
   namespace,
