@@ -103,7 +103,7 @@
 }
 
 .charts {
-  .charts-meta {
+  &__meta {
     display: flex;
     justify-content: space-around;
     list-style: none;
@@ -119,6 +119,17 @@
       }
     }
 
+    .meta-stat {
+      font-size: 2rem;
+      font-weight: 600;
+
+      span[role='img'] {
+        margin-right: 0.8rem;
+      }
+    }
+  }
+
+  .meta {
     &__files,
     &__file-size,
     &__project-members {
@@ -138,14 +149,18 @@
         color: #5b8c00;
       }
     }
+  }
 
-    .meta-stat {
-      font-size: 2rem;
-      font-weight: 600;
+  &__graphs {
+    padding: 1.8rem 0.8rem 0 0.8rem;
 
-      span[role='img'] {
-        margin-right: 0.8rem;
-      }
+    .graphs__container {
+      padding: 2rem 0;
+    }
+
+    .graphs__title {
+      color: #003262;
+      margin-bottom: 1.5rem;
     }
   }
 }

@@ -259,3 +259,32 @@
     }
   }
 }
+
+.tab-switcher {
+  &__navigation {
+    display: flex;
+    width: fit-content;
+    list-style: none;
+    border-radius: 50px;
+    border: 1px solid #D9D9D9;
+    padding-left: 0;
+    margin-left: 4rem;
+  }
+
+  &__tabs {
+    text-transform: capitalize;
+    color: #595959;
+    font-weight: 500;
+    font-size: 1.2rem;
+    padding: 0.2rem 1.4rem;
+    border-radius: 50px;
+    // border: 1px solid #F7E8BC;
+    margin: 0.1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in;
+
+    &--active {
+      background-color: #F7E8BC;
+    }
+  }
+}
