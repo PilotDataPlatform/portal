@@ -650,18 +650,6 @@ function getDatasetsListingAPI(username, payload) {
   });
 }
 
-function listFilesInRequestApi(requestGeid, projectCode, query, partial) {
-  return serverAxios({
-    url: `/v1/request/copy/${projectCode}/files`,
-    method: 'GET',
-    params: {
-      request_geid: requestGeid,
-      query,
-      partial,
-    },
-  });
-}
-
 function listAllCopyRequests(projectCode, status, pageNo, pageSize) {
   return serverAxios({
     url: `/v1/request/copy/${projectCode}`,
@@ -749,7 +737,6 @@ export {
   addToDatasetsAPI,
   getDatasetsListingAPI,
   requestToCoreAPI,
-  listFilesInRequestApi,
   listAllCopyRequests,
   requestPendingFilesAPI,
   requestCompleteAPI,
