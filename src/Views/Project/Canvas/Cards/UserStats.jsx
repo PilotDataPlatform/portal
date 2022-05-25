@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Pagination, Col, Row, Empty, Tooltip } from 'antd';
+import { Col, Row, Empty, Tooltip } from 'antd';
 import { useSelector } from 'react-redux';
 import {
   CloudUploadOutlined,
@@ -15,11 +15,15 @@ import { withRouter } from 'react-router-dom';
 import moment from 'moment';
 import styles from './index.module.scss';
 
+import CanvasPaginationWithCustom from '../Pagination/CanvasPagination';
+
 function UserStats(props) {
   const [uploadLog, setUploadLog] = useState([]);
   const [downloadLog, setDownloadLog] = useState([]);
   const [copyLogs, setCopyLogs] = useState([]);
   const [deleteLogs, setDeleteLogs] = useState([]);
+  const [pageInfo, setPageInfo] = useState({ page_size: 10, page: 0 });
+
   const {
     match: {
       params: { datasetId },
@@ -45,9 +49,9 @@ function UserStats(props) {
 
   useEffect(() => {
     if (currentDataset) {
-      const paginationParams = {
-        page_size: 10,
-        page: 0,
+      let paginationParams = {
+        page_size: pageInfo.page_size,
+        page: pageInfo.page,
       };
       const query = {
         project_code: currentDataset && currentDataset.code,
@@ -123,7 +127,7 @@ function UserStats(props) {
         setDownloadLog(downloadList);
       });
     }
-  }, [props.successNum, currentDataset?.code]);
+  }, [pageInfo, props.successNum, currentDataset?.code]);
 
   const allFileStreams = [
     ...uploadLog,
@@ -173,6 +177,11 @@ function UserStats(props) {
     console.log(current, pageSize);
   };
 
+  const getCurrentVal = (val) => {
+    console.log('from child', val);
+    setPageInfo(val);
+  };
+
   return (
     <div>
       <Col span={24} style={{ position: 'relative', margin: '10px 0' }}>
@@ -219,18 +228,13 @@ function UserStats(props) {
         )}
       </Col>
       <div className={styles.pageination}>
-        <Pagination
-          style={{
-            marginBottom: '0.8rem',
-            marginTop: '0.7rem',
-            marginRight: '0.2rem',
-            float: 'right',
-          }}
-          total={sortedAllFileStreams.length}
-          size="small"
-          current={1}
-          showSizeChanger={true}
-          onChange={onShowSizeChange}
+        <CanvasPaginationWithCustom
+          onChange={getCurrentVal}
+          fileLength={100}
+          defaultPage={1}
+          defaultSize={10}
+          hidden={false}
+          {...props}
         />
       </div>
     </div>
