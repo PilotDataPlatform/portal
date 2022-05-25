@@ -118,6 +118,7 @@ function CoreDirTree(props) {
     }
     const res = await getFiles(
       foundTreeNodePath.map((v) => v.title).join('.'),
+      null,
       page,
       PAGE_SIZE,
       'name',

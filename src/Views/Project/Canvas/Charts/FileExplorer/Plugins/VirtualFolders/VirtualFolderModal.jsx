@@ -65,6 +65,7 @@ const VirtualFolderModal = ({ visible, setVisible, files }) => {
     // eslint-disable-next-line
   }, [visible]);
 
+
   async function addToExistFolder(values) {
     try {
       const folderGeid = values.folder;
@@ -91,7 +92,6 @@ const VirtualFolderModal = ({ visible, setVisible, files }) => {
   async function addToNewFolder(values) {
     const collection = trimString(values.Name);
     try {
-      //TODO: missing id argument - waiting for updated geid
       const res = await createVirtualFolder(
         project.profile.code,
         collection,
@@ -175,7 +175,7 @@ const VirtualFolderModal = ({ visible, setVisible, files }) => {
               <Select>
                 {vfolders.map((v) => {
                   return (
-                    <Option key={v.geid} value={v.geid}>
+                    <Option key={v.id} value={v.id}>
                       {v.name}
                     </Option>
                   );

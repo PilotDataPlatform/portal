@@ -41,7 +41,7 @@ const VFolderFilesDeleteModal = ({
     if (vfolder) {
       setConfirmLoading(true);
       try {
-        await deleteVirtualFolder(vfolder.geid);
+        await deleteVirtualFolder(vfolder.id);
       } catch (e) {
         message.error(
           `${i18n.t('errormessages:deleteVirtualFolder.default.0')}`,
@@ -53,7 +53,7 @@ const VFolderFilesDeleteModal = ({
       message.success(`${i18n.t('success:virtualFolder.delete')}`, 3);
       setConfirmLoading(false);
       closeModal();
-      updateVFolder(vfolders.filter((v) => v.geid !== vfolder.geid));
+      updateVFolder(vfolders.filter((v) => v.id !== vfolder.id));
     }
   }
   const handleCancel = () => {

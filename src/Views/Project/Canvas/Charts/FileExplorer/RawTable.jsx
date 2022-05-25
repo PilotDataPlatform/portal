@@ -84,8 +84,6 @@ import i18n from '../../../../../i18n';
 import { FILE_OPERATIONS } from './FileOperationValues';
 import { JOB_STATUS } from '../../../../../Components/Layout/FilePanel/jobStatus';
 import { hideButton } from './hideButtons';
-import { dcmProjectCode, DcmSpaceID } from '../../../../../config';
-import username from '../../../../../Redux/Reducers/username';
 const { Panel } = Collapse;
 const { Title } = Typography;
 const _ = require('lodash');
@@ -150,14 +148,20 @@ function RawTable(props) {
     currentRouting &&
     currentRouting.length === 0;
 
-  const getParentPath = () => {
+  const getParentPathAndId = () => {
     if (currentRouting && currentRouting.length) {
-      return currentRouting.map((v) => v.name).join('.');
+      return {
+        parentPath: currentRouting.map((v) => v.name).join('.'),
+      };
     } else {
       if (isVFolder) {
-        return geid;
+        return {
+          parentId: geid,
+        };
       }
-      return null;
+      return {
+        parentPath: null,
+      };
     }
   };
   const currentRouteLength = 0 || currentRouting?.length;
@@ -208,13 +212,7 @@ function RawTable(props) {
     }
   }, [rawFiles.data]);
 
-  const getColumnWidth = (
-    panelKey,
-    isDCM,
-    isRootFolder,
-    sidepanelOpen,
-    columnKey,
-  ) => {
+  const getColumnWidth = (panelKey, isRootFolder, sidepanelOpen, columnKey) => {
     const OPEN_SIDE = {
       name: '65%',
       action: 100,
@@ -246,14 +244,6 @@ function RawTable(props) {
       owner: '35%',
       createTime: '25%',
     };
-    const GREENROOM_CORE_NOMAL_GEN = {
-      name: '25%',
-      owner: '17%',
-      dcmID: 140,
-      createTime: 120,
-      size: 100,
-      action: 80,
-    };
     if (sidepanelOpen) {
       return OPEN_SIDE[columnKey];
     }
@@ -268,11 +258,7 @@ function RawTable(props) {
       if (isRootFolder) {
         return GREENROOM_CORE_ROOT[columnKey];
       } else {
-        if (isDCM) {
-          return GREENROOM_CORE_NOMAL_GEN[columnKey];
-        } else {
-          return GREENROOM_CORE_NOMAL[columnKey];
-        }
+        return GREENROOM_CORE_NOMAL[columnKey];
       }
     }
   };
@@ -299,13 +285,7 @@ function RawTable(props) {
       dataIndex: 'fileName',
       key: 'fileName',
       sorter: true,
-      width: getColumnWidth(
-        panelKey,
-        currentDataset.code === dcmProjectCode,
-        isRootFolder,
-        sidepanel,
-        'name',
-      ),
+      width: getColumnWidth(panelKey, isRootFolder, sidepanel, 'name'),
       searchKey: !panelKey.startsWith('vfolder-') ? 'name' : null,
       render: (text, record) => {
         let filename = text;
@@ -343,14 +323,6 @@ function RawTable(props) {
               ) {
                 return;
               }
-              // let recordGeid = record.geid;
-              // if (
-              //   checkGreenAndCore(panelKey) &&
-              //   currentRouting?.length === 0 &&
-              //   record.name === props.username
-              // ) {
-              //   recordGeid = null;
-              // }
               if (record.nodeLabel.indexOf('Folder') !== -1) {
                 dispatch(setTableLayoutReset(panelKey));
                 refreshFiles({
@@ -399,13 +371,7 @@ function RawTable(props) {
         ['collaborator', 'contributor'].includes(permission)
           ? false
           : true,
-      width: getColumnWidth(
-        panelKey,
-        currentDataset.code === dcmProjectCode,
-        isRootFolder,
-        sidepanel,
-        'owner',
-      ),
+      width: getColumnWidth(panelKey, isRootFolder, sidepanel, 'owner'),
       searchKey:
         (projectActivePanel &&
           projectActivePanel.startsWith('greenroom-') &&
@@ -415,33 +381,6 @@ function RawTable(props) {
           : 'owner',
       ellipsis: true,
     },
-    currentDataset &&
-    currentDataset.code === dcmProjectCode &&
-    !panelKey.includes('trash') &&
-    !panelKey.startsWith('vfolder-')
-      ? {
-          title: DcmSpaceID,
-          dataIndex: 'dcmId',
-          key: 'dcmID',
-          sorter: true,
-          width: getColumnWidth(
-            panelKey,
-            currentDataset.code === dcmProjectCode,
-            isRootFolder,
-            sidepanel,
-            'dcmID',
-          ),
-          searchKey: 'dcmID',
-          ellipsis: true,
-          render: (text, record) => {
-            if (text === 'undefined') {
-              return '';
-            } else {
-              return text;
-            }
-          },
-        }
-      : {},
     !panelKey.includes('trash')
       ? {
           title: 'Created',
@@ -450,7 +389,6 @@ function RawTable(props) {
           sorter: true,
           width: getColumnWidth(
             panelKey,
-            currentDataset.code === dcmProjectCode,
             isRootFolder,
             sidepanel,
             'createTime',
@@ -469,7 +407,6 @@ function RawTable(props) {
           sorter: true,
           width: getColumnWidth(
             panelKey,
-            currentDataset.code === dcmProjectCode,
             isRootFolder,
             sidepanel,
             'deleteTime',
@@ -500,7 +437,6 @@ function RawTable(props) {
           ellipsis: true,
           width: getColumnWidth(
             panelKey,
-            currentDataset.code === dcmProjectCode,
             isRootFolder,
             sidepanel,
             'originalLocation',
@@ -521,13 +457,7 @@ function RawTable(props) {
           },
           sorter: true,
           ellipsis: true,
-          width: getColumnWidth(
-            panelKey,
-            currentDataset.code === dcmProjectCode,
-            isRootFolder,
-            sidepanel,
-            'size',
-          ),
+          width: getColumnWidth(panelKey, isRootFolder, sidepanel, 'size'),
         }
       : {},
     (checkGreenAndCore(panelKey) && !isRootFolder) ||
@@ -535,24 +465,15 @@ function RawTable(props) {
       ? {
           title: 'Action',
           key: 'action',
-          width: getColumnWidth(
-            panelKey,
-            currentDataset.code === dcmProjectCode,
-            isRootFolder,
-            sidepanel,
-            'action',
-          ),
+          width: getColumnWidth(panelKey, isRootFolder, sidepanel, 'action'),
           render: (text, record) => {
             let file = record.name;
-            var folder = file && file.substring(0, file.lastIndexOf('/') + 1);
-            var filename =
-              file && file.substring(file.lastIndexOf('/') + 1, file.length);
+            // var folder = record.displayPath;
+            // var filename =
+            //   file && file.substring(file.lastIndexOf('/') + 1, file.length);
             let files = [
               {
-                file: filename,
-                path: folder,
-                geid: record.geid,
-                project_code: currentDataset.code,
+                id: record.geid,
               },
             ];
 
@@ -588,9 +509,7 @@ function RawTable(props) {
                       downloadFilesAPI(
                         props.projectId,
                         files,
-                        null,
                         props.appendDownloadListCreator,
-                        sessionId,
                         currentDataset.code,
                         props.username,
                         panelKey.startsWith('greenroom') ? 'greenroom' : 'Core',
@@ -698,7 +617,7 @@ function RawTable(props) {
 
       const sourceTypePara = getSourceType();
       await refreshFiles({
-        // parentPath: isVFolder ? geid : null, // TODO: or dataset or folder Geid
+        parentId: isVFolder ? geid : null, // TODO: or dataset or folder Geid
         parentPath: null,
         sourceType: sourceTypePara,
         resetTable: true,
@@ -716,8 +635,10 @@ function RawTable(props) {
 
   async function firstTimeLoad() {
     let pathParam;
+    let parentId;
     if (isVFolder) {
-      pathParam = geid;
+      pathParam = null;
+      parentId = geid;
     } else {
       if (checkUserHomeFolder(panelKey)) {
         pathParam = props.username;
@@ -738,6 +659,7 @@ function RawTable(props) {
       }
     };
     refreshFiles({
+      parentId: parentId,
       parentPath: pathParam, // TODO: or dataset or folder Geid
       sourceType: getSourceTypeParam(),
       resetTable: true,
@@ -852,18 +774,14 @@ function RawTable(props) {
     selectedRows.forEach((i) => {
       let file = i;
       files.push({
-        owner: file.owner,
-        geid: file.geid,
-        project_code: currentDataset.code,
-        location: file.location,
+        id: file.geid,
       });
     });
     downloadFilesAPI(
       props.projectId,
       files,
-      setLoading,
+      'project',
       props.appendDownloadListCreator,
-      sessionId,
       currentDataset.code,
       props.username,
       panelKey.startsWith('greenroom') ? 'greenroom' : 'Core',
@@ -990,7 +908,7 @@ function RawTable(props) {
     }
 
     await refreshFiles({
-      // geid: isVFolder ? geid : datasetGeid,
+      parentId: isVFolder ? geid : null,
       parentPath: null,
       sourceType,
       resetTable: true,
@@ -1028,6 +946,7 @@ function RawTable(props) {
   async function refreshFiles(params) {
     let {
       parentPath,
+      parentId,
       page = 0,
       pageSize = 10,
       orderBy = 'createTime',
@@ -1050,6 +969,7 @@ function RawTable(props) {
       }
       res = await getFiles(
         parentPath,
+        parentId,
         page,
         pageSize,
         mapColumnKey(orderBy),
@@ -1352,10 +1272,6 @@ function RawTable(props) {
                 {orderRouting
                   .slice(checkIsVirtualFolder(panelKey) ? -1 : -3)
                   .map((v, index) => {
-                    let geid = v.globalEntityId;
-                    if (v.displayPath === props.username) {
-                      geid = null;
-                    }
                     return (
                       <Breadcrumb.Item
                         style={
@@ -1482,7 +1398,7 @@ function RawTable(props) {
         tags={value}
         selectedRecord={currentRecord}
         tableState={tableState}
-        getParentPath={getParentPath}
+        getParentPathAndId={getParentPathAndId}
         tableLoading={tableLoading}
         currentRouting={currentRouting}
       />
@@ -1760,7 +1676,6 @@ const mapColumnKey = (column) => {
     fileName: 'name',
     owner: 'owner',
     fileSize: 'size',
-    dcmID: 'dcm_id',
   };
   return columnMap[column] || column;
 };

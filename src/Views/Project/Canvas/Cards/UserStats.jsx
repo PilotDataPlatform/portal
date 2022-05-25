@@ -15,11 +15,15 @@ import { withRouter } from 'react-router-dom';
 import moment from 'moment';
 import styles from './index.module.scss';
 
+import CanvasPaginationWithCustom from '../Pagination/CanvasPagination';
+
 function UserStats(props) {
   const [uploadLog, setUploadLog] = useState([]);
   const [downloadLog, setDownloadLog] = useState([]);
   const [copyLogs, setCopyLogs] = useState([]);
   const [deleteLogs, setDeleteLogs] = useState([]);
+  const [pageInfo, setPageInfo] = useState({ page_size: 10, page: 0 });
+
   const {
     match: {
       params: { datasetId },
@@ -45,9 +49,9 @@ function UserStats(props) {
 
   useEffect(() => {
     if (currentDataset) {
-      const paginationParams = {
-        page_size: 10,
-        page: 0,
+      let paginationParams = {
+        page_size: pageInfo.page_size,
+        page: pageInfo.page,
       };
       const query = {
         project_code: currentDataset && currentDataset.code,
@@ -123,7 +127,7 @@ function UserStats(props) {
         setDownloadLog(downloadList);
       });
     }
-  }, [props.successNum, currentDataset?.code]);
+  }, [pageInfo, props.successNum, currentDataset?.code]);
 
   const allFileStreams = [
     ...uploadLog,
@@ -137,13 +141,13 @@ function UserStats(props) {
   );
   const fileStreamIcon = (tag) => {
     if (tag === 'upload') {
-      return <CloudUploadOutlined />;
+      return <CloudUploadOutlined style={{ color: '#1E607E' }} />;
     } else if (tag === 'download') {
-      return <DownloadOutlined />;
+      return <DownloadOutlined style={{ color: '#5B8C00' }} />;
     } else if (tag === 'copy') {
-      return <CopyOutlined />;
+      return <CopyOutlined style={{ color: '#FF8B18' }} />;
     } else if (tag === 'delete') {
-      return <DeleteOutlined />;
+      return <DeleteOutlined style={{ color: '#7E1E1E' }} />;
     }
   };
 
@@ -169,41 +173,70 @@ function UserStats(props) {
     }
   };
 
+  const onShowSizeChange = (current, pageSize) => {
+    console.log(current, pageSize);
+  };
+
+  const getCurrentVal = (val) => {
+    console.log('from child', val);
+    setPageInfo(val);
+  };
+
   return (
     <div>
-      <Col span={24} style={{ margin: '10px 0' }}>
+      <Col span={24} style={{ position: 'relative', margin: '10px 0' }}>
         {sortedAllFileStreams.length === 0 ? (
           <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
         ) : (
           sortedAllFileStreams.map((el) => {
             const folderPath = getFolderPath(el);
             return (
-              <Row style={{ marginBottom: '2%' }}>
-                <span className={styles.fileStreamIcon}>
-                  {fileStreamIcon(el.tag)}
-                </span>
-                <span className={styles.fileName}>
-                  {el && el.action !== 'data_download' ? (
-                    <Tooltip title={folderPath}>
-                      {getFileDisplayName(el)}
-                    </Tooltip>
-                  ) : (
-                    getFileDisplayName(el)
-                  )}
-                </span>
-                <span className={styles.firstSlash}>/</span>
-                <span className={styles.userName}>{el && el.operator}</span>
-                <span className={styles.secondSlash}>/</span>
-                <span className={styles.time}>
-                  {el &&
-                    el.createdTime &&
-                    moment.unix(el.createdTime).format(format)}
-                </span>
-              </Row>
+              <div className={styles.file}>
+                <Row>
+                  <span className={styles.fileStreamIcon}>
+                    {fileStreamIcon(el.tag)}
+                  </span>
+                  <span className={styles.fileName}>
+                    {el && el.action !== 'data_download' ? (
+                      <Tooltip title={folderPath}>
+                        {getFileDisplayName(el)}
+                      </Tooltip>
+                    ) : (
+                      getFileDisplayName(el)
+                    )}
+                  </span>
+                </Row>
+                <Row>
+                  <div className={styles['connect-line']}></div>
+                  <span className={styles.userName}>{el && el.operator}</span>
+                  <span
+                    className={styles.userName}
+                    style={{ margin: '-0.4rem 0.5rem' }}
+                  >
+                    {' '}
+                    /{' '}
+                  </span>
+                  <span className={styles.time}>
+                    {el &&
+                      el.createdTime &&
+                      moment.unix(el.createdTime).format(format)}
+                  </span>
+                </Row>
+              </div>
             );
           })
         )}
       </Col>
+      <div className={styles.pageination}>
+        <CanvasPaginationWithCustom
+          onChange={getCurrentVal}
+          fileLength={100}
+          defaultPage={1}
+          defaultSize={10}
+          hidden={false}
+          {...props}
+        />
+      </div>
     </div>
   );
 }

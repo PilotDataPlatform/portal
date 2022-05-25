@@ -1,7 +1,7 @@
-import { serverAxios, serverAxiosNoIntercept } from './config';
+import { serverAxios, serverAxiosNoIntercept, downloadGRAxios } from './config';
 import { keycloak } from '../Service/keycloak';
 import _ from 'lodash';
-import { API_PATH, DOWNLOAD_PREFIX, DOWNLOAD_PREFIX_V1 } from '../config';
+import { API_PATH, DOWNLOAD_PREFIX_V2, DOWNLOAD_PREFIX_V1 } from '../config';
 
 /**
  * ticket-1645
@@ -197,13 +197,13 @@ export function getDatasetActivityLogsAPI(datasetGeid, params) {
   });
 }
 
-export function downloadDataset(datasetGeid, operator, sessionId) {
+export function downloadDataset(datasetCode, operator, sessionId) {
   return serverAxios({
     url: `/v2/dataset/download/pre`,
     method: 'POST',
     headers: { 'Refresh-token': keycloak.refreshToken },
     data: {
-      dataset_geid: datasetGeid,
+      dataset_code: datasetCode,
       session_id: sessionId,
       operator: operator,
     },
@@ -216,23 +216,19 @@ export function checkDatasetDownloadStatusAPI(hashCode) {
     method: 'GET',
   });
 }
-export function downloadDatasetFiles(
-  datasetGeid,
-  fileGeids,
-  operator,
-  sessionId,
-) {
-  return serverAxios({
-    url: `/v2/download/pre`,
-    method: 'POST',
+export function downloadDatasetFiles(datasetCode, files, operator, sessionId) {
+  const options = {
+    url: `/v2/download/pre/`,
+    method: 'post',
     headers: { 'Refresh-token': keycloak.refreshToken },
     data: {
-      dataset_geid: datasetGeid,
-      files: fileGeids,
-      session_id: sessionId,
+      files,
+      container_type: 'dataset',
+      container_code: datasetCode,
       operator: operator,
     },
-  });
+  };
+  return downloadGRAxios(options);
 }
 
 export function previewDatasetFile(datasetGeid, fileGeid) {
@@ -308,11 +304,11 @@ export function datasetDownloadReturnURLAPI(datasetGeid, version) {
 
 export function datasetDownloadAPI(hash) {
   return serverAxios({
-    url: `${DOWNLOAD_PREFIX}/${hash}`,
+    url: `${DOWNLOAD_PREFIX_V2}/${hash}`,
     method: 'GET',
     headers: { 'Refresh-token': keycloak.refreshToken },
   }).then((res) => {
-    const url = API_PATH + DOWNLOAD_PREFIX + '/' + hash;
+    const url = API_PATH + DOWNLOAD_PREFIX_V2 + '/' + hash;
     window.open(url, '_blank');
   });
 }

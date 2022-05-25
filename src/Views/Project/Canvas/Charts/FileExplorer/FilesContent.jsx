@@ -138,7 +138,7 @@ function FilesContent(props) {
           disabled: false,
           children: null,
           createdTime: folder.timeCreated,
-          geid: folder.geid,
+          geid: folder.id,
         };
       });
       props.setCurrentProjectTree({
@@ -164,7 +164,7 @@ function FilesContent(props) {
         disabled: false,
         children: null,
         createdTime: folder.timeCreated,
-        geid: folder.geid,
+        geid: folder.id,
       };
     });
 
@@ -211,9 +211,9 @@ function FilesContent(props) {
   async function updateVfolders() {
     try {
       const res = await listAllVirtualFolder(projectCode, props.username);
-      const virualFolders = res.data.result;
-      setVfolders(virualFolders);
-      return virualFolders;
+      const virtualFolder = res.data.result;
+      setVfolders(virtualFolder);
+      return virtualFolder;
     } catch (e) {
       return [];
     }
@@ -259,9 +259,9 @@ function FilesContent(props) {
         newActiveKey = panesFiltered[0].key;
       }
     }
+    removePane(targetKey);
     props.setCurrentProjectActivePane(newActiveKey);
     activatePane(newActiveKey);
-    removePane(targetKey);
   };
 
   const onSelect = async (selectedKeys, info) => {
@@ -309,7 +309,6 @@ function FilesContent(props) {
     const { newCollectionName } = values;
     try {
       setSaveBtnLoading(true);
-      //TODO: missing id argument - waiting for updated geid
       await createVirtualFolder(projectCode, newCollectionName, props.username);
       updateVfolders();
     } catch (error) {
@@ -349,12 +348,12 @@ function FilesContent(props) {
           return el;
         }
       });
-      const geidList = Object.keys(values);
-      geidList.forEach((el) => {
+      const idList = Object.keys(values);
+      idList.forEach((el) => {
         if (diffNameList.includes(values[el])) {
           updateCollectionList.push({
+            id: el,
             name: values[el],
-            geid: el,
           });
         }
       });
@@ -365,7 +364,7 @@ function FilesContent(props) {
         projectCode,
         updateCollectionList,
       );
-      if (res.data.result.length > 0) {
+      if (res.data.result.collections.length) {
         setUpdateTimes(updateTimes + 1);
 
         //update collection panel name
@@ -375,10 +374,10 @@ function FilesContent(props) {
           const vfolderIds = panes
             .filter((el) => el.key.startsWith('vfolder-'))
             .map((el) => el.content.geid);
-          res.data.result.forEach((el) => {
-            if (vfolderIds.includes(el.globalEntityId)) {
+          res.data.result.collections.forEach((el) => {
+            if (vfolderIds.includes(el.id)) {
               const selectPane = updatedPane.find(
-                (item) => item.content.geid === el.globalEntityId,
+                (item) => item.content.geid === el.id,
               );
               selectPane.title = getTitle(`Collection - ${el.name}  `);
               if (selectPane.key === activePane) {
@@ -398,6 +397,7 @@ function FilesContent(props) {
         );
       }
     } catch (error) {
+      console.log(error);
       setUpdateBtnLoading(false);
       message.error(`${i18n.t('errormessages:updateVirtualFolder.default.0')}`);
     }
@@ -495,7 +495,7 @@ function FilesContent(props) {
               <div style={{ display: 'flex', alignItems: 'baseline' }}>
                 <Form.Item
                   className={styles.update_collection_name}
-                  name={el.geid}
+                  name={el.id}
                   initialValue={el.name}
                   rules={[
                     {
@@ -551,14 +551,14 @@ function FilesContent(props) {
                     }}
                   ></Input>
                 </Form.Item>
-                {deleteBtnLoading && deleteItemId === el.geid ? (
+                {deleteBtnLoading && deleteItemId === el.id ? (
                   <LoadingOutlined spin style={{ marginRight: '10px' }} />
                 ) : (
                   <DeleteOutlined
                     style={{ color: '#FF6D72', marginRight: '10px' }}
                     onClick={() => {
-                      deleteCollection(el.geid, 'vfolder-' + el.name);
-                      setDeleteItemId(el.geid);
+                      deleteCollection(el.id, 'vfolder-' + el.name);
+                      setDeleteItemId(el.id);
                     }}
                   />
                 )}

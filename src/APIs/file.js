@@ -6,12 +6,12 @@ import {
   kongAPI,
   uploadAxios,
   serverAxios,
+  downloadGRAxios,
 } from './config';
 import { objectKeysToSnakeCase, checkGreenAndCore } from '../Utility';
-import { message } from 'antd';
 import _ from 'lodash';
 import { keycloak } from '../Service/keycloak';
-import { API_PATH, dcmId, dcm_id } from '../config';
+import { API_PATH, DOWNLOAD_GR, DOWNLOAD_CORE } from '../config';
 
 function uploadFileApi(containerId, data, cancelToken) {
   return devOpAxios({
@@ -100,8 +100,8 @@ function checkDownloadStatus(sessionId, projectCode, operator) {
 }
 
 function deleteDownloadStatus(sessionId) {
-  return axios({
-    url: `/download/gr/v1/download/status`,
+  return downloadGRAxios({
+    url: `/v1/download/status`,
     method: 'DELETE',
     headers: {
       'Session-ID': `${sessionId}`,
@@ -210,8 +210,8 @@ async function getRequestFiles(
   res.data.result.entities = res.data.result.data.map((item) => {
     res.data.result.approximateCount = res.data.total;
     let formatRes = {
-      geid: item.entityGeid,
-      key: item.entityGeid,
+      geid: item.entityId,
+      key: item.entityId,
       archived: item.archived,
       createTime: item.uploadedAt,
       nodeLabel:
@@ -225,10 +225,6 @@ async function getRequestFiles(
       path: item.path,
       location: item.location,
       folderRelativePath: item.folderRelativePath,
-      dcmId:
-        item['dcmId'] && typeof item['dcmId'] !== 'undefined'
-          ? item['dcmId']
-          : undefined,
       tags: [],
       reviewedAt: item.reviewedAt,
       reviewedBy: item.reviewedBy,
@@ -256,7 +252,7 @@ async function getRequestFilesDetailByGeid(geids) {
     url: `/v2/files/bulk/detail`,
     method: 'POST',
     data: {
-      id: geids,
+      ids: geids,
     },
   });
 }
@@ -264,6 +260,7 @@ async function getRequestFilesDetailByGeid(geids) {
 /**
  * ticket-1314
  * @param {string} parentPath the parent path of the request files
+ * @param {string} parentId collection id if request virtual folder
  * @param {number} page the nth page. start from ?
  * @param {number} pageSize the number of items in each page
  * @param {string} orderBy order by which column. should be one of the column name
@@ -275,6 +272,7 @@ async function getRequestFilesDetailByGeid(geids) {
  */
 async function getFiles(
   parentPath,
+  parentId,
   page,
   pageSize,
   orderBy,
@@ -306,6 +304,9 @@ async function getFiles(
     source_type: sourceType,
     ...filters,
   };
+  if (parentId) {
+    params['parent_id'] = parentId;
+  }
   let res;
   res = await axios({
     url,
@@ -351,10 +352,6 @@ async function getFiles(
         fileSize: item.size,
         owner: item.owner,
         location: item.storage.locationUri,
-        dcmId:
-          item['dcmId'] && typeof item['dcmId'] !== 'undefined'
-            ? item['dcmId']
-            : 'undefined',
       },
       labels:
         item.extended.extra &&
@@ -400,8 +397,8 @@ function checkDownloadStatusAPI(
   setSuccessNumDispatcher,
   successNum,
 ) {
-  return axios({
-    url: `/download/gr/v1/download/status/${hashCode}`,
+  return downloadGRAxios({
+    url: `/v1/download/status/${hashCode}`,
     method: 'GET',
   })
     .then((res) => {
@@ -411,10 +408,14 @@ function checkDownloadStatusAPI(
           namespace.toLowerCase() === 'greenroom' ? 'gr' : 'core';
         updateDownloadItemDispatch({ key: taskId, status: 'success' });
         const hashCode = res.data.result?.payload?.hashCode;
-        const url =
-          API_PATH + `/download/${namespaceUrl}/v1/download/${hashCode}`;
+        let url;
+        if (namespaceUrl === 'gr') {
+          url = DOWNLOAD_GR + `/v1/download/${hashCode}`;
+        }
+        if (namespaceUrl === 'core') {
+          url = DOWNLOAD_CORE + `/v1/download/${hashCode}`;
+        }
         // Start to download zip file
-        console.log(API_PATH, url);
         window.open(url, '_blank');
         setTimeout(() => {
           setSuccessNumDispatcher(successNum + 1);
@@ -440,40 +441,44 @@ function checkDownloadStatusAPI(
 async function downloadFilesAPI(
   containerId,
   files,
-  setLoading,
   appendDownloadListCreator,
-  sessionId,
   projectCode,
   operator,
   namespace,
   requestId, // only for request to core table
 ) {
-  console.log(namespace);
   const options = {
-    url: `/v2/download/pre`,
+    url: `/v2/download/pre/`,
     method: 'post',
     headers: { 'Refresh-token': keycloak.refreshToken },
     data: {
       files,
-      project_code: projectCode,
+      container_type: 'project',
+      container_code: projectCode,
       operator: operator,
-      session_id: sessionId,
     },
   };
   if (requestId) {
     options.data['approval_request_id'] = requestId;
   }
-  return axios(options).then((res) => {
+
+  return downloadGRAxios(options).then((res) => {
     let fileName = res.data.result.source;
     const status = res.data.result.status;
     const fileNamesArr = fileName.split('/') || [];
     fileName = fileNamesArr.length && fileNamesArr[fileNamesArr.length - 1];
     const namespaceUrl =
       namespace.toLowerCase() === 'greenroom' ? 'gr' : 'core';
+
     if (status === 'READY_FOR_DOWNLOADING') {
       const hashCode = res.data.result.payload.hashCode;
-      const url =
-        API_PATH + `/download/${namespaceUrl}/v1/download/${hashCode}`;
+      let url;
+      if (namespaceUrl === 'gr') {
+        url = DOWNLOAD_GR + `/v1/download/${hashCode}`;
+      }
+      if (namespaceUrl === 'core') {
+        url = DOWNLOAD_CORE + `/v1/download/${hashCode}`;
+      }
       return url;
     }
 

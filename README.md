@@ -37,8 +37,6 @@ run `npm i` on the `ROOT/` folder to install all the dependencies.
 | REACT_APP_PROXY_ROUTE                | proxy bff route when you are on local developing                                        |
 | REACT_APP_XWIKI                      | xwiki path for all document                                                             |
 | REACT_APP_ORGANIZATION_PORTAL_DOMAIN | your organization domain                                                                |
-| REACT_APP_DcmSpaceID                 | DCM ID Title                                                                            | Dcm ID  |
-| REACT_APP_dcmProjectCode             | Project used DCM ID                                                                     |
 
 #### Run the Application
 

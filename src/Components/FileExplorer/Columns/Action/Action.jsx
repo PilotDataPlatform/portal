@@ -69,26 +69,16 @@ export default function Action({ text, record }) {
       {!hide4DeletedRecord && (
         <Menu.Item
           onClick={async (e) => {
-            let file = record.name;
-            var folder = file && file.substring(0, file.lastIndexOf('/') + 1);
-            var filename =
-              file && file.substring(file.lastIndexOf('/') + 1, file.length);
             let files = [
               {
-                file: filename,
-                path: folder,
-                geid: record.geid,
-                project_code: currentProject.code,
+                id: record.geid,
               },
             ];
             const sessionId = tokenManager.getCookie('sessionId');
-            console.log(activeReq, 'activeReq');
             downloadFilesAPI(
               fileExplorerContext.projectGeid,
               files,
-              () => {},
               (item) => dispatch(appendDownloadListCreator(item)),
-              sessionId,
               currentProject.code,
               username,
               'greenroom',

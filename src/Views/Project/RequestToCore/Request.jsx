@@ -9,7 +9,6 @@ import styles from './request.module.scss';
 import { useSelector, useDispatch } from 'react-redux';
 import { pluginsContainer } from './TablePlugins';
 import { useDataFetcher } from './useDataFetcher/useDataFetcher';
-import { dcmProjectCode, DcmSpaceID } from '../../../config';
 
 const { Content } = Layout;
 
@@ -65,14 +64,6 @@ function Request() {
         key: 'reviewedBy',
       },
     );
-  } else {
-    if (currentDataset.code === dcmProjectCode) {
-      columns.splice(2, 0, {
-        title: DcmSpaceID,
-        dataIndex: 'dcmId',
-        key: 'dcmId',
-      });
-    }
   }
 
   const columnsLayoutNewList = (isSidePanelOpen) => {
@@ -85,7 +76,6 @@ function Request() {
       return {
         label: 60,
         fileName: '40%',
-        dcmId: '20%',
         owner: '20%',
         createTime: 120,
         fileSize: 100,
@@ -103,27 +93,6 @@ function Request() {
       return {
         label: 60,
         fileName: '15%',
-        dcmId: '14%',
-        owner: '17%',
-        reviewedAt: '15%',
-        reviewedBy: '15%',
-        createTime: 120,
-        fileSize: 100,
-      };
-    }
-  };
-
-  const columnsLayoutComplete = (isSidePanelOpen) => {
-    if (isSidePanelOpen) {
-      return {
-        label: 60,
-        fileName: '65%',
-      };
-    } else {
-      return {
-        label: 60,
-        fileName: '15%',
-        dcmId: '14%',
         owner: '17%',
         reviewedAt: '15%',
         reviewedBy: '15%',

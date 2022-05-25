@@ -1,7 +1,9 @@
 const BRANDING_PREFIX = process.env.REACT_APP_BRANDING_PATH || '';
 const PORTAL_PREFIX = process.env.REACT_APP_PORTAL_PATH || '';
-const DOWNLOAD_PREFIX = process.env.REACT_APP_DOWNLOAD_URL || ''; // use as PORTAL_PREFIX + DOWNLOAD_PREFIX
+const DOWNLOAD_PREFIX_V2 = process.env.REACT_APP_DOWNLOAD_URL_V2 || '';
 const DOWNLOAD_PREFIX_V1 = process.env.REACT_APP_DOWNLOAD_URL_V1 || '';
+const DOWNLOAD_GR = process.env.REACT_APP_DOWNLOAD_GR || '';
+const DOWNLOAD_CORE = process.env.REACT_APP_DOWNLOAD_CORE || '';
 const KEYCLOAK_REALM = process.env.REACT_APP_KEYCLOAK_REALM;
 const DEFAULT_AUTH_URL = process.env.REACT_APP_DEFAULT_AUTH_URL || '';
 const API_PATH = process.env.REACT_APP_API_PATH || '';
@@ -16,16 +18,16 @@ const ORGANIZATION_PORTAL_DOMAIN =
 const PLATFORM_INTRODUCTION_URL =
   process.env.REACT_APP_PLATFORM_INTRODUCTION_URL;
 const ORGANIZATION_DOMAIN = process.env.REACT_APP_ORGANIZATION_DOMAIN;
-const DcmSpaceID = process.env.REACT_APP_DcmSpaceID;
-const dcmProjectCode = process.env.REACT_APP_dcmProjectCode;
 
 if (!KEYCLOAK_REALM) throw new Error(`keycloak realm is empty`);
 
 module.exports = {
   BRANDING_PREFIX,
   PORTAL_PREFIX,
-  DOWNLOAD_PREFIX,
+  DOWNLOAD_PREFIX_V2,
   DOWNLOAD_PREFIX_V1,
+  DOWNLOAD_GR,
+  DOWNLOAD_CORE,
   KEYCLOAK_REALM,
   DEFAULT_AUTH_URL,
   API_PATH,
@@ -38,6 +40,4 @@ module.exports = {
   ORGANIZATION_PORTAL_DOMAIN,
   PLATFORM_INTRODUCTION_URL,
   ORGANIZATION_DOMAIN,
-  DcmSpaceID,
-  dcmProjectCode,
 };
