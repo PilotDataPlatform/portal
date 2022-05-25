@@ -245,7 +245,7 @@ async function listAllVirtualFolder(projectCode, username) {
   return res;
 }
 
-// TODO: might not be needed  
+// TODO: might not be needed
 async function listVirtualFolderFiles(collection_geid, pageSize = 10) {
   const res = await serverAxios({
     url: `/v1/collections/${collection_geid}/files?page=0&page_size=${pageSize}&order_by=time_created&order_type=desc`,
@@ -432,7 +432,6 @@ function attachManifest(projectCode, manifestId, geids, attributes) {
 
 function getProjectInfoAPI(projectGeid) {
   return serverAxios({
-    // url: `http://localhost:5000/v1/project/${projectId}`,
     url: `/v1/project/${projectGeid}`,
     method: 'GET',
   });

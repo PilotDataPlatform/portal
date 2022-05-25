@@ -106,6 +106,9 @@ export function listDatasetFiles(
 }
 
 const mapBasicInfo = (result) => {
+  function parseToObj(str) {
+    return typeof str === 'string' ? JSON.parse(str.replaceAll(`'`, `"`)) : str;
+  }
   const {
     timeCreated,
     creator,
@@ -120,18 +123,17 @@ const mapBasicInfo = (result) => {
     size,
     totalFiles,
     description,
-    globalEntityId: geid,
+    id: geid,
     tags,
   } = result;
-
   const basicInfo = {
     timeCreated,
     creator,
     title,
-    authors,
+    authors: parseToObj(authors),
     type,
-    modality,
-    collectionMethod,
+    modality: parseToObj(modality),
+    collectionMethod: parseToObj(collectionMethod),
     license,
     code,
     projectGeid,
@@ -139,7 +141,7 @@ const mapBasicInfo = (result) => {
     totalFiles,
     description,
     geid,
-    tags,
+    tags: parseToObj(tags),
   };
 
   return basicInfo;
