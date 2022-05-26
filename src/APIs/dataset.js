@@ -1,4 +1,4 @@
-import { serverAxios, serverAxiosNoIntercept, downloadCoreAxios } from './config';
+import { serverAxios, serverAxiosNoIntercept, downloadGRAxios, downloadCoreAxios } from './config';
 import { keycloak } from '../Service/keycloak';
 import _ from 'lodash';
 import { API_PATH, DOWNLOAD_PREFIX_V2, DOWNLOAD_PREFIX_V1 } from '../config';
