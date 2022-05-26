@@ -200,7 +200,7 @@ export function getDatasetActivityLogsAPI(datasetGeid, params) {
 }
 
 export function downloadDataset(datasetCode, operator, sessionId) {
-  return serverAxios({
+  return downloadGRAxios({
     url: `/v2/dataset/download/pre`,
     method: 'POST',
     headers: { 'Refresh-token': keycloak.refreshToken },

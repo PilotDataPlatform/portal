@@ -780,7 +780,6 @@ function RawTable(props) {
     downloadFilesAPI(
       props.projectId,
       files,
-      'project',
       props.appendDownloadListCreator,
       currentDataset.code,
       props.username,
