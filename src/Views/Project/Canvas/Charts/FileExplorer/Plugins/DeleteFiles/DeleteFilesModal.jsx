@@ -65,7 +65,7 @@ const DeleteFilesModal = ({
         {
           targets: authorizedFilesToDelete.map((file) => {
             return {
-              geid: file.geid,
+              id: file.geid,
             };
           }),
           source: parentGeid,

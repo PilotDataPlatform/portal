@@ -30,11 +30,10 @@ const VirtualFolderModal = ({ visible, setVisible, files }) => {
         icon: <CollectionIcon width={14} style={{ color: '#1b90fe' }} />,
         disabled: false,
         children: null,
-        geid: folder.geid,
+        geid: folder.id,
         createdTime: folder.timeCreated,
       };
     });
-    console.log(vfolders, 'vfolders');
     dispatch(setCurrentProjectTreeVFolder(vfoldersNodes));
   }
   function handleOk() {}
@@ -64,7 +63,6 @@ const VirtualFolderModal = ({ visible, setVisible, files }) => {
     loadVFolders();
     // eslint-disable-next-line
   }, [visible]);
-
 
   async function addToExistFolder(values) {
     try {
@@ -101,7 +99,7 @@ const VirtualFolderModal = ({ visible, setVisible, files }) => {
         setSentBtnLoading(false);
         return;
       }
-      const folderGeid = res.data.result.globalEntityId;
+      const folderGeid = res.data.result.id;
       if (!folderGeid) {
         message.error(
           `${i18n.t('errormessages:createVirtualFolder.default.0')}`,

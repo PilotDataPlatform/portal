@@ -30,6 +30,7 @@ const VFolderFilesDeleteModal = ({
         icon: <CollectionIcon width={14} style={{ color: '#1b90fe' }} />,
         disabled: false,
         children: null,
+        geid: folder.id,
       };
     });
     dispatch(setCurrentProjectTreeVFolder(vfoldersNodes));
