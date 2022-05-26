@@ -450,7 +450,10 @@ function RawTable(props) {
           dataIndex: 'fileSize',
           key: 'fileSize',
           render: (text, record) => {
-            if ([undefined, null].includes(record.fileSize)) {
+            if (
+              record.nodeLabel.indexOf('Folder') !== -1 ||
+              [undefined, null].includes(record.fileSize)
+            ) {
               return '';
             }
             return getFileSize(text);
