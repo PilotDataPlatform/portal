@@ -4,6 +4,9 @@
       top: 80px;
       z-index: 1000;
     }
+    #notification-preview-modal .ant-modal-wrap {
+      top: 0;
+    }
   }
 }
 .profile-modal {
