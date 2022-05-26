@@ -1,4 +1,6 @@
 import React from 'react';
+import { v4 as uuidv4 } from 'uuid';
+
 import styles from './index.module.scss';
 
 function HeatMapLegend({ colors }) {
@@ -11,6 +13,7 @@ function HeatMapLegend({ colors }) {
       <li>Less</li>
       {colors.map((color) => (
         <li
+          key={uuidv4()}
           className={styles['heatmap-legend__color']}
           style={{ backgroundColor: color }}
         />

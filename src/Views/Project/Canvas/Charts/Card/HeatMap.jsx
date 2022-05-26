@@ -3,7 +3,7 @@ import { Heatmap, G2 } from '@ant-design/plots';
 import HeatMapLegend from './HeatMapLegend';
 import styles from './index.module.scss';
 
-function HeatMap({ data, color, showLegend = true}) {
+function HeatMap({ data, color, showLegend = true }) {
   G2.registerShape('polygon', 'boundary-polygon', {
     draw(cfg, container) {
       const group = container.addGroup();
@@ -101,7 +101,7 @@ function HeatMap({ data, color, showLegend = true}) {
 
   return (
     <div className={styles['heatmap-container']}>
-      { showLegend && <HeatMapLegend colors={color}/> }
+      {showLegend && <HeatMapLegend colors={color} />}
       <Heatmap {...config} />
     </div>
   );

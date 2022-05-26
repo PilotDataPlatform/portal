@@ -1,24 +1,26 @@
 import React, { useState, useEffect } from 'react';
+import { useCurrentProject } from '../../../../Utility';
+
 import styles from '../index.module.scss';
 
-function Tabs({ handleClick, tab, currentTab }) {
+function Tabs({ handleClick, tab, currentTab, activeStyles }) {
   const [isActive, setIsActive] = useState(false);
-
-  const activeClass = isActive ? styles['tab-switcher__tabs--active'] : '';
 
   useEffect(() => {
     if (currentTab) {
       if (currentTab === tab) {
-        return setIsActive(true);
+        setIsActive(true);
+      } else {
+        setIsActive(false);
       }
-      setIsActive(false);
     }
   }, [currentTab]);
 
   return (
     <li
       onClick={handleClick}
-      className={`${styles['tab-switcher__tabs']} ${activeClass}`}
+      className={`${styles['tab-switcher__tabs']}`}
+      style={isActive ? activeStyles : null}
     >
       {tab}
     </li>
