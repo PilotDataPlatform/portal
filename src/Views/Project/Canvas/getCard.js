@@ -88,7 +88,7 @@ const getcard = (card, data, actions, state, handleExpand) => {
       break;
     }
     case 'charts':
-      res = <Charts />;
+      res = <Charts projectRole={state.currentProjectRole}/>;
       break;
     case 'datasets': {
       res = (size, exportState, onExportClick) => (

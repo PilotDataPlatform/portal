@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
+
 import { TabNavigation, Tabs } from './index';
 
-function TabSwitcher({ contentMap }) {
+function TabSwitcher({ contentMap, activeTabStyles }) {
   const [currentTab, setCurrentTab] = useState(null);
 
   useEffect(() => {
     if (contentMap) {
       setCurrentTab(Object.keys(contentMap)[0]);
     }
-  }, [contentMap]);
+  }, []);
 
   function handleClick(e) {
     const key = e.target.innerText.toLowerCase();
@@ -20,7 +22,13 @@ function TabSwitcher({ contentMap }) {
       <TabNavigation>
         {contentMap &&
           Object.keys(contentMap).map((tab) => (
-            <Tabs handleClick={handleClick} tab={tab} currentTab={currentTab} />
+            <Tabs
+              key={uuidv4()}
+              handleClick={handleClick}
+              tab={tab}
+              currentTab={currentTab}
+              activeStyles={activeTabStyles}
+            />
           ))}
       </TabNavigation>
       {contentMap[currentTab]}
