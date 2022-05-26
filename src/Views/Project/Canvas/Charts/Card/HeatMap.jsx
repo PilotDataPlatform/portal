@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Heatmap, G2 } from '@ant-design/plots';
-import HeatMapLegend from './HeatMapLegend';
+import { HeatMapLegend } from './';
 import styles from './index.module.scss';
 
 function HeatMap({ data, color, showLegend = true }) {

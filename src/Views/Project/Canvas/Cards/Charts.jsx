@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import {
   FileTextOutlined,
   HddOutlined,
@@ -7,7 +7,7 @@ import {
   TeamOutlined,
 } from '@ant-design/icons';
 import { TabSwitcher } from '../../Components/TabSwitcher';
-import HeatMap from '../Charts/Card/HeatMap';
+import { HeatMap, GroupedColumnLine } from '../Charts/Card';
 import styles from './index.module.scss';
 
 const HEATMAP_DOWNLOAD_DATA = [
@@ -5174,6 +5174,87 @@ const HEATMAP_COPY_DATA = [
   },
 ];
 
+const GROUPED_COLUMN_UVBILLDATA = [
+  {
+    time: '2019-03',
+    value: 350,
+    type: 'uv',
+  },
+  {
+    time: '2019-04',
+    value: 900,
+    type: 'uv',
+  },
+  {
+    time: '2019-05',
+    value: 300,
+    type: 'uv',
+  },
+  {
+    time: '2019-06',
+    value: 450,
+    type: 'uv',
+  },
+  {
+    time: '2019-07',
+    value: 470,
+    type: 'uv',
+  },
+  {
+    time: '2019-03',
+    value: 220,
+    type: 'bill',
+  },
+  {
+    time: '2019-04',
+    value: 300,
+    type: 'bill',
+  },
+  {
+    time: '2019-05',
+    value: 250,
+    type: 'bill',
+  },
+  {
+    time: '2019-06',
+    value: 220,
+    type: 'bill',
+  },
+  {
+    time: '2019-07',
+    value: 362,
+    type: 'bill',
+  },
+];
+
+const GROUPED_COLUMN_TRANSFORMDATA = [
+  {
+    time: '2019-03',
+    count: 800,
+  },
+  {
+    time: '2019-04',
+    count: 600,
+  },
+  {
+    time: '2019-05',
+    count: 400,
+  },
+  {
+    time: '2019-06',
+    count: 380,
+  },
+  {
+    time: '2019-07',
+    count: 220,
+  },
+];
+
+const GROUPED_COLUMN_DATA = [
+  GROUPED_COLUMN_UVBILLDATA,
+  GROUPED_COLUMN_TRANSFORMDATA,
+];
+
 function Charts({ projectRole }) {
   const heatmapColor =
     projectRole === 'collaborator'
@@ -5181,8 +5262,8 @@ function Charts({ projectRole }) {
       : ['#EBEDF0', '#E6F2D9', '#A5CF00', '#4A8500', '#293F00'];
 
   const activeTabColor = {
-    backgroundColor: projectRole === 'collaborator' ? '#d3e8f0' : '#95e5a0'
-  }
+    backgroundColor: projectRole === 'collaborator' ? '#d3e8f0' : '#95e5a0',
+  };
 
   const heatMapGraphs = useMemo(
     () => ({
@@ -5246,8 +5327,19 @@ function Charts({ projectRole }) {
 
       <div className={styles['charts__graphs']}>
         <div className={styles['graphs__container']}>
+          <h4 className={styles['graphs__title']}>Projects File Size</h4>
+          <GroupedColumnLine
+            data={GROUPED_COLUMN_DATA}
+            xField="time"
+            yField={['value', 'count']}
+          />
+        </div>
+        <div className={styles['graphs__container']}>
           <h4 className={styles['graphs__title']}>My Project File Activity</h4>
-          <TabSwitcher contentMap={heatMapGraphs} activeTabStyles={activeTabColor}/>
+          <TabSwitcher
+            contentMap={heatMapGraphs}
+            activeTabStyles={activeTabColor}
+          />
         </div>
       </div>
     </div>
