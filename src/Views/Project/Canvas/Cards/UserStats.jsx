@@ -15,14 +15,15 @@ import { withRouter } from 'react-router-dom';
 import moment from 'moment';
 import styles from './index.module.scss';
 
-import CanvasPaginationWithCustom from '../Pagination/CanvasPagination';
+import CustomPagination from '../../../../Components/Pagination/Pagination';
 
 function UserStats(props) {
   const [uploadLog, setUploadLog] = useState([]);
   const [downloadLog, setDownloadLog] = useState([]);
   const [copyLogs, setCopyLogs] = useState([]);
   const [deleteLogs, setDeleteLogs] = useState([]);
-  const [pageInfo, setPageInfo] = useState({ page_size: 10, page: 0 });
+  const [pageInfo, setPageInfo] = useState({ page_size: 10, cur: 1 });
+  const [total, setTotal] = useState(0);
 
   const {
     match: {
@@ -51,7 +52,7 @@ function UserStats(props) {
     if (currentDataset) {
       let paginationParams = {
         page_size: pageInfo.page_size,
-        page: pageInfo.page,
+        page: pageInfo.cur - 1,
       };
       const query = {
         project_code: currentDataset && currentDataset.code,
@@ -65,7 +66,7 @@ function UserStats(props) {
         paginationParams,
         query,
       ).then((res) => {
-        const { result } = res.data;
+        const { total, result } = res.data;
         const deleteList = result.reduce((filtered, el) => {
           let { action } = el['source'];
 
@@ -125,6 +126,8 @@ function UserStats(props) {
         setCopyLogs(copyList);
 
         setDownloadLog(downloadList);
+
+        setTotal(total);
       });
     }
   }, [pageInfo, props.successNum, currentDataset?.code]);
@@ -228,13 +231,12 @@ function UserStats(props) {
         )}
       </Col>
       <div className={styles.pageination}>
-        <CanvasPaginationWithCustom
+        <CustomPagination
           onChange={getCurrentVal}
-          fileLength={100}
+          total={total}
           defaultPage={1}
           defaultSize={10}
-          hidden={false}
-          {...props}
+          showPageSize={true}
         />
       </div>
     </div>

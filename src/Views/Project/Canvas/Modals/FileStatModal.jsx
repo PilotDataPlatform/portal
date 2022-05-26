@@ -21,6 +21,8 @@ import styles from './index.module.scss';
 import { getUsersOnDatasetAPI, getAuditLogsApi } from '../../../../APIs';
 import { objectKeysToCamelCase, timeConvert } from '../../../../Utility';
 
+import CustomPagination from '../../../../Components/Pagination/Pagination';
+
 const { TabPane } = Tabs;
 const { Option } = Select;
 const { RangePicker } = DatePicker;
@@ -198,8 +200,8 @@ const FileStatModal = (props) => {
     setTreeData([]);
   };
 
-  const onChangePage = (page, pageSize) => {
-    setPage(page);
+  const onChangePage = (val) => {
+    setPage(val.cur);
     setLoading(true);
 
     let operation = 'data_transfer';
@@ -209,7 +211,7 @@ const FileStatModal = (props) => {
     if (action === 'all') operation = 'all';
 
     const paginationParams = {
-      page: page - 1,
+      page: val.cur - 1,
       page_size: 10,
     };
     const query = {
@@ -309,15 +311,15 @@ const FileStatModal = (props) => {
             })}
         </Timeline>
 
-        <Pagination
+        <CustomPagination
+          onChange={onChangePage}
           total={
             page === 0 && filterData.length < 10 ? filterData.length : total
           }
-          size="small"
-          style={{ float: 'right' }}
-          onChange={onChangePage}
-          showSizeChanger={false}
-          current={page}
+          data={filterData}
+          defaultPage={1}
+          defaultSize={10}
+          showPageSize={false}
         />
       </div>
     );
