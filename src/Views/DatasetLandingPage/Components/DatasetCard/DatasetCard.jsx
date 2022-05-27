@@ -10,7 +10,7 @@ export default function DatasetCard(props) {
   const {
     title,
     creator,
-    timeCreated,
+    createdAt,
     description,
     tags,
     size,
@@ -22,7 +22,6 @@ export default function DatasetCard(props) {
   const toggleExpand = () => {
     setIsExpand((preValue) => !preValue);
   };
-
   return (
     <div className={styles['dataset-card']}>
       <Card>
@@ -31,7 +30,7 @@ export default function DatasetCard(props) {
           <div className={styles['dataset-card-note']}>
             <b>
               Dataset Code: {code} / Created on{' '}
-              {moment.utc(timeCreated).local().format('YYYY-MM-DD')}
+              {moment.utc(createdAt).local().format('YYYY-MM-DD')}
             </b>{' '}
             by {creator || 'N/A'}
           </div>
