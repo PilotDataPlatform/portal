@@ -8,10 +8,7 @@ import {
 } from '@ant-design/icons';
 import { useSelector } from 'react-redux';
 import styles from './index.module.scss';
-import {
-  addToDatasetsAPI,
-  getDatasetsListingAPI,
-} from '../../../../../../../APIs';
+import { addToDatasetsAPI, getMyDatasetsApi } from '../../../../../../../APIs';
 import i18n from '../../../../../../../i18n';
 
 const { Option } = Select;
@@ -39,14 +36,7 @@ const DatasetsModal = (props) => {
 
   const getDatasetsListing = async () => {
     try {
-      let payLoad = {
-        filter: {},
-        order_by: 'time_created',
-        order_type: 'desc',
-        page: 0,
-        page_size: 1000,
-      };
-      const res = await getDatasetsListingAPI(userName, payLoad);
+      const res = await getMyDatasetsApi(userName, 0, 1000);
       setDataSetsList(res.data.result);
     } catch (error) {
       message.error(`${i18n.t('errormessages:listDatasets.default.0')}`, 3);
