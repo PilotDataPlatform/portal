@@ -184,7 +184,7 @@
 }
 
 .charts {
-  .charts-meta {
+  &__meta {
     display: flex;
     justify-content: space-around;
     list-style: none;
@@ -200,6 +200,16 @@
       }
     }
 
+    .meta-stat {
+      font-size: 2rem;
+      font-weight: 600;
+      span[role='img'] {
+        margin-right: 0.8rem;
+      }
+    }
+  }
+
+  .meta {
     &__files,
     &__file-size,
     &__project-members {
@@ -219,20 +229,19 @@
         color: #5b8c00;
       }
     }
+  }
 
-    &__graphs {
-      // padding: 1.2rem 0 0.7rem 0;
-      padding-top: 1.2rem;
+  &__graphs {
+    padding-top: 1.2rem;
 
-      .graphs__container {
-        margin-bottom: 1rem;
-        padding: 0 1.5rem;
-      }
+    .graphs__container {
+      margin-bottom: 1rem;
+      padding: 0 1.5rem;
+    }
 
-      .graphs__title {
-        color: #003262;
-        margin-bottom: 1.2rem;
-      }
+    .graphs__title {
+      color: #003262;
+      margin-bottom: 1.2rem;
     }
   }
 }
