@@ -17,6 +17,7 @@ function GroupedColumnLine({
     data, // []
     xField: xField, // string || string[]
     yField: yField, // string || string[]
+    padding: [ 10, 10, 10, 13 ],
     yAxis: {
       count: {
         label: null,

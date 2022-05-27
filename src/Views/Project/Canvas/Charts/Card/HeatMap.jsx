@@ -34,6 +34,7 @@ function HeatMap({ data, color, showLegend = true }) {
   const config = {
     data,
     height: 300,
+    appendPadding: 3,
     autoFit: true,
     xField: 'week',
     yField: 'day',
@@ -44,13 +45,13 @@ function HeatMap({ data, color, showLegend = true }) {
       day: {
         type: 'cat',
         values: [
-          '星期日',
-          '星期一',
-          '星期二',
-          '星期三',
-          '星期四',
-          '星期五',
-          '星期六',
+          'Sun',
+          'Mon',
+          'Tue',
+          'Wed',
+          'Thu',
+          'Fri',
+          'Sat',
         ],
       },
       week: {
