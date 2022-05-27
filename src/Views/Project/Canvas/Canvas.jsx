@@ -88,7 +88,6 @@ class Canvas extends Component {
       roleIndex: 0, //decides which canvas to display
       uploader: false,
       currentRole: '',
-      currentProjectRole: '', // role in project
       currentProject: '',
       dataSetId: '',
       projectUsersInfo: '',
@@ -145,7 +144,6 @@ class Canvas extends Component {
         {
           currentProject,
           dataSetId: currentProject.id,
-          currentProjectRole: currentProject.permission
         },
         () => {
           if (this.state.currentRole === 'admin') {
