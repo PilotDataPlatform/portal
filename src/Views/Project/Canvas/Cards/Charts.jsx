@@ -5258,6 +5258,7 @@ const GROUPED_COLUMN_DATA = [
 
 function Charts() {
   const heatmapColor = ChartTheme.heatgraph.range;
+  const groupedColumnLineColor = ChartTheme.groupedColumnLine;
 
   const heatMapGraphs = useMemo(
     () => ({
@@ -5327,9 +5328,9 @@ function Charts() {
             xField="time"
             yField={['value', 'count']}
             legendLabels={[
-              { greenroom: '#4A8500' },
-              { core: '#35739a' },
-              { total: '#FF8B18', line: true },
+              { greenroom: groupedColumnLineColor.column[0] },
+              { core: groupedColumnLineColor.column[0] },
+              { total: groupedColumnLineColor.line, line: true },
             ]}
           />
         </div>
