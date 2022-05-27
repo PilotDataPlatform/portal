@@ -1,6 +1,7 @@
 import React from 'react';
 import { DualAxes } from '@ant-design/plots';
 
+import ChartTheme from '../../../../../Themes/chart'
 import GroupedColumnLineLegend from './GroupedColumnLineLegend';
 import styles from './index.module.scss';
 
@@ -8,16 +9,14 @@ function GroupedColumnLine({
   data,
   xField,
   yField,
-  columnColor = ['#35739a', '#457914'],
-  lineColor = '#FF8B18',
   showLegend = true,
   legendLabels,
 }) {
+  const chartColors = ChartTheme.groupedColumnLine;
   const config = {
     data, // []
     xField: xField, // string || string[]
     yField: yField, // string || string[]
-    limitInPlot: false,
     yAxis: {
       count: {
         label: null,
@@ -47,20 +46,20 @@ function GroupedColumnLine({
         isGroup: true,
         seriesField: 'type',
         marginRatio: 0.15,
-        color: columnColor,
+        color: chartColors.column,
       },
       {
         geometry: 'line',
         lineStyle: {
           lineWidth: 1.75,
         },
-        color: lineColor,
+        color: chartColors.line,
         point: {
           size: 4,
           shape: 'circle',
           style: {
-            fill: lineColor,
-            stroke: lineColor,
+            fill: chartColors.line,
+            stroke: chartColors.line,
           },
         },
       },

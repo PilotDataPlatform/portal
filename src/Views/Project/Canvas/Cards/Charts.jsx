@@ -8,6 +8,7 @@ import {
 } from '@ant-design/icons';
 import { TabSwitcher } from '../../Components/TabSwitcher';
 import { HeatMap, GroupedColumnLine } from '../Charts/Card';
+import ChartTheme from '../../../../Themes/chart';
 import styles from './index.module.scss';
 
 const HEATMAP_DOWNLOAD_DATA = [
@@ -5255,15 +5256,8 @@ const GROUPED_COLUMN_DATA = [
   GROUPED_COLUMN_TRANSFORMDATA,
 ];
 
-function Charts({ projectRole }) {
-  const heatmapColor =
-    projectRole === 'collaborator'
-      ? ['#EBEDF0', '#D8EBF2', '#3C7DA6', '#204266', '#012E40']
-      : ['#EBEDF0', '#E6F2D9', '#A5CF00', '#4A8500', '#293F00'];
-
-  const activeTabColor = {
-    backgroundColor: projectRole === 'collaborator' ? '#d3e8f0' : '#95e5a0',
-  };
+function Charts() {
+  const heatmapColor = ChartTheme.heatgraph.range;
 
   const heatMapGraphs = useMemo(
     () => ({
@@ -5343,7 +5337,7 @@ function Charts({ projectRole }) {
           <h4 className={styles['graphs__title']}>My Project File Activity</h4>
           <TabSwitcher
             contentMap={heatMapGraphs}
-            activeTabStyles={activeTabColor}
+            activeTabStyles={{ backgroundColor: heatmapColor[2] }}
           />
         </div>
       </div>
