@@ -245,7 +245,7 @@ async function listAllVirtualFolder(projectCode, username) {
   return res;
 }
 
-// TODO: might not be needed  
+// TODO: might not be needed
 async function listVirtualFolderFiles(collection_geid, pageSize = 10) {
   const res = await serverAxios({
     url: `/v1/collections/${collection_geid}/files?page=0&page_size=${pageSize}&order_by=time_created&order_type=desc`,
@@ -643,14 +643,6 @@ function addToDatasetsAPI(datasetGeid, payLoad) {
   });
 }
 
-function getDatasetsListingAPI(username, payload) {
-  return serverAxios({
-    url: `/v1/users/${username}/datasets`,
-    method: 'POST',
-    data: payload,
-  });
-}
-
 function listFilesInRequestApi(requestGeid, projectCode, query, partial) {
   return serverAxios({
     url: `/v1/request/copy/${projectCode}/files`,
@@ -748,7 +740,6 @@ export {
   deployWorkbenchAPI,
   createSubFolderApi,
   addToDatasetsAPI,
-  getDatasetsListingAPI,
   requestToCoreAPI,
   listFilesInRequestApi,
   listAllCopyRequests,
