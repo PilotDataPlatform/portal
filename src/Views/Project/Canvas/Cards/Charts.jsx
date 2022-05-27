@@ -5332,6 +5332,11 @@ function Charts({ projectRole }) {
             data={GROUPED_COLUMN_DATA}
             xField="time"
             yField={['value', 'count']}
+            legendLabels={[
+              { greenroom: '#4A8500' },
+              { core: '#35739a' },
+              { total: '#FF8B18', line: true },
+            ]}
           />
         </div>
         <div className={styles['graphs__container']}>

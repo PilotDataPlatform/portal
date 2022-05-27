@@ -1,6 +1,9 @@
 import React from 'react';
 import { DualAxes } from '@ant-design/plots';
 
+import GroupedColumnLineLegend from './GroupedColumnLineLegend';
+import styles from './index.module.scss';
+
 function GroupedColumnLine({
   data,
   xField,
@@ -8,17 +11,32 @@ function GroupedColumnLine({
   columnColor = ['#35739a', '#457914'],
   lineColor = '#FF8B18',
   showLegend = true,
+  legendLabels,
 }) {
   const config = {
     data, // []
     xField: xField, // string || string[]
     yField: yField, // string || string[]
+    limitInPlot: false,
     yAxis: {
       count: {
         label: null,
       },
       value: {
         tickInterval: 150,
+        label: {
+          offset: 2,
+          style: {
+            fontWeight: 600,
+          },
+        },
+      },
+    },
+    xAxis: {
+      label: {
+        style: {
+          fontWeight: 600,
+        },
       },
     },
     legend: false,
@@ -28,7 +46,7 @@ function GroupedColumnLine({
         geometry: 'column',
         isGroup: true,
         seriesField: 'type',
-        marginRatio: 0.2,
+        marginRatio: 0.15,
         color: columnColor,
       },
       {
@@ -41,15 +59,20 @@ function GroupedColumnLine({
           size: 4,
           shape: 'circle',
           style: {
-            fill: '#FF8B18',
-            stroke: '#FF8B18',
+            fill: lineColor,
+            stroke: lineColor,
           },
         },
       },
     ],
   };
 
-  return <DualAxes {...config} />;
+  return (
+    <div className={styles['grouped-column-line-container']}>
+      {showLegend && <GroupedColumnLineLegend legendLabels={legendLabels} />}
+      <DualAxes {...config} />
+    </div>
+  );
 }
 
 export default GroupedColumnLine;
