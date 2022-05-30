@@ -12,17 +12,12 @@ function getUserProjectActivitiesAPI(params) {
 }
 
 /**
- * Get all the datasets
+ * Get all the projects
  *
- * @returns dataset[]
+ * @returns projects[]
  * @IRDP-432
  */
 function getDatasetsAPI(params = {}) {
-  // return serverAxios({
-  //   url: '/v1/containers/',
-  //   method: 'GET',
-  //   params: objectKeysToSnakeCase(params),
-  // });
   if (params['tags']) {
     params['tags'] = JSON.stringify(params['tags']);
   }

@@ -338,10 +338,10 @@ function ProjectItemCard({ item, currentRole, platformRole }) {
     }
   };
 
-  const avatar = item.icon ? (
+  const avatar = item.imageUrl ? (
     <Avatar
       shape="circle"
-      src={item.icon && item.icon}
+      src={item.imageUrl}
       style={{
         border: '#003262',
         borderWidth: '1px',
