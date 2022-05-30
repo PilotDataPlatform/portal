@@ -288,11 +288,22 @@ function loadDeletedFiles(projectCode, sessionId) {
   });
 }
 
-function getProjectManifestList(projectCode) {
-  return serverAxios({
+async function getProjectManifestList(projectCode) {
+  const res = await serverAxios({
     url: `/v1/data/manifests?project_code=${projectCode}`,
     method: 'GET',
   });
+  res.data.result = res.data.result.map((v) => {
+    v.attributes = v.attributes.map((attr) => {
+      if (attr.type === 'multiple_choice') {
+        attr.value = attr.options.join(',');
+      }
+      return attr;
+    });
+    return v;
+  });
+  console.log(res);
+  return res;
 }
 
 /**
