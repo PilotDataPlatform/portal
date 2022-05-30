@@ -302,7 +302,6 @@ async function getProjectManifestList(projectCode) {
     });
     return v;
   });
-  console.log(res);
   return res;
 }
 

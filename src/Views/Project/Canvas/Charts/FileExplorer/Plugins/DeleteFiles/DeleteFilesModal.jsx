@@ -131,14 +131,5 @@ const getAuthorizedFilesToDelete = (files, permission, username, panelKey) => {
   let authorizedFilesToDelete = files;
   let unauthorizedFilesToDelete = [];
 
-  // console.log(files, permission, username, panelKey);
-  // if (permission === 'collaborator' && panelKey === PanelKey.GREENROOM_HOME) {
-  //   authorizedFilesToDelete = files.filter((el) => el.uploader === username);
-  //   unauthorizedFilesToDelete = files.filter((el) => el.uploader !== username);
-  // } else {
-  // authorizedFilesToDelete = files;
-  // unauthorizedFilesToDelete = [];
-  // }
-
   return { authorizedFilesToDelete, unauthorizedFilesToDelete };
 };
