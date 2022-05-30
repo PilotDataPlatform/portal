@@ -8,7 +8,7 @@ import {
 } from '@ant-design/icons';
 import { TabSwitcher } from '../../Components/TabSwitcher';
 import { HeatMap, GroupedColumnLine } from '../Charts/Card';
-import ChartTheme from '../../../../Themes/chart';
+import { useTheme } from '../../../../Themes/theme';
 import styles from './index.module.scss';
 
 const HEATMAP_DOWNLOAD_DATA = [
@@ -5257,8 +5257,9 @@ const GROUPED_COLUMN_DATA = [
 ];
 
 function Charts() {
-  const heatmapColor = ChartTheme.heatgraph.range;
-  const groupedColumnLineColor = ChartTheme.groupedColumnLine;
+  const theme = useTheme();
+  const heatmapColor = theme.charts.heatgraph.range;
+  const groupedColumnLineColor = theme.charts.groupedColumnLine;
 
   const heatMapGraphs = useMemo(
     () => ({
@@ -5327,11 +5328,7 @@ function Charts() {
             data={GROUPED_COLUMN_DATA}
             xField="time"
             yField={['value', 'count']}
-            legendLabels={[
-              { greenroom: groupedColumnLineColor.column[0] },
-              { core: groupedColumnLineColor.column[0] },
-              { total: groupedColumnLineColor.line, line: true },
-            ]}
+            legendLabels={['greenroom', 'core', 'total']}
           />
         </div>
         <div className={styles['graphs__container']}>

@@ -8,11 +8,15 @@ import { PersistGate } from 'redux-persist/integration/react';
 import KeyCloakMiddleware from './KeyCloakMiddleware';
 import './i18n';
 
+import { ThemeProvider, theme } from './Themes/theme';
+
 ReactDOM.render(
   <CookiesProvider>
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <KeyCloakMiddleware />
+        <ThemeProvider theme={theme}>
+          <KeyCloakMiddleware />
+        </ThemeProvider>
       </PersistGate>
     </Provider>
   </CookiesProvider>,
