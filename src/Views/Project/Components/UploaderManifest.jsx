@@ -24,9 +24,7 @@ const UploaderManifest = function (props) {
                 props.setSelManifest(null);
                 return;
               }
-              const selM = props.manifestList.find(
-                (man) => man.id === Number(value),
-              );
+              const selM = props.manifestList.find((man) => man.id == value);
               props.setSelManifest(selM);
             }}
             value={props.selManifest ? props.selManifest.id : null}
