@@ -69,17 +69,17 @@ class AppHeader extends Component {
   componentDidMount = async () => {
     //Update header
     const { params, path } = this.props.match;
-    if (params.datasetId) {
+    if (params.projectCode) {
       const projectRole = this.props.containersPermission.filter(
-        (el) => el.id == params.datasetId,
+        (el) => el.code == params.projectCode,
       )[0].permission;
       const projectCode = this.props.containersPermission.filter(
-        (el) => el.id == params.datasetId,
+        (el) => el.code == params.projectCode,
       )[0].code;
       this.setState({ projectRole, projectCode });
     }
-    this.setState({ projectId: params.datasetId });
-    if (path === '/landing' || params?.datasetId) {
+    this.setState({ projectId: params.projectCode });
+    if (path === '/landing' || params?.projectCode) {
       this.updatedSelectedKeys('clear');
       this.updatedSelectedKeys('add', 'uploader');
     } else if (path === '/users') {
