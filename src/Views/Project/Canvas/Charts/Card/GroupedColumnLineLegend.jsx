@@ -6,6 +6,7 @@ import styles from './index.module.scss';
 
 function GroupedColumnLineLegend({ legendLabels }) {
   const { charts } = useTheme();
+  // map out legend colors against labels
   const legendColors = [
     ...charts.groupedColumnLine.column,
     charts.groupedColumnLine.line,

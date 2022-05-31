@@ -1,7 +1,7 @@
 import React from 'react';
 import { DualAxes } from '@ant-design/plots';
 
-import ChartTheme from '../../../../../Themes/chart'
+import { useTheme } from '../../../../../Themes/theme';
 import GroupedColumnLineLegend from './GroupedColumnLineLegend';
 import styles from './index.module.scss';
 
@@ -12,7 +12,8 @@ function GroupedColumnLine({
   showLegend = true,
   legendLabels,
 }) {
-  const chartColors = ChartTheme.groupedColumnLine;
+  const { charts } = useTheme();
+  const chartColors = charts.groupedColumnLine
   const config = {
     data, // []
     xField: xField, // string || string[]

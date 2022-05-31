@@ -5258,15 +5258,13 @@ const GROUPED_COLUMN_DATA = [
 
 function Charts() {
   const theme = useTheme();
-  const heatmapColor = theme.charts.heatgraph.range;
-  const groupedColumnLineColor = theme.charts.groupedColumnLine;
 
   const heatMapGraphs = useMemo(
     () => ({
-      downloads: <HeatMap data={HEATMAP_DOWNLOAD_DATA} color={heatmapColor} />,
-      upload: <HeatMap data={HEATMAP_UPLOAD_DATA} color={heatmapColor} />,
-      deletion: <HeatMap data={HEATMAP_DELETE_DATA} color={heatmapColor} />,
-      copy: <HeatMap data={HEATMAP_COPY_DATA} color={heatmapColor} />,
+      downloads: <HeatMap data={HEATMAP_DOWNLOAD_DATA} />,
+      upload: <HeatMap data={HEATMAP_UPLOAD_DATA} />,
+      deletion: <HeatMap data={HEATMAP_DELETE_DATA} />,
+      copy: <HeatMap data={HEATMAP_COPY_DATA} />,
     }),
     [],
   ); // dependency is state value for API call
@@ -5335,7 +5333,7 @@ function Charts() {
           <h4 className={styles['graphs__title']}>My Project File Activity</h4>
           <TabSwitcher
             contentMap={heatMapGraphs}
-            activeTabStyles={{ backgroundColor: heatmapColor[2] }}
+            activeTabStyles={{ backgroundColor: theme.charts.heatgraph.range[2] }}
           />
         </div>
       </div>
