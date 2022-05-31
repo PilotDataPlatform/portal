@@ -12,11 +12,7 @@ import {
   currentBrowser,
   toFixedNumber,
 } from './common';
-import {
-  useCurrentProject,
-  withCurrentProject,
-  getCurrentProject,
-} from './useCurrentProject';
+import { useCurrentProject, withCurrentProject } from './useCurrentProject';
 import { usePrevious } from './usePrevious';
 import { useIsMount } from './useIsMount';
 import { validateTag } from './validateTag';
@@ -52,7 +48,6 @@ export {
   withCurrentProject,
   sleep,
   getFileSize,
-  getCurrentProject,
   useIsMount,
   validateTag,
   formatRole,

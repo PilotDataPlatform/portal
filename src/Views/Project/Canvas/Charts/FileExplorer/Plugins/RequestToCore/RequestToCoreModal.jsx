@@ -12,7 +12,7 @@ import CoreDirTree from '../Copy2Core/CoreDirTree';
 import { requestToCoreAPI } from '../../../../../../../APIs/index';
 import {
   fileNameOrPathDisplay,
-  getCurrentProject,
+  useCurrentProject,
 } from '../../../../../../../Utility';
 import i18n from '../../../../../../../i18n';
 import styles from './index.module.scss';
@@ -29,10 +29,9 @@ const RequestToCoreModal = (props) => {
   const [step2SelectDisabled, setStep2SelectDisabled] = useState(false);
   const [btnLoading, setBtnLoading] = useState(false);
   const [requestNote, setRequestNote] = useState('');
-  const { datasetId } = useParams();
   const [form] = Form.useForm();
   const userName = useSelector((state) => state.username);
-  const currentProject = getCurrentProject(datasetId);
+  const [currentProject] = useCurrentProject();
   const entityGeids = selectedRows.map((el) => el.geid);
   const sourceFolderGeid = orderRouting[orderRouting.length - 1].globalEntityId;
 

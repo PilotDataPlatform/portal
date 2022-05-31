@@ -41,7 +41,6 @@ const { Option } = Select;
 const GreenRoomUploader = ({
   isShown: visible,
   cancel,
-  datasetId,
   fetch: fetchTree,
   panelKey,
 }) => {
@@ -266,7 +265,7 @@ const GreenRoomUploader = ({
           <Form.Item
             name="dataset"
             label="Project"
-            initialValue={datasetId && parseInt(datasetId)}
+            initialValue={currentDataset && currentDataset.id}
             rules={[
               {
                 required: true,
@@ -279,13 +278,12 @@ const GreenRoomUploader = ({
               onChange={(value) => {
                 console.log(value);
               }}
-              //disabled={datasetId !== undefined}
               style={{ width: '100%' }}
               className={styles.inputBorder}
             >
               {containersPermission &&
                 containersPermission.map((item) => (
-                  <Option key={item.id} value={parseInt(item.id)}>
+                  <Option key={item.id} value={item.id}>
                     {item.name}
                   </Option>
                 ))}

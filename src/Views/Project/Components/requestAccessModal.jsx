@@ -16,8 +16,7 @@ const RequestAccessModal = (props) => {
   const [connectGuacamole, setConnectGuacamole] = useState(false);
   const [connectSuperSet, setConnectSuperSet] = useState(false);
 
-  let currentProject = useCurrentProject();
-  currentProject = currentProject[0];
+  let [currentProject] = useCurrentProject();
 
   useEffect(() => {
     const getUserGeid = async () => {

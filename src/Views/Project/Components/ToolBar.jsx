@@ -49,19 +49,14 @@ const ToolBar = ({
   const adminPermission =
     role === 'admin' ||
     _.some(containersPermission, (item) => {
-      return (
-        parseInt(item.id) === parseInt(params.datasetId) &&
-        item.permission === 'admin'
-      );
+      return item.code === params.projectCode && item.permission === 'admin';
     });
   const collaboratorPermission = _.some(containersPermission, (item) => {
     return (
-      parseInt(item.id) === parseInt(params.datasetId) &&
-      item.permission === 'collaborator'
+      item.code === params.projectCode && item.permission === 'collaborator'
     );
   });
-  let currentProject = useCurrentProject();
-  currentProject = currentProject[0];
+  let [currentProject] = useCurrentProject();
   const projectCode = currentProject?.code;
 
   const getWorkbenchInformation = async () => {
@@ -157,7 +152,7 @@ const ToolBar = ({
 
     getResourceRequests();
     requestToCorePendingCheck();
-  }, [params.datasetId]);
+  }, [params.projectCode]);
 
   const superSet = (
     platFormRole,
@@ -484,7 +479,6 @@ const ToolBar = ({
         cancel={() => {
           toggleModal(false);
         }}
-        datasetId={parseInt(params.datasetId)}
       />
       <RequestAccessModal
         showRequestModal={showRequestModal}

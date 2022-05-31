@@ -14,7 +14,6 @@ const { Content } = Layout;
 function Search(props) {
   const dispatch = useDispatch();
   const { t } = useTranslation(['formErrorMessages']);
-  let { datasetId } = useParams();
   const [conditions, setConditions] = useState([]);
   const [searchConditions, setSearchConditions] = useState([]);
   const [files, setFiles] = useState([]);
