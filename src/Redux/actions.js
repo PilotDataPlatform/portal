@@ -28,7 +28,7 @@ import {
   UPDATE_DOWNLOAD_ITEM,
   SET_DOWNLOAD_LIST,
   SET_CURRENT_PROJECT_PROFILE,
-  SET_CURRENT_PROJECT_MANIFEST,
+  SET_CURRENT_PROJECT_SYSTEM_TAGS,
   SET_CURRENT_PROJECT_TREE,
   SET_CURRENT_PROJECT_TREE_VFOLDER,
   SET_CURRENT_PROJECT_TREE_GREEN_ROOM,
@@ -237,8 +237,8 @@ export const setCurrentProjectProfile = (profile) => ({
   payload: profile,
 });
 
-export const setCurrentProjectManifest = (manifest) => ({
-  type: SET_CURRENT_PROJECT_MANIFEST,
+export const setCurrentProjectSystemTags = (manifest) => ({
+  type: SET_CURRENT_PROJECT_SYSTEM_TAGS,
   payload: manifest,
 });
 

@@ -12,11 +12,7 @@ import {
   AddDatasetCreator,
   setCurrentProjectProfile,
 } from '../../../Redux/actions';
-import {
-  getChildrenDataset,
-  getProjectInfoAPI,
-  getUsersOnDatasetAPI,
-} from '../../../APIs';
+import { getUsersOnDatasetAPI } from '../../../APIs';
 import { namespace, ErrorMessager } from '../../../ErrorMessages';
 import { withCurrentProject } from '../../../Utility';
 
@@ -107,13 +103,6 @@ class Canvas extends Component {
     this.setState({ currentUser: this.props.username });
     this.fetchDatasetInfo();
     this.updatePermision();
-
-    // getProjectInfoAPI(this.props.datasetId).then((res) => {
-    //   if (res.status === 200 && res.data && res.data.code === 200) {
-    //     const profile = res.data.result;
-    //     this.props.setCurrentProjectProfile(profile);
-    //   }
-    // });
 
     window.setTimeout(() => {
       window.dispatchEvent(new Event('resize'));

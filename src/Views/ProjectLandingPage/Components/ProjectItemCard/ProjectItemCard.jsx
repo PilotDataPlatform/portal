@@ -336,7 +336,6 @@ function ProjectItemCard({ item, currentRole, platformRole }) {
       return tagsContent;
     }
   };
-  console.log(item);
   const avatar = item.imageUrl ? (
     <Avatar
       shape="circle"

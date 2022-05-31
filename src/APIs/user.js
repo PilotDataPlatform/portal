@@ -33,9 +33,8 @@ function getUsersOnDatasetAPI(projectGeid, params) {
 
 function getUserOnProjectAPI(projectGeid, data) {
   return axios({
-    url: `/v1/containers/${projectGeid}/users/query`,
-    method: 'POST',
-    data: objectKeysToSnakeCase(data),
+    url: `/v1/containers/${projectGeid}/users`,
+    params: objectKeysToSnakeCase(data),
   });
 }
 

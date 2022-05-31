@@ -40,9 +40,7 @@ function NewProjectPanel({
 }) {
   const cancelAxios = { cancelFunction: () => {} };
   const [form] = Form.useForm();
-  const onFinish = () => {};
   const [submitting, toggleSubmitting] = useState(false);
-  const [description, setDescription] = useState('');
   const [imgURL, setImgURL] = useState('');
   const [discoverable, setDiscoverable] = useState(true);
   const { t } = useTranslation(['tooltips', 'success', 'formErrorMessages']);
@@ -56,7 +54,6 @@ function NewProjectPanel({
   };
 
   const onDescriptionChange = (e) => {
-    setDescription(e.target.value);
     form.setFieldsValue({ description: e.target.value });
   };
 
@@ -109,19 +106,18 @@ function NewProjectPanel({
     }
 
     if (values.description) values.description = trimString(values.description);
-
-    createProjectAPI(
-      {
-        name: _.trimStart(values.name),
-        code: values.code,
-        tags: values.tags,
-        discoverable: discoverable,
-        type: 'project',
-        icon: imgURL,
-        description: values.description,
-      },
-      cancelAxios,
-    )
+    const params = {
+      name: _.trimStart(values.name),
+      code: values.code,
+      tags: values.tags,
+      discoverable: discoverable,
+      type: 'project',
+      description: values.description,
+    };
+    if (imgURL) {
+      params['icon'] = imgURL;
+    }
+    createProjectAPI(params, cancelAxios)
       .then(async (res) => {
         toggleSubmitting(false);
         const {
@@ -370,7 +366,10 @@ function NewProjectPanel({
                       await getDatasetByCode(value);
                       return Promise.reject('The project code is taken');
                     } catch (err) {
-                      if (err.response.status === 404) {
+                      if (
+                        err.response.status === 404 ||
+                        err.response.status === 500
+                      ) {
                         return Promise.resolve();
                       } else {
                         return Promise.reject(

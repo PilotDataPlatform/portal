@@ -1023,7 +1023,7 @@ function RawTable(props) {
             !reFreshing && fetchData();
           }}
           currentRouting={currentRouting}
-          projectCode={currentDataset.code}
+          projectCode={currentDataset?.code}
           uploader={props.username}
           panelKey={panelKey}
         />
