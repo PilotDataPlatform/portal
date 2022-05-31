@@ -48,13 +48,13 @@ import GreenRoomUploader from '../../../Components/GreenRoomUploader';
 import FilesTable from './FilesTable';
 import styles from './index.module.scss';
 import {
-  getCurrentProject,
   getFileSize,
   timeConvert,
   checkIsVirtualFolder,
   checkUserHomeFolder,
   checkRootFolder,
   checkGreenAndCore,
+  useCurrentProject,
 } from '../../../../../Utility';
 import { setSuccessNum } from '../../../../../Redux/actions';
 import LineageGraph from './LineageGraph';
@@ -119,7 +119,7 @@ function RawTable(props) {
   // const [tableLoading, setTableLoading] = useState(false);
 
   const sessionId = tokenManager.getCookie('sessionId');
-  const currentDataset = getCurrentProject(props.projectId);
+  const [currentDataset] = useCurrentProject();
   const projectActivePanel = useSelector(
     (state) => state.project && state.project.tree && state.project.tree.active,
   );
@@ -1559,7 +1559,6 @@ function RawTable(props) {
         cancel={() => {
           toggleModal(false);
         }}
-        datasetId={parseInt(props.projectId)}
         panelKey={panelKey}
       />
       <FileBasicsModal

@@ -190,10 +190,7 @@ class Teams extends Component {
   };
 
   restoreUser = (record, action) => {
-    const { datasetId } = this.props.match.params;
-    const projectCode = this.props.containersPermission.find(
-      (el) => el.id === parseInt(datasetId),
-    )?.code;
+    const { projectCode } = this.props.match.params;
     const { email } = record;
     const username = record.name;
     const inList = this.state.recordInProcess.find((item) => item === email);
@@ -360,13 +357,12 @@ class Teams extends Component {
 
   render() {
     const username = this.props.username;
+    const { projectCode } = this.props.match.params;
     const projectAdmin =
       this.props.containersPermission &&
       this.props.containersPermission.some(
-        (el) =>
-          el.id === Number(this.props.datasetId) && el.permission === 'admin',
+        (el) => el.code === projectCode && el.permission === 'admin',
       );
-    const projectName = this.props.currentProject?.name;
     let role = this.props.currentProject?.permission;
     const menu = (record, role) => (
       <Menu id="teams_role_dropdown">
@@ -541,21 +537,6 @@ class Teams extends Component {
         },
       },
     ];
-    /* eslint-enable */
-    const routes = [
-      {
-        path: '/landing',
-        breadcrumbName: 'Projects',
-      },
-      {
-        path: `/project/${this.props.match.params.datasetId}/canvas`,
-        breadcrumbName: projectName,
-      },
-      {
-        path: 'second',
-        breadcrumbName: 'Members',
-      },
-    ];
 
     function itemRender(route, params, routes, paths) {
       const index = routes.indexOf(route);
@@ -631,7 +612,6 @@ class Teams extends Component {
                   </TabPane>
                   <TabPane tab="Invitations" key="invitations">
                     <InvitationTable
-                      projectId={parseInt(this.props.datasetId)}
                       currentProject={this.props.currentProject}
                       tableKey="projectInvitations"
                     />
@@ -657,7 +637,6 @@ class Teams extends Component {
           </Row>
         </Content>
         <AddUserModal
-          datasetId={this.props.match.params.datasetId}
           closeAddUserModal={this.closeAddUserModal}
           isAddUserModalShown={this.state.isAddUserModalShown}
           getUsers={this.getUsers}

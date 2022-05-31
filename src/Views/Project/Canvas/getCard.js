@@ -31,7 +31,6 @@ const getcard = (card, data, actions, state, handleExpand) => {
       const onExpand = () =>
         handleExpand(
           React.cloneElement(<FileStatModal />, {
-            datasetId: state.currentDataset,
             currentUser: state.currentUser,
             isAdmin: state.currentRole === 'admin',
           }),

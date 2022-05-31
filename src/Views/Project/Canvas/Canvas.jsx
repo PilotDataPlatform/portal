@@ -67,10 +67,10 @@ const defaultLayout = {
 class Canvas extends Component {
   constructor(props) {
     super(props);
-    const datasetId = this.findStudyId();
+    const datasetCode = this.findStudyId();
     this.state = {
       children: [],
-      currentDataset: datasetId,
+      currentDataset: datasetCode,
       loading: false,
       filter: {},
       modalVisible: false, //large chart modal
@@ -87,7 +87,6 @@ class Canvas extends Component {
       uploader: false,
       currentRole: '',
       currentProject: '',
-      dataSetId: '',
       projectUsersInfo: '',
       pageHeaderExpand: false,
       modalWidth: '95vw',
@@ -134,7 +133,6 @@ class Canvas extends Component {
       this.setState(
         {
           currentProject,
-          dataSetId: currentProject.id,
         },
         () => {
           if (this.state.currentRole === 'admin') {
@@ -414,7 +412,6 @@ class Canvas extends Component {
                                 this.state,
                                 this.handleExpand,
                               )}
-                              datasetId={this.state.currentDataset}
                               currentUser={this.props.username}
                               isAdmin={currentRole === 'admin'}
                             />

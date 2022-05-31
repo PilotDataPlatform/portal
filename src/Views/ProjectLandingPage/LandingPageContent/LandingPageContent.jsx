@@ -54,7 +54,6 @@ class LandingPageContent extends Component {
       isLoading: true,
       activeTab: initPane,
       uploader: false,
-      datasetId: null,
       sortby: 'created_at',
       order: 'desc',
       pageSize: 10,
@@ -213,7 +212,6 @@ class LandingPageContent extends Component {
   showUploaderModal = (id) => {
     this.setState({
       uploader: true,
-      datasetId: id,
     });
   };
 

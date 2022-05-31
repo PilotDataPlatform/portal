@@ -4,7 +4,7 @@ import { Button, message } from 'antd';
 import { RocketOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { getCurrentProject } from '../../../../../Utility';
+import { useCurrentProject } from '../../../../../Utility';
 import { getWorkbenchInfo } from '../../../../../APIs';
 import WorkbenchModal from './workbenchModal';
 import moment from 'moment-timezone';
@@ -152,8 +152,7 @@ const WorkBench = (props) => {
   });
   const [showModal, setShowModal] = useState(false);
   const [workbench, setWorkbench] = useState('');
-  const datasetId = props.match.params.datasetId;
-  const currentProject = getCurrentProject(datasetId);
+  const [currentProject] = useCurrentProject();
 
   const getWorkbenchInformation = async () => {
     try {
@@ -198,7 +197,7 @@ const WorkBench = (props) => {
           deployed: false,
         });
       }
-    }catch(error) {
+    } catch (error) {
       message.error(t('errormessages:projectWorkench.getWorkbench.default.0'));
     }
   };

@@ -408,7 +408,7 @@ class AppHeader extends Component {
           >
             Support
           </Menu.Item>
-          {this.props.match.params.datasetId && (
+          {this.props.match.params.projectCode && (
             <Menu.Item style={{ float: 'right', padding: 0, marginTop: '4px' }}>
               <FilePanel
                 className={styles.filePanel}
