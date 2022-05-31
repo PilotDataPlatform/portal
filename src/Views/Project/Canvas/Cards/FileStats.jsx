@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Col, Card } from 'antd';
 import {
   HomeOutlined,
   PaperClipOutlined,
@@ -11,38 +10,16 @@ import { useSelector } from 'react-redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import styles from './index.module.scss';
+import { useCurrentProject } from '../../../../Utility';
 
 function FileStats(props) {
   const [greenRoomCount, setGreenRoomCount] = useState(0);
   const [coreCount, setCoreCount] = useState(0);
-  // const [uploadCount, setUploadCount] = useState(0);
-  // const [downloadCount, setDownloadCount] = useState(0);
-  // const [copyCount, setCopyCount] = useState(0);
-
-  const {
-    match: {
-      params: { datasetId },
-    },
-  } = props;
-
-  const checkTimeForToday = (timeStamp) => {
-    return (
-      moment().startOf('day').unix() < timeStamp &&
-      moment().endOf('day').unix() > timeStamp
-    );
-  };
-
-  const projectInfo = useSelector((state) => state.project);
-
-  const currentDataset = projectInfo.profile;
-
-  const currentPermission =
-    props.containersPermission &&
-    props.containersPermission.find((el) => el.id === parseInt(datasetId));
+  const [currentProject] = useCurrentProject();
 
   useEffect(() => {
-    if (currentDataset) {
-      projectFileCountTotal(currentDataset.globalEntityId, {
+    if (currentProject) {
+      projectFileCountTotal(currentProject.globalEntityId, {
         start_date: moment().startOf('day').unix(),
         end_date: moment().endOf('day').unix(),
       }).then((res) => {
@@ -57,9 +34,9 @@ function FileStats(props) {
         }
       });
     }
-  }, [currentDataset, props.successNum]);
+  }, [currentProject, props.successNum]);
 
-  return currentDataset ? (
+  return currentProject ? (
     <div style={{ flexDirection: 'column', display: 'flex' }}>
       <div className={styles.shortcut}>
         <span className={styles.iconColumn}>

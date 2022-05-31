@@ -102,16 +102,15 @@ class Teams extends Component {
         pageSize: this.state.pageSize,
         orderBy: this.state.orderBy || 'time_created',
         orderType: this.state.order,
-        // startParams: this.state.searchFilters,
       };
 
-      /*       if (
+      if (
         Object.keys(this.state.searchFilters) &&
         Object.keys(this.state.searchFilters).length > 0
-      ){
-        data["username"] = this.state.searchFilters["name"];
-        data['email'] = this.state.searchFilters["email"];
-      } */
+      ) {
+        data['username'] = this.state.searchFilters['name'];
+        data['email'] = this.state.searchFilters['email'];
+      }
     }
     this.props
       .getUserOnProjectAPI(this.props.currentProject.globalEntityId, data)

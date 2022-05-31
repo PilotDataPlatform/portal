@@ -79,7 +79,7 @@ class LandingPageContent extends Component {
       });
       listUsersContainersPermission(this.props.username, {
         ...params,
-        query: filters,
+        ...filters,
       })
         .then((res) => {
           let { results, total } = res.data;
@@ -116,7 +116,7 @@ class LandingPageContent extends Component {
       });
       listUsersContainersPermission(this.props.username, {
         ...params,
-        query: filters,
+        ...filters,
       })
         .then((res) => {
           let { results, total } = res.data;
@@ -368,31 +368,22 @@ class LandingPageContent extends Component {
       page: 0,
       page_size: 10,
     };
-
-    let params4All = { ...params };
-    params4All = { ...params4All, ...filters };
-
-    if (Object.keys(filters) && Object.keys(filters).length)
-      params['query'] = filters;
-
+    const paramsNew = { ...params, ...filters };
     if (filters['date']) {
       filters['date'][0] = moment(filters['date'][0]).startOf('day');
       filters['date'][1] = moment(filters['date'][1]).endOf('day');
 
-      params['query']['create_time_start'] = filters['date'][0].unix();
-      params['query']['create_time_end'] = filters['date'][1].unix();
+      paramsNew['create_time_start'] = filters['date'][0].unix();
+      paramsNew['create_time_end'] = filters['date'][1].unix();
 
-      params4All['create_time_start'] = filters['date'][0].unix();
-      params4All['create_time_end'] = filters['date'][1].unix();
-
-      delete params['query']['date'];
-      delete params4All['date'];
+      delete paramsNew['date'];
     }
+
     this.setState({
       myProjectsLoading: true,
       allProjectsLoading: true,
     });
-    listUsersContainersPermission(this.props.username, params)
+    listUsersContainersPermission(this.props.username, paramsNew)
       .then((res) => {
         const { results, total } = res.data;
         this.setState({
@@ -408,7 +399,7 @@ class LandingPageContent extends Component {
           )}`,
         );
       });
-    getDatasetsAPI(params4All).then((res) => {
+    getDatasetsAPI(paramsNew).then((res) => {
       const { code, result, total } = res.data;
 
       if (code === 200) {

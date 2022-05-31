@@ -17,14 +17,10 @@ import {
 import {
   setContainersPermissionCreator,
   setCurrentProjectProfile,
-  setCurrentProjectManifest,
+  setCurrentProjectSystemTags,
   triggerEvent,
 } from '../../../../Redux/actions';
-import {
-  getProjectInfoAPI,
-  getUsersOnDatasetAPI,
-  getAdminsOnDatasetAPI,
-} from '../../../../APIs';
+import { getUsersOnDatasetAPI, getAdminsOnDatasetAPI } from '../../../../APIs';
 import { connect } from 'react-redux';
 import {
   withCurrentProject,
@@ -41,7 +37,7 @@ class CanvasPageHeader extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      projectUsersInfo: '',
+      projectUsersInfo: null,
       currentRole: '',
       pageHeaderExpand: false,
       userListOnDataset: null,
@@ -62,21 +58,33 @@ class CanvasPageHeader extends Component {
     }
   };
   loadAdmin = async () => {
-    const users = await getAdminsOnDatasetAPI(
-      this.props.currentProject.globalEntityId,
-    );
-    const userList = objectKeysToCamelCase(users.data.result);
-    this.setState({
-      userListOnDataset: userList,
-    });
+    try {
+      const users = await getAdminsOnDatasetAPI(
+        this.props.currentProject.globalEntityId,
+      );
+      const userList = objectKeysToCamelCase(users.data.result);
+      this.setState({
+        userListOnDataset: userList,
+      });
+    } catch (e) {
+      this.setState({
+        userListOnDataset: null,
+      });
+    }
   };
 
   getProjectUsersInfo = async () => {
-    const usersInfo = await getUsersOnDatasetAPI(
-      this.props.currentProject.globalEntityId,
-    );
-    if (usersInfo && usersInfo.data && usersInfo.data.result) {
-      this.setState({ projectUsersInfo: usersInfo.data.result });
+    try {
+      const usersInfo = await getUsersOnDatasetAPI(
+        this.props.currentProject.globalEntityId,
+      );
+      if (usersInfo && usersInfo.data && usersInfo.data.result) {
+        this.setState({ projectUsersInfo: usersInfo.data.result });
+      }
+    } catch (e) {
+      this.setState({
+        projectUsersInfo: null,
+      });
     }
   };
   componentDidMount() {
@@ -501,7 +509,7 @@ export default connect(
     role: state.role,
   }),
   {
-    setCurrentProjectManifest,
+    setCurrentProjectSystemTags,
     setCurrentProjectProfile,
     triggerEvent,
   },

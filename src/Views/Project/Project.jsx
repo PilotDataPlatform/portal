@@ -19,7 +19,7 @@ import roleMap from '../../Utility/project-roles.json';
 import {
   triggerEvent,
   setCurrentProjectProfile,
-  setCurrentProjectManifest,
+  setCurrentProjectSystemTags,
   setFolderRouting,
   clearCurrentProject,
 } from '../../Redux/actions';
@@ -53,7 +53,7 @@ function Project(props) {
           const currentDataset = res.data.result;
           dispatch(setCurrentProjectProfile(currentDataset));
           dispatch(
-            setCurrentProjectManifest({
+            setCurrentProjectSystemTags({
               tags: currentDataset && currentDataset.systemTags,
             }),
           );

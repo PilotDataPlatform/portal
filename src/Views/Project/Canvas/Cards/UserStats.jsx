@@ -9,13 +9,14 @@ import {
 } from '@ant-design/icons';
 
 import { getAuditLogsApi } from '../../../../APIs';
-
+import { useCurrentProject } from '../../../../Utility';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import moment from 'moment';
 import styles from './index.module.scss';
 
 import CustomPagination from '../../../../Components/Pagination/Pagination';
+import currentProject from '../../../../Redux/Reducers/currentProject';
 
 function UserStats(props) {
   const [uploadLog, setUploadLog] = useState([]);
@@ -25,44 +26,25 @@ function UserStats(props) {
   const [pageInfo, setPageInfo] = useState({ page_size: 10, cur: 1 });
   const [total, setTotal] = useState(0);
 
-  const {
-    match: {
-      params: { datasetId },
-    },
-  } = props;
+  const [currentProject] = useCurrentProject();
 
   const format = 'YYYY-MM-DD h:mm:ss';
 
-  const checkTimeForToday = (timeStamp) => {
-    return (
-      moment().startOf('day').unix() < timeStamp &&
-      moment().endOf('day').unix() > timeStamp
-    );
-  };
-
-  const projectInfo = useSelector((state) => state.project);
-
-  const currentDataset = projectInfo.profile;
-
-  const currentPermission =
-    props.containersPermission &&
-    props.containersPermission.find((el) => el.id === parseInt(datasetId));
-
   useEffect(() => {
-    if (currentDataset) {
+    if (currentProject) {
       let paginationParams = {
         page_size: pageInfo.page_size,
         page: pageInfo.cur - 1,
       };
       const query = {
-        project_code: currentDataset && currentDataset.code,
+        project_code: currentProject && currentProject.code,
         start_date: moment('19700101', 'YYYYMMDD').unix(),
         end_date: moment().endOf('day').unix(),
         resource: 'file',
       };
 
       getAuditLogsApi(
-        currentDataset.globalEntityId,
+        currentProject.globalEntityId,
         paginationParams,
         query,
       ).then((res) => {
@@ -130,7 +112,7 @@ function UserStats(props) {
         setTotal(total);
       });
     }
-  }, [pageInfo, props.successNum, currentDataset?.code]);
+  }, [pageInfo, props.successNum, currentProject?.code]);
 
   const allFileStreams = [
     ...uploadLog,
