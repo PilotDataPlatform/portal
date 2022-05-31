@@ -206,13 +206,13 @@ function Portal(props) {
   const initApis = async (username) => {
     try {
       const params = {
-        order_by: 'time_created',
+        order_by: 'created_at',
         order_type: 'desc',
         is_all: true,
       };
 
       const {
-        data: { result: containersPermission, role },
+        data: { results: containersPermission, role },
       } = await listUsersContainersPermission(username, params);
       setUserRoleDispatcher(role);
       setContainersPermissionDispatcher(containersPermission);
@@ -339,7 +339,7 @@ function Portal(props) {
     } catch (err) {
       if (err.response) {
         const errorMessager = new ErrorMessager(
-          namespace.common.listAllContainersPermission,
+          namespace.common.listUsersContainersPermission,
         );
         errorMessager.triggerMsg(err.response.status);
       }
@@ -492,7 +492,7 @@ function Portal(props) {
                     let res = protectedRoutes(
                       item.protectedType,
                       keycloak.authenticated,
-                      props.match.params.datasetId,
+                      props.match.params.projectCode,
                       containersPermission,
                       role,
                     );

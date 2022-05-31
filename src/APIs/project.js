@@ -17,15 +17,22 @@ function getUserProjectActivitiesAPI(params) {
  * @returns projects[]
  * @IRDP-432
  */
-function getDatasetsAPI(params = {}) {
+async function getDatasetsAPI(params = {}) {
   if (params['tags']) {
     params['tags'] = JSON.stringify(params['tags']);
   }
-  return serverAxios({
+  const res = await serverAxios({
     url: '/v1/containers/',
     method: 'GET',
     params: objectKeysToSnakeCase(params),
   });
+  if (res.data.result && res.data.result.length) {
+    res.data.result = res.data.result.map((v) => {
+      v.globalEntityId = v.id;
+      return v;
+    });
+  }
+  return res;
 }
 
 /**
@@ -179,22 +186,21 @@ function traverseFoldersContainersAPI(containerId) {
   });
 }
 
-function listAllContainersPermission(username) {
-  return serverAxios({
-    url: `/v1/users/${username}/containers`,
-    maxContentLength: Infinity,
-    maxBodyLength: Infinity,
-  });
-}
-
 async function listUsersContainersPermission(username, data) {
-  return serverAxios({
+  const res = await serverAxios({
     url: `/v1/users/${username}/containers`,
     method: 'POST',
     data,
     maxContentLength: Infinity,
     maxBodyLength: Infinity,
   });
+  if (res.data.results && res.data.results.length) {
+    res.data.results = res.data.results.map((v) => {
+      v.globalEntityId = v.id;
+      return v;
+    });
+  }
+  return res;
 }
 
 function updateDatasetInfoAPI(projectGeid, data) {
@@ -704,7 +710,6 @@ export {
   getPersonalDatasetAPI,
   createPersonalDatasetAPI,
   traverseFoldersContainersAPI,
-  listAllContainersPermission,
   removeUserFromDatasetApi,
   updateDatasetInfoAPI,
   updateDatasetIcon,

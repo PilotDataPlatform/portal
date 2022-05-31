@@ -450,20 +450,20 @@ export default function ErrorMessager(name) {
         message.error(`${i18n.t('errormessages:getDataset.default.0')}`);
       },
     },
-    [namespace.common.listAllContainersPermission]: {
+    [namespace.common.listUsersContainersPermission]: {
       401: (err, params) => {
         message.error(
-          `${i18n.t('errormessages:listAllContainersPermission.401.0')}`,
+          `${i18n.t('errormessages:listUsersContainersPermission.401.0')}`,
         );
       },
       404: (err, params) => {
         message.error(
-          `${i18n.t('errormessages:listAllContainersPermission.404.0')}`,
+          `${i18n.t('errormessages:listUsersContainersPermission.404.0')}`,
         );
       },
       default: (err, params) => {
         message.error(
-          `${i18n.t('errormessages:listAllContainersPermission.default.0')}`,
+          `${i18n.t('errormessages:listUsersContainersPermission.default.0')}`,
         );
       },
     },

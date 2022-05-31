@@ -312,7 +312,7 @@
       "Something went wrong while trying to load projects list, please try again later."
     ]
   },
-  "listAllContainersPermission": {
+  "listUsersContainersPermission": {
     "401": ["You are not authorized to edit user roles on this project."],
     "404": [
       "The project could not be found while trying to set container permissions, please try again later."
@@ -536,7 +536,7 @@
         "has already been invited to the {{ PLATFORM }}, you can see their invitation status in the Invitations tab."
       ]
     },
-     "invited": {
+    "invited": {
       "title": "User already invited",
       "content": [
         "A user with the email address",

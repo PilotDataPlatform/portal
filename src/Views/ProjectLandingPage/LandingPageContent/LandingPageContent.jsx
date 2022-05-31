@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { listUsersContainersPermission, getDatasetsAPI } from '../../../APIs';
+import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import {
   List,
@@ -15,6 +16,7 @@ import {
   Input,
   Select,
   DatePicker,
+  message,
 } from 'antd';
 import {
   UpOutlined,
@@ -53,7 +55,7 @@ class LandingPageContent extends Component {
       activeTab: initPane,
       uploader: false,
       datasetId: null,
-      sortby: 'time_created',
+      sortby: 'created_at',
       order: 'desc',
       pageSize: 10,
       page: 0,
@@ -78,16 +80,22 @@ class LandingPageContent extends Component {
       listUsersContainersPermission(this.props.username, {
         ...params,
         query: filters,
-      }).then((res) => {
-        let { code, result, total } = res.data;
-        if (code === 200) {
+      })
+        .then((res) => {
+          let { results, total } = res.data;
           this.setState({
-            myProjects: result,
+            myProjects: results,
             myNums: total,
             myProjectsLoading: false,
           });
-        }
-      });
+        })
+        .catch((err) => {
+          message.error(
+            `${this.props.t(
+              'errormessages:listUsersContainersPermission.default.0',
+            )}`,
+          );
+        });
     } else if (selectedTab === 'All Projects') {
       getDatasetsAPI({ ...params, ...filters }).then((res) => {
         const { code, result, total } = res.data;
@@ -109,16 +117,22 @@ class LandingPageContent extends Component {
       listUsersContainersPermission(this.props.username, {
         ...params,
         query: filters,
-      }).then((res) => {
-        let { code, result, total } = res.data;
-        if (code === 200) {
+      })
+        .then((res) => {
+          let { results, total } = res.data;
           this.setState({
-            myProjects: result,
+            myProjects: results,
             myNums: total,
             myProjectsLoading: false,
           });
-        }
-      });
+        })
+        .catch((err) => {
+          message.error(
+            `${this.props.t(
+              'errormessages:listUsersContainersPermission.default.0',
+            )}`,
+          );
+        });
       getDatasetsAPI({ ...params, ...filters }).then((res) => {
         const { code, result, total } = res.data;
 
@@ -133,7 +147,7 @@ class LandingPageContent extends Component {
     this.refresh();
 
     const params = {
-      order_by: 'time_created',
+      order_by: 'created_at',
       order_type: 'desc',
       page: 0,
       page_size: 10,
@@ -146,7 +160,7 @@ class LandingPageContent extends Component {
     if (prevProps.datasetList !== this.props.datasetList) {
       this.refresh();
       const params = {
-        order_by: 'time_created',
+        order_by: 'created_at',
         order_type: 'desc',
         page: 0,
         page_size: 10,
@@ -279,11 +293,11 @@ class LandingPageContent extends Component {
 
     switch (sortRule) {
       case 'time-desc':
-        params['order_by'] = 'time_created';
+        params['order_by'] = 'created_at';
         params['order_type'] = 'desc';
         break;
       case 'time-asc':
-        params['order_by'] = 'time_created';
+        params['order_by'] = 'created_at';
         params['order_type'] = 'asc';
 
         break;
@@ -349,7 +363,7 @@ class LandingPageContent extends Component {
 
     this.setState({ filters });
     const params = {
-      order_by: this.state.orderBy ? this.state.orderBy : 'time_created',
+      order_by: this.state.orderBy ? this.state.orderBy : 'created_at',
       order_type: this.state.order ? this.state.order : 'desc',
       page: 0,
       page_size: 10,
@@ -378,17 +392,22 @@ class LandingPageContent extends Component {
       myProjectsLoading: true,
       allProjectsLoading: true,
     });
-    listUsersContainersPermission(this.props.username, params).then((res) => {
-      const { code, result, total } = res.data;
-
-      if (code === 200) {
+    listUsersContainersPermission(this.props.username, params)
+      .then((res) => {
+        const { results, total } = res.data;
         this.setState({
-          myProjects: result,
+          myProjects: results,
           myNums: total,
           myProjectsLoading: false,
         });
-      }
-    });
+      })
+      .catch((err) => {
+        message.error(
+          `${this.props.t(
+            'errormessages:listUsersContainersPermission.default.0',
+          )}`,
+        );
+      });
     getDatasetsAPI(params4All).then((res) => {
       const { code, result, total } = res.data;
 
@@ -593,7 +612,7 @@ class LandingPageContent extends Component {
                     });
 
                     const params = {
-                      order_by: 'time_created',
+                      order_by: 'created_at',
                       order_type: 'desc',
                       page: 0,
                       page_size: this.state.pageSize,
@@ -725,4 +744,4 @@ export default connect(
     setDatasetCreator,
     setCurrentProjectProfile,
   },
-)(LandingPageContent);
+)(withTranslation('errormessages')(LandingPageContent));

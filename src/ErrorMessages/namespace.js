@@ -1,7 +1,7 @@
 const common = {
   // for app.js
   getDataset: 'common.getDataset',
-  listAllContainersPermission: 'common.listAllContainersPermission',
+  listUsersContainersPermission: 'common.listUsersContainersPermission',
   emailFileList: 'common.emailFileList',
   logout: 'common.logout',
 };

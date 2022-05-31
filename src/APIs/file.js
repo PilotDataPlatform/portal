@@ -287,7 +287,7 @@ async function getFiles(
   const archived = panelKey.toLowerCase().includes('trash') ? true : false;
   filters['archived'] = archived;
   filters = _.omit(filters, ['tags']);
-  let url = `/v2/files/meta`;
+  let url = `/v1/files/meta`;
   // if (checkGreenAndCore(panelKey) && geid === null) {
   //   url = `/v1/files/entity/meta/`;
   // } else {
