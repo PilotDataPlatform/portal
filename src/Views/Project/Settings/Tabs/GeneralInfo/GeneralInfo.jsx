@@ -125,9 +125,9 @@ function GeneralInfo(props) {
             {editMode ? (
               <Switch
                 style={{ marginTop: 8 }}
-                checked={datasetUpdate.discoverable}
+                checked={datasetUpdate.isDiscoverable}
                 onChange={(checked, e) =>
-                  updateDatasetInfo('discoverable', checked)
+                  updateDatasetInfo('isDiscoverable', checked)
                 }
                 checkedChildren="on"
                 unCheckedChildren="off"
@@ -136,7 +136,7 @@ function GeneralInfo(props) {
               <Switch
                 style={{ marginTop: 8 }}
                 disabled={true}
-                checked={datasetInfo.discoverable}
+                checked={datasetInfo.isDiscoverable}
                 checkedChildren="on"
                 unCheckedChildren="off"
               />
@@ -152,7 +152,7 @@ function GeneralInfo(props) {
                 float: 'right',
               }}
             >
-              {!datasetUpdate?.discoverable && 'Not '}discoverable by all
+              {!datasetUpdate?.isDiscoverable && 'Not '}discoverable by all
               platform users
             </div>
           </div>

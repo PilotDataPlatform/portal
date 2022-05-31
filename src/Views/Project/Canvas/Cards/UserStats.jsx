@@ -9,7 +9,7 @@ import {
 } from '@ant-design/icons';
 
 import { getAuditLogsApi } from '../../../../APIs';
-
+import { useCurrentProject } from '../../../../Utility';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import moment from 'moment';
@@ -20,44 +20,25 @@ function UserStats(props) {
   const [downloadLog, setDownloadLog] = useState([]);
   const [copyLogs, setCopyLogs] = useState([]);
   const [deleteLogs, setDeleteLogs] = useState([]);
-  const {
-    match: {
-      params: { datasetId },
-    },
-  } = props;
+  const [currentProject] = useCurrentProject();
 
   const format = 'YYYY-MM-DD h:mm:ss';
 
-  const checkTimeForToday = (timeStamp) => {
-    return (
-      moment().startOf('day').unix() < timeStamp &&
-      moment().endOf('day').unix() > timeStamp
-    );
-  };
-
-  const projectInfo = useSelector((state) => state.project);
-
-  const currentDataset = projectInfo.profile;
-
-  const currentPermission =
-    props.containersPermission &&
-    props.containersPermission.find((el) => el.id === parseInt(datasetId));
-
   useEffect(() => {
-    if (currentDataset) {
+    if (currentProject) {
       const paginationParams = {
         page_size: 10,
         page: 0,
       };
       const query = {
-        project_code: currentDataset && currentDataset.code,
+        project_code: currentProject && currentProject.code,
         start_date: moment('19700101', 'YYYYMMDD').unix(),
         end_date: moment().endOf('day').unix(),
         resource: 'file',
       };
 
       getAuditLogsApi(
-        currentDataset.globalEntityId,
+        currentProject.globalEntityId,
         paginationParams,
         query,
       ).then((res) => {
@@ -123,7 +104,7 @@ function UserStats(props) {
         setDownloadLog(downloadList);
       });
     }
-  }, [props.successNum, currentDataset?.code]);
+  }, [props.successNum, currentProject?.code]);
 
   const allFileStreams = [
     ...uploadLog,
