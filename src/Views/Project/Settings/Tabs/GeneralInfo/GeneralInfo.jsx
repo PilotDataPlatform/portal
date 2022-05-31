@@ -83,8 +83,8 @@ function GeneralInfo(props) {
             display: 'inline-block',
           }}
         >
-          {datasetInfo.icon ? (
-            <Avatar src={datasetInfo.icon} size={65}></Avatar>
+          {datasetInfo.imageUrl ? (
+            <Avatar src={datasetInfo.imageUrl} size={65}></Avatar>
           ) : (
             <Avatar
               style={{ backgroundColor: '#13c2c2', verticalAlign: 'middle' }}

@@ -1,6 +1,5 @@
 import Keycloak from 'keycloak-js';
 import { DEFAULT_AUTH_URL, KEYCLOAK_REALM, DOMAIN } from '../../config';
-console.log(DOMAIN);
 
 const keycloakConfig = {
   realm: KEYCLOAK_REALM,

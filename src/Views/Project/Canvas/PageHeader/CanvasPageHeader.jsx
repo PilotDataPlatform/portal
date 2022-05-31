@@ -26,7 +26,11 @@ import {
   getAdminsOnDatasetAPI,
 } from '../../../../APIs';
 import { connect } from 'react-redux';
-import { withCurrentProject, objectKeysToCamelCase, getTags } from '../../../../Utility';
+import {
+  withCurrentProject,
+  objectKeysToCamelCase,
+  getTags,
+} from '../../../../Utility';
 import userRoles from '../../../../Utility/project-roles.json';
 import styles from '../index.module.scss';
 import { PLATFORM } from '../../../../config';
@@ -375,10 +379,10 @@ class CanvasPageHeader extends Component {
       }
     };
 
-    const avatar = currentProject.icon ? (
+    const avatar = currentProject.imageUrl ? (
       <Avatar
         shape="circle"
-        src={currentProject.icon && currentProject.icon}
+        src={currentProject.imageUrl && currentProject.imageUrl}
         style={{ border: '#003262', borderWidth: '1px', width: 36, height: 36 }}
       ></Avatar>
     ) : (

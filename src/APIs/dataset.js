@@ -1,4 +1,4 @@
-import { serverAxios, serverAxiosNoIntercept, downloadGRAxios } from './config';
+import { serverAxios, serverAxiosNoIntercept, downloadGRAxios, downloadCoreAxios } from './config';
 import { keycloak } from '../Service/keycloak';
 import _ from 'lodash';
 import { API_PATH, DOWNLOAD_PREFIX_V2, DOWNLOAD_PREFIX_V1 } from '../config';
@@ -106,6 +106,9 @@ export function listDatasetFiles(
 }
 
 const mapBasicInfo = (result) => {
+  function parseToObj(str) {
+    return typeof str === 'string' ? JSON.parse(str.replaceAll(`'`, `"`)) : str;
+  }
   const {
     timeCreated,
     creator,
@@ -120,18 +123,17 @@ const mapBasicInfo = (result) => {
     size,
     totalFiles,
     description,
-    globalEntityId: geid,
+    id: geid,
     tags,
   } = result;
-
   const basicInfo = {
     timeCreated,
     creator,
     title,
-    authors,
+    authors: parseToObj(authors),
     type,
-    modality,
-    collectionMethod,
+    modality: parseToObj(modality),
+    collectionMethod: parseToObj(collectionMethod),
     license,
     code,
     projectGeid,
@@ -139,7 +141,7 @@ const mapBasicInfo = (result) => {
     totalFiles,
     description,
     geid,
-    tags,
+    tags: parseToObj(tags),
   };
 
   return basicInfo;
@@ -198,7 +200,7 @@ export function getDatasetActivityLogsAPI(datasetGeid, params) {
 }
 
 export function downloadDataset(datasetCode, operator, sessionId) {
-  return serverAxios({
+  return downloadCoreAxios({
     url: `/v2/dataset/download/pre`,
     method: 'POST',
     headers: { 'Refresh-token': keycloak.refreshToken },

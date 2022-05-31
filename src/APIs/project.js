@@ -12,25 +12,27 @@ function getUserProjectActivitiesAPI(params) {
 }
 
 /**
- * Get all the datasets
+ * Get all the projects
  *
- * @returns dataset[]
+ * @returns projects[]
  * @IRDP-432
  */
-function getDatasetsAPI(params = {}) {
-  // return serverAxios({
-  //   url: '/v1/containers/',
-  //   method: 'GET',
-  //   params: objectKeysToSnakeCase(params),
-  // });
+async function getDatasetsAPI(params = {}) {
   if (params['tags']) {
     params['tags'] = JSON.stringify(params['tags']);
   }
-  return serverAxios({
+  const res = await serverAxios({
     url: '/v1/containers/',
     method: 'GET',
     params: objectKeysToSnakeCase(params),
   });
+  if (res.data.result && res.data.result.length) {
+    res.data.result = res.data.result.map((v) => {
+      v.globalEntityId = v.id;
+      return v;
+    });
+  }
+  return res;
 }
 
 /**
@@ -184,22 +186,21 @@ function traverseFoldersContainersAPI(containerId) {
   });
 }
 
-function listAllContainersPermission(username) {
-  return serverAxios({
-    url: `/v1/users/${username}/containers`,
-    maxContentLength: Infinity,
-    maxBodyLength: Infinity,
-  });
-}
-
 async function listUsersContainersPermission(username, data) {
-  return serverAxios({
+  const res = await serverAxios({
     url: `/v1/users/${username}/containers`,
     method: 'POST',
     data,
     maxContentLength: Infinity,
     maxBodyLength: Infinity,
   });
+  if (res.data.results && res.data.results.length) {
+    res.data.results = res.data.results.map((v) => {
+      v.globalEntityId = v.id;
+      return v;
+    });
+  }
+  return res;
 }
 
 function updateDatasetInfoAPI(projectGeid, data) {
@@ -288,11 +289,21 @@ function loadDeletedFiles(projectCode, sessionId) {
   });
 }
 
-function getProjectManifestList(projectCode) {
-  return serverAxios({
+async function getProjectManifestList(projectCode) {
+  const res = await serverAxios({
     url: `/v1/data/manifests?project_code=${projectCode}`,
     method: 'GET',
   });
+  res.data.result = res.data.result.map((v) => {
+    v.attributes = v.attributes.map((attr) => {
+      if (attr.type === 'multiple_choice') {
+        attr.value = attr.options.join(',');
+      }
+      return attr;
+    });
+    return v;
+  });
+  return res;
 }
 
 /**
@@ -432,7 +443,6 @@ function attachManifest(projectCode, manifestId, geids, attributes) {
 
 function getProjectInfoAPI(projectGeid) {
   return serverAxios({
-    // url: `http://localhost:5000/v1/project/${projectId}`,
     url: `/v1/project/${projectGeid}`,
     method: 'GET',
   });
@@ -643,18 +653,6 @@ function addToDatasetsAPI(datasetGeid, payLoad) {
   });
 }
 
-function listFilesInRequestApi(requestGeid, projectCode, query, partial) {
-  return serverAxios({
-    url: `/v1/request/copy/${projectCode}/files`,
-    method: 'GET',
-    params: {
-      request_geid: requestGeid,
-      query,
-      partial,
-    },
-  });
-}
-
 function listAllCopyRequests(projectCode, status, pageNo, pageSize) {
   return serverAxios({
     url: `/v1/request/copy/${projectCode}`,
@@ -704,7 +702,6 @@ export {
   getPersonalDatasetAPI,
   createPersonalDatasetAPI,
   traverseFoldersContainersAPI,
-  listAllContainersPermission,
   removeUserFromDatasetApi,
   updateDatasetInfoAPI,
   updateDatasetIcon,
@@ -741,7 +738,6 @@ export {
   createSubFolderApi,
   addToDatasetsAPI,
   requestToCoreAPI,
-  listFilesInRequestApi,
   listAllCopyRequests,
   requestPendingFilesAPI,
   requestCompleteAPI,

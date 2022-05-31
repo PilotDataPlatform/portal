@@ -99,11 +99,11 @@ This api is made from the teams table when clicking remove from teams table
 
 ## getDataset
 
-This api is used after login to get all the datasets
+This api is used after login to get all the projects
 
-## listAllContainersPermission
+## listUsersContainersPermission
 
-this api is used to get the users permission for datasets
+this api is used to get the users permission for projects
 
 ## contactUsAPI
 
@@ -114,13 +114,17 @@ This api is used when submitting the from the support panel
 This api is called when inviting user from platform users management
 
 ## editManifestOnFile
+
 edit a single file's manifest attribute on Canvas
 
 ## updateFileManifestAPI
+
 This api is called when updating a single file's manifest attribute on Canvas
 
 ## importExportManifest
+
 Import and export manifest as a json for a project
 
 ## importManifestAPI
+
 This api is called when importing a manifest from json

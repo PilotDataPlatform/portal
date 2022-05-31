@@ -450,7 +450,10 @@ function RawTable(props) {
           dataIndex: 'fileSize',
           key: 'fileSize',
           render: (text, record) => {
-            if ([undefined, null].includes(record.fileSize)) {
+            if (
+              record.nodeLabel.indexOf('Folder') !== -1 ||
+              [undefined, null].includes(record.fileSize)
+            ) {
               return '';
             }
             return getFileSize(text);
@@ -780,7 +783,6 @@ function RawTable(props) {
     downloadFilesAPI(
       props.projectId,
       files,
-      'project',
       props.appendDownloadListCreator,
       currentDataset.code,
       props.username,
@@ -1598,17 +1600,20 @@ function RawTable(props) {
     const geidsList = res.data.result.entities
       .filter((e) => e.attributes?.nodeLabel?.indexOf('Folder') === -1)
       .map((e) => e.geid);
-    let attrsMap = await getFileManifestAttrs(geidsList);
-    attrsMap = attrsMap.data.result;
-    res.data.result.entities = res.data.result.entities.map((entity) => {
-      return {
-        ...entity,
-        manifest:
-          attrsMap[entity.geid] && attrsMap[entity.geid].length
-            ? attrsMap[entity.geid]
-            : null,
-      };
-    });
+    if (geidsList && geidsList.length) {
+      let attrsMap = await getFileManifestAttrs(geidsList);
+      attrsMap = attrsMap.data.result;
+      res.data.result.entities = res.data.result.entities.map((entity) => {
+        return {
+          ...entity,
+          manifest:
+            attrsMap[entity.geid] && attrsMap[entity.geid].length
+              ? attrsMap[entity.geid]
+              : null,
+        };
+      });
+    }
+
     return res;
   }
 }

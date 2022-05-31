@@ -1,19 +1,19 @@
 export default function protectedRoutes(
   type,
   isLogin,
-  datasetId,
+  projectCode,
   permissions,
   platformRole,
 ) {
-  let containerId = datasetId;
+  let containerCode = projectCode;
   isLogin = Boolean(isLogin);
 
   switch (type) {
     case 'isLogin': {
       if (!isLogin) return isLogin;
-      if (containerId && permissions) {
+      if (containerCode && permissions) {
         let p = permissions.find((i) => {
-          return i.id === parseInt(containerId);
+          return i.code === projectCode;
         });
         if (!p) {
           if (platformRole === 'admin') {
@@ -29,18 +29,18 @@ export default function protectedRoutes(
       return !isLogin;
     }
     case 'projectAdmin': {
-      if (containerId && permissions) {
+      if (containerCode && permissions) {
         let p = permissions.filter((i) => {
-          return i.id === parseInt(containerId);
+          return i.code === projectCode;
         });
         return p[0] && p[0]['permission'] === 'admin' ? true : '403';
       }
       return true;
     }
     case 'projectMember': {
-      if (containerId && permissions) {
+      if (containerCode && permissions) {
         let p = permissions.filter((i) => {
-          return i.id === parseInt(containerId);
+          return i.code === projectCode;
         });
         return (p[0] && p[0]['permission'] === 'admin') ||
           (p[0] && p[0]['permission'])
@@ -50,9 +50,9 @@ export default function protectedRoutes(
       return true;
     }
     case 'projectCollab': {
-      if (containerId && permissions) {
+      if (containerCode && permissions) {
         let p = permissions.filter((i) => {
-          return i.id === parseInt(containerId);
+          return i.code === projectCode;
         });
         return (p[0] && p[0]['permission'] === 'admin') ||
           (p[0] && p[0]['permission'] === 'collaborator')

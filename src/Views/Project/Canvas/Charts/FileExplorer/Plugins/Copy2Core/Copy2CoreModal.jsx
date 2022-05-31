@@ -154,7 +154,7 @@ const Copy2CoreModal = ({
           {
             targets: files.map((file) => {
               return {
-                geid: file.geid,
+                id: file.geid,
               };
             }),
             destination: destination.geid,
@@ -237,7 +237,7 @@ const Copy2CoreModal = ({
                 );
                 if (fileNameRecord) {
                   return {
-                    geid: file.geid,
+                    id: file.geid,
                     rename: fileNameRecord['name'],
                   };
                 }
@@ -245,7 +245,7 @@ const Copy2CoreModal = ({
               } else {
                 // files do not need to be renamed
                 return {
-                  geid: file.geid,
+                  id: file.geid,
                 };
               }
             })

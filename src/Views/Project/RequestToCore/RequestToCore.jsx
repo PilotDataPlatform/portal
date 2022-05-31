@@ -117,7 +117,7 @@ const RequestToCore = (props) => {
     try {
       setBtnLoading(true);
       const res = await requestPendingFilesAPI(
-        activeReq.projectGeid,
+        activeReq.projectCode,
         activeReq.id,
       );
       if (res.data.result.pendingCount > 0) {

@@ -18,7 +18,7 @@ import {
   setIsLoginCreator,
   setUsernameCreator,
 } from '../../Redux/actions';
-import { getDatasetsAPI, listAllContainersPermission } from '../../APIs';
+import { getDatasetsAPI, listUsersContainersPermission } from '../../APIs';
 import CoookiesDrawer from './CookiesDrawer';
 import { login as keycloakLogin } from '../../Utility';
 import { tokenManager } from '../../Service/tokenManager';
@@ -146,14 +146,18 @@ class Auth extends Component {
     try {
       const {
         data: { result: containersPermission },
-      } = await listAllContainersPermission(username);
+      } = await listUsersContainersPermission(username, {
+        is_all: true,
+        order_by: 'created_at',
+        order_type: 'desc',
+      });
       this.props.setUserRoleCreator(containersPermission.role);
       this.props.setContainersPermissionCreator(
         containersPermission.permission,
       );
     } catch (err) {
       const errorMessager = new ErrorMessager(
-        namespace.common.listAllContainersPermission,
+        namespace.common.listUsersContainersPermission,
       );
       errorMessager.triggerMsg(err.response && err.response.status);
     }

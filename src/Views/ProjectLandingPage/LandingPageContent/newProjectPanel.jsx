@@ -125,14 +125,14 @@ function NewProjectPanel({
       .then(async (res) => {
         toggleSubmitting(false);
         const {
-          data: { result: containersPermission },
+          data: { results: containersPermission },
         } = await listUsersContainersPermission(username, {
-          order_by: 'time_created',
+          order_by: 'created_at',
           order_type: 'desc',
           is_all: true,
         });
         setContainersPermissionCreator(containersPermission);
-        UpdateDatasetCreator(res.data.result, 'All Projects');
+        UpdateDatasetCreator(res.data.results, 'All Projects');
         message.success(t('success:createProject'));
         onToggleCreateNewProject();
       })

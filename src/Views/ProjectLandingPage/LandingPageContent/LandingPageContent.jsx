@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { listUsersContainersPermission, getDatasetsAPI } from '../../../APIs';
+import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import {
   List,
@@ -15,6 +16,7 @@ import {
   Input,
   Select,
   DatePicker,
+  message,
 } from 'antd';
 import {
   UpOutlined,
@@ -53,7 +55,7 @@ class LandingPageContent extends Component {
       activeTab: initPane,
       uploader: false,
       datasetId: null,
-      sortby: 'time_created',
+      sortby: 'created_at',
       order: 'desc',
       pageSize: 10,
       page: 0,
@@ -78,16 +80,22 @@ class LandingPageContent extends Component {
       listUsersContainersPermission(this.props.username, {
         ...params,
         query: filters,
-      }).then((res) => {
-        let { code, result, total } = res.data;
-        if (code === 200) {
+      })
+        .then((res) => {
+          let { results, total } = res.data;
           this.setState({
-            myProjects: result,
+            myProjects: results,
             myNums: total,
             myProjectsLoading: false,
           });
-        }
-      });
+        })
+        .catch((err) => {
+          message.error(
+            `${this.props.t(
+              'errormessages:listUsersContainersPermission.default.0',
+            )}`,
+          );
+        });
     } else if (selectedTab === 'All Projects') {
       getDatasetsAPI({ ...params, ...filters }).then((res) => {
         const { code, result, total } = res.data;
@@ -109,16 +117,22 @@ class LandingPageContent extends Component {
       listUsersContainersPermission(this.props.username, {
         ...params,
         query: filters,
-      }).then((res) => {
-        let { code, result, total } = res.data;
-        if (code === 200) {
+      })
+        .then((res) => {
+          let { results, total } = res.data;
           this.setState({
-            myProjects: result,
+            myProjects: results,
             myNums: total,
             myProjectsLoading: false,
           });
-        }
-      });
+        })
+        .catch((err) => {
+          message.error(
+            `${this.props.t(
+              'errormessages:listUsersContainersPermission.default.0',
+            )}`,
+          );
+        });
       getDatasetsAPI({ ...params, ...filters }).then((res) => {
         const { code, result, total } = res.data;
 
@@ -133,7 +147,7 @@ class LandingPageContent extends Component {
     this.refresh();
 
     const params = {
-      order_by: 'time_created',
+      order_by: 'created_at',
       order_type: 'desc',
       page: 0,
       page_size: 10,
@@ -146,7 +160,7 @@ class LandingPageContent extends Component {
     if (prevProps.datasetList !== this.props.datasetList) {
       this.refresh();
       const params = {
-        order_by: 'time_created',
+        order_by: 'created_at',
         order_type: 'desc',
         page: 0,
         page_size: 10,
@@ -279,11 +293,11 @@ class LandingPageContent extends Component {
 
     switch (sortRule) {
       case 'time-desc':
-        params['order_by'] = 'time_created';
+        params['order_by'] = 'created_at';
         params['order_type'] = 'desc';
         break;
       case 'time-asc':
-        params['order_by'] = 'time_created';
+        params['order_by'] = 'created_at';
         params['order_type'] = 'asc';
 
         break;
@@ -323,16 +337,6 @@ class LandingPageContent extends Component {
 
   tagsData = ['My Projects', 'All Projects'];
 
-  getProjectsWithTab = ({ selectedTab, ...rest }) => {
-    const { projectNoPermission, projectPermission } = rest;
-
-    if (selectedTab === 'All Projects') {
-      return _.uniq([...projectPermission, ...projectNoPermission]);
-    } else if (selectedTab === 'My Projects') {
-      return projectPermission;
-    } //And more
-  };
-
   onTabChange = (tabkey) => {
     this.setState({
       selectedTab: tabkey,
@@ -359,7 +363,7 @@ class LandingPageContent extends Component {
 
     this.setState({ filters });
     const params = {
-      order_by: this.state.orderBy ? this.state.orderBy : 'time_created',
+      order_by: this.state.orderBy ? this.state.orderBy : 'created_at',
       order_type: this.state.order ? this.state.order : 'desc',
       page: 0,
       page_size: 10,
@@ -388,17 +392,22 @@ class LandingPageContent extends Component {
       myProjectsLoading: true,
       allProjectsLoading: true,
     });
-    listUsersContainersPermission(this.props.username, params).then((res) => {
-      const { code, result, total } = res.data;
-
-      if (code === 200) {
+    listUsersContainersPermission(this.props.username, params)
+      .then((res) => {
+        const { results, total } = res.data;
         this.setState({
-          myProjects: result,
+          myProjects: results,
           myNums: total,
           myProjectsLoading: false,
         });
-      }
-    });
+      })
+      .catch((err) => {
+        message.error(
+          `${this.props.t(
+            'errormessages:listUsersContainersPermission.default.0',
+          )}`,
+        );
+      });
     getDatasetsAPI(params4All).then((res) => {
       const { code, result, total } = res.data;
 
@@ -496,191 +505,6 @@ class LandingPageContent extends Component {
 
     if (Object.keys(filters))
       formRef.current && formRef.current.setFieldsValue(filters);
-
-    let projectNoPermission = [];
-
-    let projectPermission = [];
-
-    /* eslint-disable */
-    let filtersNameText = null;
-    let filtersCodeText = null;
-    let filtersDateText = null;
-    let filtersTagText = null;
-    let filtersDescriptionText = null;
-    /* eslint-enable */
-
-    if (
-      this.props.datasetList &&
-      this.props.datasetList[0] &&
-      this.props.datasetList[0]['datasetList'] &&
-      this.props.containersPermission
-    ) {
-      this.props.datasetList[0]['datasetList'].forEach((dataset) => {
-        const current = moment();
-        this.props.containersPermission.forEach((contPremission) => {
-          let isNew = false;
-          if (moment(dataset['timeCreated']).add(3, 'hours') > current)
-            isNew = true;
-          dataset.isNew = isNew;
-          if (contPremission['containerId'] === dataset.id) {
-            projectPermission.push(dataset);
-          } else if (dataset.discoverable) {
-            projectNoPermission.push(dataset);
-          } //if discoverable if true and user don't have access, it will be abandomed //Will remove once backend removes the undiscoverable projects
-        });
-      });
-
-      if (this.props.containersPermission.length === 0) {
-        this.props.datasetList[0]['datasetList'].forEach((dataset) => {
-          if (dataset.discoverable) projectNoPermission.push(dataset);
-        });
-      }
-    }
-    projectNoPermission = _.uniq([...projectNoPermission]);
-    projectNoPermission = _.orderBy(projectNoPermission, [sortby], [order]);
-
-    projectPermission = _.uniq([...projectPermission]);
-    projectPermission = _.orderBy(projectPermission, [sortby], [order]);
-
-    for (const key in filters) {
-      if (filters[key]) {
-        if (key === 'name') {
-          projectPermission = projectPermission.filter((el) =>
-            el.name.toLowerCase().includes(filters['name'].toLowerCase()),
-          );
-          projectNoPermission = projectNoPermission.filter((el) =>
-            el.name.toLowerCase().includes(filters['name'].toLowerCase()),
-          );
-
-          filtersNameText = (
-            <div>
-              <span>Project Name:</span>
-              <Tag style={{ marginLeft: 5 }} color="cyan" key="name">
-                {filters[key]}
-              </Tag>
-            </div>
-          );
-        }
-
-        if (key === 'code') {
-          projectPermission = projectPermission.filter((el) =>
-            el.code.toLowerCase().includes(filters['code'].toLowerCase()),
-          );
-          projectNoPermission = projectNoPermission.filter((el) =>
-            el.code.toLowerCase().includes(filters['code'].toLowerCase()),
-          );
-
-          filtersCodeText = (
-            <div>
-              <span>Project Code:</span>
-              <Tag style={{ marginLeft: 5 }} color="cyan" key="code">
-                {filters[key]}
-              </Tag>
-            </div>
-          );
-        }
-
-        if (key === 'date') {
-          const dateRange = filters['date'];
-          projectPermission = projectPermission.filter((el) => {
-            return (
-              moment(convertUTCDateToLocalDate(el.timeCreated)) >=
-                moment(dateRange[0]).startOf('day') &&
-              moment(convertUTCDateToLocalDate(el.timeCreated)) <=
-                moment(dateRange[1]).endOf('day')
-            );
-          });
-          projectNoPermission = projectNoPermission.filter((el) => {
-            return (
-              moment(convertUTCDateToLocalDate(el.timeCreated)) >=
-                moment(dateRange[0]).startOf('day') &&
-              moment(convertUTCDateToLocalDate(el.timeCreated)) <=
-                moment(dateRange[1]).endOf('day')
-            );
-          });
-
-          filtersDateText = (
-            <div>
-              <span>Created Time:</span>
-              <Tag
-                style={{ marginLeft: 5 }}
-                color="cyan"
-                key="date"
-                // closable
-                // onClose={() => this.onTagClose('date', null)}
-              >
-                {`${moment(dateRange[0]).format('YYYY-MM-DD')} - ${moment(
-                  dateRange[1],
-                ).format('YYYY-MM-DD')}`}
-              </Tag>
-            </div>
-          );
-        }
-
-        if (key === 'tags') {
-          const tags = filters['tags'];
-
-          if (tags.length > 0) {
-            filtersTagText = (
-              <div>
-                <span>Tags:</span>
-                {tags.map((tag) => (
-                  <Tag style={{ marginLeft: 5 }} color="cyan" key={tag}>
-                    {tag}
-                  </Tag>
-                ))}
-              </div>
-            );
-            // eslint-disable-next-line
-            projectPermission = projectPermission.filter((el) => {
-              let isMatch = false;
-
-              for (const tag of tags) {
-                isMatch = el.tags && el.tags.some((item) => item === tag);
-
-                if (isMatch) return true;
-              }
-            });
-            // eslint-disable-next-line
-            projectNoPermission = projectNoPermission.filter((el) => {
-              let isMatch = false;
-
-              for (const tag of tags) {
-                isMatch = el.tags && el.tags.some((item) => item === tag);
-
-                if (isMatch) return true;
-              }
-            });
-          }
-        }
-
-        if (key === 'description') {
-          projectPermission = projectPermission.filter(
-            (el) =>
-              el.description &&
-              el.description
-                .toLowerCase()
-                .includes(filters['description'].toLowerCase()),
-          );
-          projectNoPermission = projectNoPermission.filter(
-            (el) =>
-              el.description &&
-              el.description
-                .toLowerCase()
-                .includes(filters['description'].toLowerCase()),
-          );
-
-          filtersDescriptionText = (
-            <div>
-              <span>description:</span>
-              <Tag style={{ marginLeft: 5 }} color="cyan" key="description">
-                {filters[key]}
-              </Tag>
-            </div>
-          );
-        }
-      }
-    }
 
     //Get projects based on selctedTags
 
@@ -788,7 +612,7 @@ class LandingPageContent extends Component {
                     });
 
                     const params = {
-                      order_by: 'time_created',
+                      order_by: 'created_at',
                       order_type: 'desc',
                       page: 0,
                       page_size: this.state.pageSize,
@@ -920,4 +744,4 @@ export default connect(
     setDatasetCreator,
     setCurrentProjectProfile,
   },
-)(LandingPageContent);
+)(withTranslation('errormessages')(LandingPageContent));

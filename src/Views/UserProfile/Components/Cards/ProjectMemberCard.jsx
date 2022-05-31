@@ -14,7 +14,7 @@ const ProjectMemberCard = ({ username, role }) => {
     const getUserProjects = async () => {
       try {
         const params = {
-          order_by: 'time_created',
+          order_by: 'created_at',
           order_type: 'desc',
           is_all: true,
         };
@@ -22,7 +22,7 @@ const ProjectMemberCard = ({ username, role }) => {
           username,
           params,
         );
-        setUserProjects(projectsResponse.data.result);
+        setUserProjects(projectsResponse.data.results);
       } catch {
         message.error(
           "Something went wrong while retrieving user's project membership data",

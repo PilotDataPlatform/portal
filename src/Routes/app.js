@@ -3,7 +3,7 @@ import LandingPageLayout from '../Views/ProjectLandingPage/LandingPageLayout';
 import Project from '../Views/Project/Project';
 import DatasetLandingPage from '../Views/DatasetLandingPage/DatasetLandingPage';
 import Dataset from '../Views/Dataset/Dataset';
-import UserProfile from '../Views/UserProfile/UserProfile'
+import UserProfile from '../Views/UserProfile/UserProfile';
 
 import ErrorPage from '../Views/ErrorPage/ErrorPage';
 import General404Page from '../Views/GeneralPage/General404Page';
@@ -18,7 +18,7 @@ const authedRoutes = [
     protectedType: 'isLogin',
   },
   {
-    path: '/project/:datasetId',
+    path: '/project/:projectCode',
     component: Project,
     protectedType: 'isLogin',
   },

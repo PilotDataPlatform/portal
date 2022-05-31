@@ -88,36 +88,8 @@ const getcard = (card, data, actions, state, handleExpand) => {
       break;
     }
     case 'charts':
-      res = <Charts projectRole={state.currentProjectRole}/>;
+      res = <Charts projectRole={state.currentProjectRole} />;
       break;
-    case 'datasets': {
-      res = (size, exportState, onExportClick) => (
-        <List
-          className="demo-loadmore-list"
-          itemLayout="horizontal"
-          dataSource={state.children}
-          renderItem={(item) => (
-            <List.Item
-              actions={[
-                // eslint-disable-next-line
-                <a key="list-loadmore-edit">
-                  <Link to={`/project/${parseInt(item.id)}/canvas`}>Enter</Link>{' '}
-                </a>,
-                // eslint-disable-next-line
-                <a key="list-loadmore-more">More</a>,
-              ]}
-            >
-              <List.Item.Meta
-                title={<a href="https://ant.design">{item.dataset_name}</a>}
-                description={'the description of ' + item.dataset_name}
-              />
-              {/*  <div>content</div> */}
-            </List.Item>
-          )}
-        />
-      );
-      break;
-    }
     default:
       break;
   }
