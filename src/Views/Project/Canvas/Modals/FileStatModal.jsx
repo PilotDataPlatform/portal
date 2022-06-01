@@ -19,7 +19,11 @@ import { useTranslation } from 'react-i18next';
 import styles from './index.module.scss';
 
 import { getUsersOnDatasetAPI, getAuditLogsApi } from '../../../../APIs';
-import { objectKeysToCamelCase, timeConvert } from '../../../../Utility';
+import {
+  objectKeysToCamelCase,
+  timeConvert,
+  useCurrentProject,
+} from '../../../../Utility';
 
 import CustomPagination from '../../../../Components/Pagination/Pagination';
 
@@ -45,19 +49,15 @@ const FileStatModal = (props) => {
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [isSearching, setIsSearching] = useState(false);
-  const { datasetId, currentUser, isAdmin } = props;
+  const { currentUser, isAdmin } = props;
   const containersPermission = useSelector(
     (state) => state.containersPermission,
   );
   const username = useSelector((state) => state.username);
-
-  const currentDataset = _.find(
-    containersPermission,
-    (d) => d.id === parseInt(datasetId),
-  );
+  const [currentDataset] = useCurrentProject();
 
   const currentPermission = containersPermission.find(
-    (el) => el.id === parseInt(datasetId),
+    (el) => el.code === currentDataset.code,
   );
 
   useEffect(() => {
@@ -131,7 +131,7 @@ const FileStatModal = (props) => {
         setLoading(false);
       });
     }
-  }, [datasetId]);
+  }, [currentDataset]);
 
   const userOptions = users.map((el) => (
     <Option value={el.name}>{el.name}</Option>

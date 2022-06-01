@@ -366,10 +366,7 @@ function NewProjectPanel({
                       await getDatasetByCode(value);
                       return Promise.reject('The project code is taken');
                     } catch (err) {
-                      if (
-                        err.response.status === 404 ||
-                        err.response.status === 500
-                      ) {
+                      if (err.response.status === 404) {
                         return Promise.resolve();
                       } else {
                         return Promise.reject(

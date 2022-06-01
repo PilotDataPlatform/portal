@@ -1,8 +1,8 @@
 import React from 'react';
-import FilesContent from './FilesContent'
-import {withRouter} from 'react-router-dom'
-function FileExplorer({match:{params}}){
-    return <FilesContent datasetId={params.datasetId} />
+import FilesContent from './FilesContent';
+import { withRouter } from 'react-router-dom';
+function FileExplorer() {
+  return <FilesContent />;
 }
 
-export default withRouter( FileExplorer);
+export default withRouter(FileExplorer);

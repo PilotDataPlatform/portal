@@ -31,23 +31,4 @@ function withCurrentProject(WrappedComponent) {
   };
 }
 
-/**
- * get the current project in either functional and class component
- * @param {number|string} datasetId
- * @returns {object|undefined} return current project if exist
- */
-function getCurrentProject(datasetId) {
-  if (typeof datasetId !== 'number' && typeof datasetId !== 'string') {
-    throw new Error('parameter datasetId is required');
-  }
-  const { containersPermission } = store.getState();
-  if (!containersPermission || !datasetId) {
-    return undefined;
-  }
-  const currentProject = _.find(containersPermission, (item) => {
-    return parseInt(item.id) === parseInt(datasetId);
-  });
-  return currentProject;
-}
-
-export { useCurrentProject, withCurrentProject, getCurrentProject };
+export { useCurrentProject, withCurrentProject };

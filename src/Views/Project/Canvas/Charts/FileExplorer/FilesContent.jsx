@@ -71,7 +71,6 @@ function getTitle(title) {
 
 let clickLock = false;
 /**
- * props: need datasetId
  *
  * @class FilesContent
  * @extends {Component}

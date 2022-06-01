@@ -14,7 +14,7 @@ import {
 import ToolBar from './Components/ToolBar';
 import { getUserOnProjectAPI, getProjectInfoAPI } from '../../APIs';
 import { connect } from 'react-redux';
-import { protectedRoutes, getCurrentProject } from '../../Utility';
+import { protectedRoutes } from '../../Utility';
 import roleMap from '../../Utility/project-roles.json';
 import {
   triggerEvent,
@@ -111,7 +111,7 @@ function Project(props) {
             key={item.path}
             render={(props) => {
               if (!params.projectCode) {
-                throw new Error(`datasetId undefined`);
+                throw new Error(`projectCode undefined`);
               }
               let res = protectedRoutes(
                 item.protectedType,
@@ -127,7 +127,6 @@ function Project(props) {
               } else {
                 return (
                   <item.component
-                    datasetId={params.datasetId}
                     userListOnDataset={userListOnDataset}
                     containerDetails={containerDetails}
                     getUserOnProjectAPI={getUserOnProjectAPI}

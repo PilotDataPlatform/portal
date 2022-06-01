@@ -32,7 +32,7 @@ function Settings(props) {
   const [datasetInfo, setDatasetInfo] = useState(null);
   const [userListOnDataset, setUserListOnDataset] = useState(null);
   const [activateKey, setActivateKey] = useState('general_info');
-  let { datasetId } = useParams();
+  let { projectCode } = useParams();
   const [datasetUpdate, setDatasetUpdate] = useState(null);
   const curProject = props.currentProject;
 
@@ -145,7 +145,7 @@ function Settings(props) {
       setUserListOnDataset(objectKeysToCamelCase(users.data.result));
     }
     loadProject();
-  }, [datasetId]);
+  }, [projectCode]);
 
   const updateDatasetInfo = (field, value) => {
     if (field === 'tags') {
