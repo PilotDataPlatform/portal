@@ -212,13 +212,14 @@ function updateDatasetInfoAPI(projectGeid, data) {
 }
 
 function updateDatasetIcon(projectGeid, base64Img) {
-  return serverAxios({
-    url: `/v1/containers/${projectGeid}`,
-    method: 'PUT',
-    data: {
-      icon: base64Img,
-    },
-  });
+  if (base64Img && base64Img.split(',').length > 1)
+    return serverAxios({
+      url: `/v1/containers/${projectGeid}`,
+      method: 'PUT',
+      data: {
+        icon: base64Img.split(',')[1],
+      },
+    });
 }
 
 function updateVirtualFolder(
@@ -653,12 +654,19 @@ function addToDatasetsAPI(datasetGeid, payLoad) {
   });
 }
 
-function getDatasetsListingAPI(username, payload) {
-  return serverAxios({
+async function getDatasetsListingAPI(username, payload) {
+  const res = await serverAxios({
     url: `/v1/users/${username}/datasets`,
     method: 'POST',
     data: payload,
   });
+  if (res.data.result && res.data.result.length) {
+    res.data.result = res.data.result.map((v) => {
+      v.globalEntityId = v.id;
+      return v;
+    });
+  }
+  return res;
 }
 
 function listAllCopyRequests(projectCode, status, pageNo, pageSize) {

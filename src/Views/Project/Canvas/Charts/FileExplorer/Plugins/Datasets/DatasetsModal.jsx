@@ -44,7 +44,7 @@ const DatasetsModal = (props) => {
         order_by: 'time_created',
         order_type: 'desc',
         page: 0,
-        page_size: 1000,
+        page_size: 100,
       };
       const res = await getDatasetsListingAPI(userName, payLoad);
       setDataSetsList(res.data.result);
@@ -122,7 +122,6 @@ const DatasetsModal = (props) => {
         );
     }
   };
-
   return (
     <Modal
       className={styles.dataset_modal}
@@ -158,7 +157,7 @@ const DatasetsModal = (props) => {
               >
                 {dataSetsList.length &&
                   dataSetsList.map((el) => {
-                    const optText = `${el.name} - ${el.title}`;
+                    const optText = `${el.code} - ${el.title}`;
                     return (
                       <Option value={el.globalEntityId}>
                         {optText.length > 60 ? (
