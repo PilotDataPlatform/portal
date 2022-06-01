@@ -1,0 +1,20 @@
+.canvas-page-header {
+  &__avatar {
+    border: #003262;
+    border-width: 1px;
+    width: 36px !important;
+    height: 36px !important;
+  }
+
+  &__avatar--file-explorer {
+    composes: canvas-page-header__avatar;
+    width: 23px !important;
+    height: 23px !important;
+
+    :global {
+      .ant-avatar-string {
+        transform: scale(0.8) translate(-50%, -20%) !important;
+      }
+    }
+  }
+}

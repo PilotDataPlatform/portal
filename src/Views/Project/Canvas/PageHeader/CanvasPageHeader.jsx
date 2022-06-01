@@ -176,7 +176,7 @@ class CanvasPageHeader extends Component {
       <div>
         {currentProject.name.length > 40 ? (
           <Tooltip title={currentProject.name}>
-            <div style={{ marginTop: '-4px' }}>
+            <div style={{ lineHeight: '22px' }}>
               <span
                 style={{
                   maxWidth: '100%',
@@ -193,7 +193,7 @@ class CanvasPageHeader extends Component {
             </div>
           </Tooltip>
         ) : (
-          <div style={{ marginTop: '-4px' }}>
+          <div style={{ lineHeight: '22px' }}>
             <span
               style={{
                 maxWidth: '100%',
@@ -209,28 +209,31 @@ class CanvasPageHeader extends Component {
             </span>
           </div>
         )}
-        <div style={{ marginTop: '-12px' }}>
-          <span
-            style={{
-              color: '#595959',
-              fontSize: '12px',
-              fontWeight: 'normal',
-            }}
-          >
-            {`Project Code: ${currentProject.code} / `}
-          </span>
-          {userRole ? (
+        {this.props.variant !== 'fileExplorer' ||
+        this.state.pageHeaderExpand ? (
+          <div style={{ lineHeight: '14px' }}>
             <span
               style={{
-                color: '#818181',
+                color: '#595959',
                 fontSize: '12px',
-                fontWeight: 'lighter',
+                fontWeight: 'normal',
               }}
             >
-              {`Your role is ${userRole}`}
+              {`Project Code: ${currentProject.code} / `}
             </span>
-          ) : null}
-        </div>
+            {userRole ? (
+              <span
+                style={{
+                  color: '#818181',
+                  fontSize: '12px',
+                  fontWeight: 'lighter',
+                }}
+              >
+                {`Your role is ${userRole}`}
+              </span>
+            ) : null}
+          </div>
+        ) : null}
         {currentRole && pageHeaderExpand ? adminsContent : null}
       </div>
     );
@@ -281,7 +284,15 @@ class CanvasPageHeader extends Component {
     );
 
     const tagsContent = (
-      <div style={{ width: '290px', flex: '0 0 290px' }}>
+      <div
+        style={{
+          width: '290px',
+          flex: '0 0 290px',
+          display: 'flex',
+          justifyContent: 'flex-end',
+          alignItems: 'flex-end',
+        }}
+      >
         {currentRole === 'admin' && pageHeaderExpand ? (
           <div
             style={{ marginTop: '2px', textAlign: 'right', marginRight: 44 }}
@@ -387,17 +398,19 @@ class CanvasPageHeader extends Component {
       }
     };
 
+    const avatarClass =
+      this.props.variant === 'fileExplorer'
+        ? styles['canvas-page-header__avatar--file-explorer']
+        : styles['canvas-page-header__avatar'];
+
     const avatar = currentProject.imageUrl ? (
       <Avatar
+        className={avatarClass}
         shape="circle"
         src={currentProject.imageUrl && currentProject.imageUrl}
-        style={{ border: '#003262', borderWidth: '1px', width: 36, height: 36 }}
       ></Avatar>
     ) : (
-      <Avatar
-        shape="circle"
-        style={{ border: '#003262', borderWidth: '1px', width: 36, height: 36 }}
-      >
+      <Avatar shape="circle" className={avatarClass}>
         <span
           style={{
             fontSize: 20,
@@ -411,14 +424,14 @@ class CanvasPageHeader extends Component {
     );
 
     return (
-      <div style={{ margin: '-20px -20px -20px -18px', position: 'relative' }}>
+      <div style={{ position: 'relative' }}>
         <Row>
           <Content
             style={{
               width: '100%',
               backgroundColor: '#FFFFFF',
-              paddingTop: 19,
-              paddingBottom: 13,
+              padding: '12px 0',
+              borderRadius: '9px',
             }}
           >
             <div
@@ -430,11 +443,22 @@ class CanvasPageHeader extends Component {
                 justifyContent: 'space-between',
               }}
             >
-              <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
+              <div
+                style={{
+                  display: 'flex',
+                  flex: 1,
+                  overflow: 'hidden',
+                  alignItems: 'center',
+                }}
+              >
                 <div
                   style={{
-                    padding: '8px 0 0 0',
-                    marginLeft: 8,
+                    alignSelf: 'flex-start',
+                    transform:
+                      this.props.variant === 'fileExplorer' &&
+                      !currentProject.tags?.length
+                        ? 'translateY(4px)'
+                        : 'translateY(6px)',
                   }}
                 >
                   {avatar}
@@ -451,7 +475,6 @@ class CanvasPageHeader extends Component {
                     ghost={true}
                     style={{
                       width: '100%',
-                      height: '100%',
                       padding: '0px 0px 0px 0px',
                     }}
                     title={title}
