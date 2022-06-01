@@ -67,7 +67,7 @@ const DatasetsModal = (props) => {
       payLoad['source_list'] =
         selectedRows.length && selectedRows.map((el) => el.id || el.geid);
       payLoad['operator'] = userName;
-      payLoad['project_geid'] = currentProject.profile.globalEntityId;
+      payLoad['project_geid'] = currentProject.profile.id;
       setBtnLoading(true);
       const res = await addToDatasetsAPI(selectedValue, payLoad);
       if (res.data.result.ignored.length) {

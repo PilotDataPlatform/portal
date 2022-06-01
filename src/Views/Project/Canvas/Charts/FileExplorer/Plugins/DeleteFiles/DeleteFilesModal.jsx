@@ -72,7 +72,7 @@ const DeleteFilesModal = ({
         },
         username,
         FILE_OPERATIONS.DELETE,
-        project.profile.globalEntityId,
+        project.profile.id,
         sessionId,
       );
       if (res.code === 202) {

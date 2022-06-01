@@ -162,7 +162,7 @@ const Copy2CoreModal = ({
           },
           username,
           FILE_OPERATIONS.COPY,
-          project.profile.globalEntityId,
+          project.profile.id,
           sessionId,
         );
       } catch (err) {
@@ -255,7 +255,7 @@ const Copy2CoreModal = ({
         },
         username,
         FILE_OPERATIONS.COPY,
-        project.profile.globalEntityId,
+        project.profile.id,
         sessionId,
       );
 
@@ -540,7 +540,7 @@ const Copy2CoreModal = ({
           destination.geid,
           username,
           FILE_OPERATIONS.COPY,
-          project.profile.globalEntityId,
+          project.profile.id,
           sessionId,
         );
       } catch (err) {
@@ -575,7 +575,7 @@ const Copy2CoreModal = ({
           destination.geid,
           username,
           FILE_OPERATIONS.COPY,
-          project.profile.globalEntityId,
+          project.profile.id,
           sessionId,
         );
       } catch (err) {
