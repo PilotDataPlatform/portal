@@ -15,9 +15,14 @@ const FileExplorerView = ({
 }) => {
   return (
     <div className={styles['fileExplorer__container']}>
-      <CanvasPageHeader variant="fileExplorer"/>
+      <CanvasPageHeader variant="fileExplorer" />
       <div className={styles['fileExplorer__card']}>
-        <BasicCard title="File Explorer" content={<FileExplorer />} />
+        <BasicCard
+          title="File Explorer"
+          content={<FileExplorer />}
+          draggable={false}
+          style={{ minHeight: '835px' }}
+        />
       </div>
     </div>
   );

@@ -27,7 +27,15 @@ export default class BasicCard extends Component {
   };
 
   render() {
-    const { exportable, expandable, content, title, defaultSize } = this.props;
+    const {
+      exportable,
+      expandable,
+      content,
+      title,
+      defaultSize,
+      draggable,
+      style,
+    } = this.props;
     const getTooltip = (text = 'Tooltip goes here') => (
       <Tooltip title={text}>
         <QuestionCircleOutlined
@@ -83,6 +91,7 @@ export default class BasicCard extends Component {
     return (
       <Card
         className={styles.basic}
+        style={style && { ...style }}
         title={title === 'Recent File Stream' ? fileStreamTitle : cardTitle}
         size="small"
         bordered="false"
@@ -98,13 +107,17 @@ export default class BasicCard extends Component {
                 <DownloadOutlined style={{ position: 'static' }} />
               </Button>
             )}
-            <Button
-              type="link"
-              className="dragarea"
-              style={{ paddingRight: '0', paddingLeft: '0' }}
-            >
-              <DragOutlined style={{ position: 'static', fontSize: '15px' }} />
-            </Button>
+            {draggable !== false ? (
+              <Button
+                type="link"
+                className="dragarea"
+                style={{ paddingRight: '0', paddingLeft: '0' }}
+              >
+                <DragOutlined
+                  style={{ position: 'static', fontSize: '15px' }}
+                />
+              </Button>
+            ) : null}
           </div>
         }
       >
