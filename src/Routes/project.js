@@ -4,8 +4,14 @@ import Settings from '../Views/Project/Settings/Settings';
 import Search from '../Views/Project/Search/Search';
 import Announcement from '../Views/Project/Announcement/Announcement';
 import RequestToCore from '../Views/Project/RequestToCore/RequestToCore';
+import FileExplorer from '../Views/Project/FileExplorer/FileExplorer';
 
 const routes = [
+  {
+    path: '/fileExplorer',
+    component: FileExplorer,
+    protectedType: 'projectMember'
+  },
   {
     path: '/canvas',
     component: Canvas,

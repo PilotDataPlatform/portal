@@ -6,6 +6,7 @@ import {
   LoadingOutlined,
   SearchOutlined,
   PullRequestOutlined,
+  CompassOutlined,
 } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
@@ -379,6 +380,12 @@ const ToolBar = ({
               </span>
             )}
             <span>Canvas</span>
+          </Link>
+        </Menu.Item>
+        <Menu.Item key="fileExplorer" onClick={() => toggleIcon('')}>
+          <Link to="fileExplorer">
+            <CompassOutlined />
+            <span>File Explorer</span>
           </Link>
         </Menu.Item>
         <Menu.Item key="search" onClick={() => toggleIcon('')}>
