@@ -333,13 +333,14 @@ function updateFileManifestAPI(geid, attributes) {
   });
 }
 
-function addNewManifest(name, projectCode) {
+function addNewManifest(name, projectCode, attributes) {
   return serverAxios({
     url: `/v1/data/manifests`,
     method: 'POST',
     data: {
       name: name,
       project_code: projectCode,
+      attributes,
     },
   });
 }
@@ -607,7 +608,7 @@ function createSubFolderApi(
   projectGeid,
 ) {
   return serverAxios({
-    url: `/v2/containers/${projectGeid}/folder`,
+    url: `/v1/containers/${projectGeid}/folder`,
     method: 'POST',
     data: {
       folder_name: folderName,

@@ -109,24 +109,25 @@ function CreateManifest(props) {
                 );
                 return;
               }
-              //
               setCreatedLoading(true);
-              const res = await addNewManifest(
-                newManifestName,
-                currentDataset.code,
-              );
-              const manifestId = res.data.result.id;
-              const params = createdAttrs.map((attr) => {
-                return {
-                  name: attr.name,
-                  projectCode: attr.project_code,
-                  type: attr.type,
-                  value: attr.value,
-                  manifestId,
-                  optional: attr.optional,
-                };
+              const attrs = createdAttrs.map((attr) => {
+                if (attr.type === 'multiple_choice') {
+                  return {
+                    name: attr.name,
+                    type: attr.type,
+                    options: attr.value.split(','),
+                    optional: attr.optional,
+                  };
+                }
+                if (attr.type === 'text') {
+                  return {
+                    name: attr.name,
+                    type: attr.type,
+                    optional: attr.optional,
+                  };
+                }
               });
-              await addNewAttrsToManifest(params);
+              await addNewManifest(newManifestName, currentDataset.code, attrs);
               await props.loadManifest();
               setCreatedLoading(false);
               props.setIsCreateManifest(false);
