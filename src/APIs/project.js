@@ -296,6 +296,7 @@ async function getProjectManifestList(projectCode) {
     method: 'GET',
   });
   res.data.result = res.data.result.map((v) => {
+    v.globalEntityId = v.id;
     v.attributes = v.attributes.map((attr) => {
       if (attr.type === 'multiple_choice') {
         attr.value = attr.options.join(',');
@@ -436,7 +437,7 @@ function attachManifest(projectCode, manifestId, geids, attributes) {
     data: {
       project_code: projectCode,
       manifest_id: manifestId,
-      global_entity_id: geids,
+      item_ids: geids,
       attributes: attributes,
       inherit: true,
     },
