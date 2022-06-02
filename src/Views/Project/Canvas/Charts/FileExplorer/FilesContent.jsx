@@ -23,7 +23,6 @@ import {
   EditOutlined,
   CloseOutlined,
   LoadingOutlined,
-  UserOutlined,
 } from '@ant-design/icons';
 import { DataSourceType, PanelKey } from './RawTableValues';
 import CollectionIcon from '../../../../../Components/Icons/Collection';
@@ -34,6 +33,7 @@ import {
 import i18n from '../../../../../i18n';
 import { usePanel } from './usePanel';
 import styles from './index.module.scss';
+import variables from '../../../../../Themes/base.scss';
 import { createHash } from 'crypto';
 import currentProject from '../../../../../Redux/Reducers/currentProject';
 
@@ -100,7 +100,7 @@ function FilesContent(props) {
     {
       title: 'Home',
       key: PanelKey.GREENROOM_HOME,
-      icon: <UserOutlined />,
+      icon: <CompassOutlined style={{ color: variables.primaryColor2 }} />,
     },
   ];
 
@@ -108,7 +108,7 @@ function FilesContent(props) {
     {
       title: 'Home',
       key: PanelKey.CORE_HOME,
-      icon: <UserOutlined />,
+      icon: <CompassOutlined style={{ color: variables.primaryColorLight1 }} />,
     },
   ];
   const firstPane = greenRoomData[0];
@@ -133,7 +133,12 @@ function FilesContent(props) {
         return {
           title: folder.name,
           key: 'vfolder-' + folder.name,
-          icon: <CollectionIcon width={12} style={{ color: '#1b90fe' }} />,
+          icon: (
+            <CollectionIcon
+              width={12}
+              style={{ color: variables.primaryColorLight4 }}
+            />
+          ),
           disabled: false,
           children: null,
           createdTime: folder.timeCreated,
@@ -159,7 +164,12 @@ function FilesContent(props) {
       return {
         title: folder.name,
         key: 'vfolder-' + folder.name,
-        icon: <CollectionIcon width={12} style={{ color: '#1b90fe' }} />,
+        icon: (
+          <CollectionIcon
+            width={12}
+            style={{ color: variables.primaryColorLight4 }}
+          />
+        ),
         disabled: false,
         children: null,
         createdTime: folder.timeCreated,
@@ -463,7 +473,7 @@ function FilesContent(props) {
           style={{
             display: 'flex',
             alignItems: 'center',
-            margin: '3px 0px 0px 33px',
+            margin: '3px 0px 0px 38px',
           }}
         >
           <PlusOutlined
@@ -594,7 +604,10 @@ function FilesContent(props) {
         <div style={{ display: 'flex', marginLeft: '33px' }}>
           <Form onFinish={onCreateCollectionFormFinish}>
             <div style={{ display: 'flex', alignItems: 'baseline' }}>
-              <CollectionIcon width={12} style={{ color: '#1890FF' }} />
+              <CollectionIcon
+                width={12}
+                style={{ color: variables.primaryColorLight4 }}
+              />
               <Form.Item
                 className={styles.create_new_collection}
                 name="newCollectionName"
@@ -697,8 +710,13 @@ function FilesContent(props) {
                   : { padding: '5px 11px' }
               }
             >
-              <strong>
-                <HomeOutlined style={{ marginRight: '10px' }} />
+              <span style={{ fontWeight: 600 }}>
+                <HomeOutlined
+                  style={{
+                    marginRight: '10px',
+                    color: variables.primaryColor2,
+                  }}
+                />
                 <span
                   className={styles.greenroom_title}
                   onClick={(e) =>
@@ -712,10 +730,10 @@ function FilesContent(props) {
                 >
                   Green Room
                 </span>
-              </strong>
+              </span>
             </div>
             <Tree
-              className="green_room"
+              className="tree-custom-line green_room"
               showIcon
               selectedKeys={[activePane]}
               switcherIcon={<DownOutlined />}
@@ -740,13 +758,18 @@ function FilesContent(props) {
                       ? {
                           width: '135px',
                           backgroundColor: '#ACE4FD',
-                          padding: '5px 11px',
+                          paddingLeft: '11px',
                         }
-                      : { padding: '5px 11px' }
+                      : { paddingLeft: '11px' }
                   }
                 >
-                  <strong>
-                    <CloudServerOutlined style={{ marginRight: '10px' }} />
+                  <span style={{ fontWeight: 600 }}>
+                    <CloudServerOutlined
+                      style={{
+                        marginRight: '10px',
+                        color: variables.primaryColorLight1,
+                      }}
+                    />
                     <span
                       className={styles.core_title}
                       id="core_title"
@@ -761,7 +784,7 @@ function FilesContent(props) {
                     >
                       Core
                     </span>
-                  </strong>
+                  </span>
                 </div>
                 <div>
                   {showEditButton(
@@ -775,6 +798,7 @@ function FilesContent(props) {
                 </div>
               </div>
               <Tree
+                className="tree-custom-line core"
                 defaultExpandedKeys={[PanelKey.CORE_HOME]}
                 showIcon
                 selectedKeys={[activePane]}
@@ -799,7 +823,7 @@ function FilesContent(props) {
               <Tree className="save_search" showIcon />
             </Collapse> */}
           <div
-            style={{ margin: '15px 0px 20px 10px' }}
+            style={{ margin: '15px 0px 20px 11px' }}
             onClick={(e) =>
               onSelect([PanelKey.TRASH], {
                 node: {
@@ -809,8 +833,16 @@ function FilesContent(props) {
               })
             }
           >
-            <DeleteOutlined />
-            <span className={styles.trash_bin}>Trash Bin</span>
+            <DeleteOutlined style={{ color: variables.primaryColorLight3 }} />
+            <span
+              className={
+                activePane === PanelKey.TRASH
+                  ? `${styles.trash_bin} ${styles['trash_bin--active']}`
+                  : styles.trash_bin
+              }
+            >
+              Trash Bin
+            </span>
           </div>
         </Col>
         <Col xs={24} sm={24} md={24} lg={24} xl={20}>

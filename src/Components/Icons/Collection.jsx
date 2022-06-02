@@ -5,7 +5,7 @@ export default function CollectionIcon(props) {
   return (
     <Icon
       component={() => (
-        <svg viewBox="0 0 21 21" width={props.width} height={props.width}>
+        <svg viewBox="0 0 21 21" width={props.width} height={props.width} fill={props.color}>
           <g
             id="Style"
             stroke="none"
