@@ -162,7 +162,7 @@ const Copy2CoreModal = ({
           },
           username,
           FILE_OPERATIONS.COPY,
-          project.profile.id,
+          project.profile.code,
           sessionId,
         );
       } catch (err) {
@@ -255,7 +255,7 @@ const Copy2CoreModal = ({
         },
         username,
         FILE_OPERATIONS.COPY,
-        project.profile.id,
+        project.profile.code,
         sessionId,
       );
 
@@ -733,7 +733,10 @@ const Copy2CoreModal = ({
                   <img
                     alt="Approved"
                     style={{ width: '15px', height: '15px' }}
-                    src={require('../../../../../../../Images/Approved.png')}
+                    src={
+                      require('../../../../../../../Images/Approved.png')
+                        .default
+                    }
                   />
                 )}
               />

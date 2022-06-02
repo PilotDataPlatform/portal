@@ -692,7 +692,7 @@ function commitFileAction(
   payload,
   operator,
   operation,
-  projectGeid,
+  projectCode,
   sessionId,
 ) {
   return axios({
@@ -707,7 +707,7 @@ function commitFileAction(
       payload,
       operator,
       operation,
-      project_geid: projectGeid,
+      project_code: projectCode,
       session_id: sessionId,
     },
   });
