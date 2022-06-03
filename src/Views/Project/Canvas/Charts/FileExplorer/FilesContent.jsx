@@ -896,7 +896,6 @@ function FilesContent(props) {
                 paddingTop: '6px',
                 borderLeft: '1px solid rgb(240,240,240)',
               }}
-              ref={fileExplorerTabs}
             >
               {panes &&
                 panes.map((pane) => (
