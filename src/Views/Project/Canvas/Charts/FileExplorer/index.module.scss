@@ -43,6 +43,8 @@
 }
 
 .file_dir {
+  padding-top: 12px;
+
   :global {
     .Collapse_collapseBg__3m8BO {
       margin-bottom: 10px !important;
@@ -128,6 +130,96 @@
 
           .ant-tree-title {
             color: $primary-color-1;
+          }
+        }
+      }
+    }
+  }
+}
+
+.file-explorer__tabs {
+  :global {
+    .ant-tabs-tab {
+      border-width: 0 0 1px 0 !important;
+      border-color: $background-color-1 !important;
+    }
+
+    .ant-tabs-bar {
+      margin-bottom: 0;
+    }
+
+    .ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab {
+      background: none;
+      margin-left: 16px;
+      padding-bottom: 0;
+      border: none;
+
+      > div {
+        padding-bottom: 6px;
+      }
+
+      &:first-of-type {
+        margin-left: 8px;
+      }
+
+      &.ant-tabs-tab-active {
+        position: relative;
+        color: rgba(0, 0, 0, 0.65);
+
+        &::after {
+          content: '';
+          width: 15px;
+          height: 15px;
+          position: absolute;
+          bottom: 2.5%;
+          left: -1.5%;
+          border-color: $background-color-1;
+          border-width: 2px 0 0 2px;
+          border-style: solid;
+          border-radius: 6px 0 0 0;
+        }
+      }
+
+      &[data-active-tab='greenroom'] {
+        > div {
+          border-bottom: 2px solid $primary-color-2;
+          color: $primary-color-2;
+          
+          > span:first-child {
+            color: $primary-color-2;
+          }
+        }
+      }
+
+      &[data-active-tab='core'] {
+        > div {
+          border-bottom: 2px solid $primary-color-light-1;
+          color: $primary-color-light-1;
+           
+          > span:first-child {
+            color: $primary-color-light-1;
+          }
+        }
+      }
+
+       &[data-active-tab='vfolder'] {
+        > div {
+          border-bottom: 2px solid $primary-color-light-4;
+          color: $primary-color-light-4;
+           
+          > span:first-child {
+            color: $primary-color-light-4;
+          }
+        }
+      }
+
+       &[data-active-tab='trash'] {
+        > div {
+          border-bottom: 2px solid $primary-color-light-3;
+          color: $primary-color-light-3;
+           
+          > span:first-child {
+            color: $primary-color-light-3;
           }
         }
       }
@@ -335,6 +427,12 @@
       }
     }
   }
+}
+
+.file_explore_actions {
+  margin: 6px 0;
+  position: relative;
+  padding-left: 8px;
 }
 
 /*

@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react'
 export function usePanel() {
     const [panes, setPanes] = useState([]);
     const [activePane, setActivePane] = useState('');
-    console.log(activePane)
 
     const updatePanes = (updatedPanes) => {
         setPanes(updatedPanes);

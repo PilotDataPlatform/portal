@@ -202,6 +202,26 @@ function FilesContent(props) {
     }
   };
 
+  const getTabName = (activePane) => {
+    if (activePane.startsWith('vfolder')) {
+      return 'vfolder';
+    }
+
+    switch (activePane) {
+      case PanelKey.GREENROOM_HOME:
+        return 'greenroom';
+        break;
+
+      case PanelKey.CORE_HOME:
+        return 'core';
+        break;
+
+      case PanelKey.TRASH:
+        return 'trash';
+        break;
+    }
+  };
+
   useEffect(() => {
     fetch();
   }, [projectId]);
@@ -216,6 +236,22 @@ function FilesContent(props) {
       );
     }
   }, [vfolders.length, updateTimes]);
+
+  useEffect(() => {
+    const openedTabs = document.querySelectorAll(
+      '#file-explorer-tabs .ant-tabs-tab',
+    );
+    openedTabs.forEach((tab) => {
+      tab.removeAttribute('data-active-tab');
+    });
+
+    const activeTabName = getTabName(activePane);
+    // tab does not render immediately after the state variable changes, making the tab unselectable
+    setTimeout(() => {
+      document.getElementById(`tab-${activePane}`).dataset.activeTab =
+        activeTabName;
+    }, 50);
+  }, [activePane]);
 
   async function updateVfolders() {
     try {
@@ -846,7 +882,10 @@ function FilesContent(props) {
           </div>
         </Col>
         <Col xs={24} sm={24} md={24} lg={24} xl={20}>
-          <div>
+          <div
+            className={styles['file-explorer__tabs']}
+            id="file-explorer-tabs"
+          >
             <Tabs
               hideAdd
               onChange={onChange}
@@ -854,9 +893,10 @@ function FilesContent(props) {
               type="editable-card"
               onEdit={onEdit}
               style={{
-                paddingLeft: '30px',
+                paddingTop: '6px',
                 borderLeft: '1px solid rgb(240,240,240)',
               }}
+              ref={fileExplorerTabs}
             >
               {panes &&
                 panes.map((pane) => (

@@ -5,5 +5,12 @@
 
   &__card {
     margin-top: 1.5rem;
+
+    :global {
+      .ant-card-body {
+        padding-top: 0 !important;
+        padding-right: 0 !important;
+      }
+    }
   }
 }
