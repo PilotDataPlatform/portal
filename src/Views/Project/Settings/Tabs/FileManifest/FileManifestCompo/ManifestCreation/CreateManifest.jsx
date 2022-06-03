@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Input, message } from 'antd';
 import CreateManifestTable from './CreateManifestTable';
-import {
-  addNewManifest,
-  addNewAttrsToManifest,
-} from '../../../../../../../APIs';
+import { addNewManifest } from '../../../../../../../APIs';
 import { useCurrentProject } from '../../../../../../../Utility';
 import { validateManifestName } from '../../Utils/FormatValidators';
 import i18n from '../../../../../../../i18n';

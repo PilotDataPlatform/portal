@@ -23,6 +23,7 @@ function attrType(type) {
 }
 const { Option } = Select;
 function AttrAddBar(props) {
+  const manifestItem = props.manifestItem;
   const [attrName, setAttrName] = useState(null);
   const [type, setType] = useState(MANIFEST_ATTR_TYPE.MULTIPLE_CHOICE);
   const [value, setValue] = useState(null);
@@ -45,7 +46,7 @@ function AttrAddBar(props) {
               setAttrName(e.target.value);
               const { valid, err } = validateAttributeName(
                 e.target.value,
-                props.attributes,
+                manifestItem.attributes,
               );
               if (!valid) {
                 setErrorMsg4Name(err);
@@ -117,13 +118,19 @@ function AttrAddBar(props) {
       </td>
       <td>
         <Button
-          style={{ border: 0, outline: 0, color: "#5B8C00",boxShadow:"none",background:"none" }}
+          style={{
+            border: 0,
+            outline: 0,
+            color: '#5B8C00',
+            boxShadow: 'none',
+            background: 'none',
+          }}
           icon={<CheckOutlined />}
           loading={loading}
           onClick={async (e) => {
             const { valid, err } = validateAttributeName(
               attrName,
-              props.attributes,
+              manifestItem.attributes,
             );
             if (!valid) {
               message.error(err);
@@ -149,33 +156,42 @@ function AttrAddBar(props) {
               return;
             }
             setLoading(true);
-            let valueNew;
+            let newAttrObj;
             if (type === MANIFEST_ATTR_TYPE.MULTIPLE_CHOICE) {
-              if (value && value.length) {
-                valueNew = value.join(',');
-              } else {
-                valueNew = '';
-              }
+              newAttrObj = {
+                name: trimString(attrName),
+                optional: true,
+                type: type,
+                options: value ? value : [],
+              };
             }
             if (type === MANIFEST_ATTR_TYPE.TEXT) {
-              valueNew = null;
+              newAttrObj = {
+                name: trimString(attrName),
+                optional: true,
+                type: type,
+              };
             }
+            const attributes = [...manifestItem.attributes, newAttrObj];
             await addNewAttrToManifest(
-              props.manifestID,
-              trimString(attrName),
+              manifestItem.id,
+              manifestItem.name,
               currentDataset.code,
-              type,
-              valueNew,
-              true,
+              attributes,
             );
             await props.loadManifest();
             setLoading(false);
             props.setEditMode('default');
           }}
-        >
-        </Button>
+        ></Button>
         <Button
-        style={{ border: 0, outline: 0, color: "#FF6D72",boxShadow:"none",background:"none"}}
+          style={{
+            border: 0,
+            outline: 0,
+            color: '#FF6D72',
+            boxShadow: 'none',
+            background: 'none',
+          }}
           icon={<CloseOutlined />}
           onClick={() => {
             setAttrName(null);
@@ -184,8 +200,7 @@ function AttrAddBar(props) {
             setErrorMsg4Val(null);
             props.setEditMode('default');
           }}
-        >
-        </Button>
+        ></Button>
       </td>
     </tr>
   );

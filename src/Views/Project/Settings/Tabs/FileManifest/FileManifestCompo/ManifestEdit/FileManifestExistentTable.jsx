@@ -57,8 +57,7 @@ function FileManifestExistentTable(props) {
           {editMode === 'add' ? (
             <AttrAddBar
               key="add-bar-end-step2"
-              manifestID={mItem.id}
-              attributes={mItem.attributes}
+              manifestItem={mItem}
               setEditMode={setEditMode}
               loadManifest={props.loadManifest}
               tableColumns={tableColumns}

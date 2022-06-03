@@ -361,72 +361,16 @@ function deleteManifest(manifestId) {
     method: 'DELETE',
   });
 }
-function deleteAttrFromManifest(attrId) {
+
+function addNewAttrToManifest(manifestId, name, projectCode, attributes) {
   return serverAxios({
-    url: `/v1/data/attribute/${attrId}`,
-    method: 'DELETE',
-  });
-}
-function updateAttrFromManifest(
-  manifestId,
-  attrId,
-  name,
-  projectCode,
-  type,
-  value,
-  optional,
-) {
-  return serverAxios({
-    url: `/v1/data/attribute/${attrId}`,
+    url: `/v1/data/manifest/${manifestId}`,
     method: 'PUT',
     data: {
-      manifest_id: manifestId,
       name: name,
       project_code: projectCode,
-      type: type,
-      value: value,
-      optional: optional,
+      attributes: attributes,
     },
-  });
-}
-function addNewAttrToManifest(
-  manifestId,
-  name,
-  projectCode,
-  type,
-  value,
-  optional,
-) {
-  return serverAxios({
-    url: `/v1/data/attributes`,
-    method: 'POST',
-    data: [
-      {
-        name: name,
-        project_code: projectCode,
-        type: type,
-        value: value,
-        manifest_id: manifestId,
-        optional: optional,
-      },
-    ],
-  });
-}
-function addNewAttrsToManifest(attrsParams) {
-  const refinedAttrs = attrsParams.map((attr) => {
-    return {
-      name: attr.name,
-      project_code: attr.projectCode,
-      type: attr.type,
-      value: attr.value,
-      manifest_id: attr.manifestId,
-      optional: attr.optional,
-    };
-  });
-  return serverAxios({
-    url: `/v1/data/attributes`,
-    method: 'POST',
-    data: refinedAttrs,
   });
 }
 
@@ -737,11 +681,8 @@ export {
   addNewManifest,
   addNewAttrToManifest,
   deleteManifest,
-  deleteAttrFromManifest,
-  updateAttrFromManifest,
   loadDeletedFiles,
   updateManifest,
-  addNewAttrsToManifest,
   attachManifest,
   importManifestAPI,
   getManifestById,
