@@ -172,7 +172,7 @@ function AttrAddBar(props) {
                 type: type,
               };
             }
-            const attributes = [...manifestItem.attributes, newAttrObj];
+            const attributes = [newAttrObj];
             await addNewAttrToManifest(
               manifestItem.id,
               manifestItem.name,
