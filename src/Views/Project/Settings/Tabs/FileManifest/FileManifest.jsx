@@ -240,7 +240,7 @@ const validateJson = (json, t) => {
     let res;
     const item = json.attributes[i];
     //check if property exist
-    ['name', 'optional', 'value', 'type'].forEach((key) => {
+    ['name', 'optional', 'type'].forEach((key) => {
       if (!item.hasOwnProperty(key)) {
         res = {
           result: false,
@@ -293,27 +293,10 @@ const validateJson = (json, t) => {
         )} ${i}${t('errormessages:importExportManifest.typeFormat.1')}`,
       };
     }
-    if (item['type'] === 'text' && item['value'] !== null) {
-      return {
-        result: false,
-        message: `${t(
-          'errormessages:importExportManifest.valueNullText.0',
-        )} ${i}${t('errormessages:importExportManifest.valueNullText.1')}`,
-      };
-    }
     if (item['type'] === 'multiple_choice') {
-      const value = item['value'];
-      if (typeof value !== 'string') {
-        return {
-          result: false,
-          message: `${t(
-            'errormessages:importExportManifest.valueString.0',
-          )} ${i}${t('errormessages:importExportManifest.valueString.1')}`,
-        };
-      }
-      const valueArr = value.split(',');
-      for (let j = 0; j < valueArr.length; j++) {
-        if (valueArr[j].length < 1 || valueArr[j].length > 32) {
+      const optionArr = item['options'];
+      for (let j = 0; j < optionArr.length; j++) {
+        if (optionArr[j].length < 1 || optionArr[j].length > 32) {
           return {
             result: false,
             message: `${t(
@@ -321,7 +304,7 @@ const validateJson = (json, t) => {
             )} ${i}${t('errormessages:importExportManifest.choiceLength.1')}`,
           };
         }
-        if (!valueArr[j].match(/^[A-Za-z0-9-_!%&/()=?*+#.;]+$/)) {
+        if (!optionArr[j].match(/^[A-Za-z0-9-_!%&/()=?*+#.;]+$/)) {
           return {
             result: false,
             message: `${t(
