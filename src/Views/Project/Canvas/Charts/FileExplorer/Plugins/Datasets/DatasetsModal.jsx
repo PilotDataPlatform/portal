@@ -159,7 +159,7 @@ const DatasetsModal = (props) => {
                   dataSetsList.map((el) => {
                     const optText = `${el.code} - ${el.title}`;
                     return (
-                      <Option value={el.globalEntityId}>
+                      <Option key={el.globalEntityId} value={el.globalEntityId}>
                         {optText.length > 60 ? (
                           <Tooltip title={optText}>{`${optText.slice(
                             0,

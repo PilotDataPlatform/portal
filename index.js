@@ -1,4 +1,3 @@
-window.process = {};
 require('dotenv').config();
 const path = require('path');
 const { DOMAIN, PROXY_ROUTE } = require('./src/config');

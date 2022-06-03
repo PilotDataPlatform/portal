@@ -156,10 +156,10 @@ function UserStats(props) {
         {sortedAllFileStreams.length === 0 ? (
           <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
         ) : (
-          sortedAllFileStreams.map((el) => {
+          sortedAllFileStreams.map((el, ind) => {
             const folderPath = getFolderPath(el);
             return (
-              <Row style={{ marginBottom: '2%' }}>
+              <Row style={{ marginBottom: '2%' }} key={'row-' + ind}>
                 <span className={styles.fileStreamIcon}>
                   {fileStreamIcon(el.tag)}
                 </span>

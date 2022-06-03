@@ -33,9 +33,9 @@ function FileManifestExistentTable(props) {
           </tr>
         </thead>
         <tbody>
-          {mItem.attributes.map((item) => {
+          {mItem.attributes.map((item, index) => {
             return (
-              <tr key={mItem.id + '-' + item.id}>
+              <tr key={mItem.id + '-' + index}>
                 <td>{item.name}</td>
                 <td>{attrType(item.type)}</td>
                 <td>

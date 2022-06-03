@@ -1281,6 +1281,7 @@ function RawTable(props) {
                             ? null
                             : { cursor: 'pointer' }
                         }
+                        key={'breadcrumb-' + index}
                         onClick={() => {
                           if (index === orderRouting.length - 1) {
                             return;
@@ -1344,9 +1345,9 @@ function RawTable(props) {
             overlayClassName={styles['drop-down']}
             overlay={
               <Menu className={styles[`show-menu-${menuItems}`]}>
-                {plugins.map(({ condition, elm }) => {
+                {plugins.map(({ condition, elm }, ind) => {
                   if (condition) {
-                    return <Menu.Item>{elm}</Menu.Item>;
+                    return <Menu.Item key={'menu-' + ind}>{elm}</Menu.Item>;
                   } else {
                     return null;
                   }
