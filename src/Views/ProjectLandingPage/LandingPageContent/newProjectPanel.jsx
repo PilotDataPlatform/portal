@@ -114,8 +114,8 @@ function NewProjectPanel({
       type: 'project',
       description: values.description,
     };
-    if (imgURL) {
-      params['icon'] = imgURL;
+    if (imgURL && imgURL.split(',').length > 1) {
+      params['icon'] = imgURL.split(',')[1];
     }
     createProjectAPI(params, cancelAxios)
       .then(async (res) => {

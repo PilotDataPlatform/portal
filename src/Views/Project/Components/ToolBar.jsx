@@ -492,9 +492,7 @@ const ToolBar = ({
         requestItem={requestItem}
         toggleRequestModal={toggleRequestModal}
         username={username && username}
-        projectGeid={
-          project && project.profile && project.profile.globalEntityId
-        }
+        projectGeid={project && project.profile && project.profile.id}
       />
     </>
   );

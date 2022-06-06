@@ -77,7 +77,7 @@ const AddTagsModal = ({ visible, setVisible, selectedRows, setSuccessNum }) => {
       let entity = selectedRows.map((el) => el.geid);
       const res = await batchTagsAPI({
         entity,
-        project_geid: project.profile.globalEntityId,
+        project_geid: project.profile.id,
         tags: addTagsArray,
         only_files: !addTagsToFolder,
         operation: 'add',
@@ -114,7 +114,7 @@ const AddTagsModal = ({ visible, setVisible, selectedRows, setSuccessNum }) => {
       let entity = selectedRows.map((el) => el.geid);
       await batchTagsAPI({
         entity,
-        project_geid: project.profile.globalEntityId,
+        project_geid: project.profile.id,
         tags: removeTagsArray,
         only_files: !removeTagsFromFolder,
         operation: 'remove',

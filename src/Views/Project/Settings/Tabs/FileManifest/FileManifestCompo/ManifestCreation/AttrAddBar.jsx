@@ -122,7 +122,13 @@ function AttrAddBar4Created(props) {
       </td>
       <td>
         <Button
-          style={{ border: 0, outline: 0, color: "#5B8C00",boxShadow:"none",background:"none" }}
+          style={{
+            border: 0,
+            outline: 0,
+            color: '#5B8C00',
+            boxShadow: 'none',
+            background: 'none',
+          }}
           icon={<CheckOutlined />}
           loading={loading}
           onClick={async (e) => {
@@ -176,10 +182,15 @@ function AttrAddBar4Created(props) {
             setLoading(false);
             props.setEditMode('default');
           }}
-        >
-        </Button>
+        ></Button>
         <Button
-          style={{ border: 0, outline: 0, color: "#FF6D72",boxShadow:"none",background:"none"}}
+          style={{
+            border: 0,
+            outline: 0,
+            color: '#FF6D72',
+            boxShadow: 'none',
+            background: 'none',
+          }}
           icon={<CloseOutlined />}
           onClick={() => {
             setAttrName(null);
@@ -189,8 +200,7 @@ function AttrAddBar4Created(props) {
             setOptional(true);
             props.setEditMode('default');
           }}
-        >
-        </Button>
+        ></Button>
       </td>
     </tr>
   );

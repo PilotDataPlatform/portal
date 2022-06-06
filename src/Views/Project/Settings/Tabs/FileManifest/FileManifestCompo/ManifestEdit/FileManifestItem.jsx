@@ -14,6 +14,7 @@ import FileManifestExistentTable from './FileManifestExistentTable';
 import { validateManifestName } from '../../Utils/FormatValidators';
 import i18n from '../../../../../../../i18n';
 import styles from '../../../../index.module.scss';
+import { MANIFEST_ATTR_TYPE } from '../../../manifest.values';
 function FileManifestItem(props) {
   const [renameManifest, setRenameManifest] = useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
@@ -27,12 +28,22 @@ function FileManifestItem(props) {
 
   const exportJson = () => {
     const json = {
-      attributes: mItem.attributes.map((item) => ({
-        name: item.name,
-        value: item.value,
-        type: item.type,
-        optional: item.optional,
-      })),
+      attributes: mItem.attributes.map((item) => {
+        if (item.type === MANIFEST_ATTR_TYPE.MULTIPLE_CHOICE) {
+          return {
+            name: item.name,
+            options: item.value.split(','),
+            type: item.type,
+            optional: item.optional,
+          };
+        } else {
+          return {
+            name: item.name,
+            type: item.type,
+            optional: item.optional,
+          };
+        }
+      }),
     };
     const link = document.createElement('a');
     link.download = renameStr + '.json';

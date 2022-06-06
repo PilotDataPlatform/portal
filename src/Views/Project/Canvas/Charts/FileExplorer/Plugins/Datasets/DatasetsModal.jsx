@@ -36,7 +36,14 @@ const DatasetsModal = (props) => {
 
   const getDatasetsListing = async () => {
     try {
-      const res = await getMyDatasetsApi(userName, 0, 1000);
+      let payLoad = {
+        filter: {},
+        order_by: 'time_created',
+        order_type: 'desc',
+        page: 0,
+        page_size: 100,
+      };
+      const res = await getDatasetsListingAPI(userName, payLoad);
       setDataSetsList(res.data.result);
     } catch (error) {
       message.error(`${i18n.t('errormessages:listDatasets.default.0')}`, 3);
@@ -57,7 +64,7 @@ const DatasetsModal = (props) => {
       payLoad['source_list'] =
         selectedRows.length && selectedRows.map((el) => el.id || el.geid);
       payLoad['operator'] = userName;
-      payLoad['project_geid'] = currentProject.profile.globalEntityId;
+      payLoad['project_geid'] = currentProject.profile.id;
       setBtnLoading(true);
       const res = await addToDatasetsAPI(selectedValue, payLoad);
       if (res.data.result.ignored.length) {
@@ -112,7 +119,6 @@ const DatasetsModal = (props) => {
         );
     }
   };
-
   return (
     <Modal
       className={styles.dataset_modal}
@@ -148,9 +154,9 @@ const DatasetsModal = (props) => {
               >
                 {dataSetsList.length &&
                   dataSetsList.map((el) => {
-                    const optText = `${el.name} - ${el.title}`;
+                    const optText = `${el.code} - ${el.title}`;
                     return (
-                      <Option value={el.globalEntityId}>
+                      <Option key={el.globalEntityId} value={el.globalEntityId}>
                         {optText.length > 60 ? (
                           <Tooltip title={optText}>{`${optText.slice(
                             0,

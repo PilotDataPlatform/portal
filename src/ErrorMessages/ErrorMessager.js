@@ -305,23 +305,23 @@ export default function ErrorMessager(name) {
     [namespace.teams.inviteUser]: {
       403: (err, params) => {
         message.error(
-          `${i18n.t('errormessages:selfRegistration.403.0')} ${
+          `${i18n.t('errormessages:inviteUser.403.0')} ${
             params.email
-          }, ${i18n.t('errormessages:selfRegistration.403.1')}`,
+          }, ${i18n.t('errormessages:inviteUser.403.1')}`,
         );
       },
       404: (err, params) => {
         message.error(
-          `${i18n.t('errormessages:selfRegistration.404.0')} ${
-            params.email
-          } ${i18n.t('errormessages:selfRegistration.404.1')}`,
+          `${i18n.t('errormessages:inviteUser.404.0')} ${params.email} ${i18n.t(
+            'errormessages:inviteUser.404.1',
+          )}`,
         );
       },
       500: (err, params) => {
         message.error(
-          `${i18n.t('errormessages:selfRegistration.500.0')} ${
-            params.email
-          } ${i18n.t('errormessages:selfRegistration.500.1')}`,
+          `${i18n.t('errormessages:inviteUser.500.0')} ${params.email} ${i18n.t(
+            'errormessages:inviteUser.500.1',
+          )}`,
         );
       },
       default: (err, params) => {

@@ -1,4 +1,9 @@
-import { serverAxios, serverAxiosNoIntercept, downloadGRAxios, downloadCoreAxios } from './config';
+import {
+  serverAxios,
+  serverAxiosNoIntercept,
+  downloadGRAxios,
+  downloadCoreAxios,
+} from './config';
 import { keycloak } from '../Service/keycloak';
 import _ from 'lodash';
 import { API_PATH, DOWNLOAD_PREFIX_V2, DOWNLOAD_PREFIX_V1 } from '../config';
@@ -44,40 +49,6 @@ export function createDatasetApi(
       license,
       tags,
       description,
-    },
-  });
-}
-
-/**
- * ticket-1645
- * @param {string} username
- * @param {string} orderBy
- * @param {"desc"|"asc"} orderType
- * @param {number} page starts from 0
- * @param {number} pageSize
- * @param {object} filter
- * @returns
- */
-export function getMyDatasetsApi(
-  username,
-  page = 0,
-  pageSize = 10,
-  orderBy = 'time_created',
-  orderType = 'desc',
-  filter = {},
-) {
-  if (!username) {
-    throw new Error('username is not specified');
-  }
-  return serverAxios({
-    url: `/v1/users/${username}/datasets`,
-    method: 'post',
-    data: {
-      filter,
-      order_by: orderBy,
-      order_type: orderType,
-      page,
-      page_size: pageSize,
     },
   });
 }

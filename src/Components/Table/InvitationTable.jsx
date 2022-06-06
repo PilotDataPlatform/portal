@@ -174,12 +174,12 @@ function InvitationTable(props) {
   if (!props.projectId) {
     const projectColumn = {
       title: 'Project',
-      dataIndex: 'projectId',
+      dataIndex: 'projectCode',
       key: 'project',
       width: '20%',
       render: (text) => {
         const string =
-          _.find(allProjects, (p) => p.globalEntityId === text)?.name ||
+          _.find(allProjects, (p) => p.code === text)?.name ||
           'No Project Assigned';
         if (string.length < 20) {
           return <span>{string}</span>;

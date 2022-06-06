@@ -6,7 +6,6 @@ import { FILE_OPERATIONS } from '../../FileOperationValues';
 import { tokenManager } from '../../../../../../../Service/tokenManager';
 import { commitFileAction } from '../../../../../../../APIs';
 import { useTranslation } from 'react-i18next';
-import { PanelKey } from '../../RawTableValues';
 import { DeleteModalFirstStep } from './DeleteModalFirstStep';
 import { DeleteModalSecondStep } from './DeleteModalSecondStep';
 
@@ -72,7 +71,7 @@ const DeleteFilesModal = ({
         },
         username,
         FILE_OPERATIONS.DELETE,
-        project.profile.globalEntityId,
+        project.profile.code,
         sessionId,
       );
       if (res.code === 202) {
