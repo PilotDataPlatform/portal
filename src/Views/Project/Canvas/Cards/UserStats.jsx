@@ -173,7 +173,7 @@ function UserStats(props) {
         {sortedAllFileStreams.length === 0 ? (
           <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
         ) : (
-          sortedAllFileStreams.map((el) => {
+          sortedAllFileStreams.map((el, ind) => {
             const folderPath = getFolderPath(el);
             return (
               <div className={styles.file}>

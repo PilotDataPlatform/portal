@@ -249,7 +249,7 @@ async function getRequestFiles(
 
 async function getRequestFilesDetailByGeid(geids) {
   return axios({
-    url: `/v2/files/bulk/detail`,
+    url: `/v1/files/bulk/detail`,
     method: 'POST',
     data: {
       ids: geids,
@@ -692,7 +692,7 @@ function commitFileAction(
   payload,
   operator,
   operation,
-  projectGeid,
+  projectCode,
   sessionId,
 ) {
   return axios({
@@ -707,7 +707,7 @@ function commitFileAction(
       payload,
       operator,
       operation,
-      project_geid: projectGeid,
+      project_code: projectCode,
       session_id: sessionId,
     },
   });

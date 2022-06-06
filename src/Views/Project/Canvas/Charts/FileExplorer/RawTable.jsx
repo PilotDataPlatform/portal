@@ -1231,7 +1231,7 @@ function RawTable(props) {
   ];
 
   const showFilePathBreadcrumb = () => {
-    if ( currentRouting?.length ) {
+    if (currentRouting?.length) {
       return (
         <>
           <div
@@ -1324,7 +1324,7 @@ function RawTable(props) {
         </Breadcrumb>
       );
     }
-  }
+  };
 
   const ToolTipsAndTable = (
     <div style={{ position: 'relative' }}>
@@ -1346,9 +1346,9 @@ function RawTable(props) {
             overlayClassName={styles['drop-down']}
             overlay={
               <Menu className={styles[`show-menu-${menuItems}`]}>
-                {plugins.map(({ condition, elm }) => {
+                {plugins.map(({ condition, elm }, ind) => {
                   if (condition) {
-                    return <Menu.Item>{elm}</Menu.Item>;
+                    return <Menu.Item key={'menu-' + ind}>{elm}</Menu.Item>;
                   } else {
                     return null;
                   }

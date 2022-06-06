@@ -41,7 +41,7 @@ function GeneralInfo(props) {
       await updateDatasetIcon(currentProject.globalEntityId, compressedIcon);
       setDatasetInfo({
         ...datasetInfo,
-        icon: compressedIcon,
+        imageUrl: compressedIcon,
       });
     });
     return false;

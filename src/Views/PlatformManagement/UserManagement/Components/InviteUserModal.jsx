@@ -72,7 +72,10 @@ const InviteUserModal = (props) => {
         default:
           statusDictionary = false;
       }
-      if (!statusDictionary && (platformRole === 'admin' || platformRole === 'member')) {
+      if (
+        !statusDictionary &&
+        (platformRole === 'admin' || platformRole === 'member')
+      ) {
         return Modal.warning({
           title: t('modals:inviteExist.title'),
           content: `${t('modals:inviteExist.content.0')} ${email} ${t(
@@ -146,27 +149,6 @@ const InviteUserModal = (props) => {
         });
       }
     }
-
-    /*     try {
-      const res = await props.inviteUserApi(values.email, values.role);
-
-      if (res.status === 200) {
-        setUserAddCompleted(true);
-      }
-      props.getInvitationListApi();
-
-      setLoading(false);
-    } catch (err) {
-      if (err.response) {
-        const errorMessager = new ErrorMessager(
-          namespace.userManagement.inviteUserApi,
-        );
-        errorMessager.triggerMsg(err.response.status, null, {
-          email: values.email,
-        });
-      }
-      setLoading(false);
-    } */
   };
 
   return (
