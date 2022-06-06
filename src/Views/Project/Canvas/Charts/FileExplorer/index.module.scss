@@ -148,8 +148,53 @@
       border-color: $background-color-1 !important;
     }
 
-    .ant-tabs-bar {
+    .ant-tabs-card-bar  {
       margin-bottom: 0;
+
+       &.active-tab-greenroom .ant-tabs-nav .ant-tabs-tab-active {
+        > div {
+          border-bottom: 2px solid $primary-color-2;
+          color: $primary-color-2;
+
+          > span:first-child {
+            color: $primary-color-2;
+          }
+        }
+      }
+
+       &.active-tab-core .ant-tabs-nav .ant-tabs-tab-active {
+        > div {
+          border-bottom: 2px solid $primary-color-1;
+          color: $primary-color-1;
+
+          > span:first-child {
+            color: $primary-color-1;
+          }
+        }
+      }
+
+       &.active-tab-vfolder .ant-tabs-nav .ant-tabs-tab-active {
+        > div {
+          border-bottom: 2px solid $primary-color-4;
+          color: $primary-color-4;
+
+          > span:first-child {
+            color: $primary-color-4;
+          }
+        }
+      }
+
+      &.active-tab-trash .ant-tabs-nav .ant-tabs-tab-active {
+        > div {
+          border-bottom: 2px solid $primary-color-light-3;
+          color: $primary-color-light-3;
+
+          > span:first-child {
+            color: $primary-color-light-3;
+          }
+        }
+      }
+
     }
 
     .ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab {
@@ -183,49 +228,16 @@
           border-radius: 6px 0 0 0;
         }
       }
+    }
 
-      &[data-active-tab='greenroom'] {
-        > div {
-          border-bottom: 2px solid $primary-color-2;
-          color: $primary-color-2;
-          
-          > span:first-child {
-            color: $primary-color-2;
-          }
-        }
+    #tab-trash {
+      span[role="img"] {
+        margin-right: 8px;
       }
-
-      &[data-active-tab='core'] {
-        > div {
-          border-bottom: 2px solid $primary-color-light-1;
-          color: $primary-color-light-1;
-           
-          > span:first-child {
-            color: $primary-color-light-1;
-          }
-        }
-      }
-
-       &[data-active-tab='vfolder'] {
-        > div {
-          border-bottom: 2px solid $primary-color-light-4;
-          color: $primary-color-light-4;
-           
-          > span:first-child {
-            color: $primary-color-light-4;
-          }
-        }
-      }
-
-       &[data-active-tab='trash'] {
-        > div {
-          border-bottom: 2px solid $primary-color-light-3;
-          color: $primary-color-light-3;
-           
-          > span:first-child {
-            color: $primary-color-light-3;
-          }
-        }
+    }
+     #tab-greenroom-home {
+      span[role="img"] {
+        margin-right: 8px;
       }
     }
   }
