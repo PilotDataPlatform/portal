@@ -1231,74 +1231,65 @@ function RawTable(props) {
   ];
 
   const showFilePathBreadcrumb = () => {
-    if ( currentRouting?.length ) {
+    if (currentRouting?.length) {
       return (
         <>
-          <div
-            style={{
-              marginLeft: 10,
-              marginRight: 20,
-              display: 'inline-block',
-            }}
+          <Breadcrumb
+            separator=">"
+            className={`${styles.file_folder_path}`}
           >
-            <Breadcrumb
-              separator=">"
-              style={{ maxWidth: 500, display: 'inline-block' }}
-              className={`${styles.file_folder_path}`}
+            <Breadcrumb.Item
+              style={{
+                cursor: 'pointer',
+              }}
+              onClick={goRoot}
             >
-              <Breadcrumb.Item
-                style={{
-                  cursor: 'pointer',
-                }}
-                onClick={goRoot}
-              >
-                {checkIsVirtualFolder(panelKey)
-                  ? titleText
-                  : panelKey.toLowerCase().includes('trash')
-                  ? 'Trash'
-                  : panelKey.toLowerCase().includes('core')
-                  ? 'Core'
-                  : 'Green Room'}
-              </Breadcrumb.Item>
-              {currentRouting.length > 4 ? (
-                <Breadcrumb.Item>...</Breadcrumb.Item>
-              ) : null}
-              {orderRouting
-                .slice(checkIsVirtualFolder(panelKey) ? -1 : -3)
-                .map((v, index) => {
-                  return (
-                    <Breadcrumb.Item
-                      style={
-                        index === orderRouting.length - 1
-                          ? null
-                          : { cursor: 'pointer' }
+              {checkIsVirtualFolder(panelKey)
+                ? titleText
+                : panelKey.toLowerCase().includes('trash')
+                ? 'Trash'
+                : panelKey.toLowerCase().includes('core')
+                ? 'Core'
+                : 'Green Room'}
+            </Breadcrumb.Item>
+            {currentRouting.length > 4 ? (
+              <Breadcrumb.Item>...</Breadcrumb.Item>
+            ) : null}
+            {orderRouting
+              .slice(checkIsVirtualFolder(panelKey) ? -1 : -3)
+              .map((v, index) => {
+                return (
+                  <Breadcrumb.Item
+                    style={
+                      index === orderRouting.length - 1
+                        ? null
+                        : { cursor: 'pointer' }
+                    }
+                    onClick={() => {
+                      if (index === orderRouting.length - 1) {
+                        return;
                       }
-                      onClick={() => {
-                        if (index === orderRouting.length - 1) {
-                          return;
-                        }
-                        clearFilesSelection();
-                        refreshFiles({
-                          parentPath: v.displayPath
-                            ? v.displayPath + '.' + v.name
-                            : v.name,
-                          sourceType: 'folder',
-                          resetTable: true,
-                          node: { nodeLabel: v.labels },
-                        });
-                        dispatch(setTableLayoutReset(panelKey));
-                      }}
-                    >
-                      {v.name.length > 23 ? (
-                        <Tip title={v.name}>{v.name.slice(0, 20) + '...'}</Tip>
-                      ) : (
-                        v.name
-                      )}
-                    </Breadcrumb.Item>
-                  );
-                })}
-            </Breadcrumb>
-          </div>
+                      clearFilesSelection();
+                      refreshFiles({
+                        parentPath: v.displayPath
+                          ? v.displayPath + '.' + v.name
+                          : v.name,
+                        sourceType: 'folder',
+                        resetTable: true,
+                        node: { nodeLabel: v.labels },
+                      });
+                      dispatch(setTableLayoutReset(panelKey));
+                    }}
+                  >
+                    {v.name.length > 23 ? (
+                      <Tip title={v.name}>{v.name.slice(0, 20) + '...'}</Tip>
+                    ) : (
+                      v.name
+                    )}
+                  </Breadcrumb.Item>
+                );
+              })}
+          </Breadcrumb>
         </>
       );
     } else {
@@ -1324,7 +1315,7 @@ function RawTable(props) {
         </Breadcrumb>
       );
     }
-  }
+  };
 
   const ToolTipsAndTable = (
     <div style={{ position: 'relative' }}>
@@ -1332,7 +1323,6 @@ function RawTable(props) {
         className={`${styles.file_explore_actions} file_explorer_header_bar`}
         ref={actionBarRef}
       >
-        {/* { showFilePathBreadcrumb() } */}
         {showPlugins &&
           plugins.map(({ condition, elm }) => {
             if (condition) {
@@ -1385,6 +1375,8 @@ function RawTable(props) {
           </div>
         }
       </div>
+
+      {showFilePathBreadcrumb()}
 
       <FilesTable
         columns={columns}

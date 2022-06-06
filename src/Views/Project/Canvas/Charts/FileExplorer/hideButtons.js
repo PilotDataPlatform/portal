@@ -1,6 +1,7 @@
 const MIN_MARGIN = 480;
 
 export const hideButton = (actionBarRef, moreActionRef) => {
+  console.log('hide action buttons')
   if (!actionBarRef || !actionBarRef.current) {
     return 0;
   }

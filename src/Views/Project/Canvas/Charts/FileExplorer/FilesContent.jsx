@@ -238,13 +238,6 @@ function FilesContent(props) {
   }, [vfolders.length, updateTimes]);
 
   useEffect(() => {
-    const openedTabs = document.querySelectorAll(
-      '#file-explorer-tabs .ant-tabs-tab',
-    );
-    openedTabs.forEach((tab) => {
-      tab.removeAttribute('data-active-tab');
-    });
-
     const activeTabName = getTabName(activePane);
     // tab does not render immediately after the state variable changes, making the tab unselectable
     setTimeout(() => {
@@ -899,7 +892,7 @@ function FilesContent(props) {
             >
               {panes &&
                 panes.map((pane) => (
-                  <TabPane tab={pane.title} key={pane.key.toString()}>
+                  <TabPane tab={pane.title} key={pane.key.toString()} data-tab-name={pane.title}>
                     <div
                       style={{
                         minHeight: '300px',
