@@ -237,15 +237,6 @@ function FilesContent(props) {
     }
   }, [vfolders.length, updateTimes]);
 
-  useEffect(() => {
-    const activeTabName = getTabName(activePane);
-    // tab does not render immediately after the state variable changes, making the tab unselectable
-    setTimeout(() => {
-      document.getElementById(`tab-${activePane}`).dataset.activeTab =
-        activeTabName;
-    }, 50);
-  }, [activePane]);
-
   async function updateVfolders() {
     try {
       const res = await listAllVirtualFolder(projectCode, props.username);
@@ -259,6 +250,7 @@ function FilesContent(props) {
 
   //Tab
   const onChange = (selectedActivePane) => {
+    console.log('on tab change')
     props.setCurrentProjectActivePane(selectedActivePane);
     activatePane(selectedActivePane);
     setTreeKey((prev) => {
@@ -889,10 +881,19 @@ function FilesContent(props) {
                 paddingTop: '6px',
                 borderLeft: '1px solid rgb(240,240,240)',
               }}
+              renderTabBar={(props, DefaultTabBar) => (
+                <DefaultTabBar
+                  {...props}
+                  className={`active-tab-${getTabName(activePane)} ant-tabs-card-bar`}
+                />
+              )}
             >
               {panes &&
                 panes.map((pane) => (
-                  <TabPane tab={pane.title} key={pane.key.toString()} data-tab-name={pane.title}>
+                  <TabPane
+                    tab={pane.title}
+                    key={pane.key.toString()}
+                  >
                     <div
                       style={{
                         minHeight: '300px',
