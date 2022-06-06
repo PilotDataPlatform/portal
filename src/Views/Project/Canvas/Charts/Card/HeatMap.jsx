@@ -18,7 +18,7 @@ function HeatMap({ data, showLegend = true }) {
         fill: cfg.color,
         path: [],
       };
-      const points = cfg.points;
+    const points = cfg.points;
       const path = [
         ['M', points[0].x, points[0].y],
         ['L', points[1].x, points[1].y],
@@ -38,7 +38,7 @@ function HeatMap({ data, showLegend = true }) {
 
   const config = {
     data,
-    height: 300,
+    height: 220,
     appendPadding: 3,
     autoFit: true,
     xField: 'week',
