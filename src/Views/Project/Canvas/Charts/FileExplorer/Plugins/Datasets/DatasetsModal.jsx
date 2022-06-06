@@ -8,7 +8,10 @@ import {
 } from '@ant-design/icons';
 import { useSelector } from 'react-redux';
 import styles from './index.module.scss';
-import { addToDatasetsAPI, getMyDatasetsApi } from '../../../../../../../APIs';
+import {
+  addToDatasetsAPI,
+  getDatasetsListingAPI,
+} from '../../../../../../../APIs';
 import i18n from '../../../../../../../i18n';
 
 const { Option } = Select;
