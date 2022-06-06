@@ -15,6 +15,7 @@ function GroupedColumnLine({
   const { charts } = useTheme();
   const chartColors = charts.groupedColumnLine
   const config = {
+    height: 185,
     data, // []
     xField: xField, // string || string[]
     yField: yField, // string || string[]
