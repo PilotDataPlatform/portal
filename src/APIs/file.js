@@ -340,6 +340,18 @@ async function getFiles(
   let parentZone = objFormatted.entities[0] && objFormatted.entities[0].zone;
   objFormatted.entities = objFormatted.entities.map((item) => {
     parentId4Routing = item.parent;
+    const tags =
+      item.extended.extra &&
+      item.extended.extra.tags &&
+      item.extended.extra.tags.length
+        ? item.extended.extra.tags
+        : [];
+    const systemTags =
+      item.extended.extra &&
+      item.extended.extra.systemTags &&
+      item.extended.extra.systemTags.length
+        ? item.extended.extra.systemTags
+        : [];
     let formatRes = {
       guid: item.id,
       geid: item.id,
@@ -353,12 +365,7 @@ async function getFiles(
         owner: item.owner,
         location: item.storage.locationUri,
       },
-      labels:
-        item.extended.extra &&
-        item.extended.extra.systemTags &&
-        item.extended.extra.systemTags.length
-          ? item.extended.extra.tags.concat(item.extended.extra.systemTags)
-          : item.extended.extra.tags,
+      labels: tags.length || systemTags.length ? tags.concat(systemTags) : null,
     };
     return formatRes;
   });
