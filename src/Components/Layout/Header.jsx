@@ -315,8 +315,9 @@ class AppHeader extends Component {
           top: '0',
           zIndex: 100,
           width: '100%',
-          height: '83px',
-          lineHeight: '83px',
+          height: '6.8rem',
+          lineHeight: '6.8rem',
+          paddingLeft: '2rem',
         }}
         id="global_site_header"
       >
@@ -343,8 +344,8 @@ class AppHeader extends Component {
           >
             <a href={BRANDING_PREFIX}>
               <img
-                src={PORTAL_PREFIX + '/platform-logo.png'}
-                style={{ width: '132px', marginLeft: -30, marginTop: -10 }}
+                src={PORTAL_PREFIX + '/platform-logo.svg'}
+                style={{ width: '6.6rem', marginTop: -10 }}
                 alt="indoc-icon"
               />
             </a>
@@ -375,10 +376,11 @@ class AppHeader extends Component {
             key="user"
             style={{
               float: 'right',
-              marginRight: '25px',
-              lineHeight: '72px',
-              paddingTop: '7px',
-              fontSize: '16px',
+              marginRight: '3rem',
+              marginLeft: '3rem',
+              paddingTop: '0.4rem',
+              lineHeight: '6.2rem',
+              fontSize: '1.4rem',
             }}
             title={
               <span id="header_username">
@@ -409,7 +411,7 @@ class AppHeader extends Component {
             Support
           </Menu.Item>
           {this.props.match.params.projectCode && (
-            <Menu.Item style={{ float: 'right', padding: 0, marginTop: '4px' }}>
+            <Menu.Item style={{ float: 'right', padding: '2px 2px 0px' }}>
               <FilePanel
                 className={styles.filePanel}
                 projectRole={this.state.projectRole}
@@ -423,8 +425,8 @@ class AppHeader extends Component {
               float: 'right',
               color: '#FF8B18',
               position: 'relative',
-              paddingTop: '9px',
-              lineHeight: '72px',
+              paddingTop: '0.7rem',
+              lineHeight: '5.9rem',
             }}
             onClick={this.showBellNotifications}
           >
