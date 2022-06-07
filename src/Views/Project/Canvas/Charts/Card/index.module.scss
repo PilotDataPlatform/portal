@@ -39,6 +39,7 @@
   composes: heatmap-legend;
   position: static;
   margin-bottom: 0.4rem;
+  margin-left: 3rem;
 
   &__legend-item {
     display: flex;
@@ -48,6 +49,7 @@
   }
 
   &__label {
+    font-weight: 400;
     text-transform: capitalize;
   }
 }
