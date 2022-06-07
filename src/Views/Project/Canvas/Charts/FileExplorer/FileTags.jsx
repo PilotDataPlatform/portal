@@ -125,7 +125,7 @@ class FileTags extends Component {
         (el) => !this.state.manifest.tags.includes(el),
       );
       const fileType = record.nodeLabel.includes('Folder') ? 'Folder' : 'File';
-      await updateProjectTagsAPI(fileType, record.geid, {
+      await updateProjectTagsAPI(record.geid, {
         tags: customizedTags,
         inherit: false,
       });
