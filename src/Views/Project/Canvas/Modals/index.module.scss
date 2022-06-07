@@ -4,6 +4,11 @@
     display: flex;
     justify-content: space-between;
   }
+  :global {
+    .ant-select-selector {
+      border-radius: 6px !important;
+    }
+  }
 }
 .fieldGroup {
   margin-right: 12px;

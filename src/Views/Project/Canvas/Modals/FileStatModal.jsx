@@ -358,7 +358,7 @@ const FileStatModal = (props) => {
                 >
                   <RangePicker
                     disabledDate={disabledDate}
-                    style={{ minWidth: 100 }}
+                    style={{ minWidth: 100, borderRadius: 6 }}
                   />
                 </Form.Item>
               </div>
@@ -410,10 +410,13 @@ const FileStatModal = (props) => {
                     loading={isSearching}
                     type="primary"
                     htmlType="submit"
+                    style={{ borderRadius: 6 }}
                   >
                     Search
                   </Button>
-                  <Button onClick={onReset}>Clear</Button>
+                  <Button style={{ borderRadius: 6 }} onClick={onReset}>
+                    Clear
+                  </Button>
                 </Space>
               </div>
             </div>
