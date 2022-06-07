@@ -107,7 +107,8 @@
     "jest-puppeteer": "^4.4.0",
     "jest-serial-runner": "^1.2.0",
     "puppeteer": "^5.3.1",
-    "puppeteer-to-istanbul": "^1.4.0"
+    "puppeteer-to-istanbul": "^1.4.0",
+    "react-error-overlay": "^6.0.9"
   },
   "config": {
     "commitizen": {
