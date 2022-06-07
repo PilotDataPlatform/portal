@@ -1,4 +1,5 @@
 @import '../../Styles/includeMedia.scss';
+@import '../../Themes/base.scss';
 
 .container {
   max-width: 560px;
@@ -231,6 +232,27 @@
 
 :global {
   #global_site_header {
+    .ant-menu-horizontal > .ant-menu-item:hover,
+    .ant-menu-horizontal > .ant-menu-submenu:hover,
+    .ant-menu-horizontal > .ant-menu-item-active,
+    .ant-menu-horizontal > .ant-menu-submenu-active,
+    .ant-menu-horizontal > .ant-menu-item-open,
+    .ant-menu-horizontal > .ant-menu-submenu-open,
+    .ant-menu-horizontal > .ant-menu-item-selected,
+    .ant-menu-horizontal > .ant-menu-submenu-selected {
+      color: $primary-color-light-1;
+      border-bottom: 2px solid $primary-color-light-1;
+      > a {
+        color: $primary-color-light-1;
+      }
+    }
+    .ant-menu-item:hover,
+    .ant-menu-item-active,
+    .ant-menu:not(.ant-menu-inline) .ant-menu-submenu-open,
+    .ant-menu-submenu-active,
+    .ant-menu-submenu-title:hover {
+      color: $primary-color-light-1;
+    }
     > ul.ant-menu-root {
       line-height: 6.6rem;
       #header_username .anticon-user {
@@ -339,7 +361,6 @@
 
 .badge {
   position: relative !important;
-  padding-top: 0.2rem !important;
   overflow: hidden !important;
   vertical-align: middle !important;
 }

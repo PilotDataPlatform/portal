@@ -2,7 +2,7 @@
 @import './Styles/BootstrapPostion.css';
 @import './Styles/links.css';
 @import '~animate.css/animate.css';
-
+@import './Themes/base.scss';
 html {
   font-size: 62.5%; //10px
 
@@ -10,7 +10,10 @@ html {
     font-size: 75%; //12px
   }
 }
-
+.ant-tabs-ink-bar {
+  color: $primary-color-light-1;
+  background-color: $primary-color-light-1;
+}
 .toggle {
   background-color: #1b9cd0;
   padding: 10px 5px;
