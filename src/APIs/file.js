@@ -365,7 +365,7 @@ async function getFiles(
         owner: item.owner,
         location: item.storage.locationUri,
       },
-      labels: tags.length || systemTags.length ? tags.concat(systemTags) : null,
+      labels: tags.length || systemTags.length ? tags.concat(systemTags) : [],
     };
     return formatRes;
   });
@@ -570,9 +570,9 @@ function projectFileCountTotal(geid, params) {
  * @param {int} containerId containerId
  * @param {dict} data data
  */
-function updateProjectTagsAPI(fileType, geid, data) {
+function updateProjectTagsAPI(geid, data) {
   return axios({
-    url: `/v2/${fileType}/${geid}/tags`,
+    url: `/v2/${geid}/tags`,
     method: 'POST',
     data,
   });
