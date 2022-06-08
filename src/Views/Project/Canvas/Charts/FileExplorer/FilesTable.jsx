@@ -86,7 +86,7 @@ class FilesTable extends React.Component {
         orderType: this.state.order,
         sourceType: curSourceType,
       };
-      if (curSourceType === 'folder' && this.props.currentRouting.length) {
+      if (curSourceType === 'folder' && this.props.currentRouting?.length) {
         params.node = {
           nodeLabel:
             this.props.currentRouting[this.props.currentRouting.length - 1]

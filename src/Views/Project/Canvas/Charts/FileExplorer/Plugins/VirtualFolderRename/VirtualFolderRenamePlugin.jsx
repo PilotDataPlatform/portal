@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { FontColorsOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { listAllVirtualFolder } from '../../../../../../../APIs';
 import {
   vFolderOperation,
   VIRTUAL_FOLDER_OPERATIONS,
@@ -12,26 +11,15 @@ import style from './index.module.scss';
 
 function VirtualFolderRenamePlugin({ panelKey }) {
   const project = useSelector((state) => state.project);
-  const username = useSelector((state) => state.username);
   const virtualFolders = useSelector((state) => state.virtualFolders);
-  const [projectVFolders, setProjectVFolders] = useState([]);
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    async function loadVFolders() {
-      const res = await listAllVirtualFolder(project.profile?.code, username);
-      const virtualFolders = res.data.result;
-      setProjectVFolders(virtualFolders);
-    }
-    loadVFolders();
-  }, []);
 
   const handleClick = () => {
     const vFolderName = panelKey.split('-').slice(1).join('-');
-    const { id } = projectVFolders.find(
-      (vFolder) => vFolder.name === vFolderName,
+    const selectedVFolder = project.tree.vfolders.find(
+      (vFolder) => vFolder.title === vFolderName,
     );
-    dispatch(vFolderOperation.setVFolderOperationRename(id));
+    dispatch(vFolderOperation.setVFolderOperationRename(selectedVFolder.geid));
   };
 
   const RenameTooltip = (
