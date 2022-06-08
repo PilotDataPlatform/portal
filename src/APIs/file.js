@@ -455,7 +455,7 @@ async function downloadFilesAPI(
   requestId, // only for request to core table
 ) {
   const options = {
-    url: `/v2/download/pre/`,
+    url: `/v2/download/pre`,
     method: 'post',
     headers: { 'Refresh-token': keycloak.refreshToken },
     data: {
@@ -469,7 +469,7 @@ async function downloadFilesAPI(
     options.data['approval_request_id'] = requestId;
   }
 
-  return downloadGRAxios(options).then((res) => {
+  return axios(options).then((res) => {
     let fileName = res.data.result.source;
     const status = res.data.result.status;
     const fileNamesArr = fileName.split('/') || [];

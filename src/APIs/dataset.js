@@ -1,9 +1,4 @@
-import {
-  serverAxios,
-  serverAxiosNoIntercept,
-  downloadGRAxios,
-  downloadCoreAxios,
-} from './config';
+import { serverAxios, serverAxiosNoIntercept } from './config';
 import { keycloak } from '../Service/keycloak';
 import _ from 'lodash';
 import { API_PATH, DOWNLOAD_PREFIX_V2, DOWNLOAD_PREFIX_V1 } from '../config';
@@ -171,7 +166,7 @@ export function getDatasetActivityLogsAPI(datasetGeid, params) {
 }
 
 export function downloadDataset(datasetCode, operator, sessionId) {
-  return downloadCoreAxios({
+  return serverAxios({
     url: `/v2/dataset/download/pre`,
     method: 'POST',
     headers: { 'Refresh-token': keycloak.refreshToken },
@@ -191,7 +186,7 @@ export function checkDatasetDownloadStatusAPI(hashCode) {
 }
 export function downloadDatasetFiles(datasetCode, files, operator, sessionId) {
   const options = {
-    url: `/v2/download/pre/`,
+    url: `/v2/download/pre`,
     method: 'post',
     headers: { 'Refresh-token': keycloak.refreshToken },
     data: {
@@ -201,7 +196,7 @@ export function downloadDatasetFiles(datasetCode, files, operator, sessionId) {
       operator: operator,
     },
   };
-  return downloadGRAxios(options);
+  return serverAxios(options);
 }
 
 export function previewDatasetFile(datasetGeid, fileGeid) {
