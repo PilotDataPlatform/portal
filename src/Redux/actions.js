@@ -59,6 +59,7 @@ import {
   FILE_EXPLORER_TABLE as FILE_EXPLORER_TABLE,
   COPY_REQUEST,
   NOTIFICATIONS,
+  SET_VIRTUAL_FOLDER_OPERATION,
 } from './actionTypes';
 
 export const AddDatasetCreator = (datasetList, title) => ({
@@ -634,4 +635,19 @@ export const notificationActions = {
     type: NOTIFICATIONS.SET_EDIT_NOTIFICATION,
     payload,
   }),
+};
+
+export const VIRTUAL_FOLDER_OPERATIONS = {
+  RENAME: 'rename',
+};
+
+export const vFolderOperation = {
+  setVFolderOperationRename: (geid) => ({
+    type: SET_VIRTUAL_FOLDER_OPERATION,
+    payload: { operation: VIRTUAL_FOLDER_OPERATIONS.RENAME, geid },
+  }),
+  clearVFolderOperation: () => ({
+    type: SET_VIRTUAL_FOLDER_OPERATION,
+    payload: { operation: null, geid: null }
+  })
 };
