@@ -8,20 +8,27 @@
   background-color: #003262 !important;
   position: fixed !important;
   top: 100px;
-  width: 51px;
-  max-width: 51px;
-  min-width: 51px;
+  width: 52px;
+  max-width: 52px;
+  min-width: 52px;
+  overflow: hidden;
   :global {
     .ant-menu-item {
-      left: -14px !important;
+      left: 6px !important;
       margin-bottom: 10px !important;
     }
+
     .anticon {
+      margin-left: -17px !important;
       color: #f0f0f0;
     }
     .ant-menu-item-selected {
+      border-top-left-radius: 8px !important;
+      border-bottom-left-radius: 8px !important;
+      border-bottom-right-radius: 10px !important;
+      background-color: #f0f0f0 !important;
       .anticon {
-        color: #1890ff;
+        color: #003262 !important;
       }
     }
   }
@@ -266,7 +273,7 @@
     width: fit-content;
     list-style: none;
     border-radius: 50px;
-    border: 1px solid #D9D9D9;
+    border: 1px solid #d9d9d9;
     padding-left: 0;
     margin-left: 3rem;
   }
@@ -283,7 +290,7 @@
     transition: background-color 0.3s ease-in;
 
     &--active {
-      background-color: #F7E8BC;
+      background-color: #f7e8bc;
     }
   }
 }

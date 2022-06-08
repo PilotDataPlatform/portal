@@ -362,14 +362,14 @@ const ToolBar = ({
             {iconSelected === 'canvas' ? (
               <span role="img" className="anticon">
                 <img
-                  style={{ width: 15 }}
+                  style={{ width: 15, marginLeft: -17 }}
                   src={require('../../../Images/Dashboard-selected.svg')}
                 />
               </span>
             ) : (
               <span role="img" className="anticon">
                 <img
-                  style={{ width: 15 }}
+                  style={{ width: 15, marginLeft: -17 }}
                   src={require('../../../Images/Dashboard.svg')}
                 />
               </span>

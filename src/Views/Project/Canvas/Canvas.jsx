@@ -15,6 +15,7 @@ import {
 import { getUsersOnDatasetAPI } from '../../../APIs';
 import { namespace, ErrorMessager } from '../../../ErrorMessages';
 import { withCurrentProject } from '../../../Utility';
+import styles from './index.module.scss';
 
 const { Content } = Layout;
 
@@ -411,10 +412,21 @@ class Canvas extends Component {
           <Spin />
         ) : (
           <>
-            <Content className="content" style={{ letterSpacing: '0.4px' }}>
+            <Content
+              className="content"
+              style={{ position: 'relative', letterSpacing: '0.4px' }}
+            >
               <Row style={{ paddingBottom: '10px' }}>
                 <Col span={24}>
-                  <CanvasPageHeader />
+                  <div
+                    style={{
+                      position: 'absolute',
+                      zIndex: 1,
+                      width: '100%',
+                    }}
+                  >
+                    <CanvasPageHeader />
+                  </div>
                   <DragArea
                     key={this.state.updateCount}
                     onLayoutChange={this.onLayoutChange}
@@ -425,7 +437,7 @@ class Canvas extends Component {
                     {cardContents &&
                       cardContents.map((card) => {
                         return (
-                          <div key={card.key}>
+                          <div key={card.key} style={{ marginTop: 70 }}>
                             <BasicCard
                               title={card.title}
                               expandable={card.expandable}
@@ -452,7 +464,9 @@ class Canvas extends Component {
                   title={modalTitle}
                   visible={modalVisible}
                   onCancel={this.handleExpandClose}
-                  style={{ minWidth: this.state.modalWidth }}
+                  style={{
+                    minWidth: this.state.modalWidth,
+                  }}
                   footer={null}
                   maskClosable={false}
                 >

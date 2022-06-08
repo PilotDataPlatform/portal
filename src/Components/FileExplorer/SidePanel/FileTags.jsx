@@ -17,7 +17,9 @@ function FileTags(props) {
   const sidePanelCfg = fileExplorerCtx.sidePanelCfg;
   const inputRef = useRef(null);
   const [customizedTags, setCustomizedTags] = useState(props.record.tags);
-  const [systemTags, setSystemTags] = useState(props.record.systemTags ? props.record.systemTags : []);
+  const [systemTags, setSystemTags] = useState(
+    props.record.systemTags ? props.record.systemTags : [],
+  );
   const [inputVisible, setInputVisible] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [errorMessage, setErrorMessage] = useState(false);
@@ -75,7 +77,7 @@ function FileTags(props) {
     try {
       const record = props.record;
       const fileType = record.nodeLabel.includes('Folder') ? 'Folder' : 'File';
-      await updateProjectTagsAPI(fileType, record.geid, {
+      await updateProjectTagsAPI(record.geid, {
         tags: customizedTags,
         inherit: false,
       });
