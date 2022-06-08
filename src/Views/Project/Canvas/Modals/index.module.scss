@@ -3,15 +3,28 @@
   @include media('>999px') {
     display: flex;
     justify-content: space-between;
+    border-radius: 6px;
   }
   :global {
+    .ant-tabs.ant-tabs-card
+      .ant-tabs-card-bar
+      .ant-tabs-tab-active
+      .ant-tabs-extra-content {
+      border-radius: 6px !important;
+    }
+
+    .ant-form {
+      border-radius: 6px !important;
+    }
     .ant-select-selector {
       border-radius: 6px !important;
     }
   }
 }
+
 .fieldGroup {
   margin-right: 12px;
+  border-radius: 6px;
   &:last-child {
     margin-right: 0;
   }

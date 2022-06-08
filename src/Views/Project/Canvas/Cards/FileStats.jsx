@@ -11,11 +11,14 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import styles from './index.module.scss';
 import { useCurrentProject } from '../../../../Utility';
+import { canvasPageActions } from '../../../../Redux/actions';
+import { useDispatch } from 'react-redux';
 
 function FileStats(props) {
   const [greenRoomCount, setGreenRoomCount] = useState(0);
   const [coreCount, setCoreCount] = useState(0);
   const [currentProject] = useCurrentProject();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (currentProject) {
@@ -36,9 +39,14 @@ function FileStats(props) {
     }
   }, [currentProject, props.successNum]);
 
+  const goToPage = (page) => {
+    console.log(page);
+    dispatch(canvasPageActions.setCanvasPage(page));
+  };
+
   return currentProject ? (
     <div style={{ flexDirection: 'column', display: 'flex' }}>
-      <div className={styles.shortcut}>
+      <div className={styles.shortcut} onClick={() => goToPage('Green Home')}>
         <span className={styles.iconColumn}>
           <HomeOutlined className={styles.icon} style={{ color: '#A5CF00' }} />
         </span>
@@ -46,7 +54,7 @@ function FileStats(props) {
         <span className={styles.fileNumber}>Files {greenRoomCount}</span>
       </div>
       {props.projectRole !== 'collaborator' && coreCount !== null ? (
-        <div className={styles.shortcut}>
+        <div className={styles.shortcut} onClick={() => goToPage('Core')}>
           <span className={styles.iconColumn}>
             <CloudServerOutlined
               className={styles.icon}
@@ -58,7 +66,7 @@ function FileStats(props) {
         </div>
       ) : null}
       {props.projectRole !== 'collaborator' ? (
-        <div className={styles.shortcut}>
+        <div className={styles.shortcut} onClick={() => goToPage('Collection')}>
           <span className={styles.iconColumn}>
             <PaperClipOutlined
               className={styles.icon}
@@ -73,10 +81,13 @@ function FileStats(props) {
   ) : null;
 }
 
-export default connect((state) => ({
-  containersPermission: state.containersPermission,
-  datasetList: state.datasetList,
-  successNum: state.successNum,
-  username: state.username,
-  role: state.role,
-}))(withRouter(FileStats));
+export default connect(
+  (state) => ({
+    containersPermission: state.containersPermission,
+    datasetList: state.datasetList,
+    successNum: state.successNum,
+    username: state.username,
+    role: state.role,
+  }),
+  { setCanvasPage: canvasPageActions.setCanvasPage },
+)(withRouter(FileStats));

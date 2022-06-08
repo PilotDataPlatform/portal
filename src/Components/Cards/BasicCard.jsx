@@ -64,7 +64,7 @@ export default class BasicCard extends Component {
         {getTooltip()}
         <span
           style={{
-            margin: '0 26px',
+            margin: '0 16px',
             color: '#707070',
             fontWeight: '200',
             fontSize: '22px',
@@ -114,7 +114,11 @@ export default class BasicCard extends Component {
                 style={{ paddingRight: '0', paddingLeft: '0' }}
               >
                 <DragOutlined
-                  style={{ position: 'static', fontSize: '15px' }}
+                  style={{
+                    position: 'static',
+                    fontSize: '15px',
+                    color: '#3C7DA6',
+                  }}
                 />
               </Button>
             ) : null}

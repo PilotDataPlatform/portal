@@ -59,6 +59,7 @@ import {
   FILE_EXPLORER_TABLE as FILE_EXPLORER_TABLE,
   COPY_REQUEST,
   NOTIFICATIONS,
+  SET_CANVAS_PAGE,
 } from './actionTypes';
 
 export const AddDatasetCreator = (datasetList, title) => ({
@@ -632,6 +633,13 @@ export const notificationActions = {
   }),
   setEditNotification: (payload) => ({
     type: NOTIFICATIONS.SET_EDIT_NOTIFICATION,
+    payload,
+  }),
+};
+
+export const canvasPageActions = {
+  setCanvasPage: (payload) => ({
+    type: SET_CANVAS_PAGE,
     payload,
   }),
 };

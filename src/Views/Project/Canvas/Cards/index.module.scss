@@ -111,6 +111,13 @@
   }
 }
 
+.file-descr {
+  max-width: 24rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .userName {
   font-size: 1.2rem;
   color: #a5b0b6;
