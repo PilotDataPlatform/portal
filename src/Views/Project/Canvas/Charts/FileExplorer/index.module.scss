@@ -245,7 +245,6 @@
 
 .trash_bin {
   cursor: pointer;
-  margin-left: 5px;
   display: inline-block;
   width: 165px;
   padding: 0.5px 0 0.5px 8px;
@@ -270,7 +269,12 @@
   }
 }
 
-.update_collection_name {
+.vfolder-rename__form {
+  display: flex;
+  margin-left: 33px
+}
+
+.vfolder-rename__form-item {
   margin: 0px 0px 4px 0px;
   :global {
     .ant-form-item-control-input-content {
@@ -446,7 +450,7 @@
 }
 
 .file_explore_actions {
-  margin-top: 6px;
+  margin-top: 3px;
   position: relative;
   padding-left: 8px;
   border-bottom: 1px solid $background-color-1;
