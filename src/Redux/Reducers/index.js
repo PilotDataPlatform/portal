@@ -37,6 +37,8 @@ import { fileExplorerTable } from './fileExplorerTable';
 import request2Core from './request2Core';
 import notifications from './notification';
 import canvasPage from './canvasPage';
+import virtualFolders from './virtualFolders';
+
 
 const appReducer = combineReducers({
   datasetList,
@@ -76,6 +78,7 @@ const appReducer = combineReducers({
   request2Core,
   notifications,
   canvasPage,
+  virtualFolders
 });
 
 const rootReducer = (state, action) => {

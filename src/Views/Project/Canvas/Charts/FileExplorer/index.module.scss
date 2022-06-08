@@ -53,6 +53,11 @@
     .Collapse_collapseBg__3m8BO {
       margin-bottom: 10px !important;
     }
+
+    .ant-tree-node-content-wrapper {
+      transition: none !important;
+    }
+
     .ant-tree-iconEle {
       margin-right: 4px;
       font-size: 12px;
@@ -114,11 +119,8 @@
     }
 
     .tree-custom-line.core {
-      span[title='Home'] .ant-tree-title {
-        font-size: 14px;
-      }
       .ant-tree-title {
-        font-size: 12px;
+        font-size: 14px;
       }
 
       .ant-tree-node-content-wrapper.ant-tree-node-selected {
@@ -137,6 +139,17 @@
           }
         }
       }
+
+      &.virtual-folder-rename {
+        .ant-tree-node-content-wrapper.ant-tree-node-selected {
+          background-color: unset;
+          margin-left: 25px !important;
+
+          > span:first-child {
+            display: none;
+          }
+        }
+      }
     }
   }
 }
@@ -148,10 +161,10 @@
       border-color: $background-color-1 !important;
     }
 
-    .ant-tabs-card-bar  {
+    .ant-tabs-card-bar {
       margin-bottom: 0;
 
-       &.active-tab-greenroom .ant-tabs-nav .ant-tabs-tab-active {
+      &.active-tab-greenroom .ant-tabs-nav .ant-tabs-tab-active {
         > div {
           border-bottom: 2px solid $primary-color-2;
           color: $primary-color-2;
@@ -162,7 +175,7 @@
         }
       }
 
-       &.active-tab-core .ant-tabs-nav .ant-tabs-tab-active {
+      &.active-tab-core .ant-tabs-nav .ant-tabs-tab-active {
         > div {
           border-bottom: 2px solid $primary-color-1;
           color: $primary-color-1;
@@ -173,7 +186,7 @@
         }
       }
 
-       &.active-tab-vfolder .ant-tabs-nav .ant-tabs-tab-active {
+      &.active-tab-vfolder .ant-tabs-nav .ant-tabs-tab-active {
         > div {
           border-bottom: 2px solid $primary-color-4;
           color: $primary-color-4;
@@ -194,7 +207,6 @@
           }
         }
       }
-
     }
 
     .ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab {
@@ -231,12 +243,12 @@
     }
 
     #tab-trash {
-      span[role="img"] {
+      span[role='img'] {
         margin-right: 8px;
       }
     }
-     #tab-greenroom-home {
-      span[role="img"] {
+    #tab-greenroom-home {
+      span[role='img'] {
         margin-right: 8px;
       }
     }
@@ -245,7 +257,6 @@
 
 .trash_bin {
   cursor: pointer;
-  margin-left: 5px;
   display: inline-block;
   width: 165px;
   padding: 0.5px 0 0.5px 8px;
@@ -270,7 +281,50 @@
   }
 }
 
-.update_collection_name {
+.vfolder-rename__form {
+  display: flex;
+
+  :global {
+    .ant-form-item {
+      margin-bottom: 0;
+      input {
+        border-radius: 6px;
+        line-height: 14px;
+        font-size: 14px;
+        padding: 3px 11px;
+      }
+    }
+  }
+}
+
+.vfolder-rename__buttons {
+  display: flex;
+
+  button {
+    width: 85px;
+    height: 24px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    padding-top: 5px;
+    border-radius: 6px;
+    border-width: 0;
+    box-shadow: none;
+  }
+
+  button[type='submit'] {
+    background-color: $primary-color-light-1;
+  }
+
+  :global {
+    button.ant-btn-default {
+      padding: 5px 0 4px 0;
+      width: 80px;
+    }
+  }
+}
+
+.vfolder-rename__input-form-item {
   margin: 0px 0px 4px 0px;
   :global {
     .ant-form-item-control-input-content {
@@ -446,7 +500,7 @@
 }
 
 .file_explore_actions {
-  margin-top: 6px;
+  margin-top: 3px;
   position: relative;
   padding-left: 8px;
   border-bottom: 1px solid $background-color-1;
