@@ -71,6 +71,7 @@ import Copy2CorePlugin from './Plugins/Copy2Core/Copy2CorePlugin';
 import VirtualFolderPlugin from './Plugins/VirtualFolders/VirtualFolderPlugin';
 import VirtualFolderFilesDeletePlugin from './Plugins/VirtualFolderDeleteFiles/VirtualFolderFilesDeletePlugin';
 import VirtualFolderDeletePlugin from './Plugins/VirtualFolderDelete/VirtualFolderDeletePlugin';
+import VirtualFolderRenamePlugin from './Plugins/VirtualFolderRename/VirtualFolderRenamePlugin';
 import ZipContentPlugin from './Plugins/ZipContent/ZipContentPlugin';
 import DeleteFilesPlugin from './Plugins/DeleteFiles/DeleteFilesPlugin';
 import ManifestManagementPlugin from './Plugins/ManifestManagement/ManifestManagementPlugin';
@@ -1227,6 +1228,13 @@ function RawTable(props) {
           removePanel={removePanel}
         />
       ),
+    },
+    {
+      condition:
+        props.type === DataSourceType.CORE_VIRTUAL_FOLDER &&
+        !currentRouting?.length &&
+        !hasSelected,
+      elm: <VirtualFolderRenamePlugin panelKey={panelKey} />,
     },
   ];
 

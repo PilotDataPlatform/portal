@@ -14,6 +14,7 @@ function VirtualFolderDeletePlugin({
     <>
       <Button
         type="link"
+        style={{ marginRight: '8px' }}
         icon={<DeleteOutlined />}
         onClick={() => {
           setModalVisible(true);
