@@ -29,6 +29,8 @@ import CollectionIcon from '../../../../../Components/Icons/Collection';
 import {
   setCurrentProjectActivePane,
   setCurrentProjectTree,
+  vFolderOperation,
+  VIRTUAL_FOLDER_OPERATIONS,
 } from '../../../../../Redux/actions';
 import i18n from '../../../../../i18n';
 import { usePanel } from './usePanel';
@@ -38,6 +40,7 @@ import { createHash } from 'crypto';
 import currentProject from '../../../../../Redux/Reducers/currentProject';
 
 const { TabPane } = Tabs;
+const { TreeNode } = Tree;
 const VFOLDER_CREATE_LEAF = 'vfolder-create';
 function getTitle(title) {
   if (title.includes('Trash')) {
@@ -80,7 +83,6 @@ function FilesContent(props) {
     usePanel();
   const [treeKey, setTreeKey] = useState(0);
   const [vfolders, setVfolders] = useState([]);
-  const [editCollection, setEditCollection] = useState(false);
   const [saveBtnLoading, setSaveBtnLoading] = useState(false);
   const [deleteBtnLoading, setDeleteBtnLoading] = useState(false);
   const [updateBtnLoading, setUpdateBtnLoading] = useState(false);
@@ -96,6 +98,10 @@ function FilesContent(props) {
   const projectGeid = currentDataset?.globalEntityId;
   const projectId = currentDataset.id;
   const projectCode = currentDataset.code;
+  const editCollection = Object.keys(VIRTUAL_FOLDER_OPERATIONS).find(
+    (operation) =>
+      VIRTUAL_FOLDER_OPERATIONS[operation] === props.virtualFolders.operation,
+  );
   const greenRoomData = [
     {
       title: 'Home',
@@ -196,7 +202,7 @@ function FilesContent(props) {
 
       if (updateBtnLoading) {
         setUpdateBtnLoading(false);
-        setEditCollection(false);
+        props.vFolderOperation.clearVFolderOperation();
         message.success(`${i18n.t('success:collections.updateCollections')}`);
       }
     }
@@ -250,7 +256,6 @@ function FilesContent(props) {
 
   //Tab
   const onChange = (selectedActivePane) => {
-    console.log('on tab change')
     props.setCurrentProjectActivePane(selectedActivePane);
     activatePane(selectedActivePane);
     setTreeKey((prev) => {
@@ -334,6 +339,11 @@ function FilesContent(props) {
     }
     clickLock = false;
   };
+
+  // const onCollectionSelect = async (selectedKeys, info) => {
+  //   await onSelect(selectedKeys, info);
+  //   setIsCollectionSelected(true);
+  // };
 
   const onCreateCollectionFormFinish = async (values) => {
     const { newCollectionName } = values;
@@ -445,47 +455,47 @@ function FilesContent(props) {
     }
   };
 
-  const showEditButton = (
-    editCollection,
-    createCollection,
-    vFolder,
-    saveBtnLoading,
-    deleteBtnLoading,
-    updateBtnLoading,
-  ) => {
-    if (!editCollection && !createCollection) {
-      if (vFolder && vFolder['vfolders'] && vFolder['vfolders'].length === 0) {
-        return null;
-      } else {
-        return (
-          <strong>
-            <EditOutlined
-              onClick={() => {
-                setEditCollection(true);
-                updateVfolders();
-              }}
-            />
-          </strong>
-        );
-      }
-    } else if (
-      editCollection &&
-      !createCollection &&
-      !deleteBtnLoading &&
-      !updateBtnLoading
-    ) {
-      return <CloseOutlined onClick={() => setEditCollection(false)} />;
-    } else if (
-      (editCollection && !createCollection && deleteBtnLoading) ||
-      updateBtnLoading
-    ) {
-      return null;
-    } else if (createCollection && !editCollection && !saveBtnLoading) {
-      return <CloseOutlined onClick={() => setCreateCollection(false)} />;
-    } else if (createCollection && !editCollection && saveBtnLoading) {
-      return null;
-    }
-  };
+  // const showEditButton = (
+  //   editCollection,
+  //   createCollection,
+  //   vFolder,
+  //   saveBtnLoading,
+  //   deleteBtnLoading,
+  //   updateBtnLoading,
+  // ) => {
+  //   if (!editCollection && !createCollection) {
+  //     if (vFolder && vFolder['vfolders'] && vFolder['vfolders'].length === 0) {
+  //       return null;
+  //     } else {
+  //       return (
+  //         <strong>
+  //           <EditOutlined
+  //             onClick={() => {
+  //               setEditCollection(true);
+  //               updateVfolders();
+  //             }}
+  //           />
+  //         </strong>
+  //       );
+  //     }
+  //   } else if (
+  //     editCollection &&
+  //     !createCollection &&
+  //     !deleteBtnLoading &&
+  //     !updateBtnLoading
+  //   ) {
+  //     return <CloseOutlined onClick={() => setEditCollection(false)} />;
+  //   } else if (
+  //     (editCollection && !createCollection && deleteBtnLoading) ||
+  //     updateBtnLoading
+  //   ) {
+  //     return null;
+  //   } else if (createCollection && !editCollection && !saveBtnLoading) {
+  //     return <CloseOutlined onClick={() => setCreateCollection(false)} />;
+  //   } else if (createCollection && !editCollection && saveBtnLoading) {
+  //     return null;
+  //   }
+  // };
 
   const showForm = (editCollection, createCollection) => {
     if (!editCollection && !createCollection) {
@@ -715,6 +725,98 @@ function FilesContent(props) {
       );
     }
   };
+
+  const VFolderRenameForm = ({ id, title }) => {
+    return (
+      <div className={styles['vFolder-rename__form']}>
+        <Form onFinish={onUpdateCollectionFormFinish}>
+          <Form.Item
+            className={styles['vfolder-rename__form-item']}
+            name={id}
+            initialValue={title}
+            rules={[
+              {
+                required: true,
+                validator: (rule, value) => {
+                  const collection = value ? trimString(value) : null;
+                  if (!collection) {
+                    return Promise.reject(
+                      'Collection name should be 1 ~ 20 characters',
+                    );
+                  }
+                  const isLengthValid =
+                    collection.length >= 1 && collection.length <= 20;
+                  if (!isLengthValid) {
+                    return Promise.reject(
+                      'Collection name should be 1 ~ 20 characters',
+                    );
+                  } else {
+                    const specialChars = [
+                      '\\',
+                      '/',
+                      ':',
+                      '?',
+                      '*',
+                      '<',
+                      '>',
+                      '|',
+                      '"',
+                      "'",
+                    ];
+                    for (let char of specialChars) {
+                      if (collection.indexOf(char) !== -1) {
+                        return Promise.reject(
+                          `Collection name can not contain any of the following character ${specialChars.join(
+                            ' ',
+                          )}`,
+                        );
+                      }
+                    }
+                    return Promise.resolve();
+                  }
+                },
+              },
+            ]}
+          >
+            <Input
+              //defaultValue={el.name}
+              style={{
+                borderRadius: '6px',
+                marginLeft: '16px',
+                marginRight: '10px',
+                height: '28px',
+              }}
+            />
+          </Form.Item>
+        </Form>
+      </div>
+    );
+  };
+
+  const getVFolderTreeData = () => {
+    const data = props.project.tree
+      ? [...coreData, ...props.project.tree.vfolders]
+      : coreData;
+
+    return data.map((vfolder) => {
+      console.log(vfolder);
+      let vfolderTitle = vfolder.title;
+      if (
+        vfolder.geid === props.virtualFolders.geid &&
+        props.virtualFolders.operation === VIRTUAL_FOLDER_OPERATIONS.RENAME
+      ) {
+        vfolderTitle = (
+          <VFolderRenameForm
+            id={vfolder.geid}
+            title={vfolder.key.replace('vfolder-', '')}
+          />
+        );
+      }
+      vfolder.title = vfolderTitle;
+      return vfolder;
+    });
+  };
+
   return (
     <>
       <Row style={{ minWidth: 750 }}>
@@ -807,16 +909,6 @@ function FilesContent(props) {
                     </span>
                   </span>
                 </div>
-                <div>
-                  {showEditButton(
-                    editCollection,
-                    createCollection,
-                    props.project.tree,
-                    saveBtnLoading,
-                    deleteBtnLoading,
-                    updateBtnLoading,
-                  )}
-                </div>
               </div>
               <Tree
                 className="tree-custom-line core"
@@ -825,16 +917,9 @@ function FilesContent(props) {
                 selectedKeys={[activePane]}
                 switcherIcon={<DownOutlined />}
                 onSelect={onSelect}
-                treeData={
-                  props.project.tree &&
-                  props.project.tree['vfolders'] &&
-                  !editCollection
-                    ? coreData.concat(props.project.tree['vfolders'])
-                    : coreData
-                }
+                treeData={getVFolderTreeData()}
                 key={treeKey}
               />
-              {showForm(editCollection, createCollection)}
             </div>
           )}
           {/* <Collapse
@@ -884,16 +969,15 @@ function FilesContent(props) {
               renderTabBar={(props, DefaultTabBar) => (
                 <DefaultTabBar
                   {...props}
-                  className={`active-tab-${getTabName(activePane)} ant-tabs-card-bar`}
+                  className={`active-tab-${getTabName(
+                    activePane,
+                  )} ant-tabs-card-bar`}
                 />
               )}
             >
               {panes &&
                 panes.map((pane) => (
-                  <TabPane
-                    tab={pane.title}
-                    key={pane.key.toString()}
-                  >
+                  <TabPane tab={pane.title} key={pane.key.toString()}>
                     <div
                       style={{
                         minHeight: '300px',
@@ -1000,6 +1084,7 @@ export default connect(
   (state) => ({
     project: state.project,
     username: state.username,
+    virtualFolders: state.virtualFolders,
   }),
-  { setCurrentProjectTree, setCurrentProjectActivePane },
+  { setCurrentProjectTree, setCurrentProjectActivePane, vFolderOperation },
 )(FilesContent);
