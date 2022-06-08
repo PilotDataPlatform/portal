@@ -61,7 +61,6 @@ import {
   NOTIFICATIONS,
   SET_CANVAS_PAGE,
   SET_VIRTUAL_FOLDER_OPERATION,
-
 } from './actionTypes';
 
 export const AddDatasetCreator = (datasetList, title) => ({
@@ -639,12 +638,12 @@ export const notificationActions = {
   }),
 };
 
-
 export const canvasPageActions = {
   setCanvasPage: (payload) => ({
     type: SET_CANVAS_PAGE,
     payload,
   }),
+};
 
 export const VIRTUAL_FOLDER_OPERATIONS = {
   RENAME: 'rename',
@@ -657,7 +656,6 @@ export const vFolderOperation = {
   }),
   clearVFolderOperation: () => ({
     type: SET_VIRTUAL_FOLDER_OPERATION,
-    payload: { operation: null, geid: null }
-  })
-
+    payload: { operation: null, geid: null },
+  }),
 };

@@ -74,7 +74,6 @@ function FileStats(props) {
             />
           </span>
           <span className={styles.fileFont}>Collections</span>
-          <span className={styles.fileNumber}>Files {greenRoomCount}</span>
         </div>
       ) : null}
     </div>
