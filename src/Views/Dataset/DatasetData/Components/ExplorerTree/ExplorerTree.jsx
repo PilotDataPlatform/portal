@@ -82,7 +82,7 @@ export function ExplorerTree(props) {
     });
   }
   function getTreeDataElm(list) {
-    return list.map((node) => {
+    return list?.map((node) => {
       node.key = node.globalEntityId;
       node.isLeaf = node.labels.indexOf('File') !== -1;
       node.title = titleRender(

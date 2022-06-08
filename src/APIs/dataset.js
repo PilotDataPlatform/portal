@@ -1,4 +1,4 @@
-import { serverAxios, serverAxiosNoIntercept } from './config';
+import { devOpServerUrl, serverAxios, serverAxiosNoIntercept } from './config';
 import { keycloak } from '../Service/keycloak';
 import _ from 'lodash';
 import { API_PATH, DOWNLOAD_PREFIX_V2, DOWNLOAD_PREFIX_V1 } from '../config';
@@ -48,7 +48,7 @@ export function createDatasetApi(
   });
 }
 
-export function listDatasetFiles(
+export async function listDatasetFiles(
   datasetGeid,
   folderGeid,
   page,
@@ -57,6 +57,24 @@ export function listDatasetFiles(
   orderType,
   query,
 ) {
+  function generateLabels(item) {
+    const labels = [];
+    if (item.zone === 'greenroom') {
+      labels.push('Greenroom');
+    }
+    if (item.zone === 'core') {
+      labels.push('Core');
+    }
+    if (item.archived) {
+      labels.push('TrashFile');
+    }
+    if (item.type === 'folder' || item.type === 'name_folder') {
+      labels.push('Folder');
+    } else {
+      labels.push('File');
+    }
+    return labels;
+  }
   const params = {
     folder_geid: folderGeid,
     page: page,
@@ -65,10 +83,28 @@ export function listDatasetFiles(
     order_type: orderType,
     query: query,
   };
-  return serverAxios({
+  const res = await serverAxios({
     url: `/v1/dataset/${datasetGeid}/files`,
     params: params,
   });
+  const objFormatted = res.data?.result?.data.map((item) => {
+    let formatRes = {
+      globalEntityId: item.id,
+      datasetCode: item.containerCode,
+      archived: item.archived,
+      timeCreated: item.createdTime,
+      timeLastmodified: item.lastUpdatedTime,
+      labels: generateLabels(item),
+      displayPath: item.parentPath,
+      name: item.name,
+      fileSize: item.size,
+      operator: item.owner,
+      location: item.storage.locationUri,
+    };
+    return formatRes;
+  });
+  res.data.result.data = objFormatted;
+  return res;
 }
 
 const mapBasicInfo = (result) => {

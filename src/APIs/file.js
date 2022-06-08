@@ -288,11 +288,6 @@ async function getFiles(
   filters['archived'] = archived;
   filters = _.omit(filters, ['tags']);
   let url = `/v1/files/meta`;
-  // if (checkGreenAndCore(panelKey) && geid === null) {
-  //   url = `/v1/files/entity/meta/`;
-  // } else {
-  //   url = `/v1/files/entity/meta/${geid}`;
-  // }
   const params = {
     page,
     page_size: pageSize,
