@@ -30,6 +30,7 @@ import {
 import userRoles from '../../../../Utility/project-roles.json';
 import styles from '../index.module.scss';
 import { PLATFORM } from '../../../../config';
+import '../../../../Themes/base.scss';
 const { Content } = Layout;
 const { Paragraph } = Typography;
 
@@ -134,16 +135,7 @@ class CanvasPageHeader extends Component {
             wordBreak: 'break-all',
           }}
         >
-          <span
-            style={{
-              color: '#003262',
-              fontSize: '12px',
-              marginRight: '20px',
-              fontWeight: 'normal',
-            }}
-          >
-            Administrators
-          </span>
+          <span className={styles['user-font']}>Administrators</span>
           {this.state.userListOnDataset &&
             this.state.userListOnDataset.map((el, index) => (
               <a
@@ -177,34 +169,14 @@ class CanvasPageHeader extends Component {
         {currentProject.name.length > 40 ? (
           <Tooltip title={currentProject.name}>
             <div style={{ lineHeight: '22px' }}>
-              <span
-                style={{
-                  maxWidth: '100%',
-                  display: 'inline-block',
-                  verticalAlign: 'bottom',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  color: '#003262',
-                  fontSize: '20px',
-                }}
-              >
+              <span className={styles['curproject-name']}>
                 {currentProject.name}
               </span>
             </div>
           </Tooltip>
         ) : (
           <div style={{ lineHeight: '22px' }}>
-            <span
-              style={{
-                maxWidth: '100%',
-                display: 'inline-block',
-                verticalAlign: 'bottom',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                color: '#003262',
-                fontSize: '20px',
-              }}
-            >
+            <span className={styles['curproject-name']}>
               {currentProject.name}
             </span>
           </div>
@@ -310,15 +282,7 @@ class CanvasPageHeader extends Component {
               >
                 Administrators
               </span>
-              <span
-                style={{
-                  color: '#003262',
-                  fontSize: '20px',
-                  fontWeight: 'bold',
-                  verticalAlign: 'middle',
-                  marginLeft: 17,
-                }}
-              >
+              <span className={styles['owner']}>
                 {administrators ? administrators.length : 0}
               </span>
             </div>
@@ -332,15 +296,7 @@ class CanvasPageHeader extends Component {
               >
                 Contributors
               </span>
-              <span
-                style={{
-                  color: '#003262',
-                  fontSize: '20px',
-                  fontWeight: 'bold',
-                  verticalAlign: 'middle',
-                  marginLeft: 17,
-                }}
-              >
+              <span className={styles['owner']}>
                 {contributors ? contributors.length : 0}
               </span>
             </div>
@@ -356,15 +312,7 @@ class CanvasPageHeader extends Component {
               >
                 Collaborators
               </span>
-              <span
-                style={{
-                  color: '#003262',
-                  fontSize: '20px',
-                  fontWeight: 'bold',
-                  verticalAlign: 'middle',
-                  marginLeft: 17,
-                }}
-              >
+              <span className={styles['owner']}>
                 {collaborators ? collaborators.length : 0}
               </span>
             </div>
@@ -501,24 +449,12 @@ class CanvasPageHeader extends Component {
               {pageHeaderExpand ? (
                 <UpCircleOutlined
                   onClick={this.toggleExpand}
-                  style={{
-                    color: '#1890FF',
-                    fontSize: '22px',
-                    zIndex: 2,
-                    position: 'relative',
-                    boxShadow: '0px 1px 7px #0000001a',
-                  }}
+                  className={styles['up-circle']}
                 />
               ) : (
                 <DownCircleOutlined
                   onClick={this.toggleExpand}
-                  style={{
-                    color: '#3C7DA6',
-                    fontSize: '22px',
-                    zIndex: 2,
-                    position: 'relative',
-                    boxShadow: '0px 1px 7px #0000001a',
-                  }}
+                  className={styles['down-circle']}
                 />
               )}
             </div>

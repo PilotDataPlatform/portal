@@ -357,8 +357,13 @@ const ToolBar = ({
         selectedKeys={[pathname.split('/')[3]]}
         className={style.upperMenu}
       >
-        <Menu.Item key="canvas" onClick={() => toggleIcon('canvas')}>
-          <Link to="canvas">
+        <div className={style.temp} style={{ marginTop: -9 }}></div>
+        <Menu.Item
+          key="canvas"
+          onClick={() => toggleIcon('canvas')}
+          style={{ position: 'relative' }}
+        >
+          <Link to="canvas" rel="stylesheet" href="/index.module.scss">
             {iconSelected === 'canvas' ? (
               <span role="img" className="anticon">
                 <img
@@ -377,18 +382,21 @@ const ToolBar = ({
             <span>Canvas</span>
           </Link>
         </Menu.Item>
+        <div className={style.temp}></div>
         <Menu.Item key="fileExplorer" onClick={() => toggleIcon('')}>
           <Link to="fileExplorer">
             <CompassOutlined />
             <span>File Explorer</span>
           </Link>
         </Menu.Item>
+        <div className={style.temp}></div>
         <Menu.Item key="search" onClick={() => toggleIcon('')}>
           <Link to="search">
             <SearchOutlined />
             <span>Search</span>
           </Link>
         </Menu.Item>
+        <div className={style.temp}></div>
         <Menu.Item
           title={null}
           key="announcement"
@@ -396,6 +404,7 @@ const ToolBar = ({
         >
           <AnnouncementButton currentProject={currentProject} />
         </Menu.Item>
+        <div className={style.temp}></div>
         {adminPermission && (
           <Menu.Item key="teams" onClick={() => toggleIcon('')}>
             <Link to="teams">
@@ -404,6 +413,7 @@ const ToolBar = ({
             </Link>
           </Menu.Item>
         )}
+        {adminPermission && <div className={style.temp}></div>}
         {adminPermission && (
           <Menu.Item key="settings" onClick={() => toggleIcon('')}>
             <Link to="settings">
@@ -412,6 +422,7 @@ const ToolBar = ({
             </Link>
           </Menu.Item>
         )}
+        {adminPermission && <div className={style.temp}></div>}
         {(adminPermission || collaboratorPermission) && (
           <Menu.Item key="requestToCore" onClick={handleRequestToCoreOnClick}>
             <Link to="requestToCore">
@@ -420,6 +431,7 @@ const ToolBar = ({
             </Link>
           </Menu.Item>
         )}
+        {adminPermission && <div className={style.temp}></div>}
         {(adminPermission || collaboratorPermission) && (
           <>
             {showRequestToCoreRedDot && (
@@ -441,6 +453,7 @@ const ToolBar = ({
             )}
           </>
         )}
+        {adminPermission && <div className={style.temp}></div>}
       </Menu>
 
       <Menu
