@@ -383,8 +383,8 @@ const ToolBar = ({
           </Link>
         </Menu.Item>
         <div className={style.temp}></div>
-        <Menu.Item key="fileExplorer" onClick={() => toggleIcon('')}>
-          <Link to="fileExplorer">
+        <Menu.Item key="data" onClick={() => toggleIcon('')}>
+          <Link to="data">
             <CompassOutlined />
             <span>File Explorer</span>
           </Link>

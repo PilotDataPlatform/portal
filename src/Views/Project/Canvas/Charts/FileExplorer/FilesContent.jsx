@@ -287,7 +287,6 @@ function FilesContent(props) {
     }
   };
   const fetch = async () => {
-    // let allFolders;
     const defaultOpenPane = getDefaultPane();
     addPane(defaultOpenPane);
     props.setCurrentProjectActivePane(defaultOpenPane.key);
@@ -386,10 +385,10 @@ function FilesContent(props) {
   };
 
   useEffect(() => {
-    if (canvasPage.page) {
+    if (props.canvasPage.page) {
       fetch();
     }
-  }, [projectId, canvasPage]);
+  }, [projectId, props.canvasPage]);
 
   useEffect(() => {
     if (currentDataset.permission !== 'contributor') {

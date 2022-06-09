@@ -8,9 +8,9 @@ import FileExplorer from '../Views/Project/FileExplorer/FileExplorer';
 
 const routes = [
   {
-    path: '/fileExplorer',
+    path: '/data',
     component: FileExplorer,
-    protectedType: 'projectMember'
+    protectedType: 'projectMember',
   },
   {
     path: '/canvas',
