@@ -37,6 +37,7 @@ import { usePanel } from './usePanel';
 import styles from './index.module.scss';
 import variables from '../../../../../Themes/base.scss';
 import CollectionCreation from './CollectionCreation';
+import canvasPage from '../../../../../Redux/Reducers/canvasPage';
 
 const { TabPane } = Tabs;
 const VFOLDER_CREATE_LEAF = 'create-vfolder';
@@ -248,20 +249,49 @@ function FilesContent(props) {
 
   const firstPane = greenRoomData[0];
   //Fetch tree data, create default panel
+  const getDefaultPane = () => {
+    if (props.canvasPage) {
+      if (props.canvasPage.page === 'greenroom-home') {
+        return {
+          title: getTitle(`Green Room - Home`),
+          key: PanelKey.GREENROOM_HOME,
+          content: {
+            projectId,
+            type: DataSourceType.GREENROOM_HOME,
+          },
+        };
+      }
+      if (props.canvasPage.page === 'core-home') {
+        return {
+          title: getTitle(`Core - Home`),
+          key: PanelKey.CORE_HOME,
+          content: {
+            projectId,
+            type: DataSourceType.GREENROOM_HOME,
+          },
+        };
+      }
+      if (props.canvasPage.page === 'collection') {
+        const title = getTitle(`Collection - ${props.canvasPage.name}  `);
+        return {
+          title: title,
+          titleText: props.canvasPage.name,
+          content: {
+            projectId: projectId,
+            type: DataSourceType.CORE_VIRTUAL_FOLDER,
+            geid: props.canvasPage.id,
+          },
+          key: 'vfolder-' + props.canvasPage.name,
+        };
+      }
+    }
+  };
   const fetch = async () => {
     // let allFolders;
-
-    addPane({
-      path: firstPane.path,
-      title: getTitle(`Green Room - ${firstPane.title}  `),
-      key: firstPane.key,
-      content: {
-        projectId,
-        type: DataSourceType.GREENROOM_HOME,
-      },
-    });
-    props.setCurrentProjectActivePane(firstPane.key);
-    activatePane(firstPane.key);
+    const defaultOpenPane = getDefaultPane();
+    addPane(defaultOpenPane);
+    props.setCurrentProjectActivePane(defaultOpenPane.key);
+    activatePane(defaultOpenPane.key);
     if (currentDataset.permission !== 'contributor') {
       const vfoldersRes = await updateVfolders();
       const vfoldersNodes = vfoldersRes.map((folder) => {
@@ -356,8 +386,10 @@ function FilesContent(props) {
   };
 
   useEffect(() => {
-    fetch();
-  }, [projectId]);
+    if (canvasPage.page) {
+      fetch();
+    }
+  }, [projectId, canvasPage]);
 
   useEffect(() => {
     if (currentDataset.permission !== 'contributor') {
@@ -827,6 +859,7 @@ export default connect(
     project: state.project,
     username: state.username,
     virtualFolders: state.virtualFolders,
+    canvasPage: state.canvasPage,
   }),
   {
     setCurrentProjectTree,
