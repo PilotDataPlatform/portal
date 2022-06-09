@@ -4,7 +4,7 @@ import {
   PaperClipOutlined,
   CloudServerOutlined,
 } from '@ant-design/icons';
-import { projectFileCountTotal } from '../../../../APIs';
+import { listAllVirtualFolder, projectFileCountTotal } from '../../../../APIs';
 import moment from 'moment';
 import { useSelector } from 'react-redux';
 import { connect } from 'react-redux';
@@ -13,10 +13,12 @@ import styles from './index.module.scss';
 import { useCurrentProject } from '../../../../Utility';
 import { canvasPageActions } from '../../../../Redux/actions';
 import { useDispatch } from 'react-redux';
+import '../../../../Themes/base.scss';
 
 function FileStats(props) {
   const [greenRoomCount, setGreenRoomCount] = useState(0);
   const [coreCount, setCoreCount] = useState(0);
+  const [collections, setCollections] = useState([]);
   const [currentProject] = useCurrentProject();
   const dispatch = useDispatch();
 
@@ -28,27 +30,43 @@ function FileStats(props) {
       }).then((res) => {
         const statistics = res?.data?.result;
         if (res.status === 200 && statistics) {
-          //no collection number in statistics
           setGreenRoomCount(statistics.greenroom);
           setCoreCount(statistics.core);
-          // setCopyCount(statistics.approved);
-          // setDownloadCount(statistics.downloaded);
-          // setUploadCount(statistics.uploaded);
         }
+      });
+
+      listAllVirtualFolder(currentProject.code, props.username).then((res) => {
+        setCollections(res.data.result);
       });
     }
   }, [currentProject, props.successNum]);
 
   const goToPage = (page) => {
-    console.log(page);
-    dispatch(canvasPageActions.setCanvasPage(page));
+    // console.log(page);
+    if (page === 'Collection') {
+      dispatch(
+        canvasPageActions.setCanvasPage({
+          page: page,
+          id: collections.length > 0 ? collections[0].id : '',
+        }),
+      );
+    } else {
+      dispatch(
+        canvasPageActions.setCanvasPage({
+          page: page,
+        }),
+      );
+    }
   };
 
   return currentProject ? (
     <div style={{ flexDirection: 'column', display: 'flex' }}>
       <div className={styles.shortcut} onClick={() => goToPage('Green Home')}>
         <span className={styles.iconColumn}>
-          <HomeOutlined className={styles.icon} style={{ color: '#A5CF00' }} />
+          <HomeOutlined
+            className={styles.icon}
+            style={{ color: '$primary-color-light-2' }}
+          />
         </span>
         <span className={styles.fileFont}>Green Room</span>
         <span className={styles.fileNumber}>Files {greenRoomCount}</span>
@@ -70,10 +88,15 @@ function FileStats(props) {
           <span className={styles.iconColumn}>
             <PaperClipOutlined
               className={styles.icon}
-              style={{ color: '#FFC118' }}
+              style={{ color: '$primary-color-5' }}
             />
           </span>
-          <span className={styles.fileFont}>Collections</span>
+          <span className={styles.fileFont}>
+            <span className={styles['collections-num']}>
+              {collections.length}
+            </span>{' '}
+            Collections
+          </span>
         </div>
       ) : null}
     </div>
@@ -87,6 +110,7 @@ export default connect(
     successNum: state.successNum,
     username: state.username,
     role: state.role,
+    canvasPage: state.canvasPage,
   }),
   { setCanvasPage: canvasPageActions.setCanvasPage },
 )(withRouter(FileStats));

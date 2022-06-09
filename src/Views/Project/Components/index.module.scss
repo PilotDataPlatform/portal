@@ -1,19 +1,38 @@
+@import '../../../Themes/base.scss';
+
 .menu {
   position: fixed !important;
   // top: 110px;
   z-index: 10;
 }
 
+.temp {
+  width: 100%;
+  height: 13px;
+  background-color: $primary-color-1;
+  border-bottom-right-radius: 10px;
+  border-top-right-radius: 10px;
+  position: absolute;
+  margin-top: -11px;
+  margin-left: 2px;
+  z-index: 11;
+}
+
 .upperMenu {
-  background-color: #003262 !important;
+  background-color: $primary-color-1 !important;
   position: fixed !important;
-  top: 100px;
-  width: 52px;
-  max-width: 52px;
-  min-width: 52px;
+  margin-top: 0;
+  top: 110px;
+  width: 51px;
+  max-width: 51px;
+  min-width: 51px;
   overflow: hidden;
 
   :global {
+    .ant-menu-inline {
+      border: none;
+    }
+
     .ant-menu-item {
       left: 11px !important;
       margin-bottom: 10px !important;
@@ -21,13 +40,18 @@
 
     .anticon {
       margin-left: -17px !important;
-      color: #f0f0f0;
+      color: $background-color-1;
     }
+
+    .ant-menu-item-active {
+      left: 11px !important;
+      margin-bottom: 10px !important;
+    }
+
     .ant-menu-item-selected {
-      border-top-left-radius: 8px !important;
-      border-bottom-left-radius: 8px !important;
-      border-bottom-right-radius: 10px !important;
-      background-color: #f0f0f0 !important;
+      border-bottom-left-radius: 10px !important;
+      border-top-left-radius: 10px !important;
+      background-color: $background-color-1 !important;
       .anticon {
         color: #003262 !important;
       }
@@ -36,7 +60,7 @@
 }
 
 .lowerMenu {
-  background-color: #003262 !important;
+  background-color: $primary-color-1 !important;
   position: fixed !important;
   bottom: 20px;
   width: 51px;
@@ -76,8 +100,8 @@
 .annoucementPanel {
   :global {
     .ant-popover-content > .ant-popover-arrow {
-      border-left-color: #003262 !important;
-      border-bottom-color: #003262 !important;
+      border-left-color: $primary-color-1 !important;
+      border-bottom-color: $primary-color-1 !important;
     }
     .ant-popover-content {
       width: 345px;
@@ -119,7 +143,7 @@
 
   :global {
     .ant-list-item-meta-title {
-      color: #c3c6c8;
+      color: $font-color-lightest;
       font-size: 14px;
       line-height: 14px;
       font-style: italic;
@@ -171,7 +195,7 @@
 .inputBorder {
   :global {
     .ant-select-selector {
-      border: 1px solid #c3c6c8 !important;
+      border: 1px solid $font-color-lightest !important;
       border-radius: 6px !important;
     }
   }
@@ -229,7 +253,7 @@
     .ant-modal-content {
       .ant-modal-header {
         .ant-modal-title {
-          color: #003262;
+          color: $primary-color-1;
           font-size: 14px;
           font-weight: 600;
         }
