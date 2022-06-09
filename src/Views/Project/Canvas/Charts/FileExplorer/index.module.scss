@@ -82,7 +82,7 @@
         .ant-tree-node-content-wrapper {
           margin-left: 21px;
           padding-left: 0;
-          width: 165px;
+          width: 155px;
         }
 
         .ant-tree-switcher-noop {
@@ -286,7 +286,15 @@
 
 .vfolder-rename__form {
   display: flex;
-
+  position: relative;
+  &::after {
+    content: '';
+    position: absolute;
+    left: -20px;
+    height: 100%;
+    width: 0;
+    border-left: 1px solid #d9d9d9;
+  }
   :global {
     .ant-form-item {
       margin-bottom: 0;
@@ -323,7 +331,7 @@
   :global {
     button.ant-btn-default {
       padding: 5px 0 4px 0;
-      width: 80px;
+      width: 70px;
       margin-left: 5px;
     }
   }
@@ -333,7 +341,6 @@
   display: flex;
 
   button {
-    width: 85px;
     height: 24px;
     font-size: 12px;
     display: flex;
@@ -346,6 +353,8 @@
 
   button[type='submit'] {
     background-color: $primary-color-light-1;
+    padding-left: 11px;
+    padding-right: 11px;
   }
 
   :global {
