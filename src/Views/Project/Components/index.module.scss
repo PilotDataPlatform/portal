@@ -34,7 +34,6 @@
     }
 
     .ant-menu-item {
-      left: 11px !important;
       margin-bottom: 10px !important;
     }
 
@@ -43,12 +42,8 @@
       color: $background-color-1;
     }
 
-    .ant-menu-item-active {
-      left: 11px !important;
-      margin-bottom: 10px !important;
-    }
-
     .ant-menu-item-selected {
+      margin-left: 10px !important;
       border-bottom-left-radius: 10px !important;
       border-top-left-radius: 10px !important;
       background-color: $background-color-1 !important;

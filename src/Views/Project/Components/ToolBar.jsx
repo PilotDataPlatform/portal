@@ -357,13 +357,13 @@ const ToolBar = ({
         selectedKeys={[pathname.split('/')[3]]}
         className={style.upperMenu}
       >
-        <div className={style.temp} style={{ marginTop: -5 }}></div>
+        <div className={style.temp} style={{ marginTop: -9 }}></div>
         <Menu.Item
           key="canvas"
           onClick={() => toggleIcon('canvas')}
           style={{ position: 'relative' }}
         >
-          <Link to="canvas">
+          <Link to="canvas" rel="stylesheet" href="/index.module.scss">
             {iconSelected === 'canvas' ? (
               <span role="img" className="anticon">
                 <img

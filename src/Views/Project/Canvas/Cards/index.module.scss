@@ -39,9 +39,23 @@
   margin-bottom: 1.8rem;
 }
 
-.icon {
+.icon1,
+.icon2,
+.icon3 {
   font-size: 2.4rem;
   opacity: 1;
+}
+
+.icon1 {
+  color: $primary-color-2 !important;
+}
+
+.icon2 {
+  color: $primary-color-light-5 !important;
+}
+
+.icon3 {
+  color: $primary-color-5 !important;
 }
 
 .fileNumber {
@@ -52,7 +66,7 @@
 }
 
 .fileFont {
-  color: $font-color-primary;
+  color: $font-color-primary !important;
   font-size: 1.2rem;
   font-weight: 500;
   white-space: nowrap;
@@ -60,7 +74,7 @@
 }
 
 .collections-num {
-  color: $primary-color-4;
+  color: $primary-color-4 !important;
 }
 
 .iconColumn {
@@ -82,7 +96,7 @@
 }
 
 .connect-line {
-  background-color: $background-color-2;
+  background-color: $background-color-2 !important;
   width: 1px;
   height: 1.3rem;
   margin-left: 1.7rem;
@@ -93,7 +107,7 @@
   // flex: 1;
   font-size: 1.2rem;
   font-weight: 500;
-  color: $font-color-primary;
+  color: $font-color-primary !important;
   margin-left: 1.3rem;
   overflow: hidden;
   max-width: 500px;
@@ -190,7 +204,7 @@
 }
 
 .pageText {
-  color: $font-color-light;
+  color: $font-color-light !important;
   font-size: 1.2rem;
   padding-top: 2rem;
   margin-left: 8rem;

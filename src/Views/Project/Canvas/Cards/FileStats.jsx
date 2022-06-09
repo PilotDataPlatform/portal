@@ -63,10 +63,7 @@ function FileStats(props) {
     <div style={{ flexDirection: 'column', display: 'flex' }}>
       <div className={styles.shortcut} onClick={() => goToPage('Green Home')}>
         <span className={styles.iconColumn}>
-          <HomeOutlined
-            className={styles.icon}
-            style={{ color: '$primary-color-light-2' }}
-          />
+          <HomeOutlined className={styles.icon1} />
         </span>
         <span className={styles.fileFont}>Green Room</span>
         <span className={styles.fileNumber}>Files {greenRoomCount}</span>
@@ -74,10 +71,7 @@ function FileStats(props) {
       {props.projectRole !== 'collaborator' && coreCount !== null ? (
         <div className={styles.shortcut} onClick={() => goToPage('Core')}>
           <span className={styles.iconColumn}>
-            <CloudServerOutlined
-              className={styles.icon}
-              style={{ color: '#1E607E' }}
-            />
+            <CloudServerOutlined className={styles.icon2} />
           </span>
           <span className={styles.fileFont}>Core</span>
           <span className={styles.fileNumber}>Files {coreCount}</span>
@@ -86,10 +80,7 @@ function FileStats(props) {
       {props.projectRole !== 'collaborator' ? (
         <div className={styles.shortcut} onClick={() => goToPage('Collection')}>
           <span className={styles.iconColumn}>
-            <PaperClipOutlined
-              className={styles.icon}
-              style={{ color: '$primary-color-5' }}
-            />
+            <PaperClipOutlined className={styles.icon3} />
           </span>
           <span className={styles.fileFont}>
             <span className={styles['collections-num']}>
