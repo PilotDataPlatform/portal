@@ -134,7 +134,7 @@ class Canvas extends Component {
 
     window.setTimeout(() => {
       window.dispatchEvent(new Event('resize'));
-    }, 200);
+    }, 500);
   }
 
   getProjectUsersInfo = async () => {
