@@ -36,12 +36,10 @@ import i18n from '../../../../../i18n';
 import { usePanel } from './usePanel';
 import styles from './index.module.scss';
 import variables from '../../../../../Themes/base.scss';
-import { createHash } from 'crypto';
-import currentProject from '../../../../../Redux/Reducers/currentProject';
+import CollectionCreation from './CollectionCreation';
 
 const { TabPane } = Tabs;
-const { TreeNode } = Tree;
-const VFOLDER_CREATE_LEAF = 'vfolder-create';
+const VFOLDER_CREATE_LEAF = 'create-vfolder';
 function getTitle(title) {
   if (title.includes('Trash')) {
     return (
@@ -90,8 +88,8 @@ function FilesContent(props) {
   // const [updatedPanes, setUpdatedPanes] = useState([]);
   const [deletedPaneKey, setDeletedPaneKey] = useState('');
   const [deleteItemId, setDeleteItemId] = useState('');
-  const [createCollection, setCreateCollection] = useState(false);
   const [currentDataset] = useCurrentProject();
+
   const isInit = useRef(false);
   const [form] = Form.useForm();
   const currentRole = currentDataset?.permission;
@@ -204,25 +202,45 @@ function FilesContent(props) {
       ? [...coreData, ...props.project.tree.vfolders]
       : coreData;
 
-    return data.map((vfolder) => {
-      let vfolderTitle;
-      if (
-        vfolder.geid === props.virtualFolders.geid &&
-        props.virtualFolders.operation === VIRTUAL_FOLDER_OPERATIONS.RENAME
-      ) {
-        vfolderTitle = (
-          <VFolderRenameForm
-            id={vfolder.geid}
-            title={vfolder.key.replace('vfolder-', '')}
-          />
-        );
-      } else {
-        // core is the only key that doesn't start with vfolder
-        vfolderTitle = vfolder.key.startsWith('vfolder') ? vfolder.key.replace('vfolder-', '') : vfolder.title
-      }
-      vfolder.title = vfolderTitle;
-      return vfolder;
-    });
+    return data
+      .map((vfolder) => {
+        let vfolderTitle;
+        if (
+          vfolder.geid === props.virtualFolders.geid &&
+          props.virtualFolders.operation === VIRTUAL_FOLDER_OPERATIONS.RENAME
+        ) {
+          vfolderTitle = (
+            <VFolderRenameForm
+              id={vfolder.geid}
+              title={vfolder.key.replace('vfolder-', '')}
+            />
+          );
+        } else {
+          // core is the only key that doesn't start with vfolder
+          vfolderTitle = vfolder.key.startsWith('vfolder')
+            ? vfolder.key.replace('vfolder-', '')
+            : vfolder.title;
+        }
+        vfolder.title = vfolderTitle;
+        return vfolder;
+      })
+      .concat([
+        {
+          title: (
+            <CollectionCreation
+              updateVfolders={updateVfolders}
+              createCollection={
+                props.virtualFolders.operation ===
+                VIRTUAL_FOLDER_OPERATIONS.CREATE
+              }
+            />
+          ),
+          key: VFOLDER_CREATE_LEAF,
+          disabled: false,
+          children: null,
+          geid: VFOLDER_CREATE_LEAF,
+        },
+      ]);
   };
 
   const vFolderTreeData = useMemo(
@@ -274,7 +292,6 @@ function FilesContent(props) {
 
   const updateVfolderTree = async (
     editCollection,
-    createCollection,
     deleteBtnLoading,
     updateBtnLoading,
   ) => {
@@ -300,9 +317,8 @@ function FilesContent(props) {
       vfolders: vfoldersNodes,
     });
 
-    if (createCollection && saveBtnLoading) {
+    if (saveBtnLoading) {
       setSaveBtnLoading(false);
-      setCreateCollection(false);
       message.success(`${i18n.t('success:collections.addCollection')}`);
     }
 
@@ -347,12 +363,7 @@ function FilesContent(props) {
 
   useEffect(() => {
     if (currentDataset.permission !== 'contributor') {
-      updateVfolderTree(
-        editCollection,
-        createCollection,
-        deleteBtnLoading,
-        updateBtnLoading,
-      );
+      updateVfolderTree(editCollection, deleteBtnLoading, updateBtnLoading);
     }
   }, [vfolders.length, updateTimes]);
 
@@ -458,39 +469,6 @@ function FilesContent(props) {
   //   setIsCollectionSelected(true);
   // };
 
-  const onCreateCollectionFormFinish = async (values) => {
-    const { newCollectionName } = values;
-    try {
-      setSaveBtnLoading(true);
-      await createVirtualFolder(projectCode, newCollectionName, props.username);
-      updateVfolders();
-    } catch (error) {
-      setSaveBtnLoading(false);
-      switch (error.response?.status) {
-        case 409: {
-          message.error(
-            `${i18n.t('errormessages:createVirtualFolder.duplicate.0')}`,
-            3,
-          );
-          break;
-        }
-        case 400: {
-          message.error(
-            `${i18n.t('errormessages:createVirtualFolder.limit.0')}`,
-            3,
-          );
-          break;
-        }
-        default: {
-          message.error(
-            `${i18n.t('errormessages:createVirtualFolder.default.0')}`,
-            3,
-          );
-        }
-      }
-    }
-  };
-
   const onUpdateCollectionFormFinish = async (values) => {
     try {
       let updateCollectionList = [];
@@ -555,249 +533,6 @@ function FilesContent(props) {
       message.error(`${i18n.t('errormessages:updateVirtualFolder.default.0')}`);
     }
   };
-
-  const deleteCollection = async (geid, key) => {
-    try {
-      setDeleteBtnLoading(true);
-      setDeletedPaneKey(key);
-      await deleteVirtualFolder(geid);
-      updateVfolders();
-    } catch (error) {
-      setDeleteBtnLoading(false);
-      message.error(`${i18n.t('errormessages:deleteVirtualFolder.default.0')}`);
-    }
-  };
-
-  // TODO: deprecated
-  const showForm = (editCollection, createCollection) => {
-    if (!editCollection && !createCollection) {
-      return (
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            margin: '3px 0px 0px 38px',
-          }}
-        >
-          <PlusOutlined
-            style={{
-              width: '14px',
-              height: '14px',
-              color: '#1890FF',
-              marginRight: '10px',
-            }}
-          />
-          <span
-            style={{
-              fontSize: '12px',
-              color: '#818181',
-              cursor: 'pointer',
-            }}
-            onClick={() => setCreateCollection(true)}
-          >
-            Create Collection
-          </span>
-        </div>
-      );
-    } else if (editCollection && !createCollection) {
-      return (
-        <div style={{ display: 'flex', marginLeft: '33px' }}>
-          <Form onFinish={onUpdateCollectionFormFinish}>
-            {vfolders.map((el, index) => (
-              <div style={{ display: 'flex', alignItems: 'baseline' }}>
-                <Form.Item
-                  className={styles.update_collection_name}
-                  name={el.id}
-                  initialValue={el.name}
-                  rules={[
-                    {
-                      required: true,
-                      validator: (rule, value) => {
-                        const collection = value ? trimString(value) : null;
-                        if (!collection) {
-                          return Promise.reject(
-                            'Collection name should be 1 ~ 20 characters',
-                          );
-                        }
-                        const isLengthValid =
-                          collection.length >= 1 && collection.length <= 20;
-                        if (!isLengthValid) {
-                          return Promise.reject(
-                            'Collection name should be 1 ~ 20 characters',
-                          );
-                        } else {
-                          const specialChars = [
-                            '\\',
-                            '/',
-                            ':',
-                            '?',
-                            '*',
-                            '<',
-                            '>',
-                            '|',
-                            '"',
-                            "'",
-                          ];
-                          for (let char of specialChars) {
-                            if (collection.indexOf(char) !== -1) {
-                              return Promise.reject(
-                                `Collection name can not contain any of the following character ${specialChars.join(
-                                  ' ',
-                                )}`,
-                              );
-                            }
-                          }
-                          return Promise.resolve();
-                        }
-                      },
-                    },
-                  ]}
-                >
-                  <Input
-                    //defaultValue={el.name}
-                    style={{
-                      borderRadius: '6px',
-                      marginLeft: '16px',
-                      marginRight: '10px',
-                      height: '28px',
-                    }}
-                  ></Input>
-                </Form.Item>
-                {deleteBtnLoading && deleteItemId === el.id ? (
-                  <LoadingOutlined spin style={{ marginRight: '10px' }} />
-                ) : (
-                  <DeleteOutlined
-                    style={{ color: '#FF6D72', marginRight: '10px' }}
-                    onClick={() => {
-                      deleteCollection(el.id, 'vfolder-' + el.name);
-                      setDeleteItemId(el.id);
-                    }}
-                  />
-                )}
-              </div>
-            ))}
-            <Form.Item
-              style={{
-                position: 'absolute',
-                top: '0px',
-                right: '33px',
-                margin: '0px',
-              }}
-            >
-              <Button
-                type="primary"
-                htmlType="submit"
-                icon={<SaveOutlined />}
-                loading={updateBtnLoading}
-                style={{
-                  height: '22px',
-                  width: '70px',
-                  borderRadius: '6px',
-                  padding: '0px',
-                }}
-              >
-                <span style={{ marginLeft: '6px' }}>Save</span>
-              </Button>
-            </Form.Item>
-          </Form>
-        </div>
-      );
-    } else if (createCollection && !editCollection) {
-      return (
-        <div style={{ display: 'flex', marginLeft: '33px' }}>
-          <Form onFinish={onCreateCollectionFormFinish}>
-            <div style={{ display: 'flex', alignItems: 'baseline' }}>
-              <CollectionIcon
-                width={12}
-                style={{ color: variables.primaryColorLight4 }}
-              />
-              <Form.Item
-                className={styles.create_new_collection}
-                name="newCollectionName"
-                rules={[
-                  {
-                    required: true,
-                    validator: (rule, value) => {
-                      const collection = value ? trimString(value) : null;
-                      if (!collection) {
-                        return Promise.reject(
-                          'Collection name should be 1 ~ 20 characters',
-                        );
-                      }
-                      const isLengthValid =
-                        collection.length >= 1 && collection.length <= 20;
-                      if (!isLengthValid) {
-                        return Promise.reject(
-                          'Collection name should be 1 ~ 20 characters',
-                        );
-                      } else {
-                        const specialChars = [
-                          '\\',
-                          '/',
-                          ':',
-                          '?',
-                          '*',
-                          '<',
-                          '>',
-                          '|',
-                          '"',
-                          "'",
-                        ];
-                        for (let char of specialChars) {
-                          if (collection.indexOf(char) !== -1) {
-                            return Promise.reject(
-                              `Collection name can not contain any of the following character ${specialChars.join(
-                                ' ',
-                              )}`,
-                            );
-                          }
-                        }
-                        return Promise.resolve();
-                      }
-                    },
-                  },
-                ]}
-              >
-                <Input
-                  placeholder="Enter Collection Name"
-                  style={{
-                    borderRadius: '6px',
-                    marginLeft: '10px',
-                    marginRight: '10px',
-                    fontSize: '13px',
-                  }}
-                ></Input>
-              </Form.Item>
-            </div>
-            <Form.Item
-              style={{
-                position: 'absolute',
-                top: '0px',
-                right: '33px',
-                margin: '0px',
-              }}
-            >
-              <Button
-                type="primary"
-                htmlType="submit"
-                loading={saveBtnLoading}
-                icon={<SaveOutlined />}
-                style={{
-                  height: '22px',
-                  width: '70px',
-                  borderRadius: '6px',
-                  padding: '0px',
-                }}
-              >
-                <span style={{ marginLeft: '6px' }}>Save</span>
-              </Button>
-            </Form.Item>
-          </Form>
-        </div>
-      );
-    }
-  };
-
   const coreTreeClassName = `tree-custom-line core${
     props.virtualFolders.operation === VIRTUAL_FOLDER_OPERATIONS.RENAME
       ? ' virtual-folder-rename'

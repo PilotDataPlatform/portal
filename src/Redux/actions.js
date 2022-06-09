@@ -639,6 +639,7 @@ export const notificationActions = {
 
 export const VIRTUAL_FOLDER_OPERATIONS = {
   RENAME: 'rename',
+  CREATE: 'create',
 };
 
 export const vFolderOperation = {
@@ -646,8 +647,12 @@ export const vFolderOperation = {
     type: SET_VIRTUAL_FOLDER_OPERATION,
     payload: { operation: VIRTUAL_FOLDER_OPERATIONS.RENAME, geid },
   }),
+  setVFolderOperationCreate: () => ({
+    type: SET_VIRTUAL_FOLDER_OPERATION,
+    payload: { operation: VIRTUAL_FOLDER_OPERATIONS.CREATE, geid: null },
+  }),
   clearVFolderOperation: () => ({
     type: SET_VIRTUAL_FOLDER_OPERATION,
-    payload: { operation: null, geid: null }
-  })
+    payload: { operation: null, geid: null },
+  }),
 };

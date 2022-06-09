@@ -50,6 +50,9 @@
   padding-top: 12px;
 
   :global {
+    .ant-tree .ant-tree-node-content-wrapper:hover {
+      background-color: white !important;
+    }
     .Collapse_collapseBg__3m8BO {
       margin-bottom: 10px !important;
     }
@@ -269,7 +272,7 @@
 }
 
 .create_new_collection {
-  margin: 0px 0px 4px 0px;
+  margin: 4px 0px 4px 0px;
   :global {
     .ant-form-item-control-input-content {
       display: flex;
@@ -293,6 +296,35 @@
         font-size: 14px;
         padding: 3px 11px;
       }
+    }
+  }
+}
+.vfolder-create__buttons {
+  display: flex;
+  margin-top: -20px;
+
+  button {
+    height: 24px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    padding-top: 5px;
+    border-radius: 6px;
+    border-width: 0;
+    box-shadow: none;
+  }
+
+  button[type='submit'] {
+    background-color: $primary-color-light-1;
+    padding-left: 11px;
+    padding-right: 11px;
+  }
+
+  :global {
+    button.ant-btn-default {
+      padding: 5px 0 4px 0;
+      width: 80px;
+      margin-left: 5px;
     }
   }
 }
