@@ -87,7 +87,6 @@ function FilesContent(props) {
   const [updateTimes, setUpdateTimes] = useState(0);
   // const [updatedPanes, setUpdatedPanes] = useState([]);
   const [deletedPaneKey, setDeletedPaneKey] = useState('');
-  const [deleteItemId, setDeleteItemId] = useState('');
   const [currentDataset] = useCurrentProject();
 
   const isInit = useRef(false);
@@ -119,10 +118,13 @@ function FilesContent(props) {
   const VFolderRenameForm = ({ id, title }) => {
     return (
       <div className={styles['vfolder-rename__form']}>
-        <Form onFinish={onUpdateCollectionFormFinish}>
+        <Form form={form}>
+          <Form.Item name="id" initialValue={id} style={{ display: 'none' }}>
+            <Input type="hidden" />
+          </Form.Item>
           <Form.Item
             className={styles['vfolder-rename__input-form-item']}
-            name={id}
+            name="name"
             initialValue={title}
             rules={[
               {
@@ -130,16 +132,12 @@ function FilesContent(props) {
                 validator: (rule, value) => {
                   const collection = value ? trimString(value) : null;
                   if (!collection) {
-                    return Promise.reject(
-                      'Collection name should be 1 ~ 20 characters',
-                    );
+                    return Promise.reject('1 ~ 20 characters');
                   }
                   const isLengthValid =
                     collection.length >= 1 && collection.length <= 20;
                   if (!isLengthValid) {
-                    return Promise.reject(
-                      'Collection name should be 1 ~ 20 characters',
-                    );
+                    return Promise.reject('1 ~ 20 characters');
                   } else {
                     const specialChars = [
                       '\\',
@@ -156,9 +154,7 @@ function FilesContent(props) {
                     for (let char of specialChars) {
                       if (collection.indexOf(char) !== -1) {
                         return Promise.reject(
-                          `Collection name can not contain any of the following character ${specialChars.join(
-                            ' ',
-                          )}`,
+                          `special characters are not allowed`,
                         );
                       }
                     }
@@ -186,6 +182,7 @@ function FilesContent(props) {
                 type="primary"
                 htmlType="submit"
                 icon={<SaveOutlined />}
+                onClick={onUpdateCollectionFormFinish}
                 loading={updateBtnLoading}
               >
                 Save
@@ -228,6 +225,7 @@ function FilesContent(props) {
         {
           title: (
             <CollectionCreation
+              addNewColPane={addNewColPane}
               updateVfolders={updateVfolders}
               createCollection={
                 props.virtualFolders.operation ===
@@ -367,6 +365,31 @@ function FilesContent(props) {
     }
   }, [vfolders.length, updateTimes]);
 
+  async function addNewColPane(vfolderInfo) {
+    const panelKey = 'vfolder-' + vfolderInfo.name;
+    // props.setCurrentProjectActivePane(selectedKeys[0].toString());
+    setTreeKey((prev) => {
+      return prev.treeKey + 1;
+    });
+    const title = getTitle(`Collection - ${vfolderInfo.name}  `);
+    //Render raw table if 0
+    const newPane = {
+      title: title,
+      titleText: vfolderInfo.name,
+      content: {
+        projectId: projectId,
+        type: DataSourceType.CORE_VIRTUAL_FOLDER,
+        geid: vfolderInfo.id,
+      },
+      key: panelKey,
+    };
+    setTreeKey((prev) => {
+      return prev.treeKey + 1;
+    });
+    activatePane(panelKey);
+    addPane(newPane);
+  }
+
   async function updateVfolders() {
     try {
       const res = await listAllVirtualFolder(projectCode, props.username);
@@ -381,6 +404,7 @@ function FilesContent(props) {
   //Tab
   const onChange = (selectedActivePane) => {
     props.setCurrentProjectActivePane(selectedActivePane);
+    props.clearVFolderOperation();
     activatePane(selectedActivePane);
     setTreeKey((prev) => {
       return prev.treeKey + 1;
@@ -427,6 +451,9 @@ function FilesContent(props) {
     if (selectedKeys[0] && selectedKeys[0].toString() === VFOLDER_CREATE_LEAF) {
       return;
     }
+    if (selectedKeys[0] && selectedKeys[0].toString() !== activePane) {
+      props.clearVFolderOperation();
+    }
     if (!isInit.current) {
       return;
     }
@@ -463,75 +490,68 @@ function FilesContent(props) {
     }
     clickLock = false;
   };
-
   // const onCollectionSelect = async (selectedKeys, info) => {
   //   await onSelect(selectedKeys, info);
   //   setIsCollectionSelected(true);
   // };
 
-  const onUpdateCollectionFormFinish = async (values) => {
-    try {
-      let updateCollectionList = [];
-      const originalNameList = vfolders.map((el) => el.name);
-      const updateNameList = Object.values(values);
-      const diffNameList = updateNameList.filter((el) => {
-        if (!originalNameList.includes(el)) {
-          return el;
-        }
-      });
-      const idList = Object.keys(values);
-      idList.forEach((el) => {
-        if (diffNameList.includes(values[el])) {
-          updateCollectionList.push({
-            id: el,
-            name: values[el],
-          });
-        }
-      });
-      setUpdateBtnLoading(true);
-      const res = await updateVirtualFolder(
-        projectGeid,
-        props.username,
-        projectCode,
-        updateCollectionList,
-      );
-      if (res.data.result.collections.length) {
-        setUpdateTimes(updateTimes + 1);
+  const onUpdateCollectionFormFinish = async () => {
+    form.validateFields().then(async (values) => {
+      try {
+        let updateCollectionList = [];
+        updateCollectionList.push({
+          id: values.id,
+          name: values.name,
+        });
+        setUpdateBtnLoading(true);
+        const res = await updateVirtualFolder(
+          projectGeid,
+          props.username,
+          projectCode,
+          updateCollectionList,
+        );
+        if (res.data.result.collections.length) {
+          setUpdateTimes(updateTimes + 1);
 
-        //update collection panel name
-        const updatedPane = [...panes];
+          //update collection panel name
+          const updatedPane = [...panes];
 
-        if (panes.length > 0) {
-          const vfolderIds = panes
-            .filter((el) => el.key.startsWith('vfolder-'))
-            .map((el) => el.content.geid);
-          res.data.result.collections.forEach((el) => {
-            if (vfolderIds.includes(el.id)) {
-              const selectPane = updatedPane.find(
-                (item) => item.content.geid === el.id,
-              );
-              selectPane.title = getTitle(`Collection - ${el.name}  `);
-              if (selectPane.key === activePane) {
-                selectPane.key = `vfolder-${el.name}`;
-                activatePane(selectPane.key);
-              } else {
-                selectPane.key = `vfolder-${el.name}`;
+          if (panes.length > 0) {
+            const vfolderIds = panes
+              .filter((el) => el.key.startsWith('vfolder-'))
+              .map((el) => el.content.geid);
+            res.data.result.collections.forEach((el) => {
+              if (vfolderIds.includes(el.id)) {
+                const selectPane = updatedPane.find(
+                  (item) => item.content.geid === el.id,
+                );
+                selectPane.title = getTitle(`Collection - ${el.name}  `);
+                if (selectPane.key === activePane) {
+                  selectPane.key = `vfolder-${el.name}`;
+                  activatePane(selectPane.key);
+                } else {
+                  selectPane.key = `vfolder-${el.name}`;
+                }
               }
-            }
-          });
-          updatePanes(updatedPane);
+            });
+            updatePanes(updatedPane);
+          }
+        } else {
+          setUpdateBtnLoading(false);
+          message.warning(
+            `${i18n.t(
+              'errormessages:updateVirtualFolder.noFoldersToUpdate.0',
+            )}`,
+          );
         }
-      } else {
+      } catch (error) {
+        console.log(error);
         setUpdateBtnLoading(false);
-        message.warning(
-          `${i18n.t('errormessages:updateVirtualFolder.noFoldersToUpdate.0')}`,
+        message.error(
+          `${i18n.t('errormessages:updateVirtualFolder.default.0')}`,
         );
       }
-    } catch (error) {
-      console.log(error);
-      setUpdateBtnLoading(false);
-      message.error(`${i18n.t('errormessages:updateVirtualFolder.default.0')}`);
-    }
+    });
   };
   const coreTreeClassName = `tree-custom-line core${
     props.virtualFolders.operation === VIRTUAL_FOLDER_OPERATIONS.RENAME

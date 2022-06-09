@@ -17,39 +17,48 @@ import { useCurrentProject } from '../../../../../Utility';
 function CollectionCreation(props) {
   const [updateBtnLoading, setUpdateBtnLoading] = useState(false);
   const [currentDataset] = useCurrentProject();
-  const [collectionName, setCollectionName] = useState('');
+  const [form] = Form.useForm();
   const projectCode = currentDataset.code;
-  const onCreateCollectionFormFinish = async (values) => {
-    try {
-      setUpdateBtnLoading(true);
-      await createVirtualFolder(projectCode, collectionName, props.username);
-      await props.updateVfolders();
-      props.clearVFolderOperation();
-    } catch (error) {
-      setUpdateBtnLoading(false);
-      switch (error.response?.status) {
-        case 409: {
-          message.error(
-            `${i18n.t('errormessages:createVirtualFolder.duplicate.0')}`,
-            3,
-          );
-          break;
-        }
-        case 400: {
-          message.error(
-            `${i18n.t('errormessages:createVirtualFolder.limit.0')}`,
-            3,
-          );
-          break;
-        }
-        default: {
-          message.error(
-            `${i18n.t('errormessages:createVirtualFolder.default.0')}`,
-            3,
-          );
+  const onCreateCollectionFormFinish = async () => {
+    form.validateFields().then(async (values) => {
+      try {
+        setUpdateBtnLoading(true);
+        const res = await createVirtualFolder(
+          projectCode,
+          values.name,
+          props.username,
+        );
+        const vfolderId = res.data.result.id;
+        const vfoldersRes = await props.updateVfolders();
+        const vfolderInfo = vfoldersRes.find((v) => v.id === vfolderId);
+        await props.addNewColPane(vfolderInfo);
+        props.clearVFolderOperation();
+      } catch (error) {
+        setUpdateBtnLoading(false);
+        switch (error.response?.status) {
+          case 409: {
+            message.error(
+              `${i18n.t('errormessages:createVirtualFolder.duplicate.0')}`,
+              3,
+            );
+            break;
+          }
+          case 400: {
+            message.error(
+              `${i18n.t('errormessages:createVirtualFolder.limit.0')}`,
+              3,
+            );
+            break;
+          }
+          default: {
+            message.error(
+              `${i18n.t('errormessages:createVirtualFolder.default.0')}`,
+              3,
+            );
+          }
         }
       }
-    }
+    });
   };
   //   const deleteCollection = async (geid, key) => {
   //     try {
@@ -95,7 +104,7 @@ function CollectionCreation(props) {
   } else {
     return (
       <div style={{ display: 'flex', paddingTop: 4 }}>
-        <Form>
+        <Form form={form}>
           <div
             style={{
               display: 'flex',
@@ -104,59 +113,50 @@ function CollectionCreation(props) {
             }}
           >
             <Form.Item
-            //   name="newCollectionName"
-            //   rules={[
-            //     {
-            //       required: true,
-            //       validator: (rule, value) => {
-            //         const collection = value ? trimString(value) : null;
-            //         if (!collection) {
-            //           return Promise.reject(
-            //             'Collection name should be 1 ~ 20 characters',
-            //           );
-            //         }
-            //         const isLengthValid =
-            //           collection.length >= 1 && collection.length <= 20;
-            //         if (!isLengthValid) {
-            //           return Promise.reject(
-            //             'Collection name should be 1 ~ 20 characters',
-            //           );
-            //         } else {
-            //           const specialChars = [
-            //             '\\',
-            //             '/',
-            //             ':',
-            //             '?',
-            //             '*',
-            //             '<',
-            //             '>',
-            //             '|',
-            //             '"',
-            //             "'",
-            //           ];
-            //           for (let char of specialChars) {
-            //             if (collection.indexOf(char) !== -1) {
-            //               return Promise.reject(
-            //                 `Collection name can not contain any of the following character ${specialChars.join(
-            //                   ' ',
-            //                 )}`,
-            //               );
-            //             }
-            //           }
-            //           return Promise.resolve();
-            //         }
-            //       },
-            //     },
-            //   ]}
+              name="name"
+              rules={[
+                {
+                  required: true,
+                  validator: (rule, value) => {
+                    const collection = value ? trimString(value) : null;
+                    if (!collection) {
+                      return Promise.reject('1 ~ 20 characters');
+                    }
+                    const isLengthValid =
+                      collection.length >= 1 && collection.length <= 20;
+                    if (!isLengthValid) {
+                      return Promise.reject('1 ~ 20 characters');
+                    } else {
+                      const specialChars = [
+                        '\\',
+                        '/',
+                        ':',
+                        '?',
+                        '*',
+                        '<',
+                        '>',
+                        '|',
+                        '"',
+                        "'",
+                      ];
+                      for (let char of specialChars) {
+                        if (collection.indexOf(char) !== -1) {
+                          return Promise.reject(
+                            `special characters are not allowed`,
+                          );
+                        }
+                      }
+                      return Promise.resolve();
+                    }
+                  },
+                },
+              ]}
             >
               <Input
                 placeholder="Enter Collection Name"
                 style={{
                   borderRadius: '6px',
-                  fontSize: '12px',
-                }}
-                onChange={(e) => {
-                  setCollectionName(e.target.value);
+                  fontSize: '11px',
                 }}
               />
             </Form.Item>
