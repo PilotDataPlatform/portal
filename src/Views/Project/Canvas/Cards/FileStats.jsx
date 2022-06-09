@@ -43,10 +43,11 @@ function FileStats(props) {
 
   const goToPage = (page) => {
     // console.log(page);
-    if (page === 'Collection') {
+    if (page === 'collection') {
       dispatch(
         canvasPageActions.setCanvasPage({
           page: page,
+          name: collections.length > 0 ? collections[0].name : '',
           id: collections.length > 0 ? collections[0].id : '',
         }),
       );
@@ -61,7 +62,10 @@ function FileStats(props) {
 
   return currentProject ? (
     <div style={{ flexDirection: 'column', display: 'flex' }}>
-      <div className={styles.shortcut} onClick={() => goToPage('Green Home')}>
+      <div
+        className={styles.shortcut}
+        onClick={() => goToPage('greenroom-home')}
+      >
         <span className={styles.iconColumn}>
           <HomeOutlined className={styles.icon1} />
         </span>
@@ -69,7 +73,7 @@ function FileStats(props) {
         <span className={styles.fileNumber}>Files {greenRoomCount}</span>
       </div>
       {props.projectRole !== 'collaborator' && coreCount !== null ? (
-        <div className={styles.shortcut} onClick={() => goToPage('Core')}>
+        <div className={styles.shortcut} onClick={() => goToPage('core-home')}>
           <span className={styles.iconColumn}>
             <CloudServerOutlined className={styles.icon2} />
           </span>
@@ -78,7 +82,7 @@ function FileStats(props) {
         </div>
       ) : null}
       {props.projectRole !== 'collaborator' ? (
-        <div className={styles.shortcut} onClick={() => goToPage('Collection')}>
+        <div className={styles.shortcut} onClick={() => goToPage('collection')}>
           <span className={styles.iconColumn}>
             <PaperClipOutlined className={styles.icon3} />
           </span>

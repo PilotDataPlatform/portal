@@ -363,7 +363,7 @@ const ToolBar = ({
           onClick={() => toggleIcon('canvas')}
           style={{ position: 'relative' }}
         >
-          <Link to="canvas" rel="stylesheet" href="/index.module.scss">
+          <Link to="canvas">
             {iconSelected === 'canvas' ? (
               <span role="img" className="anticon">
                 <img

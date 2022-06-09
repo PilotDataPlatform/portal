@@ -1,6 +1,6 @@
 import { SET_CANVAS_PAGE } from '../actionTypes';
 
-const init = 'Green Home';
+const init = { page: 'greenroom-home' };
 function canvasPage(state = init, action) {
   const { type, payload } = action;
   console.log('reducers');
