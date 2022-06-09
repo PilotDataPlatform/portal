@@ -506,16 +506,18 @@ class CanvasPageHeader extends Component {
                     fontSize: '22px',
                     zIndex: 2,
                     position: 'relative',
+                    boxShadow: '0px 1px 7px #0000001a',
                   }}
                 />
               ) : (
                 <DownCircleOutlined
                   onClick={this.toggleExpand}
                   style={{
-                    color: '#1890FF',
+                    color: '#3C7DA6',
                     fontSize: '22px',
                     zIndex: 2,
                     position: 'relative',
+                    boxShadow: '0px 1px 7px #0000001a',
                   }}
                 />
               )}

@@ -193,19 +193,21 @@ function UserStats(props) {
                 </Row>
                 <Row>
                   <div className={styles['connect-line']}></div>
-                  <span className={styles.userName}>{el && el.operator}</span>
-                  <span
-                    className={styles.userName}
-                    style={{ margin: '-0.4rem 0.5rem' }}
-                  >
-                    {' '}
-                    /{' '}
-                  </span>
-                  <span className={styles.time}>
-                    {el &&
-                      el.createdTime &&
-                      moment.unix(el.createdTime).format(format)}
-                  </span>
+                  <div className={styles['file-descr']}>
+                    <span className={styles.userName}>{el && el.operator}</span>
+                    <span
+                      className={styles.userName}
+                      style={{ margin: '-0.4rem 0.5rem' }}
+                    >
+                      {' '}
+                      /{' '}
+                    </span>
+                    <span className={styles.time}>
+                      {el &&
+                        el.createdTime &&
+                        moment.unix(el.createdTime).format(format)}
+                    </span>
+                  </div>
                 </Row>
               </div>
             );

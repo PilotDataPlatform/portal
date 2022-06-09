@@ -36,7 +36,9 @@ import { schemaTemplatesInfo } from './schemaTemplatesInfo';
 import { fileExplorerTable } from './fileExplorerTable';
 import request2Core from './request2Core';
 import notifications from './notification';
+import canvasPage from './canvasPage';
 import virtualFolders from './virtualFolders';
+
 
 const appReducer = combineReducers({
   datasetList,
@@ -75,6 +77,7 @@ const appReducer = combineReducers({
   fileExplorerTable,
   request2Core,
   notifications,
+  canvasPage,
   virtualFolders
 });
 

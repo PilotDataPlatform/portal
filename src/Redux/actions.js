@@ -59,6 +59,7 @@ import {
   FILE_EXPLORER_TABLE as FILE_EXPLORER_TABLE,
   COPY_REQUEST,
   NOTIFICATIONS,
+  SET_CANVAS_PAGE,
   SET_VIRTUAL_FOLDER_OPERATION,
 } from './actionTypes';
 
@@ -633,6 +634,13 @@ export const notificationActions = {
   }),
   setEditNotification: (payload) => ({
     type: NOTIFICATIONS.SET_EDIT_NOTIFICATION,
+    payload,
+  }),
+};
+
+export const canvasPageActions = {
+  setCanvasPage: (payload) => ({
+    type: SET_CANVAS_PAGE,
     payload,
   }),
 };

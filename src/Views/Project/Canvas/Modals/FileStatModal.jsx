@@ -336,7 +336,7 @@ const FileStatModal = (props) => {
               padding: 24,
               background: '#fbfbfb',
               border: '1px solid #d9d9d9',
-              borderRadius: 2,
+              borderRadius: 6,
             }}
             onFinish={onFinish}
             layout="vertical"
