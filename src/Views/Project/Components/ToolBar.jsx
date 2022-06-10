@@ -37,7 +37,7 @@ const ToolBar = ({
   const { t } = useTranslation(['errormessages', 'success']);
   const [isShown, toggleModal] = useState(false);
   const [showRequestToCoreRedDot, setShowRequestToCoreRedDot] = useState(false);
-  const [iconSelected, toggleIcon] = useState(pathname.split('/')[3]);
+  const iconSelected = pathname ? pathname.split('/')[3] : null;
   const [showRequestModal, toggleRequestModal] = useState(false);
   const [requestItem, setRequestItem] = useState('');
   const [requests, setRequests] = useState(null);
@@ -47,7 +47,6 @@ const ToolBar = ({
   const [supersetDeployed, setSupersetDeployed] = useState('');
   const [jupyterhubDeployed, setJupyterhubDeployed] = useState('');
   const [lowerIcon, setLowerIcon] = useState('');
-
   const adminPermission =
     role === 'admin' ||
     _.some(containersPermission, (item) => {
@@ -363,7 +362,6 @@ const ToolBar = ({
   };
 
   const handleRequestToCoreOnClick = () => {
-    toggleIcon('requestToCore');
     setShowRequestToCoreRedDot(false);
   };
 
@@ -382,11 +380,7 @@ const ToolBar = ({
               : style['no-radius']
           }
         ></div>
-        <Menu.Item
-          key="canvas"
-          onClick={() => toggleIcon('canvas')}
-          style={{ position: 'relative' }}
-        >
+        <Menu.Item key="canvas" style={{ position: 'relative' }}>
           <Link to="canvas">
             {iconSelected === 'canvas' ? (
               <span role="img" className="anticon">
@@ -415,7 +409,7 @@ const ToolBar = ({
               : style['no-radius']
           }
         ></div>
-        <Menu.Item key="data" onClick={() => toggleIcon('data')}>
+        <Menu.Item key="data">
           <Link to="data">
             <CompassOutlined />
             <span>File Explorer</span>
@@ -430,7 +424,7 @@ const ToolBar = ({
               : style['no-radius']
           }
         ></div>
-        <Menu.Item key="search" onClick={() => toggleIcon('search')}>
+        <Menu.Item key="search">
           <Link to="search">
             <SearchOutlined />
             <span>Search</span>
@@ -445,11 +439,7 @@ const ToolBar = ({
               : style['no-radius']
           }
         ></div>
-        <Menu.Item
-          title={null}
-          key="announcement"
-          onClick={() => toggleIcon('announcement')}
-        >
+        <Menu.Item title={null} key="announcement">
           <AnnouncementButton currentProject={currentProject} />
         </Menu.Item>
         <div
@@ -462,7 +452,7 @@ const ToolBar = ({
           }
         ></div>
         {adminPermission && (
-          <Menu.Item key="teams" onClick={() => toggleIcon('teams')}>
+          <Menu.Item key="teams">
             <Link to="teams">
               <TeamOutlined />
               <span>Members</span>
@@ -482,7 +472,7 @@ const ToolBar = ({
         )}
 
         {adminPermission && (
-          <Menu.Item key="settings" onClick={() => toggleIcon('settings')}>
+          <Menu.Item key="settings">
             <Link to="settings">
               <SettingOutlined />
               <span>Settings</span>
@@ -525,7 +515,6 @@ const ToolBar = ({
             {showRequestToCoreRedDot && (
               <Menu.Item
                 key="request-dot"
-                onClick={() => toggleIcon('request-dot')}
                 style={{
                   marginTop: -30,
                   width: 10,
