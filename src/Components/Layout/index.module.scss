@@ -121,6 +121,7 @@
   color: rgba(0, 0, 0, 0.5) !important;
   line-height: 1.5;
   text-align: center;
+  margin-top: 40px;
   @include media('>desktop') {
     text-align: right;
   }

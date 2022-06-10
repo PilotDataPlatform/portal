@@ -216,7 +216,7 @@
     display: flex;
     justify-content: space-around;
     list-style: none;
-    padding: 0 1.2rem 1.2rem 1.2rem;
+    padding: 0 1.2rem 0.8rem 1.2rem;
     margin: 0 -12px; // offset 12px padding in .ant-card-body
     border-bottom: 1px solid $background-color-1;
 
@@ -231,6 +231,7 @@
     .meta-stat {
       font-size: 2rem;
       font-weight: 600;
+      line-height: 3rem;
       span[role='img'] {
         margin-right: 0.8rem;
       }
