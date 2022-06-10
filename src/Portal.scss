@@ -10,10 +10,7 @@ html {
     font-size: 75%; //12px
   }
 }
-.ant-tabs-ink-bar {
-  color: $primary-color-light-1;
-  background-color: $primary-color-light-1;
-}
+
 .toggle {
   background-color: #1b9cd0;
   padding: 10px 5px;
@@ -42,7 +39,7 @@ html {
   padding: 20px 20px 20px 35px;
   margin-left: 0;
   transition: all 0.4s ease;
-  min-height: 87vh !important;
+  min-height: 80vh !important;
 }
 .contentOpen {
   padding: 20px 20px 20px 18px;

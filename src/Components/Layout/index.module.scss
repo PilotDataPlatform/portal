@@ -121,6 +121,7 @@
   color: rgba(0, 0, 0, 0.5) !important;
   line-height: 1.5;
   text-align: center;
+  margin-top: 40px;
   @include media('>desktop') {
     text-align: right;
   }
@@ -232,6 +233,10 @@
 
 :global {
   #global_site_header {
+    .ant-tabs-ink-bar {
+      color: $primary-color-light-1;
+      background-color: $primary-color-light-1;
+    }
     .ant-menu-horizontal > .ant-menu-item:hover,
     .ant-menu-horizontal > .ant-menu-submenu:hover,
     .ant-menu-horizontal > .ant-menu-item-active,
@@ -384,8 +389,8 @@
   :global {
     .ant-badge {
       .ant-badge-status-error {
-        top: 42px;
-        right: 172px;
+        top: 38px;
+        right: 166px;
         height: 8px;
         width: 8px;
       }

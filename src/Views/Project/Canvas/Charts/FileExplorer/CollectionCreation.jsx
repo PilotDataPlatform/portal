@@ -103,15 +103,12 @@ function CollectionCreation(props) {
     );
   } else {
     return (
-      <div style={{ display: 'flex', paddingTop: 4 }}>
+      <div
+        style={{ display: 'flex', paddingTop: 4 }}
+        className={styles['create_new_collection']}
+      >
         <Form form={form}>
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'baseline',
-              marginLeft: '5px',
-            }}
-          >
+          <div>
             <Form.Item
               name="name"
               rules={[
@@ -141,9 +138,7 @@ function CollectionCreation(props) {
                       ];
                       for (let char of specialChars) {
                         if (collection.indexOf(char) !== -1) {
-                          return Promise.reject(
-                            `special characters are not allowed`,
-                          );
+                          return Promise.reject(`special characters detected`);
                         }
                       }
                       return Promise.resolve();

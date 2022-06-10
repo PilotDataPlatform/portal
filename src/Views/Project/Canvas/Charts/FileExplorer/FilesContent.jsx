@@ -154,9 +154,7 @@ function FilesContent(props) {
                     ];
                     for (let char of specialChars) {
                       if (collection.indexOf(char) !== -1) {
-                        return Promise.reject(
-                          `special characters are not allowed`,
-                        );
+                        return Promise.reject(`special characters detected`);
                       }
                     }
                     return Promise.resolve();

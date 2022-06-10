@@ -5330,10 +5330,12 @@ function Charts() {
           />
         </div>
         <div className={styles['graphs__container']}>
-          <h4 className={styles['graphs__title']}>My Project File Activity</h4>
+          <h4 className={styles['graphs__title']}>Project File Activity</h4>
           <TabSwitcher
             contentMap={heatMapGraphs}
-            activeTabStyles={{ backgroundColor: theme.charts.heatgraph.range[2] }}
+            activeTabStyles={{
+              backgroundColor: theme.charts.heatgraph.range[2],
+            }}
           />
         </div>
       </div>

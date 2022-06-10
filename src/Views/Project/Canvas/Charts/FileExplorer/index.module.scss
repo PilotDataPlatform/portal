@@ -272,14 +272,16 @@
 }
 
 .create_new_collection {
-  margin: 4px 0px 4px 0px;
   :global {
-    .ant-form-item-control-input-content {
-      display: flex;
-      align-items: center;
-    }
     .ant-form-item-explain {
-      margin-left: 10px;
+      margin-left: 2px;
+      font-size: 11px;
+      white-space: nowrap;
+      height: 20px;
+      font-weight: 600;
+    }
+    .ant-form-item {
+      margin-bottom: 4px;
     }
   }
 }
@@ -309,7 +311,6 @@
 }
 .vfolder-create__buttons {
   display: flex;
-  margin-top: -20px;
 
   button {
     height: 24px;
@@ -373,7 +374,11 @@
       align-items: center;
     }
     .ant-form-item-explain {
-      margin-left: 15px;
+      margin-left: 2px;
+      font-size: 11px;
+      white-space: nowrap;
+      height: 20px;
+      font-weight: 600;
     }
   }
 }
