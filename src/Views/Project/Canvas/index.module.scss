@@ -44,6 +44,10 @@
   z-index: 2;
   position: relative;
   box-shadow: 0px 1px 7px #0000001a;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  overflow: hidden;
 }
 
 .owner {
@@ -60,6 +64,10 @@
   z-index: 2;
   position: relative;
   box-shadow: 0px 1px 7px #0000001a;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  overflow: hidden;
 }
 
 :global {

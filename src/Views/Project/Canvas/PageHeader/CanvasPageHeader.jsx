@@ -316,20 +316,25 @@ class CanvasPageHeader extends Component {
                 {collaborators ? collaborators.length : 0}
               </span>
             </div>
+            <div style={{ marginTop: '1rem', marginRight: '-5px' }}>
+              {currentProject.tags && getTags(currentProject.tags)}
+            </div>
           </div>
         ) : (
-          <div style={{ height: '26px' }}></div>
+          <div style={{ height: '53px' }}></div>
         )}
-        <div
-          style={{
-            display: 'block',
-            marginRight: '44px',
-            lineHeight: '35px',
-            textAlign: 'right',
-          }}
-        >
-          {currentProject.tags && getTags(currentProject.tags)}
-        </div>
+        {!pageHeaderExpand && (
+          <div
+            style={{
+              display: 'block',
+              marginRight: '44px',
+              lineHeight: '35px',
+              textAlign: 'right',
+            }}
+          >
+            {currentProject.tags && getTags(currentProject.tags)}
+          </div>
+        )}
       </div>
     );
 
@@ -380,6 +385,7 @@ class CanvasPageHeader extends Component {
               backgroundColor: '#FFFFFF',
               padding: '12px 0',
               borderRadius: '9px',
+              boxShadow: '0px 1px 7px #0000001A',
             }}
           >
             <div
