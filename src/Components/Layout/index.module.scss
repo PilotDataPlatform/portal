@@ -233,6 +233,10 @@
 
 :global {
   #global_site_header {
+    .ant-tabs-ink-bar {
+      color: $primary-color-light-1;
+      background-color: $primary-color-light-1;
+    }
     .ant-menu-horizontal > .ant-menu-item:hover,
     .ant-menu-horizontal > .ant-menu-submenu:hover,
     .ant-menu-horizontal > .ant-menu-item-active,

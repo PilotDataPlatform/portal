@@ -15,7 +15,6 @@ import {
 import { getUsersOnDatasetAPI } from '../../../APIs';
 import { namespace, ErrorMessager } from '../../../ErrorMessages';
 import { withCurrentProject } from '../../../Utility';
-import styles from './index.module.scss';
 
 const { Content } = Layout;
 
@@ -34,9 +33,9 @@ const defaultLayout = {
       { i: '3', x: 0, y: 7, w: 24, h: 6.6 },
     ],
     sm: [
-      { i: '2', x: 0, y: 0, w: 2.5, h: 6 },
-      { i: '1', x: 2.5, y: 0, w: 9.5, h: 6 },
-      { i: '3', x: 0, y: 7, w: 12, h: 6 },
+      { i: '2', x: 0, y: 0, w: 2.5, h: 6.4 },
+      { i: '1', x: 2.5, y: 0, w: 9.5, h: 6.4 },
+      { i: '3', x: 0, y: 7, w: 12, h: 6.4 },
     ],
   },
   contributor: {
@@ -51,9 +50,9 @@ const defaultLayout = {
       { i: '3', x: 0, y: 7, w: 24, h: 6.6 },
     ],
     sm: [
-      { i: '2', x: 0, y: 0, w: 2.5, h: 6.6 },
-      { i: '1', x: 2.5, y: 0, w: 9.5, h: 6.6 },
-      { i: '3', x: 0, y: 7, w: 12, h: 6.6 },
+      { i: '2', x: 0, y: 0, w: 2.5, h: 6.4 },
+      { i: '1', x: 2.5, y: 0, w: 9.5, h: 6.4 },
+      { i: '3', x: 0, y: 7, w: 12, h: 6.4 },
     ],
   },
   collaborator: {
@@ -68,9 +67,9 @@ const defaultLayout = {
       { i: '3', x: 0, y: 7, w: 24, h: 6.6 },
     ],
     sm: [
-      { i: '2', x: 0, y: 0, w: 2.5, h: 6.6 },
-      { i: '1', x: 2.5, y: 0, w: 9.5, h: 6.6 },
-      { i: '3', x: 0, y: 7, w: 12, h: 6.6 },
+      { i: '2', x: 0, y: 0, w: 2.5, h: 6.4 },
+      { i: '1', x: 2.5, y: 0, w: 9.5, h: 6.4 },
+      { i: '3', x: 0, y: 7, w: 12, h: 6.4 },
     ],
   },
   //Member panel
@@ -86,9 +85,9 @@ const defaultLayout = {
       { i: '3', x: 0, y: 7, w: 24, h: 6.6 },
     ],
     sm: [
-      { i: '2', x: 0, y: 0, w: 2.5, h: 6.6 },
-      { i: '1', x: 2.5, y: 0, w: 9.5, h: 6.6 },
-      { i: '3', x: 0, y: 7, w: 12, h: 6.6 },
+      { i: '2', x: 0, y: 0, w: 2.5, h: 6.4 },
+      { i: '1', x: 2.5, y: 0, w: 9.5, h: 6.4 },
+      { i: '3', x: 0, y: 7, w: 12, h: 6.4 },
     ],
   },
 };
