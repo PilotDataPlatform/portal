@@ -363,7 +363,7 @@ const ToolBar = ({
   };
 
   const handleRequestToCoreOnClick = () => {
-    toggleIcon('');
+    toggleIcon('requestToCore');
     setShowRequestToCoreRedDot(false);
   };
 
@@ -375,15 +375,13 @@ const ToolBar = ({
         selectedKeys={[pathname.split('/')[3]]}
         className={style.upperMenu}
       >
-        <div style={{ marginBottom: 13 }}>
-          <div
-            className={
-              iconSelected === 'canvas' ? style.temp : style['no-radius']
-            }
-            style={{ marginTop: 0 }}
-          ></div>
-          <div className={style['radius-top1']}></div>
-        </div>
+        <div
+          className={
+            iconSelected === 'canvas'
+              ? style['menu-spacing--after-selected']
+              : style['no-radius']
+          }
+        ></div>
         <Menu.Item
           key="canvas"
           onClick={() => toggleIcon('canvas')}
@@ -408,64 +406,45 @@ const ToolBar = ({
             <span>Canvas</span>
           </Link>
         </Menu.Item>
-        <div>
-          <div
-            className={
-              iconSelected === 'canvas' || iconSelected === 'data'
-                ? style.temp
-                : style['no-radius']
-            }
-          ></div>
-          <div
-            className={
-              iconSelected === 'canvas'
-                ? style['radius']
-                : style['radius-bottom']
-            }
-          ></div>
-        </div>
+        <div
+          className={
+            iconSelected === 'canvas'
+              ? style['menu-spacing--prev-selected']
+              : iconSelected === 'data'
+              ? style['menu-spacing--after-selected']
+              : style['no-radius']
+          }
+        ></div>
         <Menu.Item key="data" onClick={() => toggleIcon('data')}>
           <Link to="data">
             <CompassOutlined />
             <span>File Explorer</span>
           </Link>
         </Menu.Item>
-        <div>
-          <div
-            className={
-              iconSelected === 'data' || iconSelected === 'search'
-                ? style.temp
-                : style['no-radius']
-            }
-          ></div>
-          <div
-            className={
-              iconSelected === 'data' ? style['radius'] : style['radius-bottom']
-            }
-          ></div>
-        </div>
+        <div
+          className={
+            iconSelected === 'data'
+              ? style['menu-spacing--prev-selected']
+              : iconSelected === 'search'
+              ? style['menu-spacing--after-selected']
+              : style['no-radius']
+          }
+        ></div>
         <Menu.Item key="search" onClick={() => toggleIcon('search')}>
           <Link to="search">
             <SearchOutlined />
             <span>Search</span>
           </Link>
         </Menu.Item>
-        <div>
-          <div
-            className={
-              iconSelected === 'search' || iconSelected === 'announcement'
-                ? style.temp
-                : style['no-radius']
-            }
-          ></div>
-          <div
-            className={
-              iconSelected === 'search'
-                ? style['radius']
-                : style['radius-bottom']
-            }
-          ></div>
-        </div>
+        <div
+          className={
+            iconSelected === 'search'
+              ? style['menu-spacing--prev-selected']
+              : iconSelected === 'announcement'
+              ? style['menu-spacing--after-selected']
+              : style['no-radius']
+          }
+        ></div>
         <Menu.Item
           title={null}
           key="announcement"
@@ -473,22 +452,15 @@ const ToolBar = ({
         >
           <AnnouncementButton currentProject={currentProject} />
         </Menu.Item>
-        <div>
-          <div
-            className={
-              iconSelected === 'teams' || iconSelected === 'announcement'
-                ? style.temp
-                : style['no-radius']
-            }
-          ></div>
-          <div
-            className={
-              iconSelected === 'announcement'
-                ? style['radius']
-                : style['radius-bottom']
-            }
-          ></div>
-        </div>
+        <div
+          className={
+            iconSelected === 'announcement'
+              ? style['menu-spacing--prev-selected']
+              : iconSelected === 'teams'
+              ? style['menu-spacing--after-selected']
+              : style['no-radius']
+          }
+        ></div>
         {adminPermission && (
           <Menu.Item key="teams" onClick={() => toggleIcon('teams')}>
             <Link to="teams">
@@ -498,22 +470,15 @@ const ToolBar = ({
           </Menu.Item>
         )}
         {adminPermission && (
-          <div>
-            <div
-              className={
-                iconSelected === 'settings' || iconSelected === 'teams'
-                  ? style.temp
-                  : style['no-radius']
-              }
-            ></div>
-            <div
-              className={
-                iconSelected === 'teams'
-                  ? style['radius']
-                  : style['radius-bottom']
-              }
-            ></div>
-          </div>
+          <div
+            className={
+              iconSelected === 'teams'
+                ? style['menu-spacing--prev-selected']
+                : iconSelected === 'settings'
+                ? style['menu-spacing--after-selected']
+                : style['no-radius']
+            }
+          ></div>
         )}
 
         {adminPermission && (
@@ -525,24 +490,15 @@ const ToolBar = ({
           </Menu.Item>
         )}
         {adminPermission && (
-          <div>
-            <div
-              className={
-                iconSelected === 'requestToCore' ||
-                iconSelected === '' ||
-                iconSelected === 'settings'
-                  ? style.temp
-                  : style['no-radius']
-              }
-            ></div>
-            <div
-              className={
-                iconSelected === 'settings'
-                  ? style['radius']
-                  : style['radius-bottom']
-              }
-            ></div>
-          </div>
+          <div
+            className={
+              iconSelected === 'settings'
+                ? style['menu-spacing--prev-selected']
+                : iconSelected === 'requestToCore'
+                ? style['menu-spacing--after-selected']
+                : style['no-radius']
+            }
+          ></div>
         )}
         {(adminPermission || collaboratorPermission) && (
           <Menu.Item key="requestToCore" onClick={handleRequestToCoreOnClick}>
@@ -553,7 +509,7 @@ const ToolBar = ({
           </Menu.Item>
         )}
         {adminPermission && (
-          <div>
+          <div className={style['menu-spacing']}>
             <div className={style.temp}></div>
             <div
               className={
@@ -587,10 +543,13 @@ const ToolBar = ({
           </>
         )}
         {(adminPermission || collaboratorPermission) && (
-          <div>
-            <div className={style.temp}></div>
-            <div className={style['radius-last']}></div>
-          </div>
+          <div
+            className={
+              iconSelected === 'requestToCore'
+                ? style['menu-spacing--prev-selected']
+                : style['no-radius']
+            }
+          ></div>
         )}
       </Menu>
 

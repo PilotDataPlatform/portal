@@ -5,18 +5,46 @@
   // top: 110px;
   z-index: 10;
 }
-
-.temp {
-  width: 100%;
-  height: 13px;
-  background-color: $background-color-1 !important;
-  // background-color: red;
-  position: absolute;
-  margin-top: -11px;
-  margin-left: 2px;
-  z-index: 11;
+.menu-spacing {
+  &--after-selected {
+    height: 13px;
+    width: 100%;
+    background-color: $background-color-1 !important;
+    // margin-left: 2px;
+    z-index: 11;
+    position: relative;
+    &::after {
+      position: absolute;
+      content: '';
+      top: 0;
+      left: 0px;
+      width: 100%;
+      height: 13px;
+      background-color: $primary-color-1;
+      border-bottom-right-radius: 30px;
+      z-index: 12;
+    }
+  }
+  &--prev-selected {
+    height: 13px;
+    width: 100%;
+    background-color: $background-color-1 !important;
+    // margin-left: 2px;
+    z-index: 11;
+    position: relative;
+    &::before {
+      position: absolute;
+      content: '';
+      top: 0;
+      left: 0px;
+      width: 100%;
+      height: 13px;
+      background-color: $primary-color-1;
+      border-top-right-radius: 30px;
+      z-index: 12;
+    }
+  }
 }
-
 .no-radius {
   width: 100%;
   height: 13px;
@@ -25,54 +53,6 @@
   position: absolute;
   z-index: 12;
   margin-top: -11px;
-}
-
-.radius-top1 {
-  width: 100%;
-  height: 13px;
-  background-color: $primary-color-1;
-  // background-color: #000;
-  border-bottom-right-radius: 30px;
-  position: absolute;
-
-  z-index: 12;
-}
-
-.radius-last {
-  width: 100%;
-  height: 13px;
-  background-color: $primary-color-1;
-  // background-color: #000;
-  border-top-right-radius: 30px;
-  margin-top: -11px;
-  position: absolute;
-  z-index: 12;
-}
-
-.radius {
-  width: 100%;
-  height: 13px;
-  background-color: $primary-color-1;
-  // background-color: green;
-  // border-bottom-right-radius: 30px;
-  border-top-right-radius: 30px;
-  position: absolute;
-  margin-top: -11px;
-  margin-left: 2px;
-  z-index: 12;
-}
-
-.radius-bottom {
-  width: 100%;
-  height: 13px;
-  background-color: $primary-color-1;
-  // background-color: #000;
-  border-bottom-right-radius: 30px;
-  // border-top-right-radius: 30px;
-  position: absolute;
-  margin-top: -11px;
-  margin-left: 2px;
-  z-index: 12;
 }
 
 .upperMenu {
@@ -84,14 +64,11 @@
   max-width: 51px;
   min-width: 51px;
   overflow: hidden;
+  border: none !important;
 
   :global {
-    .ant-menu-inline {
-      border: none;
-    }
-
     .ant-menu-item {
-      margin-bottom: 10px !important;
+      margin-bottom: 0px !important;
     }
 
     .anticon {
@@ -105,22 +82,35 @@
       color: $background-color-1;
     }
     .ant-menu-item a::after {
-      // margin-left: 14px !important;
       color: $background-color-1;
     }
 
     .ant-menu-item-selected {
-      margin-left: 10px !important;
-      border-bottom-left-radius: 10px !important;
-      border-top-left-radius: 10px !important;
-      background-color: $background-color-1 !important;
+      background-color: $primary-color-1 !important;
+      ::before {
+        position: absolute;
+        content: '';
+        left: 10px;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        border-bottom-left-radius: 10px !important;
+        border-top-left-radius: 10px !important;
+        background-color: $background-color-1;
+      }
+      a {
+        color: #003262 !important;
+      }
       .anticon {
+        padding-left: 10px;
+        z-index: 2;
+        position: relative;
         color: #003262 !important;
       }
     }
 
     .ant-menu-item-selected::after {
-      margin-left: 10px !important;
       border-bottom-left-radius: 10px !important;
       border-top-left-radius: 10px !important;
       background-color: $background-color-1 !important;
@@ -128,14 +118,11 @@
         color: #003262 !important;
       }
     }
-
-    .ant-menu-item-active {
-      margin-bottom: 10px !important;
-    }
   }
 }
 
 .lowerMenu {
+  border: none !important;
   background-color: $primary-color-1 !important;
   position: fixed !important;
   bottom: 20px;
@@ -150,7 +137,32 @@
   }
 }
 
-.upperMenu,
+.upperMenu {
+  :global {
+    .ant-menu-item {
+      position: relative;
+      .anticon {
+        > img {
+          position: absolute;
+          left: 40px;
+          top: 50%;
+          transform: translate(-50%, -50%);
+        }
+      }
+      margin-top: 0px !important;
+      &.ant-menu-item-selected {
+        .anticon {
+          > img {
+            position: absolute;
+            left: 35px;
+            top: -9px;
+            transform: translate(-50%, -50%);
+          }
+        }
+      }
+    }
+  }
+}
 .lowerMenu {
   :global {
     .ant-menu-item {
