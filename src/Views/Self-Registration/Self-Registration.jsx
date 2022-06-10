@@ -157,7 +157,7 @@ function SelfRegistration(props) {
               bodyStyle={{ textAlign: 'center', padding: '30px' }}
             >
               <img
-                src={PORTAL_PREFIX + '/platform-logo.png'}
+                src={PORTAL_PREFIX + '/platform-logo.svg'}
                 className={styles.icon}
                 alt="icon"
               />

@@ -71,6 +71,7 @@ import Copy2CorePlugin from './Plugins/Copy2Core/Copy2CorePlugin';
 import VirtualFolderPlugin from './Plugins/VirtualFolders/VirtualFolderPlugin';
 import VirtualFolderFilesDeletePlugin from './Plugins/VirtualFolderDeleteFiles/VirtualFolderFilesDeletePlugin';
 import VirtualFolderDeletePlugin from './Plugins/VirtualFolderDelete/VirtualFolderDeletePlugin';
+import VirtualFolderRenamePlugin from './Plugins/VirtualFolderRename/VirtualFolderRenamePlugin';
 import ZipContentPlugin from './Plugins/ZipContent/ZipContentPlugin';
 import DeleteFilesPlugin from './Plugins/DeleteFiles/DeleteFilesPlugin';
 import ManifestManagementPlugin from './Plugins/ManifestManagement/ManifestManagementPlugin';
@@ -1228,100 +1229,29 @@ function RawTable(props) {
         />
       ),
     },
+    {
+      condition:
+        props.type === DataSourceType.CORE_VIRTUAL_FOLDER &&
+        !currentRouting?.length &&
+        !hasSelected,
+      elm: <VirtualFolderRenamePlugin panelKey={panelKey} />,
+    },
   ];
-  const ToolTipsAndTable = (
-    <div style={{ position: 'relative' }}>
-      <div
-        style={{
-          marginBottom: 36,
-          marginTop: 20,
-          position: 'relative',
-        }}
-        className={`${styles.file_explore_actions} file_explorer_header_bar`}
-        ref={actionBarRef}
-      >
-        {currentRouting?.length ? (
-          <>
-            <div
-              style={{
-                marginLeft: 10,
-                marginRight: 20,
-                display: 'inline-block',
-              }}
-            >
-              <Breadcrumb
-                separator=">"
-                style={{ maxWidth: 500, display: 'inline-block' }}
-                className={`${styles.file_folder_path}`}
-              >
-                <Breadcrumb.Item
-                  style={{
-                    cursor: 'pointer',
-                  }}
-                  onClick={goRoot}
-                >
-                  {checkIsVirtualFolder(panelKey)
-                    ? titleText
-                    : panelKey.toLowerCase().includes('trash')
-                    ? 'Trash'
-                    : panelKey.toLowerCase().includes('core')
-                    ? 'Core'
-                    : 'Green Room'}
-                </Breadcrumb.Item>
-                {currentRouting.length > 4 ? (
-                  <Breadcrumb.Item>...</Breadcrumb.Item>
-                ) : null}
-                {orderRouting
-                  .slice(checkIsVirtualFolder(panelKey) ? -1 : -3)
-                  .map((v, index) => {
-                    return (
-                      <Breadcrumb.Item
-                        style={
-                          index === orderRouting.length - 1
-                            ? null
-                            : { cursor: 'pointer' }
-                        }
-                        key={'breadcrumb-' + index}
-                        onClick={() => {
-                          if (index === orderRouting.length - 1) {
-                            return;
-                          }
-                          clearFilesSelection();
-                          refreshFiles({
-                            parentPath: v.displayPath
-                              ? v.displayPath + '.' + v.name
-                              : v.name,
-                            sourceType: 'folder',
-                            resetTable: true,
-                            node: { nodeLabel: v.labels },
-                          });
-                          dispatch(setTableLayoutReset(panelKey));
-                        }}
-                      >
-                        {v.name.length > 23 ? (
-                          <Tip title={v.name}>
-                            {v.name.slice(0, 20) + '...'}
-                          </Tip>
-                        ) : (
-                          v.name
-                        )}
-                      </Breadcrumb.Item>
-                    );
-                  })}
-              </Breadcrumb>
-            </div>
-          </>
-        ) : (
+
+  const showFilePathBreadcrumb = () => {
+    if (currentRouting?.length) {
+      return (
+        <>
           <Breadcrumb
-            style={{
-              maxWidth: 500,
-              display: 'inline-block',
-              marginLeft: 10,
-              marginRight: 30,
-            }}
-            className={styles.file_folder_path}
+            separator=">"
+            className={`${styles.file_folder_path}`}
           >
-            <Breadcrumb.Item onClick={goRoot}>
+            <Breadcrumb.Item
+              style={{
+                cursor: 'pointer',
+              }}
+              onClick={goRoot}
+            >
               {checkIsVirtualFolder(panelKey)
                 ? titleText
                 : panelKey.toLowerCase().includes('trash')
@@ -1330,8 +1260,77 @@ function RawTable(props) {
                 ? 'Core'
                 : 'Green Room'}
             </Breadcrumb.Item>
+            {currentRouting.length > 4 ? (
+              <Breadcrumb.Item>...</Breadcrumb.Item>
+            ) : null}
+            {orderRouting
+              .slice(checkIsVirtualFolder(panelKey) ? -1 : -3)
+              .map((v, index) => {
+                return (
+                  <Breadcrumb.Item
+                    style={
+                      index === orderRouting.length - 1
+                        ? null
+                        : { cursor: 'pointer' }
+                    }
+                    onClick={() => {
+                      if (index === orderRouting.length - 1) {
+                        return;
+                      }
+                      clearFilesSelection();
+                      refreshFiles({
+                        parentPath: v.displayPath
+                          ? v.displayPath + '.' + v.name
+                          : v.name,
+                        sourceType: 'folder',
+                        resetTable: true,
+                        node: { nodeLabel: v.labels },
+                      });
+                      dispatch(setTableLayoutReset(panelKey));
+                    }}
+                  >
+                    {v.name.length > 23 ? (
+                      <Tip title={v.name}>{v.name.slice(0, 20) + '...'}</Tip>
+                    ) : (
+                      v.name
+                    )}
+                  </Breadcrumb.Item>
+                );
+              })}
           </Breadcrumb>
-        )}
+        </>
+      );
+    } else {
+      return (
+        <Breadcrumb
+          style={{
+            maxWidth: 500,
+            display: 'inline-block',
+            marginLeft: 10,
+            marginRight: 30,
+          }}
+          className={styles.file_folder_path}
+        >
+          <Breadcrumb.Item onClick={goRoot}>
+            {checkIsVirtualFolder(panelKey)
+              ? titleText
+              : panelKey.toLowerCase().includes('trash')
+              ? 'Trash'
+              : panelKey.toLowerCase().includes('core')
+              ? 'Core'
+              : 'Green Room'}
+          </Breadcrumb.Item>
+        </Breadcrumb>
+      );
+    }
+  };
+
+  const ToolTipsAndTable = (
+    <div style={{ position: 'relative' }}>
+      <div
+        className={`${styles.file_explore_actions} file_explorer_header_bar`}
+        ref={actionBarRef}
+      >
         {showPlugins &&
           plugins.map(({ condition, elm }) => {
             if (condition) {
@@ -1384,6 +1383,8 @@ function RawTable(props) {
           </div>
         }
       </div>
+
+      {showFilePathBreadcrumb()}
 
       <FilesTable
         columns={columns}
@@ -1440,16 +1441,7 @@ function RawTable(props) {
       )}
 
       <div id="rawTable-sidePanel" style={{ display: 'flex' }} ref={ref}>
-        <div
-          style={{
-            borderRight: '1px solid rgb(240, 240, 240)',
-            // paddingRight: '16px',
-            marginRight: sidepanel ? '16px' : 0,
-            width: tableWidth,
-          }}
-        >
-          {ToolTipsAndTable}
-        </div>
+        <div>{ToolTipsAndTable}</div>
         {sidepanel && (
           <div
             style={{

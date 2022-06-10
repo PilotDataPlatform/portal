@@ -25,6 +25,8 @@ import {
   useCurrentProject,
 } from '../../../../Utility';
 
+import CustomPagination from '../../../../Components/Pagination/Pagination';
+
 const { TabPane } = Tabs;
 const { Option } = Select;
 const { RangePicker } = DatePicker;
@@ -198,8 +200,8 @@ const FileStatModal = (props) => {
     setTreeData([]);
   };
 
-  const onChangePage = (page, pageSize) => {
-    setPage(page);
+  const onChangePage = (val) => {
+    setPage(val.cur);
     setLoading(true);
 
     let operation = 'data_transfer';
@@ -209,7 +211,7 @@ const FileStatModal = (props) => {
     if (action === 'all') operation = 'all';
 
     const paginationParams = {
-      page: page - 1,
+      page: val.cur - 1,
       page_size: 10,
     };
     const query = {
@@ -309,15 +311,15 @@ const FileStatModal = (props) => {
             })}
         </Timeline>
 
-        <Pagination
+        <CustomPagination
+          onChange={onChangePage}
           total={
             page === 0 && filterData.length < 10 ? filterData.length : total
           }
-          size="small"
-          style={{ float: 'right' }}
-          onChange={onChangePage}
-          showSizeChanger={false}
-          current={page}
+          data={filterData}
+          defaultPage={1}
+          defaultSize={10}
+          showPageSize={false}
         />
       </div>
     );
@@ -334,7 +336,7 @@ const FileStatModal = (props) => {
               padding: 24,
               background: '#fbfbfb',
               border: '1px solid #d9d9d9',
-              borderRadius: 2,
+              borderRadius: 6,
             }}
             onFinish={onFinish}
             layout="vertical"
@@ -356,7 +358,7 @@ const FileStatModal = (props) => {
                 >
                   <RangePicker
                     disabledDate={disabledDate}
-                    style={{ minWidth: 100 }}
+                    style={{ minWidth: 100, borderRadius: 6 }}
                   />
                 </Form.Item>
               </div>
@@ -408,10 +410,13 @@ const FileStatModal = (props) => {
                     loading={isSearching}
                     type="primary"
                     htmlType="submit"
+                    style={{ borderRadius: 6 }}
                   >
                     Search
                   </Button>
-                  <Button onClick={onReset}>Clear</Button>
+                  <Button style={{ borderRadius: 6 }} onClick={onReset}>
+                    Clear
+                  </Button>
                 </Space>
               </div>
             </div>

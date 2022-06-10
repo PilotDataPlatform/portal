@@ -58,7 +58,7 @@ const DatasetsPlugin = ({
           style={{
             borderRadius: '6px',
             height: '27px',
-            width: '165px',
+            width: '155px',
             padding: '0px',
           }}
           onClick={() => setDataSetsModalVisible(true)}

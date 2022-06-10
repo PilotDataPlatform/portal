@@ -8,6 +8,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentProjectTreeVFolder } from '../../../../../../../Redux/actions';
 import CollectionIcon from '../../../../../../../Components/Icons/Collection';
 import i18n from '../../../../../../../i18n';
+import { InfoCircleOutlined, DeleteOutlined } from '@ant-design/icons';
+import styles from './VirtualFolderDelete.module.scss';
 const VFolderFilesDeleteModal = ({
   visible,
   setVisible,
@@ -19,6 +21,8 @@ const VFolderFilesDeleteModal = ({
   const [confirmLoading, setConfirmLoading] = React.useState(false);
   const [vfolders, setVFolders] = useState([]);
   const dispatch = useDispatch();
+  const vfolderName = panelKey.split('-').slice(1).join('-');
+  const vfolder = vfolders.find((v) => v.name === vfolderName);
   function closeModal() {
     setVisible(false);
   }
@@ -37,8 +41,6 @@ const VFolderFilesDeleteModal = ({
     removePanel(panelKey);
   }
   async function handleOk() {
-    const vfolderName = panelKey.split('-').slice(1).join('-');
-    const vfolder = vfolders.find((v) => v.name === vfolderName);
     if (vfolder) {
       setConfirmLoading(true);
       try {
@@ -72,15 +74,29 @@ const VFolderFilesDeleteModal = ({
 
   return (
     <Modal
-      width={350}
+      width={460}
       centered
-      title="Delete Collection"
+      title="Deletion"
       visible={visible}
       onOk={handleOk}
+      okText="Delete"
+      okButtonProps={{ icon: <DeleteOutlined /> }}
       onCancel={handleCancel}
+      wrapClassName={styles.delete_vfolder_modal}
       confirmLoading={confirmLoading}
     >
-      Are you sure you want to delete this collection?
+      <div className={styles['folde-deletion-warning']}>
+        <InfoCircleOutlined />
+        <div>
+          <p>
+            Are you sure you would like to deleted this Collection? This cannot
+            be undone
+          </p>
+          <p>
+            <b>{vfolder ? vfolder.name : ''}</b>
+          </p>
+        </div>
+      </div>
     </Modal>
   );
 };

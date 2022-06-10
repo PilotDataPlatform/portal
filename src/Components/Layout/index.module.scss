@@ -1,4 +1,5 @@
 @import '../../Styles/includeMedia.scss';
+@import '../../Themes/base.scss';
 
 .container {
   max-width: 560px;
@@ -78,9 +79,9 @@
 .left_sider {
   overflow: auto;
   height: 100vh;
-  width: 50px !important;
-  max-width: 50px !important;
-  min-width: 50px !important;
+  width: 51px !important;
+  max-width: 51px !important;
+  min-width: 51px !important;
   position: fixed !important;
   z-index: 10;
   background-color: #003262 !important;
@@ -120,6 +121,7 @@
   color: rgba(0, 0, 0, 0.5) !important;
   line-height: 1.5;
   text-align: center;
+  margin-top: 40px;
   @include media('>desktop') {
     text-align: right;
   }
@@ -231,56 +233,89 @@
 
 :global {
   #global_site_header {
+    .ant-tabs-ink-bar {
+      color: $primary-color-light-1;
+      background-color: $primary-color-light-1;
+    }
+    .ant-menu-horizontal > .ant-menu-item:hover,
+    .ant-menu-horizontal > .ant-menu-submenu:hover,
+    .ant-menu-horizontal > .ant-menu-item-active,
+    .ant-menu-horizontal > .ant-menu-submenu-active,
+    .ant-menu-horizontal > .ant-menu-item-open,
+    .ant-menu-horizontal > .ant-menu-submenu-open,
+    .ant-menu-horizontal > .ant-menu-item-selected,
+    .ant-menu-horizontal > .ant-menu-submenu-selected {
+      color: $primary-color-light-1;
+      border-bottom: 2px solid $primary-color-light-1;
+      > a {
+        color: $primary-color-light-1;
+      }
+    }
+    .ant-menu-item:hover,
+    .ant-menu-item-active,
+    .ant-menu:not(.ant-menu-inline) .ant-menu-submenu-open,
+    .ant-menu-submenu-active,
+    .ant-menu-submenu-title:hover {
+      color: $primary-color-light-1;
+    }
     > ul.ant-menu-root {
-      line-height: 81px;
+      line-height: 6.6rem;
       #header_username .anticon-user {
         margin-right: 6px !important;
-        font-size: 16px !important;
+        font-size: 1.4rem !important;
       }
       > li.ant-menu-item {
-        padding-top: 6px;
-        line-height: 75px;
-        font-size: 16px;
-        padding-left: 10px;
-        padding-right: 10px;
+        padding-top: 0.4rem;
+        line-height: 6.2rem;
+        font-size: 1.4rem;
+        padding-left: 2px;
+        padding-right: 2px;
         .anticon {
-          margin-right: 6px !important;
-          font-size: 18px !important;
+          margin-right: 6px;
+          font-size: 1.6rem !important;
+          vertical-align: sub;
         }
         span.ant-badge.ant-badge-status {
-          font-size: 16px;
+          font-size: 1.4rem;
         }
       }
       > li.ant-menu-item:nth-child(2) {
-        margin-right: 100px;
+        margin-right: 7rem;
       }
       > li.ant-menu-item:nth-child(6) {
-        margin-left: 50px;
-        margin-right: 50px;
+        margin-left: 4rem;
+        margin-right: 4rem;
       }
       > li.ant-menu-item:nth-last-child(4) {
-        margin: 0 30px;
+        margin: 0 3.6rem;
       }
       @media (max-width: 1440px) {
         > li.ant-menu-item:nth-child(2) {
           margin-right: 60px;
         }
       }
-      @media (max-width: 1180px) {
-        > li.ant-menu-item:nth-child(2) {
-          margin-right: 6px;
-        }
-        > li.ant-menu-item:nth-child(6) {
-          margin-left: 8px;
-          margin-right: 8px;
-        }
-        > li.ant-menu-item:nth-last-child(4) {
-          margin: 0px;
-        }
-      }
+      // @media (max-width: 1180px) {
+      //   > li.ant-menu-item:nth-child(2) {
+      //     margin-right: 6px;
+      //   }
+      //   > li.ant-menu-item:nth-child(6) {
+      //     margin-left: 8px;
+      //     margin-right: 8px;
+      //   }
+      //   > li.ant-menu-item:nth-last-child(4) {
+      //     margin: 0px;
+      //   }
+      // }
     }
     #header_user_menu {
-      #header_reset_password, #header_logout, #header_user_profile {
+      :global {
+        .ant-menu-submenu-title {
+          padding: 0 2px;
+        }
+      }
+      #header_reset_password,
+      #header_logout,
+      #header_user_profile {
         padding-left: 8px;
         font-weight: 500;
 
@@ -330,11 +365,7 @@
 }
 
 .badge {
-  padding: 0px 26px 0 22px !important;
   position: relative !important;
-  width: 60px !important;
-  height: 50px !important;
-  line-height: 48px !important;
   overflow: hidden !important;
   vertical-align: middle !important;
 }
@@ -343,9 +374,10 @@
   :global {
     .anticon {
       vertical-align: middle;
+      margin-right: 0 !important;
     }
     .ant-badge-dot {
-      top: 32px;
+      top: 3.5rem;
       right: 25px;
       height: 10px;
       width: 10px;
@@ -357,10 +389,16 @@
   :global {
     .ant-badge {
       .ant-badge-status-error {
-        top: 42px;
-        right: 172px;
+        top: 38px;
+        right: 166px;
         height: 8px;
         width: 8px;
+      }
+      @media (min-width: 1440px) {
+        .ant-badge-status-error {
+          top: 46px;
+          right: 196px;
+        }
       }
     }
   }

@@ -2,6 +2,15 @@
 @import './Styles/BootstrapPostion.css';
 @import './Styles/links.css';
 @import '~animate.css/animate.css';
+@import './Themes/base.scss';
+html {
+  font-size: 62.5%; //10px
+
+  @media (min-width: 1440px) {
+    font-size: 75%; //12px
+  }
+}
+
 .toggle {
   background-color: #1b9cd0;
   padding: 10px 5px;
@@ -30,13 +39,13 @@
   padding: 20px 20px 20px 35px;
   margin-left: 0;
   transition: all 0.4s ease;
-  min-height: 93vh !important;
+  min-height: 80vh !important;
 }
 .contentOpen {
   padding: 20px 20px 20px 18px;
   margin-left: 400px;
   transition: all 0.4s ease;
-  min-height: 93vh !important;
+  min-height: 87vh !important;
 }
 
 .ant-tabs-vertical.ant-tabs-card
@@ -93,7 +102,7 @@
 }
 
 #files_table .ant-table-placeholder {
-  height: 600px;
+  height: 550px;
 }
 
 .ant-tree {

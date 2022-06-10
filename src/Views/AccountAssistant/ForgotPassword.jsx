@@ -52,7 +52,7 @@ function Login() {
         <Card style={{ paddingLeft: '40px', paddingRight: '40px' }}>
           <div style={{ textAlign: 'center' }}>
             <img
-              src={PORTAL_PREFIX + '/platform-logo.png'}
+              src={PORTAL_PREFIX + '/platform-logo.svg'}
               style={{ height: '50px' }}
               alt="icon"
             />

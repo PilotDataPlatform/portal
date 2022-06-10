@@ -12,6 +12,7 @@ import FileExplorer from './Charts/FileExplorer/FileExplorer';
 import Description from './Charts/Description/Description';
 import FileStats from './Cards/FileStats';
 import UserStats from './Cards/UserStats';
+import Charts from './Cards/Charts';
 import FileStatModal from '../Canvas/Modals/FileStatModal';
 import Superset from './Cards/Superset';
 
@@ -85,6 +86,9 @@ const getcard = (card, data, actions, state, handleExpand) => {
       };
       break;
     }
+    case 'charts':
+      res = <Charts projectRole={state.currentProjectRole} />;
+      break;
     default:
       break;
   }
