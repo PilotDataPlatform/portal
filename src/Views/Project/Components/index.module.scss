@@ -9,13 +9,70 @@
 .temp {
   width: 100%;
   height: 13px;
-  background-color: $primary-color-1;
-  border-bottom-right-radius: 10px;
-  border-top-right-radius: 10px;
+  background-color: $background-color-1 !important;
+  // background-color: red;
   position: absolute;
   margin-top: -11px;
   margin-left: 2px;
   z-index: 11;
+}
+
+.no-radius {
+  width: 100%;
+  height: 13px;
+  background-color: $primary-color-1;
+  // background-color: #f7e8bc;
+  position: absolute;
+  z-index: 12;
+  margin-top: -11px;
+}
+
+.radius-top1 {
+  width: 100%;
+  height: 13px;
+  background-color: $primary-color-1;
+  // background-color: #000;
+  border-bottom-right-radius: 30px;
+  position: absolute;
+
+  z-index: 12;
+}
+
+.radius-last {
+  width: 100%;
+  height: 13px;
+  background-color: $primary-color-1;
+  // background-color: #000;
+  border-top-right-radius: 30px;
+  margin-top: -11px;
+  position: absolute;
+  z-index: 12;
+}
+
+.radius {
+  width: 100%;
+  height: 13px;
+  background-color: $primary-color-1;
+  // background-color: green;
+  // border-bottom-right-radius: 30px;
+  border-top-right-radius: 30px;
+  position: absolute;
+  margin-top: -11px;
+  margin-left: 2px;
+  z-index: 12;
+}
+
+.radius-bottom {
+  width: 100%;
+  height: 13px;
+  background-color: $primary-color-1;
+  // background-color: #000;
+  border-bottom-right-radius: 30px;
+  // border-top-right-radius: 30px;
+  position: absolute;
+  margin-top: -11px;
+  margin-left: 2px;
+  z-index: 12;
 }
 
 .upperMenu {
@@ -38,7 +95,17 @@
     }
 
     .anticon {
+      margin-top: 2px;
       margin-left: -17px !important;
+      color: $background-color-1;
+    }
+
+    .ant-menu-item a {
+      margin-top: 2px !important;
+      color: $background-color-1;
+    }
+    .ant-menu-item a::after {
+      // margin-left: 14px !important;
       color: $background-color-1;
     }
 
@@ -50,6 +117,20 @@
       .anticon {
         color: #003262 !important;
       }
+    }
+
+    .ant-menu-item-selected::after {
+      margin-left: 10px !important;
+      border-bottom-left-radius: 10px !important;
+      border-top-left-radius: 10px !important;
+      background-color: $background-color-1 !important;
+      .anticon {
+        color: #003262 !important;
+      }
+    }
+
+    .ant-menu-item-active {
+      margin-bottom: 10px !important;
     }
   }
 }

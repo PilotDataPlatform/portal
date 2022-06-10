@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+
 import {
   HomeOutlined,
   PaperClipOutlined,
@@ -14,12 +15,14 @@ import { useCurrentProject } from '../../../../Utility';
 import { canvasPageActions } from '../../../../Redux/actions';
 import { useDispatch } from 'react-redux';
 import '../../../../Themes/base.scss';
+import { history } from '../../../../Routes';
 
 function FileStats(props) {
   const [greenRoomCount, setGreenRoomCount] = useState(0);
   const [coreCount, setCoreCount] = useState(0);
   const [collections, setCollections] = useState([]);
   const [currentProject] = useCurrentProject();
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -51,12 +54,14 @@ function FileStats(props) {
           id: collections.length > 0 ? collections[0].id : '',
         }),
       );
+      history.push(`/project/${currentProject.code}/data`);
     } else {
       dispatch(
         canvasPageActions.setCanvasPage({
           page: page,
         }),
       );
+      history.push(`/project/${currentProject.code}/data`);
     }
   };
 
@@ -84,10 +89,24 @@ function FileStats(props) {
       {props.projectRole !== 'collaborator' ? (
         <div className={styles.shortcut} onClick={() => goToPage('collection')}>
           <span className={styles.iconColumn}>
-            <PaperClipOutlined className={styles.icon3} />
+            <PaperClipOutlined
+              className={styles.icon3}
+              style={{
+                cursor: collections.length === 0 ? '' : 'pointer',
+                opacity: collections.length === 0 ? 0.5 : 1,
+              }}
+            />
           </span>
-          <span className={styles.fileFont}>
-            <span className={styles['collections-num']}>
+          <span
+            className={styles.fileFont}
+            style={{ opacity: collections.length === 0 ? 0.5 : 1 }}
+          >
+            <span
+              className={styles['collections-num']}
+              style={{
+                opacity: collections.length === 0 ? 0.5 : 1,
+              }}
+            >
               {collections.length}
             </span>{' '}
             Collections
