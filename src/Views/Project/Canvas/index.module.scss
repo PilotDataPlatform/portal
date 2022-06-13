@@ -12,6 +12,7 @@
     composes: canvas-page-header__avatar;
     width: 23px !important;
     height: 23px !important;
+    margin-top: -5px !important;
 
     :global {
       .ant-avatar-string {
@@ -39,7 +40,7 @@
 }
 
 .up-circle {
-  color: $primary-color-light-6 !important;
+  color: $primary-color-light-1 !important;
   font-size: 22px;
   z-index: 2;
   position: relative;
