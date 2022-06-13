@@ -12,7 +12,7 @@ const Pages = (props) => {
 
   return (
     <span>
-      {current}/{Math.ceil(props.total / pageSize)}
+      {current}/{Math.ceil(props.total / pageSize == 0 ? 1 : pageSize)}
     </span>
   );
 };

@@ -352,7 +352,7 @@ class CanvasPageHeader extends Component {
     };
 
     const avatarClass =
-      this.props.variant === 'fileExplorer'
+      this.props.variant === 'fileExplorer' && !pageHeaderExpand
         ? styles['canvas-page-header__avatar--file-explorer']
         : styles['canvas-page-header__avatar'];
 
@@ -402,7 +402,6 @@ class CanvasPageHeader extends Component {
                   display: 'flex',
                   flex: 1,
                   overflow: 'hidden',
-                  alignItems: 'center',
                 }}
               >
                 <div
