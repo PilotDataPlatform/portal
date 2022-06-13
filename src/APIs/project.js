@@ -19,7 +19,7 @@ function getUserProjectActivitiesAPI(params) {
  */
 async function getDatasetsAPI(params = {}) {
   if (params['tags']) {
-    params['tags'] = JSON.stringify(params['tags']);
+    params['tags'] = params['tags'].join(',');
   }
   const res = await serverAxios({
     url: '/v1/containers/',
