@@ -24,6 +24,46 @@
         background-color: white !important;
       }
     }
+
+    .ant-table-pagination {
+      .ant-pagination-prev,
+      .ant-pagination-next {
+        a {
+          border-color: transparent;
+          color: #818181;
+        }
+        &.ant-pagination-disabled {
+          a {
+            color: #bbbfc1;
+          }
+        }
+      }
+      .ant-pagination-item {
+        border-color: transparent;
+        a {
+          color: #818181;
+        }
+        &-active {
+          a {
+            color: #1890ff;
+          }
+        }
+      }
+      .ant-pagination-options-size-changer {
+        .ant-select-selector {
+          border-radius: 6px;
+          border-color: #bbbfc1;
+
+          .ant-select-selection-item {
+            color: #818181;
+          }
+
+          .ant-select-arrow {
+            color: #c3c6c8;
+          }
+        }
+      }
+    }
   }
 }
 .file_folder_path {
