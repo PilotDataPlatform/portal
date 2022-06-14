@@ -51,7 +51,7 @@
 
   :global {
     .ant-tree .ant-tree-node-content-wrapper:hover {
-      background-color: white !important;
+      background-color: inherit;
     }
     .Collapse_collapseBg__3m8BO {
       margin-bottom: 10px !important;
@@ -111,12 +111,20 @@
           transform: translate(5px, 0px);
         }
       }
-      .ant-tree-node-content-wrapper.ant-tree-node-selected {
-        font-weight: 600;
-        background-color: $primary-color-lightest-2;
+      .ant-tree-node-content-wrapper {
+        &:hover {
+          .ant-tree-title {
+            color: $primary-color-2;
+            font-weight: 600;
+          }
+        }
+        &.ant-tree-node-selected {
+          font-weight: 600;
+          background-color: $primary-color-lightest-2;
 
-        .ant-tree-title {
-          color: $primary-color-2;
+          .ant-tree-title {
+            color: $primary-color-2;
+          }
         }
       }
     }
@@ -126,19 +134,36 @@
         font-size: 14px;
       }
 
-      .ant-tree-node-content-wrapper.ant-tree-node-selected {
-        font-weight: 600;
-        background-color: $primary-color-lightest-4;
+      .ant-tree-treenode:not(:last-child) {
+        .ant-tree-node-content-wrapper {
+          &:hover {
+            .ant-tree-title {
+              font-weight: 600;
+              color: $primary-color-4;
+            }
+          }
+          &[title='Home']:hover {
+            .ant-tree-title {
+              font-weight: 600;
+              color: $primary-color-1;
+            }
+          }
 
-        .ant-tree-title {
-          color: $primary-color-4;
-        }
+          &.ant-tree-node-selected {
+            font-weight: 600;
+            background-color: $primary-color-lightest-4;
 
-        &[title='Home'] {
-          background-color: $primary-color-lightest-1;
+            .ant-tree-title {
+              color: $primary-color-4;
+            }
 
-          .ant-tree-title {
-            color: $primary-color-1;
+            &[title='Home'] {
+              background-color: $primary-color-lightest-1;
+
+              .ant-tree-title {
+                color: $primary-color-1;
+              }
+            }
           }
         }
       }
@@ -267,6 +292,12 @@
 
   &--active {
     background-color: $primary-color-lightest-3;
+    font-weight: 600;
+    color: $primary-color-light-3;
+  }
+  
+  &:hover {
+    font-weight: 600;
     color: $primary-color-3;
   }
 }
