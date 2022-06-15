@@ -1,14 +1,10 @@
 import React from 'react';
 import { Heatmap, G2 } from '@ant-design/plots';
 import HeatMapLegend from './HeatMapLegend';
-import { useTheme } from '../../../../../Themes/theme';
 
 import styles from './index.module.scss';
 
-function HeatMap({ data, showLegend = true }) {
-  const { charts } = useTheme();
-  const color = charts.heatgraph.range;
-
+function HeatMap({ data, color, showLegend = true }) {
   G2.registerShape('polygon', 'boundary-polygon', {
     draw(cfg, container) {
       const group = container.addGroup();

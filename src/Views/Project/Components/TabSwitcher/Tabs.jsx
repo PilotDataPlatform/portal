@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { useCurrentProject } from '../../../../Utility';
 
 import styles from '../index.module.scss';
 
-function Tabs({ handleClick, tab, currentTab, activeStyles }) {
+function Tabs({ handleClick, tabName, currentTab, activeColor }) {
   const [isActive, setIsActive] = useState(false);
 
   useEffect(() => {
     if (currentTab) {
-      if (currentTab === tab) {
+      if (currentTab === tabName) {
         setIsActive(true);
       } else {
         setIsActive(false);
@@ -20,9 +19,9 @@ function Tabs({ handleClick, tab, currentTab, activeStyles }) {
     <li
       onClick={handleClick}
       className={`${styles['tab-switcher__tabs']}`}
-      style={isActive ? activeStyles : null}
+      style={isActive ? { backgroundColor: activeColor } : null}
     >
-      {tab}
+      {tabName}
     </li>
   );
 }
