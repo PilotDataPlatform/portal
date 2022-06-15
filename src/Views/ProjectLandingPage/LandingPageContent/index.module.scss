@@ -1,3 +1,4 @@
+@import '../../../Themes/base.scss';
 .formItem {
   padding-left: 16px !important;
   padding-right: 16px !important;
@@ -197,4 +198,9 @@
       width: 130px !important;
     }
   }
+}
+.create-project-btn {
+  border: 0 !important;
+  margin-left: 30px !important;
+  color: $primary-color-light-1 !important;
 }

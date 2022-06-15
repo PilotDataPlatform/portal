@@ -661,7 +661,7 @@ class LandingPageContent extends Component {
         )}
         {this.props.role === 'admin' ? (
           <Button
-            style={{ border: 'none', marginLeft: 30, color: '#1890FF' }}
+            className={styles['create-project-btn']}
             onClick={() => {
               this.setState({ isSearch: false }, () => {
                 this.onToggleCreateNewProject();
