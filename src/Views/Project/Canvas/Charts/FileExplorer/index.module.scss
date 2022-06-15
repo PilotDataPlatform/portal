@@ -28,6 +28,13 @@
     .ant-table-column-sorters {
       padding: 8px 16px;
     }
+    .ant-table-thead > tr > th {
+      padding: 0;
+
+      &:last-child {
+        padding: 0 16px;
+      }
+    }
   }
 }
 .file_folder_path {
