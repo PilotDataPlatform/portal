@@ -1,6 +1,7 @@
 import React, { useEffect, useState, Suspense, useContext } from 'react';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import { authedRoutes, unAuthedRoutes } from './Routes';
+import './Antd.less';
 import './Portal.scss';
 import { useSelector, useDispatch } from 'react-redux';
 import {

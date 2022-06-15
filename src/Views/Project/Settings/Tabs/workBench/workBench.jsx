@@ -53,12 +53,10 @@ const deployedInfo = (
         </>
       );
     } else if (workbenchInfo.deployed === true) {
-      const deployedBy =
-        workbenchInfo.deployedBy.charAt(0).toUpperCase() +
-        workbenchInfo.deployedBy.slice(1);
-      const deployedDate = moment(workbenchInfo.deployedDate).format(
-        'YYYY-MM-DD',
-      );
+      const deployedByUserId =
+        workbenchInfo.deployedByUserId.charAt(0).toUpperCase() +
+        workbenchInfo.deployedByUserId.slice(1);
+      const deployedAt = moment(workbenchInfo.deployedAt).format('YYYY-MM-DD');
       return (
         <>
           <div style={{ margin: '0px 44px 0px 65px' }}>
@@ -69,7 +67,7 @@ const deployedInfo = (
             />
           </div>
           <p style={{ margin: '0px', color: '#595959', fontWeight: 600 }}>
-            Deployed for project on {deployedDate} / By: {deployedBy}
+            Deployed for project on {deployedAt} / By: {deployedByUserId}
           </p>
         </>
       );
@@ -100,10 +98,10 @@ const deployedInfo = (
           </>
         );
       } else if (workbenchInfo.deployed === true) {
-        const deployedBy =
-          workbenchInfo.deployedBy.charAt(0).toUpperCase() +
-          workbenchInfo.deployedBy.slice(1);
-        const deployedDate = moment(workbenchInfo.deployedDate).format(
+        const deployedByUserId =
+          workbenchInfo.deployedByUserId.charAt(0).toUpperCase() +
+          workbenchInfo.deployedByUserId.slice(1);
+        const deployedAt = moment(workbenchInfo.deployedAt).format(
           'YYYY-MM-DD',
         );
         return (
@@ -122,7 +120,7 @@ const deployedInfo = (
                 fontWeight: 600,
               }}
             >
-              Deployed for project on {deployedDate} / By: {deployedBy}
+              Deployed for project on {deployedAt} / By: {deployedByUserId}
             </p>
           </>
         );
@@ -137,18 +135,18 @@ const WorkBench = (props) => {
   const { t } = useTranslation(['errormessages', 'success']);
   const [guacamoleInfo, setGuacamoleInfo] = useState({
     deployed: '',
-    deployedDate: '',
-    deployedBy: '',
+    deployedAt: '',
+    deployedByUserId: '',
   });
   const [supersetInfo, setSupersetInfo] = useState({
     deployed: '',
-    deployedDate: '',
-    deployedBy: '',
+    deployedAt: '',
+    deployedByUserId: '',
   });
   const [jupyterhubInfo, setJupyterhubInfo] = useState({
     deployed: '',
-    deployedDate: '',
-    deployedBy: '',
+    deployedAt: '',
+    deployedByUserId: '',
   });
   const [showModal, setShowModal] = useState(false);
   const [workbench, setWorkbench] = useState('');
@@ -160,7 +158,7 @@ const WorkBench = (props) => {
       const workbenchKeys = Object.keys(res.data.result);
       if (workbenchKeys.length > 0) {
         if (workbenchKeys.includes('guacamole')) {
-          setGuacamoleInfo({ ...res.data.result['guacamole'] });
+          setGuacamoleInfo({ ...res.data.result['guacamole'], deployed: true });
         } else {
           setGuacamoleInfo({
             ...guacamoleInfo,
@@ -168,7 +166,7 @@ const WorkBench = (props) => {
           });
         }
         if (workbenchKeys.includes('superset')) {
-          setSupersetInfo({ ...res.data.result['superset'] });
+          setSupersetInfo({ ...res.data.result['superset'], deployed: true });
         } else {
           setSupersetInfo({
             ...supersetInfo,
@@ -176,7 +174,10 @@ const WorkBench = (props) => {
           });
         }
         if (workbenchKeys.includes('jupyterhub')) {
-          setJupyterhubInfo({ ...res.data.result['jupyterhub'] });
+          setJupyterhubInfo({
+            ...res.data.result['jupyterhub'],
+            deployed: true,
+          });
         } else {
           setJupyterhubInfo({
             ...jupyterhubInfo,

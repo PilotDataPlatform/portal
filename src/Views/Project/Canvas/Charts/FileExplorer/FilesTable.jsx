@@ -262,8 +262,7 @@ class FilesTable extends React.Component {
               current: page + 1,
               pageSize,
               total: totalItem,
-              pageSizeOptions: [10, 20, 50],
-              showQuickJumper: true,
+              pageSizeOptions: ['10', '20', '50'],
               showSizeChanger: true,
             }}
             loading={this.props.tableLoading}

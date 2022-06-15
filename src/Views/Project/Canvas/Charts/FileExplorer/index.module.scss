@@ -9,7 +9,7 @@
       color: rgba(0, 0, 0, 0.65);
     }
     .ant-btn-link:hover {
-      color: #40a9ff;
+      color: $primary-color-light-1;
     }
   }
 }
@@ -33,6 +33,46 @@
 
       &:last-child {
         padding: 0 16px;
+      }
+    }
+
+    .ant-table-pagination {
+      .ant-pagination-prev,
+      .ant-pagination-next {
+        a {
+          border-color: transparent;
+          color: #818181;
+        }
+        &.ant-pagination-disabled {
+          a {
+            color: #bbbfc1;
+          }
+        }
+      }
+      .ant-pagination-item {
+        border-color: transparent;
+        a {
+          color: #818181;
+        }
+        &-active {
+          a {
+            color: #1890ff;
+          }
+        }
+      }
+      .ant-pagination-options-size-changer {
+        .ant-select-selector {
+          border-radius: 6px;
+          border-color: #bbbfc1;
+
+          .ant-select-selection-item {
+            color: #818181;
+          }
+
+          .ant-select-arrow {
+            color: #c3c6c8;
+          }
+        }
       }
     }
   }

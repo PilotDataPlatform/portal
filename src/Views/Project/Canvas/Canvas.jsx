@@ -130,10 +130,6 @@ class Canvas extends Component {
     this.setState({ currentUser: this.props.username });
     this.fetchDatasetInfo();
     this.updatePermision();
-
-    window.setTimeout(() => {
-      window.dispatchEvent(new Event('resize'));
-    }, 500);
   }
 
   getProjectUsersInfo = async () => {

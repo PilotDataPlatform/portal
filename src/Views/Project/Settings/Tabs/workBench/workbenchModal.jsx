@@ -30,19 +30,22 @@ const WorkbenchModal = (props) => {
   const deployWorkbench = async () => {
     try {
       setBtnLoading(true);
-      const res = await deployWorkbenchAPI(projectGeid, workbench.toLowerCase());
-      if (res.data.result === 'success') {
+      const res = await deployWorkbenchAPI(
+        projectGeid,
+        workbench.toLowerCase(),
+      );
+      if (res.data.result) {
         setBtnLoading(false);
         setCurrentProjectWorkbench();
         closeModal();
       }
-    }catch(error) {
+    } catch (error) {
       setBtnLoading(false);
       message.error(
         t('errormessages:projectWorkench.deployWorkbench.default.0'),
       );
     }
-  }
+  };
 
   return (
     <Modal
@@ -57,7 +60,10 @@ const WorkbenchModal = (props) => {
       <div>
         <p style={{ marginLeft: '38px' }}>
           Do you confirm to configure{' '}
-          <span style={{ color: '#003262' }}><strong>{workbench}</strong></span>?
+          <span style={{ color: '#003262' }}>
+            <strong>{workbench}</strong>
+          </span>
+          ?
         </p>
         <div style={{ textAlign: 'end', marginRight: '24px' }}>
           <Button type="text" style={{ border: 'none' }} onClick={closeModal}>

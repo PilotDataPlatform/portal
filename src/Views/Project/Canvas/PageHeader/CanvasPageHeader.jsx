@@ -351,10 +351,7 @@ class CanvasPageHeader extends Component {
       }
     };
 
-    const avatarClass =
-      this.props.variant === 'fileExplorer' && !pageHeaderExpand
-        ? styles['canvas-page-header__avatar--file-explorer']
-        : styles['canvas-page-header__avatar'];
+    const avatarClass = styles['canvas-page-header__avatar'];
 
     const avatar = currentProject.imageUrl ? (
       <Avatar

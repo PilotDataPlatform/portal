@@ -18,7 +18,7 @@ import {
 import { getUsersOnDatasetAPI, getAdminsOnDatasetAPI } from '../../../../APIs';
 import { objectKeysToCamelCase, getTags } from '../../../../Utility';
 import { PLATFORM } from '../../../../config';
-
+import styles from './index.module.scss';
 const { Content } = Layout;
 const { Paragraph } = Typography;
 function ProjectItemCard({ item, currentRole, platformRole }) {
@@ -454,12 +454,7 @@ function ProjectItemCard({ item, currentRole, platformRole }) {
             onClick={() => {
               setPageHeaderExpand(false);
             }}
-            style={{
-              color: '#1890FF',
-              fontSize: '22px',
-              zIndex: 2,
-              position: 'relative',
-            }}
+            className={styles['expend-icon']}
           />
         ) : (
           <DownCircleOutlined
@@ -472,12 +467,7 @@ function ProjectItemCard({ item, currentRole, platformRole }) {
               }
               setPageHeaderExpand(true);
             }}
-            style={{
-              color: '#1890FF',
-              fontSize: '22px',
-              zIndex: 2,
-              position: 'relative',
-            }}
+            className={styles['expend-icon']}
           />
         )}
       </div>
