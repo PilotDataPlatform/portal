@@ -611,7 +611,7 @@ class LandingPageContent extends Component {
                     this.setState({ isSearch: false });
                   }}
                 >
-                  <span style={{ color: '#1790FA' }}>Cancel</span>
+                  <span className={styles['cancel-btn']}>Cancel</span>
                 </Button>
               </div>
             </div>
