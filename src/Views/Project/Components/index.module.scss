@@ -141,6 +141,7 @@
   :global {
     .ant-menu-item {
       position: relative;
+      padding: 0 0 0 32px !important;
       .anticon {
         > img {
           position: absolute;
