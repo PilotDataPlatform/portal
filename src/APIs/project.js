@@ -506,11 +506,12 @@ function getAuditLogsApi(projectGeid, paginationParams, query) {
  * ticket-1431
  * get the the project's workbench info.
  */
-function getWorkbenchInfo(projectGeid) {
-  return serverAxios({
+async function getWorkbenchInfo(projectGeid) {
+  const res = serverAxios({
     method: 'get',
     url: `/v1/${projectGeid}/workbench`,
   });
+  return res;
 }
 
 /**
@@ -523,7 +524,6 @@ function deployWorkbenchAPI(projectGeid, workbench) {
     url: `/v1/${projectGeid}/workbench`,
     data: {
       workbench_resource: workbench,
-      deployed: true,
     },
   });
 }
