@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Card, Tag } from 'antd';
-import { DownCircleTwoTone, UpCircleTwoTone } from '@ant-design/icons';
+import { UpCircleOutlined, DownCircleOutlined } from '@ant-design/icons';
 import styles from './DatasetCard.module.scss';
 import DatasetCardTitle from '../DatasetCardTitle/DatasetCardTitle';
 import { getFileSize, getTags } from '../../../../Utility';
@@ -46,7 +46,7 @@ export default function DatasetCard(props) {
         </div>
 
         <div onClick={toggleExpand} className={styles['expand']}>
-          {isExpand ? <UpCircleTwoTone /> : <DownCircleTwoTone />}
+          {isExpand ? <UpCircleOutlined /> : <DownCircleOutlined />}
         </div>
       </Card>
     </div>
