@@ -27,7 +27,7 @@ export default function CreateDatasetPanel(props) {
   const [form] = Form.useForm();
   const [submitting, setSubmitting] = useState(false);
   const { username } = useSelector((state) => state);
-  const { t } = useTranslation(['errormessages']);
+  const { t } = useTranslation(['errormessages', 'success']);
   const { page = 1, pageSize = 10 } = useQueryParams(['pageSize', 'page']);
 
   const onCancel = () => {
