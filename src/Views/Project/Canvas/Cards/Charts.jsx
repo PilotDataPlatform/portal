@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import {
   FileTextOutlined,
   HddOutlined,
@@ -6,9 +6,8 @@ import {
   DownloadOutlined,
   TeamOutlined,
 } from '@ant-design/icons';
-import { TabSwitcher } from '../../Components/TabSwitcher';
-import { HeatMap, GroupedColumnLine } from '../Charts/Card';
-import { useTheme } from '../../../../Themes/theme';
+import { GroupedColumnLine } from '../Charts/Card';
+import HeatMapTabSwitcher from '../Charts/Card/HeatMapTabSwitcher';
 import styles from './index.module.scss';
 
 const HEATMAP_DOWNLOAD_DATA = [
@@ -5257,18 +5256,6 @@ const GROUPED_COLUMN_DATA = [
 ];
 
 function Charts() {
-  const theme = useTheme();
-
-  const heatMapGraphs = useMemo(
-    () => ({
-      downloads: <HeatMap data={HEATMAP_DOWNLOAD_DATA} />,
-      upload: <HeatMap data={HEATMAP_UPLOAD_DATA} />,
-      deletion: <HeatMap data={HEATMAP_DELETE_DATA} />,
-      copy: <HeatMap data={HEATMAP_COPY_DATA} />,
-    }),
-    [],
-  ); // dependency is state value for API call
-
   return (
     <div className={styles.charts}>
       <ul className={styles['charts__meta']}>
@@ -5292,7 +5279,7 @@ function Charts() {
         </li>
         <li className={styles['meta__project-members']}>
           <div>
-            <span>Uploaded</span>
+            <span>Project Members</span>
             <div className={styles['meta-stat']}>
               <TeamOutlined />
               <span>28</span>
@@ -5331,11 +5318,11 @@ function Charts() {
         </div>
         <div className={styles['graphs__container']}>
           <h4 className={styles['graphs__title']}>Project File Activity</h4>
-          <TabSwitcher
-            contentMap={heatMapGraphs}
-            activeTabStyles={{
-              backgroundColor: theme.charts.heatgraph.range[2],
-            }}
+          <HeatMapTabSwitcher
+            downloadData={HEATMAP_DOWNLOAD_DATA}
+            uploadData={HEATMAP_UPLOAD_DATA}
+            deleteData={HEATMAP_DELETE_DATA}
+            copyData={HEATMAP_COPY_DATA}
           />
         </div>
       </div>

@@ -482,7 +482,7 @@ function RawTable(props) {
             ];
 
             const menu = (
-              <Menu>
+              <Menu style={{ borderRadius: '6px' }}>
                 <Menu.Item
                   disabled={
                     deletedFileList &&
@@ -581,15 +581,17 @@ function RawTable(props) {
                   el.status === JOB_STATUS.RUNNING,
               );
             return (
-              <Dropdown
-                overlay={menu}
-                placement="bottomRight"
-                disabled={isDeleted !== undefined}
-              >
-                <Button shape="circle">
-                  <MoreOutlined />
-                </Button>
-              </Dropdown>
+              <div class={styles['file-explorer__action-button']}>
+                <Dropdown
+                  overlay={menu}
+                  placement="bottomRight"
+                  disabled={isDeleted !== undefined}
+                >
+                  <Button shape="circle">
+                    <MoreOutlined />
+                  </Button>
+                </Dropdown>
+              </div>
             );
           },
         }
@@ -1242,10 +1244,10 @@ function RawTable(props) {
     if (currentRouting?.length) {
       return (
         <>
-          <Breadcrumb
-            separator=">"
+          <Breadcrumb 
+            separator=">" 
             className={`${styles.file_folder_path}`}
-          >
+            >
             <Breadcrumb.Item
               style={{
                 cursor: 'pointer',
