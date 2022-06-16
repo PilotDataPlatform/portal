@@ -1,3 +1,4 @@
+@import '../../../Themes/base.scss';
 .all_activity {
   width: 100px;
   margin-right: 20px;
@@ -49,7 +50,7 @@
 
 .view_backgroundColor {
   background-color: #ace4fd;
-  color: #1890ff;
+  color: $primary-color-light-1;
 }
 
 .custom_time {

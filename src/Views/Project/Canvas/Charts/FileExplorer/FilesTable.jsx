@@ -8,6 +8,7 @@ import {
   checkGreenAndCore,
 } from '../../../../../Utility';
 import { connect } from 'react-redux';
+import variables from '../../../../../Themes/base.scss';
 class FilesTable extends React.Component {
   constructor(props) {
     super(props);
@@ -143,7 +144,10 @@ class FilesTable extends React.Component {
     ),
     filterIcon: (filtered) => (
       <SearchOutlined
-        style={{ color: filtered ? '#1890ff' : undefined, top: '60%' }}
+        style={{
+          color: filtered ? variables.primaryColorLight1 : undefined,
+          top: '60%',
+        }}
       />
     ),
     onFilterDropdownVisibleChange: (visible) => {

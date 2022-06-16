@@ -112,14 +112,6 @@ function CreateEmailModal({ visible, setOpenModal, setCloseModal }) {
         >
           EMAIL
         </h2>
-        {/*         <div
-          style={{
-            width: 100,
-            height: 1,
-            border: 0,
-            background: 'linear-gradient(to right, #1890ff , white)',
-          }}
-        ></div> */}
         <h4
           style={{
             fontSize: 12,

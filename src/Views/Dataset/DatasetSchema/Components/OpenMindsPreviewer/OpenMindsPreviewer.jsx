@@ -4,6 +4,7 @@ import { schemaTemplatesActions } from '../../../../../Redux/actions';
 import { JsonMonacoEditor } from '../../../DatasetData/Components/DatasetDataPreviewer/JSON/JsonMonacoEditor/JsonMonacoEditor';
 import { CloseOutlined } from '@ant-design/icons';
 import { getSchemaDataDetail } from '../../../../../APIs';
+import variables from '../../../../../Themes/base.scss';
 export function OpenMindsPreviewer(props) {
   const dispatch = useDispatch();
   const schemas = useSelector((state) => state.schemaTemplatesInfo.schemas);
@@ -31,7 +32,7 @@ export function OpenMindsPreviewer(props) {
       <div
         style={{
           background: '#E6F5FF',
-          color: '#1890FF',
+          color: variables.primaryColorLight1,
           fontSize: 14,
           display: 'flex',
           justifyContent: 'space-between',

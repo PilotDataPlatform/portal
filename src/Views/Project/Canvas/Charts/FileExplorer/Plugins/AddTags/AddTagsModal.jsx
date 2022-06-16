@@ -15,6 +15,7 @@ import {
 } from '@ant-design/icons';
 import i18n from '../../../../../../../i18n';
 import styles from './index.module.scss';
+import variables from '../../../../../../../Themes/base.scss';
 
 const AddTagsModal = ({ visible, setVisible, selectedRows, setSuccessNum }) => {
   const [step, setStep] = useState(1);
@@ -38,14 +39,16 @@ const AddTagsModal = ({ visible, setVisible, selectedRows, setSuccessNum }) => {
     <Menu className={styles.tags_menu}>
       {step === 1 && (
         <Menu.Item key="0" onClick={() => setStep(2)}>
-          <DeleteOutlined style={{ color: '#1890FF' }} />
-          <span style={{ color: '#1890FF' }}>Remove Tags</span>
+          <DeleteOutlined style={{ color: variables.primaryColorLight1 }} />
+          <span style={{ color: variables.primaryColorLight1 }}>
+            Remove Tags
+          </span>
         </Menu.Item>
       )}
       {step === 2 && (
         <Menu.Item key="0" onClick={() => setStep(1)}>
-          <PlusOutlined style={{ color: '#1890FF' }} />
-          <span style={{ color: '#1890FF' }}>Add Tags</span>
+          <PlusOutlined style={{ color: variables.primaryColorLight1 }} />
+          <span style={{ color: variables.primaryColorLight1 }}>Add Tags</span>
         </Menu.Item>
       )}
     </Menu>

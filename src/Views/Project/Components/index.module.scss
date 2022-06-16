@@ -248,7 +248,7 @@
 }
 
 .uploadSelector {
-  border: 1px solid #1890ff !important;
+  border: 1px solid $primary-color-light-1 !important;
   border-radius: 6px !important;
 }
 
@@ -291,7 +291,7 @@
 }
 
 .uploadButton {
-  background: #1890ff !important;
+  background: $primary-color-light-1 !important;
   border-radius: 6px !important;
   overflow: hidden;
 }

@@ -21,6 +21,7 @@ import {
   validateRepeatFiles,
 } from '../../../../../../../APIs';
 import CoreDirTree from './CoreDirTree';
+import variables from '../../../../../../../Themes/base.scss';
 
 const Copy2CoreModal = ({
   visible,
@@ -714,7 +715,7 @@ const Copy2CoreModal = ({
               <p
                 style={{
                   cursor: 'pointer',
-                  color: '#1890FF',
+                  color: variables.primaryColorLight1,
                   marginLeft: '14px',
                 }}
                 onClick={() => {
