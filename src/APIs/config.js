@@ -4,13 +4,7 @@ import _ from 'lodash';
 import camelcaseKeys from 'camelcase-keys';
 import { activeManager } from '../Service/activeManager';
 import { keycloak } from '../Service/keycloak';
-import {
-  API_PATH,
-  PORTAL_PREFIX,
-  UPLOAD_URL,
-  DOWNLOAD_GR,
-  DOWNLOAD_CORE,
-} from '../config';
+import { API_PATH, PORTAL_PREFIX, UPLOAD_URL, DOWNLOAD_GR } from '../config';
 
 /**
  * For axios to handle the success response
@@ -72,7 +66,6 @@ function errorHandler(error) {
 console.log('REACT_APP_', process.env);
 let kongAPI = API_PATH;
 let devOpServerUrl = API_PATH + '/dataops';
-let uploadGrUrl = UPLOAD_URL;
 
 const serverAxios = axios.create({
   baseURL: kongAPI,
@@ -111,7 +104,7 @@ function cancelRequestReg(requestFunction, ...arg) {
   };
 }
 
-const uploadAxios = axios.create({ baseURL: uploadGrUrl });
+const uploadAxios = axios.create({ baseURL: UPLOAD_URL });
 uploadAxios.defaults.headers.post['Content-Type'] = 'application/json';
 uploadAxios.defaults.timeout = 10000;
 useHeader(uploadAxios);
