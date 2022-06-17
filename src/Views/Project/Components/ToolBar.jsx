@@ -385,14 +385,14 @@ const ToolBar = ({
             {iconSelected === 'canvas' ? (
               <span role="img" className="anticon">
                 <img
-                  style={{ width: 15, marginLeft: -17 }}
+                  style={{ width: 17, marginLeft: -17 }}
                   src={require('../../../Images/Dashboard-selected.svg')}
                 />
               </span>
             ) : (
               <span role="img" className="anticon">
                 <img
-                  style={{ width: 15, marginLeft: -17 }}
+                  style={{ width: 17, marginLeft: -17 }}
                   src={require('../../../Images/Dashboard.svg')}
                 />
               </span>
@@ -402,11 +402,25 @@ const ToolBar = ({
         </Menu.Item>
         <div
           className={
+            iconSelected === 'data' ? style['space--prev-selected'] : ''
+          }
+        ></div>
+        <div
+          className={
             iconSelected === 'canvas'
               ? style['menu-spacing--prev-selected']
               : iconSelected === 'data'
               ? style['menu-spacing--after-selected']
               : style['no-radius']
+          }
+        ></div>
+        <div
+          className={
+            iconSelected === 'canvas'
+              ? style['space--prev-selected']
+              : iconSelected === 'data'
+              ? ''
+              : style['space--after-selected']
           }
         ></div>
         <Menu.Item key="data">
@@ -417,6 +431,11 @@ const ToolBar = ({
         </Menu.Item>
         <div
           className={
+            iconSelected === 'search' ? style['space--prev-selected'] : ''
+          }
+        ></div>
+        <div
+          className={
             iconSelected === 'data'
               ? style['menu-spacing--prev-selected']
               : iconSelected === 'search'
@@ -424,12 +443,28 @@ const ToolBar = ({
               : style['no-radius']
           }
         ></div>
+        <div
+          className={
+            iconSelected === 'data'
+              ? style['space--prev-selected']
+              : iconSelected === 'search'
+              ? ''
+              : style['space--after-selected']
+          }
+        ></div>
+        <div className={iconSelected === 'data' ? style['space'] : ''}></div>
         <Menu.Item key="search">
           <Link to="search">
             <SearchOutlined />
             <span>Search</span>
           </Link>
         </Menu.Item>
+        <div
+          className={
+            iconSelected === 'announcement' ? style['space--prev-selected'] : ''
+          }
+        ></div>
+
         <div
           className={
             iconSelected === 'search'
@@ -439,9 +474,24 @@ const ToolBar = ({
               : style['no-radius']
           }
         ></div>
+        <div
+          className={
+            iconSelected === 'search'
+              ? style['space--prev-selected']
+              : iconSelected === 'announcement'
+              ? ''
+              : style['space--after-selected']
+          }
+        ></div>
+
         <Menu.Item title={null} key="announcement">
           <AnnouncementButton currentProject={currentProject} />
         </Menu.Item>
+        <div
+          className={
+            iconSelected === 'teams' ? style['space--prev-selected'] : ''
+          }
+        ></div>
         <div
           className={
             iconSelected === 'announcement'
@@ -451,6 +501,16 @@ const ToolBar = ({
               : style['no-radius']
           }
         ></div>
+        <div
+          className={
+            iconSelected === 'announcement'
+              ? style['space--prev-selected']
+              : iconSelected === 'teams'
+              ? ''
+              : style['space--after-selected']
+          }
+        ></div>
+
         {adminPermission && (
           <Menu.Item key="teams">
             <Link to="teams">
@@ -462,11 +522,29 @@ const ToolBar = ({
         {adminPermission && (
           <div
             className={
+              iconSelected === 'settings' ? style['space--prev-selected'] : ''
+            }
+          ></div>
+        )}
+        {adminPermission && (
+          <div
+            className={
               iconSelected === 'teams'
                 ? style['menu-spacing--prev-selected']
                 : iconSelected === 'settings'
                 ? style['menu-spacing--after-selected']
                 : style['no-radius']
+            }
+          ></div>
+        )}
+        {adminPermission && (
+          <div
+            className={
+              iconSelected === 'teams'
+                ? style['space--prev-selected']
+                : iconSelected === 'settings'
+                ? ''
+                : style['space--after-selected']
             }
           ></div>
         )}
@@ -482,11 +560,31 @@ const ToolBar = ({
         {adminPermission && (
           <div
             className={
+              iconSelected === 'requestToCore'
+                ? style['space--prev-selected']
+                : ''
+            }
+          ></div>
+        )}
+        {adminPermission && (
+          <div
+            className={
               iconSelected === 'settings'
                 ? style['menu-spacing--prev-selected']
                 : iconSelected === 'requestToCore'
                 ? style['menu-spacing--after-selected']
                 : style['no-radius']
+            }
+          ></div>
+        )}
+        {adminPermission && (
+          <div
+            className={
+              iconSelected === 'settings'
+                ? style['space--prev-selected']
+                : iconSelected === 'requestToCore'
+                ? ''
+                : style['space--after-selected']
             }
           ></div>
         )}

@@ -32,11 +32,43 @@
   }
 }
 
-.shortcut {
+.shortcut--greenhome,
+.shortcut--core,
+.shortcut--collections {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-bottom: 1.8rem;
+}
+
+.shortcut--greenhome:hover {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1.8rem;
+  border-radius: 0.6rem;
+  padding: 0.5rem;
+  background-color: #e6f2d9;
+}
+
+.shortcut--core:hover {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1.8rem;
+  border-radius: 0.6rem;
+  padding: 0.5rem;
+  background-color: #d8ebf2;
+}
+
+.shortcut--collections:hover {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1.8rem;
+  border-radius: 0.6rem;
+  padding: 0.5rem;
+  background-color: #f7e8bc;
 }
 
 .icon1,
