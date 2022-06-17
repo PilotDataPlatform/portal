@@ -3,8 +3,9 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { TabNavigation, Tabs } from './index';
 
-function TabSwitcher({ contentMap, activeTabStyles }) {
+function TabSwitcher({ contentMap, colorMap }) {
   const [currentTab, setCurrentTab] = useState(null);
+  const activeColor = colorMap[currentTab];
 
   useEffect(() => {
     if (contentMap) {
@@ -25,9 +26,9 @@ function TabSwitcher({ contentMap, activeTabStyles }) {
             <Tabs
               key={uuidv4()}
               handleClick={handleClick}
-              tab={tab}
+              tabName={tab}
               currentTab={currentTab}
-              activeStyles={activeTabStyles}
+              activeColor={activeColor}
             />
           ))}
       </TabNavigation>
