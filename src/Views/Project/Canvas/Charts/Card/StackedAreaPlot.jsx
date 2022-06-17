@@ -9,8 +9,6 @@ const StackedAreaPlot = function ({
   color,
   chartConfig
 }) {
-  console.log(chartConfig)
-
   const config = {
     data,
     xField,
@@ -18,7 +16,7 @@ const StackedAreaPlot = function ({
     seriesField,
     color,
     height: 210,
-    padding: 40,
+    padding: [40, 40, 40, 50],
     legend: {
       offsetX: 30,
     },

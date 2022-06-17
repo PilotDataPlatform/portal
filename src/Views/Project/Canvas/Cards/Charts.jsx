@@ -6,9 +6,11 @@ import {
   DownloadOutlined,
   TeamOutlined,
 } from '@ant-design/icons';
-import { GroupedColumnLine } from '../Charts/Card';
 import HeatMapTabSwitcher from '../Charts/Card/HeatMapTabSwitcher';
+import { StackedAreaPlot } from '../Charts/Card';
+import { useTheme } from '../../../../Themes/theme';
 import styles from './index.module.scss';
+import { convertFileSizeMetaData, setLabelsInFileSize } from '../Charts/utils';
 
 const HEATMAP_DOWNLOAD_DATA = [
   {
@@ -5174,88 +5176,183 @@ const HEATMAP_COPY_DATA = [
   },
 ];
 
-const GROUPED_COLUMN_UVBILLDATA = [
+const STACKED_AREA_PLOT_DATA = [
   {
-    time: '2019-03',
-    value: 350,
-    type: 'uv',
+    source: 'Greenroom',
+    date: '03-2021',
+    size: 64424509440,
   },
   {
-    time: '2019-04',
-    value: 900,
-    type: 'uv',
+    source: 'Greenroom',
+    date: '04-2021',
+    size: 1073741824000,
   },
   {
-    time: '2019-05',
-    value: 300,
-    type: 'uv',
+    source: 'Greenroom',
+    date: '05-2021',
+    size: 238370684928,
   },
   {
-    time: '2019-06',
-    value: 450,
-    type: 'uv',
+    source: 'Greenroom',
+    date: '06-2021',
+    size: 2147483648,
   },
   {
-    time: '2019-07',
-    value: 470,
-    type: 'uv',
+    source: 'Greenroom',
+    date: '07-2021',
+    size: 1288490188.8,
   },
   {
-    time: '2019-03',
-    value: 220,
-    type: 'bill',
+    source: 'Greenroom',
+    date: '08-2021',
+    size: 708669603840,
   },
   {
-    time: '2019-04',
-    value: 300,
-    type: 'bill',
+    source: 'Greenroom',
+    date: '09-2021',
+    size: 1288490188800,
   },
   {
-    time: '2019-05',
-    value: 250,
-    type: 'bill',
+    source: 'Greenroom',
+    date: '10-2021',
+    size: 1932735283200,
   },
   {
-    time: '2019-06',
-    value: 220,
-    type: 'bill',
+    source: 'Greenroom',
+    date: '11-2021',
+    size: 5368709120,
   },
   {
-    time: '2019-07',
-    value: 362,
-    type: 'bill',
-  },
-];
-
-const GROUPED_COLUMN_TRANSFORMDATA = [
-  {
-    time: '2019-03',
-    count: 800,
+    source: 'Greenroom',
+    date: '12-2021',
+    size: 128849018880,
   },
   {
-    time: '2019-04',
-    count: 600,
+    source: 'Greenroom',
+    date: '01-2022',
+    size: 429496729.6,
   },
   {
-    time: '2019-05',
-    count: 400,
+    source: 'Greenroom',
+    date: '02-2022',
+    size: 4294967296,
   },
   {
-    time: '2019-06',
-    count: 380,
+    source: 'Greenroom',
+    date: '03-2022',
+    size: 268435456000,
   },
   {
-    time: '2019-07',
-    count: 220,
+    source: 'Greenroom',
+    date: '04-2022',
+    size: 429496729600,
   },
-];
-
-const GROUPED_COLUMN_DATA = [
-  GROUPED_COLUMN_UVBILLDATA,
-  GROUPED_COLUMN_TRANSFORMDATA,
+  {
+    source: 'Greenroom',
+    date: '05-2022',
+    size: 858993459200,
+  },
+  {
+    source: 'Core',
+    date: '03-2021',
+    size: 536870912,
+  },
+  {
+    source: 'Core',
+    date: '04-2021',
+    size: 4294967296,
+  },
+  {
+    source: 'Core',
+    date: '05-2021',
+    size: 128849018880,
+  },
+  {
+    source: 'Core',
+    date: '06-2021',
+    size: 488552529920,
+  },
+  {
+    source: 'Core',
+    date: '07-2021',
+    size: 28991029248,
+  },
+  {
+    source: 'Core',
+    date: '08-2021',
+    size: 536870912,
+  },
+  {
+    source: 'Core',
+    date: '09-2021',
+    size: 336870912,
+  },
+  {
+    source: 'Core',
+    date: '10-2021',
+    size: 5336870912,
+  },
+  {
+    source: 'Core',
+    date: '11-2021',
+    size: 336870912,
+  },
+  {
+    source: 'Core',
+    date: '12-2021',
+    size: 1073741824,
+  },
+  {
+    source: 'Core',
+    date: '01-2022',
+    size: 26843545600,
+  },
+  {
+    source: 'Core',
+    date: '02-2022',
+    size: 211.7,
+  },
+  {
+    source: 'Core',
+    date: '03-2022',
+    size: 2576980377.6,
+  },
+  {
+    source: 'Core',
+    date: '04-2022',
+    size: 268435456000,
+  },
+  {
+    source: 'Core',
+    date: '05-2022',
+    size: 130996502528,
+  },
 ];
 
 function Charts() {
+  const theme = useTheme();
+
+  const STACKED_AREA_PLOT_YAXIS_RANGE = [
+    '0',
+    '500Mb',
+    '1Gb',
+    '500Gb',
+    '1Tb',
+    '2Tb',
+  ];
+  
+  const metaRange = convertFileSizeMetaData(STACKED_AREA_PLOT_YAXIS_RANGE);
+  const stackedAreaPlotConfig = {
+    meta: {
+      size: {
+        type: 'quantile',
+        values: metaRange,
+        tickCount: metaRange.length,
+        formatter: (val) => setLabelsInFileSize(val),
+      },
+    },
+  };
+
   return (
     <div className={styles.charts}>
       <ul className={styles['charts__meta']}>
@@ -5309,11 +5406,13 @@ function Charts() {
       <div className={styles['charts__graphs']}>
         <div className={styles['graphs__container']}>
           <h4 className={styles['graphs__title']}>Projects File Size</h4>
-          <GroupedColumnLine
-            data={GROUPED_COLUMN_DATA}
-            xField="time"
-            yField={['value', 'count']}
-            legendLabels={['greenroom', 'core', 'total']}
+          <StackedAreaPlot
+            data={STACKED_AREA_PLOT_DATA}
+            xField="date"
+            yField="size"
+            seriesField="source"
+            color={theme.charts.stackedAreaPlot}
+            chartConfig={stackedAreaPlotConfig}
           />
         </div>
         <div className={styles['graphs__container']}>
