@@ -74,7 +74,6 @@ let kongAPI = API_PATH;
 let devOpServerUrl = API_PATH + '/dataops';
 let uploadGrUrl = UPLOAD_URL;
 
-const authService = 'http://auth.utility:5061';
 const serverAxios = axios.create({
   baseURL: kongAPI,
 });
@@ -112,48 +111,6 @@ function cancelRequestReg(requestFunction, ...arg) {
   };
 }
 
-const tempAxios = axios.create({
-  baseURL: 'http://10.3.1.120:6061/',
-});
-tempAxios.defaults.withCredentials = true;
-tempAxios.defaults.headers.post['Content-Type'] = 'application/json';
-tempAxios.defaults.timeout = 5000;
-//Adding a interceptor to axios, so it handles expire issue before .then and .error
-tempAxios.interceptors.response.use(successHandler, errorHandler);
-useHeader(tempAxios);
-
-const devOpServer = axios.create({ baseURL: devOpServerUrl });
-// devOpServer.defaults.withCredentials = true;
-devOpServer.defaults.headers.post['Content-Type'] = 'application/json';
-devOpServer.defaults.timeout = 100000000000;
-
-//Adding a interceptor to axios, so it handles expire issue before .then and .error
-devOpServer.interceptors.response.use(successHandler, errorHandler);
-useHeader(devOpServer);
-
-const devOpServerNoIntercept = axios.create({ baseURL: devOpServerUrl });
-// devOpServer.defaults.withCredentials = true;
-devOpServerNoIntercept.defaults.headers.post['Content-Type'] =
-  'application/json';
-devOpServerNoIntercept.defaults.timeout = 100000000000;
-useHeader(devOpServerNoIntercept);
-// devOpServer.defaults.withCredentials = true;
-
-const authServerAxios = axios.create({ baseURL: authService });
-// authServerAxios.defaults.withCredentials = true;
-authServerAxios.defaults.headers.post['Content-Type'] = 'application/json';
-authServerAxios.defaults.timeout = 100000;
-useHeader(authServerAxios);
-
-//Adding a interceptor to axios, so it handles expire issue before .then and .error
-//authServerAxios.interceptors.response.use(successHandler, errorHandler);
-
-const invitationAxios = axios.create({ baseURL: 'http://bff.utility:5060' });
-// authServerAxios.defaults.withCredentials = true;
-invitationAxios.defaults.headers.post['Content-Type'] = 'application/json';
-invitationAxios.defaults.timeout = 100000;
-useHeader(invitationAxios);
-
 const uploadAxios = axios.create({ baseURL: uploadGrUrl });
 uploadAxios.defaults.headers.post['Content-Type'] = 'application/json';
 uploadAxios.defaults.timeout = 10000;
@@ -169,13 +126,9 @@ downloadGRAxios.interceptors.response.use(successHandler, errorHandler);
 export {
   axios,
   serverAxios,
-  cancelRequestReg,
-  devOpServer,
-  authServerAxios,
-  invitationAxios,
-  devOpServerUrl,
   serverAxiosNoIntercept,
-  devOpServerNoIntercept,
+  cancelRequestReg,
+  devOpServerUrl,
   kongAPI,
   uploadAxios,
   downloadGRAxios,

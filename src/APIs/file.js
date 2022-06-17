@@ -1,9 +1,6 @@
 import {
   serverAxiosNoIntercept,
   serverAxios as axios,
-  devOpServer as devOpAxios,
-  devOpServerNoIntercept,
-  kongAPI,
   uploadAxios,
   serverAxios,
   downloadGRAxios,
@@ -12,15 +9,6 @@ import { objectKeysToSnakeCase, checkGreenAndCore } from '../Utility';
 import _ from 'lodash';
 import { keycloak } from '../Service/keycloak';
 import { API_PATH, DOWNLOAD_GR, DOWNLOAD_CORE } from '../config';
-
-function uploadFileApi(containerId, data, cancelToken) {
-  return devOpAxios({
-    url: `/v1/containers/${containerId}/files`,
-    method: 'POST',
-    data,
-    cancelToken,
-  });
-}
 
 function uploadFileApi2(data, sessionId, cancelToken) {
   return uploadAxios({
@@ -132,39 +120,6 @@ function getFilesAPI(datasetId) {
     //url: `/${studyId}/files`,
     url: `/v1/${datasetId}/files`,
     method: 'GET',
-  });
-}
-
-/**
- * This API allows the member of a usecase(or dataset) to list all file/folder name inside.
- *
- *  ticket-152
- * @param {number} datasetId
- * @param {string} path
- */
-function listFoldersAndFilesUnderContainerApi(containerId, path) {
-  return devOpAxios({
-    url: `/v1/folders`,
-    params: { path, container_id: containerId },
-  });
-}
-
-/**
- * create a sub folder in a given dataset with a path
- *
- * @param {number} datasetId
- * @param {string} path
- * @param {string} folderName
- */
-function createFolderApi(containerId, path, folderName) {
-  return devOpAxios({
-    url: `/v1/folders`,
-    method: 'POST',
-    headers: { 'Refresh-token': keycloak.refreshToken },
-    data: {
-      path: path ? path + '/' + folderName : folderName,
-      container_id: containerId,
-    },
   });
 }
 
@@ -758,10 +713,7 @@ function reviewSelectedRequestFiles(
 }
 
 export {
-  uploadFileApi,
   getFilesAPI,
-  listFoldersAndFilesUnderContainerApi,
-  createFolderApi,
   downloadFilesAPI,
   checkDownloadStatusAPI,
   checkPendingStatusAPI,
