@@ -49,10 +49,52 @@
   width: 100%;
   height: 13px;
   background-color: $primary-color-dark-7;
-  // background-color: #f7e8bc;
   position: absolute;
   z-index: 12;
   margin-top: -11px;
+}
+
+.space {
+  &--after-selected {
+    height: 9px;
+    width: 100%;
+    background-color: $primary-color-dark-7 !important;
+    z-index: 11;
+
+    &::after {
+      content: '';
+
+      height: 9px;
+      width: 100%;
+      background-color: $primary-color-dark-7 !important;
+      z-index: 11;
+    }
+  }
+  &--prev-selected {
+    height: 9px;
+    width: 100%;
+    background-color: $primary-color-dark-7 !important;
+    z-index: 11;
+
+    &::before {
+      content: '';
+
+      height: 9px;
+      width: 100%;
+      background-color: $primary-color-dark-7 !important;
+      z-index: 11;
+    }
+  }
+}
+
+:global {
+  .ant-tooltip {
+    left: 45 !important;
+  }
+
+  .ant-tooltip-placement-right {
+    padding-left: 0 !important;
+  }
 }
 
 .upperMenu {
@@ -75,10 +117,14 @@
       margin-top: 2px;
       margin-left: -17px !important;
       color: $background-color-1;
+      .svg {
+        font-size: 17px !important;
+      }
     }
 
     .ant-menu-item a {
       margin-top: 2px !important;
+
       color: $background-color-1;
     }
     .ant-menu-item a::after {
@@ -107,6 +153,9 @@
         z-index: 2;
         position: relative;
         color: $primary-color-dark-7 !important;
+        .svg {
+          font-size: 17px !important;
+        }
       }
     }
 
@@ -116,6 +165,9 @@
       background-color: $background-color-1 !important;
       .anticon {
         color: $primary-color-dark-7 !important;
+        .svg {
+          font-size: 17px !important;
+        }
       }
     }
   }
@@ -132,7 +184,7 @@
   :global {
     .ant-menu-item {
       left: -14px !important;
-      margin-bottom: 15px !important;
+      margin-bottom: 10px !important;
     }
   }
 }
