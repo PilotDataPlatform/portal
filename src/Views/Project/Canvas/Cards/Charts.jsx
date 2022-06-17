@@ -10,7 +10,12 @@ import HeatMapTabSwitcher from '../Charts/Card/HeatMapTabSwitcher';
 import { StackedAreaPlot } from '../Charts/Card';
 import { useTheme } from '../../../../Themes/theme';
 import styles from './index.module.scss';
-import { convertFileSizeMetaData, setLabelsInFileSize } from '../Charts/utils';
+import {
+  convertFileSizeMetaData,
+  setLabelsInFileSize,
+  setLabelsDate,
+  getCurrentYear,
+} from '../Charts/utils';
 
 const HEATMAP_DOWNLOAD_DATA = [
   {
@@ -5340,7 +5345,8 @@ function Charts() {
     '1Tb',
     '2Tb',
   ];
-  
+
+  const SAPXAxisCurrentYear = getCurrentYear(STACKED_AREA_PLOT_DATA);
   const metaRange = convertFileSizeMetaData(STACKED_AREA_PLOT_YAXIS_RANGE);
   const stackedAreaPlotConfig = {
     meta: {
@@ -5349,6 +5355,10 @@ function Charts() {
         values: metaRange,
         tickCount: metaRange.length,
         formatter: (val) => setLabelsInFileSize(val),
+      },
+      date: {
+        range: [0, 1],
+        formatter: (val) => setLabelsDate(val, SAPXAxisCurrentYear),
       },
     },
   };

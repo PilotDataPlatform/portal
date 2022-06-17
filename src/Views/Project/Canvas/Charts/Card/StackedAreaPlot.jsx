@@ -15,7 +15,7 @@ const StackedAreaPlot = function ({
     yField,
     seriesField,
     color,
-    height: 210,
+    height: 220,
     padding: [40, 40, 40, 50],
     legend: {
       offsetX: 30,
