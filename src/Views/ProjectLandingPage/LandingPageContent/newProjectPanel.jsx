@@ -29,7 +29,7 @@ import { trimString } from '../../../Utility';
 import styles from './index.module.scss';
 import _ from 'lodash';
 import {} from '../../../APIs';
-import { useSelector } from 'react-redux';
+import variables from '../../../Themes/base.scss';
 function NewProjectPanel({
   tags,
   username,
@@ -476,7 +476,7 @@ function NewProjectPanel({
                   }}
                   onClick={onToggleCreateNewProject}
                 >
-                  <p style={{ color: '#1890FF' }}>Cancel</p>
+                  <p style={{ color: variables.primaryColorLight1 }}>Cancel</p>
                 </Button>
               </div>
             </Form.Item>

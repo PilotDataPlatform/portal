@@ -27,20 +27,19 @@ function FileStats(props) {
 
   useEffect(() => {
     if (currentProject) {
-      projectFileCountTotal(currentProject.globalEntityId, {
-        start_date: moment().startOf('day').unix(),
-        end_date: moment().endOf('day').unix(),
-      }).then((res) => {
-        const statistics = res?.data?.result;
-        if (res.status === 200 && statistics) {
-          setGreenRoomCount(statistics.greenroom);
-          setCoreCount(statistics.core);
-        }
-      });
-
-      listAllVirtualFolder(currentProject.code, props.username).then((res) => {
-        setCollections(res.data.result);
-      });
+      // projectFileCountTotal(currentProject.globalEntityId, {
+      //   start_date: moment().startOf('day').unix(),
+      //   end_date: moment().endOf('day').unix(),
+      // }).then((res) => {
+      //   const statistics = res?.data?.result;
+      //   if (res.status === 200 && statistics) {
+      //     setGreenRoomCount(statistics.greenroom);
+      //     setCoreCount(statistics.core);
+      //     setCopyCount(statistics.approved);
+      //     setDownloadCount(statistics.downloaded);
+      //     setUploadCount(statistics.uploaded);
+      //   }
+      // });
     }
   }, [currentProject, props.successNum]);
 

@@ -1,3 +1,4 @@
+@import '../../../../../Themes/base.scss';
 .actions {
   height: 35px;
   border-bottom: 1px solid rgb(240, 240, 240);
@@ -19,7 +20,7 @@
       width: 100%;
     }
     .ant-tree-node-selected {
-      background-color: #1890ff !important;
+      background-color: $primary-color-light-1 !important;
       color: white;
     }
     .moveto-custom-title {
@@ -103,7 +104,7 @@
   border-radius: 6px;
   overflow: hidden;
   .ok-button {
-    background-color: #1890ff;
+    background-color: $primary-color-light-1;
     border-radius: 6px;
   }
   .cancel-button {
@@ -166,15 +167,15 @@
         font-weight: bold;
       }
     }
-  }  
+  }
 
-    .create-button {
-      border-radius: 6px;
-      padding: 4px 15px;
-    }
-    .cancel-button {
-      color: #595959 ;
-      font-weight: 600;
-      padding: 4px 15px;
-    }
+  .create-button {
+    border-radius: 6px;
+    padding: 4px 15px;
+  }
+  .cancel-button {
+    color: #595959;
+    font-weight: 600;
+    padding: 4px 15px;
+  }
 }

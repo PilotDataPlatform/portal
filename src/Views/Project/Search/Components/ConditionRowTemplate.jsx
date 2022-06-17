@@ -36,8 +36,8 @@ function ConditionRowTemplate(props) {
       value: 'tags',
     },
     {
-       label: 'File Attribute',
-       value: 'attributes',
+      label: 'File Attribute',
+      value: 'attributes',
     },
   ];
   if (props.permission === 'admin') {
@@ -59,13 +59,13 @@ function ConditionRowTemplate(props) {
                   props.updateCondition(condition.cid, {
                     category: value,
                     name: attributes[0].name,
-                    attributes: []
+                    attributes: [],
                   });
                 } else {
                   props.updateCondition(condition.cid, {
                     category: value,
                     name: '',
-                    attributes: []
+                    attributes: [],
                   });
                 }
               } else if (['tags', 'uploader', 'file_name'].includes(value)) {
@@ -120,23 +120,6 @@ function ConditionRowTemplate(props) {
           whiteSpace: 'nowrap',
         }}
       >
-        {/* {category ? (
-          <span
-            style={{
-              color: '#1890FF',
-              fontSize: 14,
-              verticalAlign: 'middle',
-              padding: '5px 20px',
-              cursor: 'pointer',
-            }}
-            onClick={() => {
-              props.clearCondition(condition.cid);
-              setClearTrigger(clearTrigger + 1);
-            }}
-          >
-            Clear
-          </span>
-        ) : null} */}
         {last ? (
           <div
             style={{
@@ -173,7 +156,7 @@ function ConditionRowTemplate(props) {
                   verticalAlign: 'middle',
                   marginLeft: 15,
                   padding: '5px 0px',
-                  height: '25px'
+                  height: '25px',
                 }}
                 onClick={() => {
                   props.removeCondition(condition.cid);
@@ -189,7 +172,7 @@ function ConditionRowTemplate(props) {
               verticalAlign: 'middle',
               marginLeft: 6,
               padding: '5px 0px',
-              height: '25px'
+              height: '25px',
             }}
             onClick={() => {
               props.removeCondition(condition.cid);

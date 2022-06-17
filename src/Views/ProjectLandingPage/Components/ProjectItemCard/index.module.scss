@@ -1,1 +1,7 @@
-
+@import '../../../../Themes/base.scss';
+.expend-icon {
+  color: $primary-color-light-1 !important;
+  font-size: 22px !important;
+  z-index: 2 !important;
+  position: relative !important;
+}

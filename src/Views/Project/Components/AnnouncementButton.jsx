@@ -12,7 +12,7 @@ import moment from 'moment';
 import _ from 'lodash';
 import styles from './index.module.scss';
 import { ErrorMessager, namespace } from '../../../ErrorMessages';
-
+import variables from '../../../Themes/base.scss';
 //let setTimeoutId; // will this cause issue if there are more than 1 instance?
 export default function AnnouncementButton({ currentProject }) {
   const [announcements, setAnnouncements] = useState([]);
@@ -110,7 +110,7 @@ export default function AnnouncementButton({ currentProject }) {
               ></div>
               <DownCircleOutlined
                 style={{
-                  color: '#1890FF',
+                  color: variables.primaryColorLight1,
                   fontSize: '20px',
                   position: 'relative',
                   verticalAlign: 'middle',

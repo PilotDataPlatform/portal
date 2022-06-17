@@ -9,7 +9,7 @@
       color: rgba(0, 0, 0, 0.65);
     }
     .ant-btn-link:hover {
-      color: #40a9ff;
+      color: $primary-color-light-1;
     }
   }
 }
@@ -22,6 +22,46 @@
       opacity: 0.6;
       > td {
         background-color: white !important;
+      }
+    }
+
+    .ant-table-pagination {
+      .ant-pagination-prev,
+      .ant-pagination-next {
+        a {
+          border-color: transparent;
+          color: #818181;
+        }
+        &.ant-pagination-disabled {
+          a {
+            color: #bbbfc1;
+          }
+        }
+      }
+      .ant-pagination-item {
+        border-color: transparent;
+        a {
+          color: #818181;
+        }
+        &-active {
+          a {
+            color: $primary-color-light-1;
+          }
+        }
+      }
+      .ant-pagination-options-size-changer {
+        .ant-select-selector {
+          border-radius: 6px;
+          border-color: #bbbfc1;
+
+          .ant-select-selection-item {
+            color: #818181;
+          }
+
+          .ant-select-arrow {
+            color: #c3c6c8;
+          }
+        }
       }
     }
   }
@@ -219,7 +259,7 @@
       border: none;
 
       > div {
-        padding-bottom: 6px;
+        padding-bottom: 4px;
       }
 
       &:first-of-type {

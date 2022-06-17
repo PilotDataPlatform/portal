@@ -8,6 +8,7 @@ import {
   checkGreenAndCore,
 } from '../../../../../Utility';
 import { connect } from 'react-redux';
+import variables from '../../../../../Themes/base.scss';
 class FilesTable extends React.Component {
   constructor(props) {
     super(props);
@@ -143,7 +144,10 @@ class FilesTable extends React.Component {
     ),
     filterIcon: (filtered) => (
       <SearchOutlined
-        style={{ color: filtered ? '#1890ff' : undefined, top: '60%' }}
+        style={{
+          color: filtered ? variables.primaryColorLight1 : undefined,
+          top: '60%',
+        }}
       />
     ),
     onFilterDropdownVisibleChange: (visible) => {
@@ -262,8 +266,7 @@ class FilesTable extends React.Component {
               current: page + 1,
               pageSize,
               total: totalItem,
-              pageSizeOptions: [10, 20, 50],
-              showQuickJumper: true,
+              pageSizeOptions: ['10', '20', '50'],
               showSizeChanger: true,
             }}
             loading={this.props.tableLoading}

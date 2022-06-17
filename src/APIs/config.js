@@ -166,11 +166,6 @@ downloadGRAxios.defaults.timeout = 10000;
 useHeader(downloadGRAxios);
 downloadGRAxios.interceptors.response.use(successHandler, errorHandler);
 
-const downloadCoreAxios = axios.create({ baseURL: DOWNLOAD_CORE });
-downloadCoreAxios.defaults.headers.post['Content-Type'] = 'application/json';
-downloadCoreAxios.defaults.timeout = 10000;
-useHeader(downloadCoreAxios);
-downloadCoreAxios.interceptors.response.use(successHandler, errorHandler);
 export {
   axios,
   serverAxios,
@@ -184,5 +179,4 @@ export {
   kongAPI,
   uploadAxios,
   downloadGRAxios,
-  downloadCoreAxios,
 };

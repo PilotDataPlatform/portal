@@ -66,17 +66,17 @@ const ToolBar = ({
       const workbenchKeys = Object.keys(res.data.result);
       if (workbenchKeys.length > 0) {
         if (workbenchKeys.includes('guacamole')) {
-          setGuacamoleDeployed(res.data.result['guacamole'].deployed);
+          setGuacamoleDeployed(true);
         } else {
           setGuacamoleDeployed(false);
         }
         if (workbenchKeys.includes('superset')) {
-          setSupersetDeployed(res.data.result['superset'].deployed);
+          setSupersetDeployed(true);
         } else {
           setSupersetDeployed(false);
         }
         if (workbenchKeys.includes('jupyterhub')) {
-          setJupyterhubDeployed(res.data.result['jupyterhub'].deployed);
+          setJupyterhubDeployed(true);
         } else {
           setJupyterhubDeployed(false);
         }

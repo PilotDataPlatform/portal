@@ -1,3 +1,4 @@
+@import '../../../../../Themes/base.scss';
 $textSize: 12px;
 $inputHeight: 36px;
 $labelHeight: 36px;
@@ -10,7 +11,7 @@ $twoRowSeparate: 1400px;
   justify-content: space-between;
   :global {
     h3 {
-      color: #1890ff;
+      color: $primary-color-light-1;
       font-size: 14px;
       margin: 0;
       font-weight: bold;
