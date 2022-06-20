@@ -546,7 +546,7 @@ function createDatasetFolderAPI(datasetGeid, folderName) {
  */
 function createSubFolderApi(
   folderName,
-  destinationGeid,
+  parentPath,
   projectCode,
   uploader,
   zone,
@@ -557,7 +557,7 @@ function createSubFolderApi(
     method: 'POST',
     data: {
       folder_name: folderName,
-      destination_id: destinationGeid,
+      parent_path: parentPath,
       project_code: projectCode,
       // uploader,
       // tags: [],

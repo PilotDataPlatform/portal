@@ -34,32 +34,6 @@ function TermsOfUse(props) {
       user.given_name,
     );
     if (res.status === 200) {
-      // if (res.data.result.projectDetails.length) {
-      //   try {
-      //     const { name, globalEntityId, projectDetails } = res.data.result;
-      //     setAcceptLoading(true);
-      //     for (let i = 0; i < projectDetails.length; i++) {
-      //       await createSubFolderApi(
-      //         name,
-      //         globalEntityId,
-      //         projectDetails[i].projectCode,
-      //         name,
-      //         'Greenroom',
-      //       );
-      //       await createSubFolderApi(
-      //         name,
-      //         globalEntityId,
-      //         projectDetails[i].projectCode,
-      //         name,
-      //         'Core',
-      //       );
-      //     }
-      //     setAcceptLoading(false);
-      //   } catch (error) {
-      //     setAcceptLoading(false);
-      //     console.log(error);
-      //   }
-      // }
       setAcceptLoading(false);
       setVisible(false);
       await lastLoginAPI(username);

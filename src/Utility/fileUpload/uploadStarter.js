@@ -85,7 +85,7 @@ const uploadStarter = async (data, q) => {
     })
     .catch((err) => {
       if (err.response?.status === 409) {
-        for (const file of err.response?.data?.result?.failed) {
+        for (const file of err.response?.data?.result) {
           const { name, relative_path } = file;
           const errorMessager = new ErrorMessager(
             namespace?.project?.files?.preUpload,

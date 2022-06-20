@@ -73,7 +73,7 @@ function AddUserModal(props) {
   async function createFolderIfNotExist(username) {
     await createSubFolderApi(
       username,
-      currentDataset.globalEntityId,
+      null,
       currentDataset.code,
       username,
       'Greenroom',
@@ -81,7 +81,7 @@ function AddUserModal(props) {
     );
     await createSubFolderApi(
       username,
-      currentDataset.globalEntityId,
+      null,
       currentDataset.code,
       username,
       'Core',
