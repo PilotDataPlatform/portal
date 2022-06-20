@@ -11,8 +11,7 @@ import { StackedAreaPlot } from '../Charts/Card';
 import { useTheme } from '../../../../Themes/theme';
 import styles from './index.module.scss';
 import {
-  convertFileSizeMetaData,
-  setLabelsInFileSize,
+  convertToFileSizeInUnit,
   setLabelsDate,
   getCurrentYear,
 } from '../Charts/utils';
@@ -5337,28 +5336,16 @@ const STACKED_AREA_PLOT_DATA = [
 function Charts() {
   const theme = useTheme();
 
-  const STACKED_AREA_PLOT_YAXIS_RANGE = [
-    '0',
-    '500Mb',
-    '1Gb',
-    '500Gb',
-    '1Tb',
-    '2Tb',
-  ];
-
-  const SAPXAxisCurrentYear = getCurrentYear(STACKED_AREA_PLOT_DATA);
-  const metaRange = convertFileSizeMetaData(STACKED_AREA_PLOT_YAXIS_RANGE);
+  const SAPCurrentYear = getCurrentYear(STACKED_AREA_PLOT_DATA);
   const stackedAreaPlotConfig = {
     meta: {
       size: {
-        type: 'quantile',
-        values: metaRange,
-        tickCount: metaRange.length,
-        formatter: (val) => setLabelsInFileSize(val),
+        type: 'linear',
+        formatter: (val) => convertToFileSizeInUnit(val),
       },
       date: {
         range: [0, 1],
-        formatter: (val) => setLabelsDate(val, SAPXAxisCurrentYear),
+        formatter: (val) => setLabelsDate(val, SAPCurrentYear),
       },
     },
   };
