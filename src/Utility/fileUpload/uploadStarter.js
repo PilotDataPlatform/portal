@@ -46,7 +46,6 @@ const uploadStarter = async (data, q) => {
     data.tags,
     fileList,
     '',
-    data.gid,
     data.toExistingFolder,
     data.folderPath,
   )

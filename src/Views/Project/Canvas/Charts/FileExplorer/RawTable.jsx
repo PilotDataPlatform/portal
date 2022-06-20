@@ -792,8 +792,6 @@ function RawTable(props) {
       panelKey.startsWith('greenroom') ? 'greenroom' : 'Core',
     )
       .then((res) => {
-        // if (files && files.length === 1)
-        //   dispatch(setSuccessNum(props.successNum + 1));
         if (res) {
           const url = res;
           window.open(url, '_blank');
@@ -1244,10 +1242,7 @@ function RawTable(props) {
     if (currentRouting?.length) {
       return (
         <>
-          <Breadcrumb 
-            separator=">" 
-            className={`${styles.file_folder_path}`}
-            >
+          <Breadcrumb separator=">" className={`${styles.file_folder_path}`}>
             <Breadcrumb.Item
               style={{
                 cursor: 'pointer',

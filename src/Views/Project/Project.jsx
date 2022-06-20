@@ -47,7 +47,6 @@ function Project(props) {
 
   useEffect(() => {
     if (params.projectCode && containerDetails) {
-      dispatch(clearCurrentProject());
       getProjectInfoAPI(containerDetails.id).then((res) => {
         if (res.status === 200 && res.data && res.data.code === 200) {
           const currentDataset = res.data.result;
@@ -61,6 +60,9 @@ function Project(props) {
       });
     }
     dispatch(setFolderRouting({}));
+    return () => {
+      dispatch(clearCurrentProject());
+    };
   }, [containerDetails]);
 
   useEffect(() => {

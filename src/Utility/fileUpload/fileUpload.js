@@ -108,7 +108,6 @@ async function fileUpload(data, resolve, reject) {
     index,
     chunkLength,
     totalChunks,
-    subPath,
   ) {
     return {
       resumableChunkNumber: index + 1,

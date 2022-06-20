@@ -37,7 +37,6 @@ import { usePanel } from './usePanel';
 import styles from './index.module.scss';
 import variables from '../../../../../Themes/base.scss';
 import CollectionCreation from './CollectionCreation';
-import canvasPage from '../../../../../Redux/Reducers/canvasPage';
 
 const { TabPane } = Tabs;
 const VFOLDER_CREATE_LEAF = 'create-vfolder';
@@ -245,7 +244,6 @@ function FilesContent(props) {
     [props.project.tree, props.virtualFolders],
   );
 
-  const firstPane = greenRoomData[0];
   //Fetch tree data, create default panel
   const getDefaultPane = () => {
     if (props.canvasPage) {
@@ -396,7 +394,6 @@ function FilesContent(props) {
 
   async function addNewColPane(vfolderInfo) {
     const panelKey = 'vfolder-' + vfolderInfo.name;
-    // props.setCurrentProjectActivePane(selectedKeys[0].toString());
     setTreeKey((prev) => {
       return prev.treeKey + 1;
     });
