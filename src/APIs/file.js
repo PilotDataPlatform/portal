@@ -286,8 +286,10 @@ async function getFiles(
     approximateCount: res.data.total,
   };
   let parentPath4Routing = parentPath;
+  let parentId4Routing;
   let parentZone = objFormatted.entities[0] && objFormatted.entities[0].zone;
   objFormatted.entities = objFormatted.entities.map((item) => {
+    parentId4Routing = item.parent;
     const tags =
       item.extended.extra &&
       item.extended.extra.tags &&
@@ -330,7 +332,10 @@ async function getFiles(
     });
   }
   res.data.result.routing = routingFormated;
-
+  if (routingFormated && routingFormated.length) {
+    res.data.result.routing[routingFormated.length - 1].globalEntityId =
+      parentId4Routing;
+  }
   return res;
 }
 
