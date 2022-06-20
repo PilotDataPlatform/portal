@@ -205,11 +205,11 @@ const DatasetsModal = (props) => {
                       whiteSpace: 'nowrap',
                     }}
                   >
-                    {el.labels.includes('File') ? (
+                    {el.type === 'file' ? (
                       <FileOutlined style={{ marginRight: '5px' }} />
-                    ) : el.labels.includes('Folder') ? (
+                    ) : (
                       <FolderOutlined style={{ marginRight: '5px' }} />
-                    ) : null}
+                    )}
                     {el.name.length > 40 ? (
                       <Tooltip title={el.name}>{`${el.name.slice(
                         0,
