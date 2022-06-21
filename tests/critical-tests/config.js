@@ -17,6 +17,7 @@ const dataConfig = {
   },
   contributorCanvas: {
     projectId: 68129,
+    projectCode: 'testproject0413',
   },
   fileCopy: {
     collaboratorProjectId: 61390,

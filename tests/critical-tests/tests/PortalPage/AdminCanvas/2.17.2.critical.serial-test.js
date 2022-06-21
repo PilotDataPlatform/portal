@@ -13,9 +13,9 @@ const {
   clickFileAction,
 } = require('../../../../utils/greenroomActions.js');
 const { createDummyFile } = require('../../../../utils/createDummyFile');
-const { collaborator, admin } =require('../../../../users');
+const { collaborator, admin } = require('../../../../users');
 const fs = require('fs');
-const { projectId } = dataConfig.canvas;
+const { projectCode } = dataConfig.canvas;
 jest.setTimeout(700000);
 
 describe('2.17.2', () => {
@@ -38,7 +38,7 @@ describe('2.17.2', () => {
     await page.waitForTimeout(3000);
   });
   it('prepare file for test', async () => {
-    await page.goto(`${baseUrl}project/${projectId}/canvas`);
+    await page.goto(`${baseUrl}project/${projectCode}/data`);
     if (!fs.existsSync(`${process.cwd()}/tests/uploads/test/${fileName}`)) {
       await createDummyFile('Test Files', fileName, '10kb');
     }
@@ -48,7 +48,7 @@ describe('2.17.2', () => {
     await logout(page);
     await login(page, 'admin');
     // need to be fixed later
-    await page.goto(`${baseUrl}project/${61268}/canvas`);
+    await page.goto(`${baseUrl}project/${projectCode}/data`);
     await page.waitForTimeout(3000);
     await page.waitForXPath(
       '//div[contains(@class, "FileExplorer_file_folder_path")]//span[@class="ant-breadcrumb-link" and text()="' +
