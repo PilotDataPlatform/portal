@@ -53,9 +53,9 @@ const deployedInfo = (
         </>
       );
     } else if (workbenchInfo.deployed === true) {
-      const deployedByUserId =
-        workbenchInfo.deployedByUserId.charAt(0).toUpperCase() +
-        workbenchInfo.deployedByUserId.slice(1);
+      const deployByUsername =
+        workbenchInfo.deployByUsername.charAt(0).toUpperCase() +
+        workbenchInfo.deployByUsername.slice(1);
       const deployedAt = moment(workbenchInfo.deployedAt).format('YYYY-MM-DD');
       return (
         <>
@@ -67,7 +67,7 @@ const deployedInfo = (
             />
           </div>
           <p style={{ margin: '0px', color: '#595959', fontWeight: 600 }}>
-            Deployed for project on {deployedAt} / By: {deployedByUserId}
+            Deployed for project on {deployedAt} / By: {deployByUsername}
           </p>
         </>
       );
@@ -98,9 +98,9 @@ const deployedInfo = (
           </>
         );
       } else if (workbenchInfo.deployed === true) {
-        const deployedByUserId =
-          workbenchInfo.deployedByUserId.charAt(0).toUpperCase() +
-          workbenchInfo.deployedByUserId.slice(1);
+        const deployByUsername =
+          workbenchInfo.deployByUsername.charAt(0).toUpperCase() +
+          workbenchInfo.deployByUsername.slice(1);
         const deployedAt = moment(workbenchInfo.deployedAt).format(
           'YYYY-MM-DD',
         );
@@ -120,7 +120,7 @@ const deployedInfo = (
                 fontWeight: 600,
               }}
             >
-              Deployed for project on {deployedAt} / By: {deployedByUserId}
+              Deployed for project on {deployedAt} / By: {deployByUsername}
             </p>
           </>
         );
@@ -136,17 +136,17 @@ const WorkBench = (props) => {
   const [guacamoleInfo, setGuacamoleInfo] = useState({
     deployed: '',
     deployedAt: '',
-    deployedByUserId: '',
+    deployByUsername: '',
   });
   const [supersetInfo, setSupersetInfo] = useState({
     deployed: '',
     deployedAt: '',
-    deployedByUserId: '',
+    deployByUsername: '',
   });
   const [jupyterhubInfo, setJupyterhubInfo] = useState({
     deployed: '',
     deployedAt: '',
-    deployedByUserId: '',
+    deployByUsername: '',
   });
   const [showModal, setShowModal] = useState(false);
   const [workbench, setWorkbench] = useState('');
