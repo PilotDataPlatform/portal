@@ -555,7 +555,7 @@ function fileLineageAPI(key, typeName, direction) {
   return axios({
     url: `/v1/lineage`,
     method: 'GET',
-    params: { geid: key, direction, type_name: typeName },
+    params: { item_id: key, direction, type_name: typeName },
   });
 }
 
