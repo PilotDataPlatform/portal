@@ -11,22 +11,6 @@ export const getValidator = (form, name, isEdit) => {
           return Promise.resolve();
         },
       },
-/*       {
-        validator: async (rule, value) => {
-          console.log(rule,'rule')
-          if (isEdit) {
-            return Promise.reject(`Can not submit on edit mode`);
-          }
-          return Promise.resolve();
-        },
-        validateTrigger: 'onSubmit',
-      },
-      {
-        validator: async (rule, value) => {
-          return Promise.resolve();
-        },
-        validateTrigger: 'onChange',
-      }, */
     ],
     title: [
       {
@@ -52,7 +36,7 @@ export const getValidator = (form, name, isEdit) => {
           return Promise.resolve();
         },
       },
-/*       {
+      /*       {
         validator: async (rule, value) => {
           if (isEdit) {
             return Promise.reject(`Can not submit on edit mode`);

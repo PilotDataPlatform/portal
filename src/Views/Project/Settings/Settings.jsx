@@ -32,7 +32,7 @@ function Settings(props) {
   const [datasetInfo, setDatasetInfo] = useState(null);
   const [userListOnDataset, setUserListOnDataset] = useState(null);
   const [activateKey, setActivateKey] = useState('general_info');
-  let { datasetId } = useParams();
+  let { projectCode } = useParams();
   const [datasetUpdate, setDatasetUpdate] = useState(null);
   const curProject = props.currentProject;
 
@@ -91,10 +91,14 @@ function Settings(props) {
     for (const key in datasetUpdate) {
       if (
         ![
-          'timeCreated',
-          'timeLastmodified',
-          'time_created',
-          'time_lastmodified',
+          'created_at',
+          'createdAt',
+          'updated_at',
+          'updatedAt',
+          'code',
+          'id',
+          'imageUrl',
+          'image_url',
         ].includes(key)
       ) {
         data2Update[key] = datasetUpdate[key];
@@ -103,16 +107,15 @@ function Settings(props) {
     const updateContainerPremission = async (containersPermission) => {
       dispatch(setContainersPermissionCreator(containersPermission));
     };
-    delete data2Update['icon'];
 
     // call API to update project info
     updateDatasetInfoAPI(
       curProject.globalEntityId,
       objectKeysToSnakeCase(data2Update),
     ).then((res) => {
-      let newDataInfo = res.data.result[0];
+      let newDataInfo = res.data.result;
       const newContainerPermission = containersPermission.map((el) => {
-        if (el.id === parseInt(datasetId)) {
+        if (el.code === curProject.code) {
           return {
             ...el,
             name: newDataInfo.name,
@@ -121,7 +124,7 @@ function Settings(props) {
         return el;
       });
       updateContainerPremission(newContainerPermission);
-      data2Update['icon'] = newDataInfo['icon'];
+      data2Update['imageUrl'] = newDataInfo['imageUrl'];
       setDatasetInfo(data2Update);
       setTimeout(() => {
         setEditMode(false);
@@ -142,7 +145,7 @@ function Settings(props) {
       setUserListOnDataset(objectKeysToCamelCase(users.data.result));
     }
     loadProject();
-  }, [datasetId]);
+  }, [projectCode]);
 
   const updateDatasetInfo = (field, value) => {
     if (field === 'tags') {

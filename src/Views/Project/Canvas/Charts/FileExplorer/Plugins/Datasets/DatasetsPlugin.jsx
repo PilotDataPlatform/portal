@@ -3,6 +3,7 @@ import { Button } from 'antd';
 import { DeploymentUnitOutlined, LeftOutlined } from '@ant-design/icons';
 import { TABLE_STATE } from '../../RawTableValues';
 import DatasetsModal from './DatasetsModal';
+import variables from '../../../../../../../Themes/base.scss';
 
 const DatasetsPlugin = ({
   selectedRowKeys,
@@ -38,13 +39,17 @@ const DatasetsPlugin = ({
       }}
     >
       <div
-        style={{ display: 'inline-block', color: '#1890ff', cursor: 'pointer' }}
+        style={{
+          display: 'inline-block',
+          color: variables.primaryColorLight1,
+          cursor: 'pointer',
+        }}
         onClick={(e) => {
           setTableState(TABLE_STATE.NORMAL);
           clearSelection();
         }}
       >
-        <LeftOutlined fill="#1890ff" /> <span>Back</span>
+        <LeftOutlined fill={variables.primaryColorLight1} /> <span>Back</span>
       </div>
       <div style={{ marginLeft: 40, display: 'inline-block' }}>
         <span style={{ marginRight: 70 }}>
@@ -58,7 +63,7 @@ const DatasetsPlugin = ({
           style={{
             borderRadius: '6px',
             height: '27px',
-            width: '165px',
+            width: '155px',
             padding: '0px',
           }}
           onClick={() => setDataSetsModalVisible(true)}

@@ -1,5 +1,6 @@
 .basic {
   // margin: 8px !important;
+
   box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.05);
   transition: 0.3s;
   height: 100%;
@@ -16,7 +17,7 @@
       flex: 1;
       max-height: 100%;
       overflow: auto;
-      margin-bottom: 18px;
+      margin-bottom: 0px;
       margin-top: 0px;
       margin-right: 2px;
     }
@@ -74,14 +75,36 @@
   margin-bottom: 0;
 }
 
-.cardTitle {
-  font-size: 14px;
+.card-title {
+  font-size: 1.2rem;
   color: #003262;
-  font-weight: bold;
+  font-weight: 500;
+  margin-left: 6px;
+}
+
+.go-to_title {
+  font-size: 1.2rem;
+  color: #003262;
+  font-weight: 500;
+  margin-left: 3px;
 }
 
 .fileStreamTitle {
-  font-size: 14px;
+  font-size: 1.2rem;
   color: #003262;
-  font-weight: bold;
+  font-weight: 500;
+  margin-left: 6px;
+}
+
+.file-stream-subtitle {
+  margin-left: 0.5rem;
+  font-size: 13px;
+  color: #fff;
+}
+
+@media only screen and (min-width: 1700px) {
+  .file-stream-subtitle {
+    margin-left: 1rem;
+    color: #595959;
+  }
 }

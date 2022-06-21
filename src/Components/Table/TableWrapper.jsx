@@ -3,7 +3,7 @@ import { SearchOutlined, CrownFilled } from '@ant-design/icons';
 import React from 'react';
 import styles from './index.module.scss';
 import { partialString } from '../../Utility';
-
+import variables from '../../Themes/base.scss';
 class TableWrapper extends React.Component {
   constructor(props) {
     super(props);
@@ -71,7 +71,10 @@ class TableWrapper extends React.Component {
     ),
     filterIcon: (filtered) => (
       <SearchOutlined
-        style={{ color: filtered ? '#1890ff' : undefined, top: '60%' }}
+        style={{
+          color: filtered ? variables.primaryColorLight1 : undefined,
+          top: '60%',
+        }}
       />
     ),
     onFilterDropdownVisibleChange: (visible) => {
@@ -89,8 +92,9 @@ class TableWrapper extends React.Component {
       if (dataIndex === 'name') {
         //Handle the 3 status from projectUsers table, if in projectUsers table (active, disabled, hibernate)
         //and other status (active, disabled)
-        const status = tableKey === 'projectUsers' ? record.projectStatus : record.status;
-        
+        const status =
+          tableKey === 'projectUsers' ? record.projectStatus : record.status;
+
         const statusBadge = (
           <Tooltip placement="top" title={status === 'hibernate' ? '' : status}>
             <Badge status={this.statusMap[status]} />

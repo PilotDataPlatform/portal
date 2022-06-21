@@ -5,9 +5,9 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [main, develop]
   pull_request:
-    branches: [ main, develop ]
+    branches: [main, develop]
 
 jobs:
   build:
@@ -37,3 +37,13 @@ jobs:
       - name: Create users.js
         run: echo '${{ secrets.USER_CREDENTIALS }}' > tests/users.js
       - run: npm run test:local
+      - name: Install NYC and generate coverage report
+        run: |
+          npm i -g nyc
+          nyc report --reporter=cobertura
+          cp -r .nyc_output ./coverage
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v2
+        with:
+          directory: ./coverage
+          fail_ci_if_error: false

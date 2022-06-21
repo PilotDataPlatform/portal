@@ -1,3 +1,4 @@
+@import '../../../../../Themes/base.scss';
 $action-bar-width: 110px;
 .project_name {
   font-size: 14px;
@@ -88,7 +89,7 @@ $action-bar-width: 110px;
       }
     }
     .ant-tree-node-selected {
-      background-color: #1890ff !important;
+      background-color: $primary-color-light-1 !important;
       color: white !important;
       .tree-node-custom-title {
         .actions-bar {
@@ -151,7 +152,7 @@ $action-bar-width: 110px;
 
 .delete-modal {
   .ok-button {
-    background-color: #1890ff;
+    background-color: $primary-color-light-1;
     border-radius: 6px;
   }
   .cancel-button {

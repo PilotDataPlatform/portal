@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Card, Tag } from 'antd';
-import { DownCircleTwoTone, UpCircleTwoTone } from '@ant-design/icons';
+import { UpCircleOutlined, DownCircleOutlined } from '@ant-design/icons';
 import styles from './DatasetCard.module.scss';
 import DatasetCardTitle from '../DatasetCardTitle/DatasetCardTitle';
 import { getFileSize, getTags } from '../../../../Utility';
@@ -10,7 +10,7 @@ export default function DatasetCard(props) {
   const {
     title,
     creator,
-    timeCreated,
+    createdAt,
     description,
     tags,
     size,
@@ -22,7 +22,6 @@ export default function DatasetCard(props) {
   const toggleExpand = () => {
     setIsExpand((preValue) => !preValue);
   };
-
   return (
     <div className={styles['dataset-card']}>
       <Card>
@@ -31,7 +30,7 @@ export default function DatasetCard(props) {
           <div className={styles['dataset-card-note']}>
             <b>
               Dataset Code: {code} / Created on{' '}
-              {moment.utc(timeCreated).local().format('YYYY-MM-DD')}
+              {moment.utc(createdAt).local().format('YYYY-MM-DD')}
             </b>{' '}
             by {creator || 'N/A'}
           </div>
@@ -47,7 +46,7 @@ export default function DatasetCard(props) {
         </div>
 
         <div onClick={toggleExpand} className={styles['expand']}>
-          {isExpand ? <UpCircleTwoTone /> : <DownCircleTwoTone />}
+          {isExpand ? <UpCircleOutlined /> : <DownCircleOutlined />}
         </div>
       </Card>
     </div>

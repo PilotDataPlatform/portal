@@ -1,6 +1,6 @@
 import {
   SET_CURRENT_PROJECT_PROFILE,
-  SET_CURRENT_PROJECT_MANIFEST,
+  SET_CURRENT_PROJECT_SYSTEM_TAGS,
   SET_CURRENT_PROJECT_TREE,
   SET_CURRENT_PROJECT_TREE_VFOLDER,
   SET_CURRENT_PROJECT_TREE_GREEN_ROOM,
@@ -30,7 +30,7 @@ export default function (state = init, action) {
         workbenchDeployedCounter: state.workbenchDeployedCounter + 1,
       };
     }
-    case SET_CURRENT_PROJECT_MANIFEST: {
+    case SET_CURRENT_PROJECT_SYSTEM_TAGS: {
       return { ...state, manifest: payload };
     }
     case SET_CURRENT_PROJECT_TREE: {

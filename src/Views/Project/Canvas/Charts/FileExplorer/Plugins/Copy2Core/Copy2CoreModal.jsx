@@ -21,6 +21,7 @@ import {
   validateRepeatFiles,
 } from '../../../../../../../APIs';
 import CoreDirTree from './CoreDirTree';
+import variables from '../../../../../../../Themes/base.scss';
 
 const Copy2CoreModal = ({
   visible,
@@ -154,7 +155,7 @@ const Copy2CoreModal = ({
           {
             targets: files.map((file) => {
               return {
-                geid: file.geid,
+                id: file.geid,
               };
             }),
             destination: destination.geid,
@@ -162,7 +163,7 @@ const Copy2CoreModal = ({
           },
           username,
           FILE_OPERATIONS.COPY,
-          project.profile.globalEntityId,
+          project.profile.code,
           sessionId,
         );
       } catch (err) {
@@ -237,7 +238,7 @@ const Copy2CoreModal = ({
                 );
                 if (fileNameRecord) {
                   return {
-                    geid: file.geid,
+                    id: file.geid,
                     rename: fileNameRecord['name'],
                   };
                 }
@@ -245,7 +246,7 @@ const Copy2CoreModal = ({
               } else {
                 // files do not need to be renamed
                 return {
-                  geid: file.geid,
+                  id: file.geid,
                 };
               }
             })
@@ -255,7 +256,7 @@ const Copy2CoreModal = ({
         },
         username,
         FILE_OPERATIONS.COPY,
-        project.profile.globalEntityId,
+        project.profile.code,
         sessionId,
       );
 
@@ -540,7 +541,7 @@ const Copy2CoreModal = ({
           destination.geid,
           username,
           FILE_OPERATIONS.COPY,
-          project.profile.globalEntityId,
+          project.profile.id,
           sessionId,
         );
       } catch (err) {
@@ -575,7 +576,7 @@ const Copy2CoreModal = ({
           destination.geid,
           username,
           FILE_OPERATIONS.COPY,
-          project.profile.globalEntityId,
+          project.profile.id,
           sessionId,
         );
       } catch (err) {
@@ -714,7 +715,7 @@ const Copy2CoreModal = ({
               <p
                 style={{
                   cursor: 'pointer',
-                  color: '#1890FF',
+                  color: variables.primaryColorLight1,
                   marginLeft: '14px',
                 }}
                 onClick={() => {
@@ -733,7 +734,10 @@ const Copy2CoreModal = ({
                   <img
                     alt="Approved"
                     style={{ width: '15px', height: '15px' }}
-                    src={require('../../../../../../../Images/Approved.png')}
+                    src={
+                      require('../../../../../../../Images/Approved.png')
+                        .default
+                    }
                   />
                 )}
               />

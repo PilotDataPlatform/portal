@@ -41,7 +41,7 @@ function GeneralInfo(props) {
       await updateDatasetIcon(currentProject.globalEntityId, compressedIcon);
       setDatasetInfo({
         ...datasetInfo,
-        icon: compressedIcon,
+        imageUrl: compressedIcon,
       });
     });
     return false;
@@ -83,8 +83,8 @@ function GeneralInfo(props) {
             display: 'inline-block',
           }}
         >
-          {datasetInfo.icon ? (
-            <Avatar src={datasetInfo.icon} size={65}></Avatar>
+          {datasetInfo.imageUrl ? (
+            <Avatar src={datasetInfo.imageUrl} size={65}></Avatar>
           ) : (
             <Avatar
               style={{ backgroundColor: '#13c2c2', verticalAlign: 'middle' }}
@@ -125,9 +125,9 @@ function GeneralInfo(props) {
             {editMode ? (
               <Switch
                 style={{ marginTop: 8 }}
-                checked={datasetUpdate.discoverable}
+                checked={datasetUpdate.isDiscoverable}
                 onChange={(checked, e) =>
-                  updateDatasetInfo('discoverable', checked)
+                  updateDatasetInfo('isDiscoverable', checked)
                 }
                 checkedChildren="on"
                 unCheckedChildren="off"
@@ -136,7 +136,7 @@ function GeneralInfo(props) {
               <Switch
                 style={{ marginTop: 8 }}
                 disabled={true}
-                checked={datasetInfo.discoverable}
+                checked={datasetInfo.isDiscoverable}
                 checkedChildren="on"
                 unCheckedChildren="off"
               />
@@ -152,7 +152,7 @@ function GeneralInfo(props) {
                 float: 'right',
               }}
             >
-              {!datasetUpdate?.discoverable && 'Not '}discoverable by all
+              {!datasetUpdate?.isDiscoverable && 'Not '}discoverable by all
               platform users
             </div>
           </div>

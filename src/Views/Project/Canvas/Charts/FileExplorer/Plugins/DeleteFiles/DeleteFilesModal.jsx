@@ -6,7 +6,6 @@ import { FILE_OPERATIONS } from '../../FileOperationValues';
 import { tokenManager } from '../../../../../../../Service/tokenManager';
 import { commitFileAction } from '../../../../../../../APIs';
 import { useTranslation } from 'react-i18next';
-import { PanelKey } from '../../RawTableValues';
 import { DeleteModalFirstStep } from './DeleteModalFirstStep';
 import { DeleteModalSecondStep } from './DeleteModalSecondStep';
 
@@ -65,14 +64,14 @@ const DeleteFilesModal = ({
         {
           targets: authorizedFilesToDelete.map((file) => {
             return {
-              geid: file.geid,
+              id: file.geid,
             };
           }),
           source: parentGeid,
         },
         username,
         FILE_OPERATIONS.DELETE,
-        project.profile.globalEntityId,
+        project.profile.code,
         sessionId,
       );
       if (res.code === 202) {
@@ -130,15 +129,6 @@ export default DeleteFilesModal;
 const getAuthorizedFilesToDelete = (files, permission, username, panelKey) => {
   let authorizedFilesToDelete = files;
   let unauthorizedFilesToDelete = [];
-
-  // console.log(files, permission, username, panelKey);
-  // if (permission === 'collaborator' && panelKey === PanelKey.GREENROOM_HOME) {
-  //   authorizedFilesToDelete = files.filter((el) => el.uploader === username);
-  //   unauthorizedFilesToDelete = files.filter((el) => el.uploader !== username);
-  // } else {
-  // authorizedFilesToDelete = files;
-  // unauthorizedFilesToDelete = [];
-  // }
 
   return { authorizedFilesToDelete, unauthorizedFilesToDelete };
 };

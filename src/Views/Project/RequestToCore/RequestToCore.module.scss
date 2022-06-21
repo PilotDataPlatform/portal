@@ -1,3 +1,4 @@
+@import '../../../Themes/base.scss';
 .request_wrapper {
 }
 .request_to_core_content {
@@ -87,7 +88,7 @@
 }
 
 .radio_option_backgroundColor {
-  background-color: #1890ff;
+  background-color: $primary-color-light-1;
   color: #ffffff;
 }
 

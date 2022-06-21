@@ -14,37 +14,45 @@ import {
 import ToolBar from './Components/ToolBar';
 import { getUserOnProjectAPI, getProjectInfoAPI } from '../../APIs';
 import { connect } from 'react-redux';
-import { protectedRoutes, getCurrentProject } from '../../Utility';
+import { protectedRoutes } from '../../Utility';
 import roleMap from '../../Utility/project-roles.json';
 import {
   triggerEvent,
   setCurrentProjectProfile,
-  setCurrentProjectManifest,
+  setCurrentProjectSystemTags,
   setFolderRouting,
   clearCurrentProject,
 } from '../../Redux/actions';
 
 import _ from 'lodash';
-function Dataset(props) {
+function Project(props) {
   const { pathname } = useLocation();
   const project = useSelector((state) => state.project);
   const dispatch = useDispatch();
   const { params } = props.match;
-  const currentProject = getCurrentProject(params.datasetId);
+  const {
+    match: { path },
+    containersPermission,
+    role,
+  } = props;
+  const containerDetails =
+    containersPermission &&
+    _.find(containersPermission, (item) => {
+      return item.code === params.projectCode;
+    });
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
 
   useEffect(() => {
-    if (params.datasetId) {
-      dispatch(clearCurrentProject());
-      getProjectInfoAPI(currentProject.globalEntityId).then((res) => {
+    if (params.projectCode && containerDetails) {
+      getProjectInfoAPI(containerDetails.id).then((res) => {
         if (res.status === 200 && res.data && res.data.code === 200) {
           const currentDataset = res.data.result;
           dispatch(setCurrentProjectProfile(currentDataset));
           dispatch(
-            setCurrentProjectManifest({
+            setCurrentProjectSystemTags({
               tags: currentDataset && currentDataset.systemTags,
             }),
           );
@@ -52,7 +60,10 @@ function Dataset(props) {
       });
     }
     dispatch(setFolderRouting({}));
-  }, []);
+    return () => {
+      dispatch(clearCurrentProject());
+    };
+  }, [containerDetails]);
 
   useEffect(() => {
     if (project.profile) {
@@ -60,12 +71,6 @@ function Dataset(props) {
       dispatch(triggerEvent('LOAD_DELETED_LIST'));
     }
   }, [project.profile]);
-
-  const {
-    match: { path },
-    containersPermission,
-    role,
-  } = props;
 
   const [userListOnDataset, setUserListOnDataset] = useState(null);
 
@@ -78,21 +83,14 @@ function Dataset(props) {
     });
   }
 
-  const { datasetId } = useParams();
-  const containerDetails =
-    containersPermission &&
-    _.find(containersPermission, (item) => {
-      return parseInt(item.id) === parseInt(params.datasetId);
-    });
-
   const config = {
-    observationVars: [params.datasetId, containersPermission, role],
+    observationVars: [params.projectCode, containersPermission, role],
     initFunc: () => {
       if (containersPermission !== null && role !== null) {
         const isAccess =
           role === 'admin' ||
           _.some(containersPermission, (item) => {
-            return parseInt(item.id) === parseInt(params.datasetId);
+            return item.code === params.projectCode;
           });
 
         if (!isAccess) {
@@ -114,13 +112,13 @@ function Dataset(props) {
             path={path + item.path}
             key={item.path}
             render={(props) => {
-              if (!datasetId) {
-                throw new Error(`datasetId undefined`);
+              if (!params.projectCode) {
+                throw new Error(`projectCode undefined`);
               }
               let res = protectedRoutes(
                 item.protectedType,
                 true,
-                datasetId,
+                params.projectCode,
                 containersPermission,
                 role,
               );
@@ -131,7 +129,6 @@ function Dataset(props) {
               } else {
                 return (
                   <item.component
-                    datasetId={params.datasetId}
                     userListOnDataset={userListOnDataset}
                     containerDetails={containerDetails}
                     getUserOnProjectAPI={getUserOnProjectAPI}
@@ -153,4 +150,4 @@ export default connect((state) => ({
   containersPermission: state.containersPermission,
   role: state.role,
   datasetList: state.datasetList,
-}))(withRouter(Dataset));
+}))(withRouter(Project));

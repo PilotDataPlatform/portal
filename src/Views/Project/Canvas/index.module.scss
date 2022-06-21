@@ -1,0 +1,68 @@
+@import '../../../Themes/base.scss';
+
+.canvas-page-header {
+  &__avatar {
+    border: 1px solid $primary-color-1 !important;
+    border-width: 1px;
+    width: 36px !important;
+    height: 36px !important;
+  }
+}
+
+.user-font {
+  color: $primary-color-1 !important;
+  font-size: 12px;
+  margin-right: 20px;
+  font-weight: normal;
+}
+
+.curproject-name {
+  max-width: 100%;
+  display: inline-block;
+  vertical-align: bottom;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: $primary-color-1 !important;
+  font-size: 20px;
+}
+
+.up-circle {
+  color: $primary-color-light-1 !important;
+  font-size: 22px;
+  z-index: 2;
+  position: relative;
+  box-shadow: 0px 1px 7px #0000001a;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  overflow: hidden;
+}
+
+.owner {
+  color: $primary-color-1 !important;
+  font-size: 20px;
+  font-weight: bold;
+  vertical-align: middle;
+  margin-left: 17px;
+}
+
+.down-circle {
+  color: $primary-color-light-1 !important;
+  font-size: 22px;
+  z-index: 2;
+  position: relative;
+  box-shadow: 0px 1px 7px #0000001a;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  overflow: hidden;
+}
+
+:global {
+  .ant-modal-header {
+    border-radius: 9px !important;
+  }
+  .ant-modal-content {
+    border-radius: 9px !important;
+  }
+}

@@ -1,3 +1,4 @@
+@import '../../../Themes/base.scss';
 .all_activity {
   width: 100px;
   margin-right: 20px;
@@ -7,6 +8,7 @@
   display: flex;
   color: #595959;
   font-weight: 500;
+  margin-left: 20px;
 }
 .view_selector {
   display: flex;
@@ -49,7 +51,7 @@
 
 .view_backgroundColor {
   background-color: #ace4fd;
-  color: #1890ff;
+  color: $primary-color-light-1;
 }
 
 .custom_time {

@@ -1,8 +1,13 @@
+@import '../../../../Themes/base.scss';
+
 :global {
   #platform-management-section {
     .ant-modal-wrap {
       top: 80px;
       z-index: 1000;
+    }
+    #notification-preview-modal .ant-modal-wrap {
+      top: 0;
     }
   }
 }
@@ -12,7 +17,7 @@
       border-radius: 8px;
       overflow: hidden;
       .ant-modal-header .ant-modal-title {
-        color: #003262 !important;
+        color: $primary-color-1 !important;
       }
     }
 

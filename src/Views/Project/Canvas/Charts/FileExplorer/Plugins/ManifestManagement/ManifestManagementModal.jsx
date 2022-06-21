@@ -146,9 +146,7 @@ const ManifestManagementModal = ({
                       setSelManifest(null);
                       return;
                     }
-                    const selM = manifestList.find(
-                      (man) => man.id === Number(value),
-                    );
+                    const selM = manifestList.find((man) => man.id === value);
                     setSelManifest(selM);
                   }}
                 >

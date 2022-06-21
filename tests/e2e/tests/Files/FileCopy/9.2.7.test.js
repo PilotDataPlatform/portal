@@ -4,7 +4,7 @@ const {
   selectGreenroomFile,
   fileName,
 } = require('../../../../utils/greenroomActions.js');
-const { baseUrl } = require('../../../config');
+const { baseUrl, dataConfig } = require('../../../config');
 const fs = require('fs');
 
 const { adminProjectId } = dataConfig.fileCopy;

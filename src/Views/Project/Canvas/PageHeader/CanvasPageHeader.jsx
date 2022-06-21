@@ -17,19 +17,20 @@ import {
 import {
   setContainersPermissionCreator,
   setCurrentProjectProfile,
-  setCurrentProjectManifest,
+  setCurrentProjectSystemTags,
   triggerEvent,
 } from '../../../../Redux/actions';
-import {
-  getProjectInfoAPI,
-  getUsersOnDatasetAPI,
-  getAdminsOnDatasetAPI,
-} from '../../../../APIs';
+import { getUsersOnDatasetAPI, getAdminsOnDatasetAPI } from '../../../../APIs';
 import { connect } from 'react-redux';
-import { withCurrentProject, objectKeysToCamelCase, getTags } from '../../../../Utility';
+import {
+  withCurrentProject,
+  objectKeysToCamelCase,
+  getTags,
+} from '../../../../Utility';
 import userRoles from '../../../../Utility/project-roles.json';
 import styles from '../index.module.scss';
 import { PLATFORM } from '../../../../config';
+import '../../../../Themes/base.scss';
 const { Content } = Layout;
 const { Paragraph } = Typography;
 
@@ -37,7 +38,7 @@ class CanvasPageHeader extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      projectUsersInfo: '',
+      projectUsersInfo: null,
       currentRole: '',
       pageHeaderExpand: false,
       userListOnDataset: null,
@@ -58,21 +59,33 @@ class CanvasPageHeader extends Component {
     }
   };
   loadAdmin = async () => {
-    const users = await getAdminsOnDatasetAPI(
-      this.props.currentProject.globalEntityId,
-    );
-    const userList = objectKeysToCamelCase(users.data.result);
-    this.setState({
-      userListOnDataset: userList,
-    });
+    try {
+      const users = await getAdminsOnDatasetAPI(
+        this.props.currentProject.globalEntityId,
+      );
+      const userList = objectKeysToCamelCase(users.data.result);
+      this.setState({
+        userListOnDataset: userList,
+      });
+    } catch (e) {
+      this.setState({
+        userListOnDataset: null,
+      });
+    }
   };
 
   getProjectUsersInfo = async () => {
-    const usersInfo = await getUsersOnDatasetAPI(
-      this.props.currentProject.globalEntityId,
-    );
-    if (usersInfo && usersInfo.data && usersInfo.data.result) {
-      this.setState({ projectUsersInfo: usersInfo.data.result });
+    try {
+      const usersInfo = await getUsersOnDatasetAPI(
+        this.props.currentProject.globalEntityId,
+      );
+      if (usersInfo && usersInfo.data && usersInfo.data.result) {
+        this.setState({ projectUsersInfo: usersInfo.data.result });
+      }
+    } catch (e) {
+      this.setState({
+        projectUsersInfo: null,
+      });
     }
   };
   componentDidMount() {
@@ -122,16 +135,7 @@ class CanvasPageHeader extends Component {
             wordBreak: 'break-all',
           }}
         >
-          <span
-            style={{
-              color: '#003262',
-              fontSize: '12px',
-              marginRight: '20px',
-              fontWeight: 'normal',
-            }}
-          >
-            Administrators
-          </span>
+          <span className={styles['user-font']}>Administrators</span>
           {this.state.userListOnDataset &&
             this.state.userListOnDataset.map((el, index) => (
               <a
@@ -164,61 +168,44 @@ class CanvasPageHeader extends Component {
       <div>
         {currentProject.name.length > 40 ? (
           <Tooltip title={currentProject.name}>
-            <div style={{ marginTop: '-4px' }}>
-              <span
-                style={{
-                  maxWidth: '100%',
-                  display: 'inline-block',
-                  verticalAlign: 'bottom',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  color: '#003262',
-                  fontSize: '20px',
-                }}
-              >
+            <div style={{ lineHeight: '22px' }}>
+              <span className={styles['curproject-name']}>
                 {currentProject.name}
               </span>
             </div>
           </Tooltip>
         ) : (
-          <div style={{ marginTop: '-4px' }}>
-            <span
-              style={{
-                maxWidth: '100%',
-                display: 'inline-block',
-                verticalAlign: 'bottom',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                color: '#003262',
-                fontSize: '20px',
-              }}
-            >
+          <div style={{ lineHeight: '22px' }}>
+            <span className={styles['curproject-name']}>
               {currentProject.name}
             </span>
           </div>
         )}
-        <div style={{ marginTop: '-12px' }}>
-          <span
-            style={{
-              color: '#595959',
-              fontSize: '12px',
-              fontWeight: 'normal',
-            }}
-          >
-            {`Project Code: ${currentProject.code} / `}
-          </span>
-          {userRole ? (
+        {this.props.variant !== 'fileExplorer' ||
+        this.state.pageHeaderExpand ? (
+          <div style={{ lineHeight: '14px' }}>
             <span
               style={{
-                color: '#818181',
+                color: '#595959',
                 fontSize: '12px',
-                fontWeight: 'lighter',
+                fontWeight: 'normal',
               }}
             >
-              {`Your role is ${userRole}`}
+              {`Project Code: ${currentProject.code} / `}
             </span>
-          ) : null}
-        </div>
+            {userRole ? (
+              <span
+                style={{
+                  color: '#818181',
+                  fontSize: '12px',
+                  fontWeight: 'lighter',
+                }}
+              >
+                {`Your role is ${userRole}`}
+              </span>
+            ) : null}
+          </div>
+        ) : null}
         {currentRole && pageHeaderExpand ? adminsContent : null}
       </div>
     );
@@ -269,7 +256,15 @@ class CanvasPageHeader extends Component {
     );
 
     const tagsContent = (
-      <div style={{ width: '290px', flex: '0 0 290px' }}>
+      <div
+        style={{
+          width: '290px',
+          flex: '0 0 290px',
+          display: 'flex',
+          justifyContent: 'flex-end',
+          alignItems: 'flex-end',
+        }}
+      >
         {currentRole === 'admin' && pageHeaderExpand ? (
           <div
             style={{ marginTop: '2px', textAlign: 'right', marginRight: 44 }}
@@ -287,15 +282,7 @@ class CanvasPageHeader extends Component {
               >
                 Administrators
               </span>
-              <span
-                style={{
-                  color: '#003262',
-                  fontSize: '20px',
-                  fontWeight: 'bold',
-                  verticalAlign: 'middle',
-                  marginLeft: 17,
-                }}
-              >
+              <span className={styles['owner']}>
                 {administrators ? administrators.length : 0}
               </span>
             </div>
@@ -309,15 +296,7 @@ class CanvasPageHeader extends Component {
               >
                 Contributors
               </span>
-              <span
-                style={{
-                  color: '#003262',
-                  fontSize: '20px',
-                  fontWeight: 'bold',
-                  verticalAlign: 'middle',
-                  marginLeft: 17,
-                }}
-              >
+              <span className={styles['owner']}>
                 {contributors ? contributors.length : 0}
               </span>
             </div>
@@ -333,32 +312,29 @@ class CanvasPageHeader extends Component {
               >
                 Collaborators
               </span>
-              <span
-                style={{
-                  color: '#003262',
-                  fontSize: '20px',
-                  fontWeight: 'bold',
-                  verticalAlign: 'middle',
-                  marginLeft: 17,
-                }}
-              >
+              <span className={styles['owner']}>
                 {collaborators ? collaborators.length : 0}
               </span>
             </div>
+            <div style={{ marginTop: '1rem', marginRight: '-5px' }}>
+              {currentProject.tags && getTags(currentProject.tags)}
+            </div>
           </div>
         ) : (
-          <div style={{ height: '26px' }}></div>
+          <div style={{ height: '53px' }}></div>
         )}
-        <div
-          style={{
-            display: 'block',
-            marginRight: '44px',
-            lineHeight: '35px',
-            textAlign: 'right',
-          }}
-        >
-          {currentProject.tags && getTags(currentProject.tags)}
-        </div>
+        {!pageHeaderExpand && (
+          <div
+            style={{
+              display: 'block',
+              marginRight: '44px',
+              lineHeight: '35px',
+              textAlign: 'right',
+            }}
+          >
+            {currentProject.tags && getTags(currentProject.tags)}
+          </div>
+        )}
       </div>
     );
 
@@ -375,17 +351,16 @@ class CanvasPageHeader extends Component {
       }
     };
 
-    const avatar = currentProject.icon ? (
+    const avatarClass = styles['canvas-page-header__avatar'];
+
+    const avatar = currentProject.imageUrl ? (
       <Avatar
+        className={avatarClass}
         shape="circle"
-        src={currentProject.icon && currentProject.icon}
-        style={{ border: '#003262', borderWidth: '1px', width: 36, height: 36 }}
+        src={currentProject.imageUrl && currentProject.imageUrl}
       ></Avatar>
     ) : (
-      <Avatar
-        shape="circle"
-        style={{ border: '#003262', borderWidth: '1px', width: 36, height: 36 }}
-      >
+      <Avatar shape="circle" className={avatarClass}>
         <span
           style={{
             fontSize: 20,
@@ -399,14 +374,15 @@ class CanvasPageHeader extends Component {
     );
 
     return (
-      <div style={{ margin: '-20px -20px -20px -18px', position: 'relative' }}>
+      <div style={{ position: 'relative' }}>
         <Row>
           <Content
             style={{
               width: '100%',
               backgroundColor: '#FFFFFF',
-              paddingTop: 19,
-              paddingBottom: 13,
+              padding: '12px 0',
+              borderRadius: '9px',
+              boxShadow: '0px 1px 7px #0000001A',
             }}
           >
             <div
@@ -418,11 +394,21 @@ class CanvasPageHeader extends Component {
                 justifyContent: 'space-between',
               }}
             >
-              <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
+              <div
+                style={{
+                  display: 'flex',
+                  flex: 1,
+                  overflow: 'hidden',
+                }}
+              >
                 <div
                   style={{
-                    padding: '8px 0 0 0',
-                    marginLeft: 8,
+                    alignSelf: 'flex-start',
+                    transform:
+                      this.props.variant === 'fileExplorer' &&
+                      !currentProject.tags?.length
+                        ? 'translateY(4px)'
+                        : 'translateY(6px)',
                   }}
                 >
                   {avatar}
@@ -439,7 +425,6 @@ class CanvasPageHeader extends Component {
                     ghost={true}
                     style={{
                       width: '100%',
-                      height: '100%',
                       padding: '0px 0px 0px 0px',
                     }}
                     title={title}
@@ -466,22 +451,12 @@ class CanvasPageHeader extends Component {
               {pageHeaderExpand ? (
                 <UpCircleOutlined
                   onClick={this.toggleExpand}
-                  style={{
-                    color: '#1890FF',
-                    fontSize: '22px',
-                    zIndex: 2,
-                    position: 'relative',
-                  }}
+                  className={styles['up-circle']}
                 />
               ) : (
                 <DownCircleOutlined
                   onClick={this.toggleExpand}
-                  style={{
-                    color: '#1890FF',
-                    fontSize: '22px',
-                    zIndex: 2,
-                    position: 'relative',
-                  }}
+                  className={styles['down-circle']}
                 />
               )}
             </div>
@@ -497,7 +472,7 @@ export default connect(
     role: state.role,
   }),
   {
-    setCurrentProjectManifest,
+    setCurrentProjectSystemTags,
     setCurrentProjectProfile,
     triggerEvent,
   },

@@ -4,7 +4,7 @@ import { TABLE_STATE } from '../../RawTableValues';
 import { Button, message } from 'antd';
 import ManifestManagementModal from './ManifestManagementModal';
 import i18n from '../../../../../../../i18n';
-import { CheckOutlined } from '@ant-design/icons';
+import variables from '../../../../../../../Themes/base.scss';
 function ManifestManagementPlugin({
   selectedRowKeys,
   clearSelection,
@@ -75,13 +75,17 @@ function ManifestManagementPlugin({
       }}
     >
       <div
-        style={{ display: 'inline-block', color: '#1890ff', cursor: 'pointer' }}
+        style={{
+          display: 'inline-block',
+          color: variables.primaryColorLight1,
+          cursor: 'pointer',
+        }}
         onClick={(e) => {
           setTableState(TABLE_STATE.NORMAL);
           clearSelection();
         }}
       >
-        <LeftOutlined fill="#1890ff" /> <span>Back</span>
+        <LeftOutlined fill={variables.primaryColorLight1} /> <span>Back</span>
       </div>
       <div style={{ marginLeft: 40, display: 'inline-block' }}>
         <span style={{ marginRight: 70 }}>

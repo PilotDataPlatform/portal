@@ -12,11 +12,7 @@ import {
   AddDatasetCreator,
   setCurrentProjectProfile,
 } from '../../../Redux/actions';
-import {
-  getChildrenDataset,
-  getProjectInfoAPI,
-  getUsersOnDatasetAPI,
-} from '../../../APIs';
+import { getUsersOnDatasetAPI } from '../../../APIs';
 import { namespace, ErrorMessager } from '../../../ErrorMessages';
 import { withCurrentProject } from '../../../Utility';
 
@@ -27,43 +23,71 @@ const defaultLayout = {
   //Admin panel
   admin: {
     lg: [
-      // { i: '0', x: 0, y: 0, w: 12, h: 4 },
-      { i: '2', x: 0, y: 0, w: 9, h: 4 },
-      { i: '3', x: 9, y: 0, w: 15, h: 4 },
-      { i: '1', x: 0, y: 7, w: 24, h: 10 },
+      { i: '2', x: 0, y: 0, w: 3, h: 6.8 },
+      { i: '1', x: 3, y: 0, w: 15, h: 6.8 },
+      { i: '3', x: 18, y: 0, w: 6, h: 6.8 },
     ],
     md: [
-      { i: '2', x: 0, y: 0, w: 11, h: 4 },
-      { i: '3', x: 11, y: 0, w: 13, h: 4 },
-      { i: '1', x: 0, y: 7, w: 24, h: 10 },
+      { i: '2', x: 0, y: 0, w: 5, h: 6.6 },
+      { i: '1', x: 5, y: 0, w: 19, h: 6.6 },
+      { i: '3', x: 0, y: 7, w: 24, h: 6.6 },
     ],
     sm: [
-      // { i: '0', x: 0, y: 0, w: 12, h: 4 },
-      { i: '2', x: 0, y: 4, w: 24, h: 2.5 },
-      { i: '3', x: 0, y: 4, w: 24, h: 4 },
-      { i: '1', x: 0, y: 8, w: 24, h: 10 },
+      { i: '2', x: 0, y: 0, w: 2.5, h: 6.4 },
+      { i: '1', x: 2.5, y: 0, w: 9.5, h: 6.4 },
+      { i: '3', x: 0, y: 7, w: 12, h: 6.4 },
     ],
   },
   contributor: {
     lg: [
-      { i: '2', x: 0, y: 0, w: 12, h: 4 },
-      { i: '3', x: 15, y: 0, w: 12, h: 4 },
-      { i: '1', x: 0, y: 7, w: 24, h: 10 },
+      { i: '2', x: 0, y: 0, w: 3, h: 6.8 },
+      { i: '1', x: 3, y: 0, w: 15, h: 6.8 },
+      { i: '3', x: 18, y: 0, w: 6, h: 6.8 },
+    ],
+    md: [
+      { i: '2', x: 0, y: 0, w: 5, h: 6.6 },
+      { i: '1', x: 5, y: 0, w: 19, h: 6.6 },
+      { i: '3', x: 0, y: 7, w: 24, h: 6.6 },
+    ],
+    sm: [
+      { i: '2', x: 0, y: 0, w: 2.5, h: 6.4 },
+      { i: '1', x: 2.5, y: 0, w: 9.5, h: 6.4 },
+      { i: '3', x: 0, y: 7, w: 12, h: 6.4 },
     ],
   },
   collaborator: {
     lg: [
-      { i: '2', x: 0, y: 0, w: 12, h: 4 },
-      { i: '3', x: 15, y: 0, w: 12, h: 4 },
-      { i: '1', x: 0, y: 7, w: 24, h: 10 },
+      { i: '2', x: 0, y: 0, w: 3, h: 6.8 },
+      { i: '1', x: 3, y: 0, w: 15, h: 6.8 },
+      { i: '3', x: 18, y: 0, w: 6, h: 6.8 },
+    ],
+    md: [
+      { i: '2', x: 0, y: 0, w: 5, h: 6.6 },
+      { i: '1', x: 5, y: 0, w: 19, h: 6.6 },
+      { i: '3', x: 0, y: 7, w: 24, h: 6.6 },
+    ],
+    sm: [
+      { i: '2', x: 0, y: 0, w: 2.5, h: 6.4 },
+      { i: '1', x: 2.5, y: 0, w: 9.5, h: 6.4 },
+      { i: '3', x: 0, y: 7, w: 12, h: 6.4 },
     ],
   },
   //Member panel
   member: {
     lg: [
-      { i: '0', x: 0, y: 0, w: 12, h: 4 },
-      { i: '3', x: 15, y: 0, w: 12, h: 4 },
-      { i: '1', x: 0, y: 7, w: 24, h: 10 },
+      { i: '2', x: 0, y: 0, w: 3, h: 6.8 },
+      { i: '1', x: 3, y: 0, w: 15, h: 6.8 },
+      { i: '3', x: 18, y: 0, w: 6, h: 6.8 },
+    ],
+    md: [
+      { i: '2', x: 0, y: 0, w: 5, h: 6.6 },
+      { i: '1', x: 5, y: 0, w: 19, h: 6.6 },
+      { i: '3', x: 0, y: 7, w: 24, h: 6.6 },
+    ],
+    sm: [
+      { i: '2', x: 0, y: 0, w: 2.5, h: 6.4 },
+      { i: '1', x: 2.5, y: 0, w: 9.5, h: 6.4 },
+      { i: '3', x: 0, y: 7, w: 12, h: 6.4 },
     ],
   },
 };
@@ -71,10 +95,10 @@ const defaultLayout = {
 class Canvas extends Component {
   constructor(props) {
     super(props);
-    const datasetId = this.findStudyId();
+    const datasetCode = this.findStudyId();
     this.state = {
       children: [],
-      currentDataset: datasetId,
+      currentDataset: datasetCode,
       loading: false,
       filter: {},
       modalVisible: false, //large chart modal
@@ -91,7 +115,6 @@ class Canvas extends Component {
       uploader: false,
       currentRole: '',
       currentProject: '',
-      dataSetId: '',
       projectUsersInfo: '',
       pageHeaderExpand: false,
       modalWidth: '95vw',
@@ -107,17 +130,6 @@ class Canvas extends Component {
     this.setState({ currentUser: this.props.username });
     this.fetchDatasetInfo();
     this.updatePermision();
-
-    // getProjectInfoAPI(this.props.datasetId).then((res) => {
-    //   if (res.status === 200 && res.data && res.data.code === 200) {
-    //     const profile = res.data.result;
-    //     this.props.setCurrentProjectProfile(profile);
-    //   }
-    // });
-
-    window.setTimeout(() => {
-      window.dispatchEvent(new Event('resize'));
-    }, 0);
   }
 
   getProjectUsersInfo = async () => {
@@ -145,7 +157,6 @@ class Canvas extends Component {
       this.setState(
         {
           currentProject,
-          dataSetId: currentProject.id,
         },
         () => {
           if (this.state.currentRole === 'admin') {
@@ -396,10 +407,21 @@ class Canvas extends Component {
           <Spin />
         ) : (
           <>
-            <Content className="content" style={{ letterSpacing: '0.4px' }}>
+            <Content
+              className="content"
+              style={{ position: 'relative', letterSpacing: '0.4px' }}
+            >
               <Row style={{ paddingBottom: '10px' }}>
                 <Col span={24}>
-                  <CanvasPageHeader />
+                  <div
+                    style={{
+                      position: 'absolute',
+                      zIndex: 1,
+                      width: '100%',
+                    }}
+                  >
+                    <CanvasPageHeader />
+                  </div>
                   <DragArea
                     key={this.state.updateCount}
                     onLayoutChange={this.onLayoutChange}
@@ -410,7 +432,7 @@ class Canvas extends Component {
                     {cardContents &&
                       cardContents.map((card) => {
                         return (
-                          <div key={card.key}>
+                          <div key={card.key} style={{ marginTop: 70 }}>
                             <BasicCard
                               title={card.title}
                               expandable={card.expandable}
@@ -425,7 +447,6 @@ class Canvas extends Component {
                                 this.state,
                                 this.handleExpand,
                               )}
-                              datasetId={this.state.currentDataset}
                               currentUser={this.props.username}
                               isAdmin={currentRole === 'admin'}
                             />
@@ -438,7 +459,9 @@ class Canvas extends Component {
                   title={modalTitle}
                   visible={modalVisible}
                   onCancel={this.handleExpandClose}
-                  style={{ minWidth: this.state.modalWidth }}
+                  style={{
+                    minWidth: this.state.modalWidth,
+                  }}
                   footer={null}
                   maskClosable={false}
                 >

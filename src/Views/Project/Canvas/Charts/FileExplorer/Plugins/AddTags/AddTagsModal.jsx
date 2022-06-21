@@ -15,6 +15,7 @@ import {
 } from '@ant-design/icons';
 import i18n from '../../../../../../../i18n';
 import styles from './index.module.scss';
+import variables from '../../../../../../../Themes/base.scss';
 
 const AddTagsModal = ({ visible, setVisible, selectedRows, setSuccessNum }) => {
   const [step, setStep] = useState(1);
@@ -38,14 +39,16 @@ const AddTagsModal = ({ visible, setVisible, selectedRows, setSuccessNum }) => {
     <Menu className={styles.tags_menu}>
       {step === 1 && (
         <Menu.Item key="0" onClick={() => setStep(2)}>
-          <DeleteOutlined style={{ color: '#1890FF' }} />
-          <span style={{ color: '#1890FF' }}>Remove Tags</span>
+          <DeleteOutlined style={{ color: variables.primaryColorLight1 }} />
+          <span style={{ color: variables.primaryColorLight1 }}>
+            Remove Tags
+          </span>
         </Menu.Item>
       )}
       {step === 2 && (
         <Menu.Item key="0" onClick={() => setStep(1)}>
-          <PlusOutlined style={{ color: '#1890FF' }} />
-          <span style={{ color: '#1890FF' }}>Add Tags</span>
+          <PlusOutlined style={{ color: variables.primaryColorLight1 }} />
+          <span style={{ color: variables.primaryColorLight1 }}>Add Tags</span>
         </Menu.Item>
       )}
     </Menu>
@@ -77,7 +80,7 @@ const AddTagsModal = ({ visible, setVisible, selectedRows, setSuccessNum }) => {
       let entity = selectedRows.map((el) => el.geid);
       const res = await batchTagsAPI({
         entity,
-        project_geid: project.profile.globalEntityId,
+        project_geid: project.profile.id,
         tags: addTagsArray,
         only_files: !addTagsToFolder,
         operation: 'add',
@@ -114,7 +117,7 @@ const AddTagsModal = ({ visible, setVisible, selectedRows, setSuccessNum }) => {
       let entity = selectedRows.map((el) => el.geid);
       await batchTagsAPI({
         entity,
-        project_geid: project.profile.globalEntityId,
+        project_geid: project.profile.id,
         tags: removeTagsArray,
         only_files: !removeTagsFromFolder,
         operation: 'remove',

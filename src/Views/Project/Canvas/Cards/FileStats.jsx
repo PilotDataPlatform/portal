@@ -1,154 +1,136 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Col, Card } from 'antd';
+
 import {
-  FolderOutlined,
-  FolderOpenOutlined,
-  CloudUploadOutlined,
-  CloudDownloadOutlined,
-  CheckOutlined,
+  HomeOutlined,
+  PaperClipOutlined,
+  CloudServerOutlined,
 } from '@ant-design/icons';
-import { projectFileCountTotal } from '../../../../APIs';
+import { listAllVirtualFolder, projectFileCountTotal } from '../../../../APIs';
 import moment from 'moment';
 import { useSelector } from 'react-redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import styles from './index.module.scss';
+import { useCurrentProject } from '../../../../Utility';
+import { canvasPageActions } from '../../../../Redux/actions';
+import { useDispatch } from 'react-redux';
+import '../../../../Themes/base.scss';
+import { history } from '../../../../Routes';
 
 function FileStats(props) {
   const [greenRoomCount, setGreenRoomCount] = useState(0);
   const [coreCount, setCoreCount] = useState(0);
-  const [uploadCount, setUploadCount] = useState(0);
-  const [downloadCount, setDownloadCount] = useState(0);
-  const [copyCount, setCopyCount] = useState(0);
+  const [collections, setCollections] = useState([]);
+  const [currentProject] = useCurrentProject();
 
-  const {
-    match: {
-      params: { datasetId },
-    },
-  } = props;
-
-  const checkTimeForToday = (timeStamp) => {
-    return (
-      moment().startOf('day').unix() < timeStamp &&
-      moment().endOf('day').unix() > timeStamp
-    );
-  };
-
-  const projectInfo = useSelector((state) => state.project);
-
-  const currentDataset = projectInfo.profile;
-
-  const currentPermission =
-    props.containersPermission &&
-    props.containersPermission.find((el) => el.id === parseInt(datasetId));
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    if (currentDataset) {
-      projectFileCountTotal(currentDataset.globalEntityId, {
-        start_date: moment().startOf('day').unix(),
-        end_date: moment().endOf('day').unix(),
-      }).then((res) => {
-        const statistics = res?.data?.result;
-        if (res.status === 200 && statistics) {
-          setGreenRoomCount(statistics.greenroom);
-          setCoreCount(statistics.core);
-          setCopyCount(statistics.approved);
-          setDownloadCount(statistics.downloaded);
-          setUploadCount(statistics.uploaded);
-        }
-      });
+    if (currentProject) {
+      // projectFileCountTotal(currentProject.globalEntityId, {
+      //   start_date: moment().startOf('day').unix(),
+      //   end_date: moment().endOf('day').unix(),
+      // }).then((res) => {
+      //   const statistics = res?.data?.result;
+      //   if (res.status === 200 && statistics) {
+      //     setGreenRoomCount(statistics.greenroom);
+      //     setCoreCount(statistics.core);
+      //     setCopyCount(statistics.approved);
+      //     setDownloadCount(statistics.downloaded);
+      //     setUploadCount(statistics.uploaded);
+      //   }
+      // });
     }
-  }, [currentDataset, props.successNum]);
+  }, [currentProject, props.successNum]);
 
-  return currentDataset ? (
-    <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-      <div size={'small'} className={styles.card}>
-        <Row>
-          <Col className={styles.iconColumn}>
-            <FolderOpenOutlined className={styles.icon} />
-          </Col>
-          <Col>
-            <Row>
-              <span className={styles.fileNumber}>{greenRoomCount}</span>
-            </Row>
-            <Row>
-              <span className={styles.fileFont}>Green Room</span>
-            </Row>
-          </Col>
-        </Row>
+  const goToPage = (page) => {
+    // console.log(page);
+    if (page === 'collection') {
+      dispatch(
+        canvasPageActions.setCanvasPage({
+          page: page,
+          name: collections.length > 0 ? collections[0].name : '',
+          id: collections.length > 0 ? collections[0].id : '',
+        }),
+      );
+      history.push(`/project/${currentProject.code}/data`);
+    } else {
+      dispatch(
+        canvasPageActions.setCanvasPage({
+          page: page,
+        }),
+      );
+      history.push(`/project/${currentProject.code}/data`);
+    }
+  };
+
+  return currentProject ? (
+    <div style={{ flexDirection: 'column', display: 'flex' }}>
+      <div
+        className={styles['shortcut--greenhome']}
+        onClick={() => goToPage('greenroom-home')}
+      >
+        <span className={styles.iconColumn}>
+          <HomeOutlined className={styles.icon1} />
+        </span>
+        <span className={styles.fileFont}>Green Room</span>
+        <span className={styles.fileNumber}>Files {greenRoomCount}</span>
       </div>
-      {coreCount !== null ? (
-        <div size={'small'} className={styles.card}>
-          <Row>
-            <Col className={styles.iconColumn}>
-              <FolderOpenOutlined className={styles.icon} />
-            </Col>
-            <Col>
-              <Row>
-                <span className={styles.fileNumber}>{coreCount}</span>
-              </Row>
-              <Row>
-                <span className={styles.fileFont}>Core</span>
-              </Row>
-            </Col>
-          </Row>
+      {props.projectRole !== 'contributor' && coreCount !== null ? (
+        <div
+          className={styles['shortcut--core']}
+          onClick={() => goToPage('core-home')}
+        >
+          <span className={styles.iconColumn}>
+            <CloudServerOutlined className={styles.icon2} />
+          </span>
+          <span className={styles.fileFont}>Core</span>
+          <span className={styles.fileNumber}>Files {coreCount}</span>
         </div>
       ) : null}
-      <div size={'small'} className={styles.card}>
-        <Row>
-          <Col className={styles.iconColumn}>
-            <CloudUploadOutlined className={styles.icon} />
-          </Col>
-          <Col>
-            <Row>
-              <span className={styles.fileNumber}>{uploadCount}</span>
-            </Row>
-            <Row>
-              <span className={styles.fileFont}>Uploaded (Today)</span>
-            </Row>
-          </Col>
-        </Row>
-      </div>
-      <div size={'small'} className={styles.card}>
-        <Row>
-          <Col className={styles.iconColumn}>
-            <CloudDownloadOutlined className={styles.icon} />
-          </Col>
-          <Col>
-            <Row>
-              <span className={styles.fileNumber}>{downloadCount}</span>
-            </Row>
-            <Row>
-              <span className={styles.fileFont}>Downloaded (Today)</span>
-            </Row>
-          </Col>
-        </Row>
-      </div>
-      {props.projectRole === 'admin' && (
-        <div size={'small'} className={styles.card}>
-          <Row>
-            <Col className={styles.iconColumn}>
-              <CheckOutlined className={styles.icon} />
-            </Col>
-            <Col>
-              <Row>
-                <span className={styles.fileNumber}>{copyCount}</span>
-              </Row>
-              <Row>
-                <span className={styles.fileFont}>Approved (Today)</span>
-              </Row>
-            </Col>
-          </Row>
+      {props.projectRole !== 'contributor' ? (
+        <div
+          className={styles['shortcut--collections']}
+          onClick={() => goToPage('collection')}
+        >
+          <span className={styles.iconColumn}>
+            <PaperClipOutlined
+              className={styles.icon3}
+              style={{
+                cursor: collections.length === 0 ? '' : 'pointer',
+                opacity: collections.length === 0 ? 0.5 : 1,
+              }}
+            />
+          </span>
+          <span
+            className={styles.fileFont}
+            style={{ opacity: collections.length === 0 ? 0.5 : 1 }}
+          >
+            <span
+              className={styles['collections-num']}
+              style={{
+                opacity: collections.length === 0 ? 0.5 : 1,
+              }}
+            >
+              {collections.length}
+            </span>{' '}
+            Collections
+          </span>
+          <span style={{ color: 'transparent' }}>File</span>
         </div>
-      )}
+      ) : null}
     </div>
   ) : null;
 }
 
-export default connect((state) => ({
-  containersPermission: state.containersPermission,
-  datasetList: state.datasetList,
-  successNum: state.successNum,
-  username: state.username,
-  role: state.role,
-}))(withRouter(FileStats));
+export default connect(
+  (state) => ({
+    containersPermission: state.containersPermission,
+    datasetList: state.datasetList,
+    successNum: state.successNum,
+    username: state.username,
+    role: state.role,
+    canvasPage: state.canvasPage,
+  }),
+  { setCanvasPage: canvasPageActions.setCanvasPage },
+)(withRouter(FileStats));

@@ -1,6 +1,7 @@
 import React, { useEffect, useState, Suspense, useContext } from 'react';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import { authedRoutes, unAuthedRoutes } from './Routes';
+import './Antd.less';
 import './Portal.scss';
 import { useSelector, useDispatch } from 'react-redux';
 import {
@@ -45,7 +46,7 @@ import TermsOfUse from './Views/TermsOfUse/TermsOfUse';
 import semver from 'semver';
 import AccountDisabled from './Views/AccountDisabled/AccountDisabled';
 import { JOB_STATUS } from './Components/Layout/FilePanel/jobStatus';
-import { dcmID, PORTAL_PREFIX } from './config';
+import { PORTAL_PREFIX } from './config';
 
 // router change
 history.listen(() => {
@@ -206,13 +207,13 @@ function Portal(props) {
   const initApis = async (username) => {
     try {
       const params = {
-        order_by: 'time_created',
+        order_by: 'created_at',
         order_type: 'desc',
         is_all: true,
       };
 
       const {
-        data: { result: containersPermission, role },
+        data: { results: containersPermission, role },
       } = await listUsersContainersPermission(username, params);
       setUserRoleDispatcher(role);
       setContainersPermissionDispatcher(containersPermission);
@@ -339,7 +340,7 @@ function Portal(props) {
     } catch (err) {
       if (err.response) {
         const errorMessager = new ErrorMessager(
-          namespace.common.listAllContainersPermission,
+          namespace.common.listUsersContainersPermission,
         );
         errorMessager.triggerMsg(err.response.status);
       }
@@ -407,14 +408,6 @@ function Portal(props) {
           if (code === 200) {
             for (let pendingFile of pendingArr) {
               let fileName = pendingFile.fileName;
-              if (pendingFile['dcmID']) {
-                let fileNameArr = pendingFile.fileName.split('/');
-                let fileNameTxt = fileNameArr[fileNameArr.length - 1];
-                fileNameArr[
-                  fileNameArr.length - 1
-                ] = `${pendingFile['dcmID']}_${fileNameTxt}`;
-                fileName = fileNameArr.join('/');
-              }
               const fileStatus = result?.find(
                 (el) => el.jobId === pendingFile.jobId,
               );
@@ -500,7 +493,7 @@ function Portal(props) {
                     let res = protectedRoutes(
                       item.protectedType,
                       keycloak.authenticated,
-                      props.match.params.datasetId,
+                      props.match.params.projectCode,
                       containersPermission,
                       role,
                     );

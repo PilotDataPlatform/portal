@@ -18,7 +18,7 @@ import {
 import { getUsersOnDatasetAPI, getAdminsOnDatasetAPI } from '../../../../APIs';
 import { objectKeysToCamelCase, getTags } from '../../../../Utility';
 import { PLATFORM } from '../../../../config';
-
+import styles from './index.module.scss';
 const { Content } = Layout;
 const { Paragraph } = Typography;
 function ProjectItemCard({ item, currentRole, platformRole }) {
@@ -101,11 +101,10 @@ function ProjectItemCard({ item, currentRole, platformRole }) {
       </div>
     </div>
   );
-
   const title = (
     <div>
       {currentRole ? (
-        <Link to={`/project/${item.id}/canvas`}>
+        <Link to={`/project/${item.code}/canvas`}>
           {item.name.length > 40 ? (
             <Tooltip title={item.name}>
               <div style={{ marginTop: '-4px' }}>
@@ -337,11 +336,10 @@ function ProjectItemCard({ item, currentRole, platformRole }) {
       return tagsContent;
     }
   };
-
-  const avatar = item.icon ? (
+  const avatar = item.imageUrl ? (
     <Avatar
       shape="circle"
-      src={item.icon && item.icon}
+      src={item.imageUrl}
       style={{
         border: '#003262',
         borderWidth: '1px',
@@ -402,7 +400,7 @@ function ProjectItemCard({ item, currentRole, platformRole }) {
         >
           <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
             {currentRole ? (
-              <Link to={`/project/${item.id}/canvas`}>
+              <Link to={`/project/${item.code}/canvas`}>
                 <div
                   style={{
                     padding: '8px 0 0 0',
@@ -456,12 +454,7 @@ function ProjectItemCard({ item, currentRole, platformRole }) {
             onClick={() => {
               setPageHeaderExpand(false);
             }}
-            style={{
-              color: '#1890FF',
-              fontSize: '22px',
-              zIndex: 2,
-              position: 'relative',
-            }}
+            className={styles['expend-icon']}
           />
         ) : (
           <DownCircleOutlined
@@ -474,12 +467,7 @@ function ProjectItemCard({ item, currentRole, platformRole }) {
               }
               setPageHeaderExpand(true);
             }}
-            style={{
-              color: '#1890FF',
-              fontSize: '22px',
-              zIndex: 2,
-              position: 'relative',
-            }}
+            className={styles['expend-icon']}
           />
         )}
       </div>

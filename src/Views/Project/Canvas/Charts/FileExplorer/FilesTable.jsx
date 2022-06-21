@@ -8,6 +8,7 @@ import {
   checkGreenAndCore,
 } from '../../../../../Utility';
 import { connect } from 'react-redux';
+import variables from '../../../../../Themes/base.scss';
 class FilesTable extends React.Component {
   constructor(props) {
     super(props);
@@ -51,46 +52,50 @@ class FilesTable extends React.Component {
   getCurrentSourceType = () => {
     if (checkIsVirtualFolder(this.props.panelKey)) {
       if (this.props.currentRouting?.length === 0) {
-        return 'Collection';
+        return 'collection';
       } else {
-        return 'Folder';
+        return 'folder';
       }
     } else if (this.props.panelKey.toLowerCase().includes('trash')) {
       if (this.props.currentRouting?.length === 0) {
-        return 'TrashFile';
+        return 'trash';
       } else {
-        return 'Folder';
+        return 'folder';
       }
     }
 
     // this check is for table columns sorting and get source type when clicing on refresh button.
-    if (checkGreenAndCore(this.props.panelKey) && this.props.currentRouting?.length > 0) {
-      return 'Folder';
+    if (
+      checkGreenAndCore(this.props.panelKey) &&
+      this.props.currentRouting?.length > 0
+    ) {
+      return 'folder';
     } else {
-      return 'Project';
+      return 'project';
     }
-  }
+  };
 
   componentWillReceiveProps(nextProps, nextState) {
     if (this.props.activePane !== nextProps.activePane) {
       const curSourceType = this.getCurrentSourceType();
+      const parentInfo = this.props.getParentPathAndId();
       const params = {
-        geid: this.props.getCurrentGeid(),
+        ...parentInfo,
         page: this.state.page,
         pageSize: this.state.pageSize,
         orderBy: this.state.sortColumn,
         orderType: this.state.order,
         sourceType: curSourceType,
       };
-       if (curSourceType === 'Folder' && this.props.currentRouting.length) {
-         params.node = {
-           nodeLabel:
-             this.props.currentRouting[this.props.currentRouting.length - 1]
-               .labels,
-         };
-       }
-       // update table
-       this.props.updateTable(params);
+      if (curSourceType === 'folder' && this.props.currentRouting?.length) {
+        params.node = {
+          nodeLabel:
+            this.props.currentRouting[this.props.currentRouting.length - 1]
+              .labels,
+        };
+      }
+      // update table
+      this.props.updateTable(params);
     }
   }
 
@@ -139,7 +144,10 @@ class FilesTable extends React.Component {
     ),
     filterIcon: (filtered) => (
       <SearchOutlined
-        style={{ color: filtered ? '#1890ff' : undefined, top: '60%' }}
+        style={{
+          color: filtered ? variables.primaryColorLight1 : undefined,
+          top: '60%',
+        }}
       />
     ),
     onFilterDropdownVisibleChange: (visible) => {
@@ -191,14 +199,6 @@ class FilesTable extends React.Component {
         value: filters.fileName[0],
       });
     }
-    if (filters["dcmID"] && filters["dcmID"].length > 0) {
-      isSearchingFile = true;
-
-      searchText.push({
-        value: filters["dcmID"][0],
-        key: "dcmID",
-      });
-    }
 
     if (filters.owner && filters.owner.length > 0) {
       isSearchingFile = true;
@@ -212,8 +212,9 @@ class FilesTable extends React.Component {
     this.setState({ searchText: searchText });
 
     const curSourceType = this.getCurrentSourceType();
+    const parentInfo = this.props.getParentPathAndId();
     const params = {
-      geid: this.props.getCurrentGeid(),
+      ...parentInfo,
       page: pagination.current - 1,
       pageSize: pagination.pageSize,
       orderBy: sorter.columnKey,
@@ -221,10 +222,11 @@ class FilesTable extends React.Component {
       query: convertFilter(searchText),
       sourceType: curSourceType,
     };
-    if (curSourceType === 'Folder' && this.props.currentRouting.length ) {
+    if (curSourceType === 'folder' && this.props.currentRouting.length) {
       params.node = {
         nodeLabel:
-          this.props.currentRouting[this.props.currentRouting.length - 1].labels,
+          this.props.currentRouting[this.props.currentRouting.length - 1]
+            .labels,
       };
     }
     // update table
@@ -264,8 +266,7 @@ class FilesTable extends React.Component {
               current: page + 1,
               pageSize,
               total: totalItem,
-              pageSizeOptions: [10, 20, 50],
-              showQuickJumper: true,
+              pageSizeOptions: ['10', '20', '50'],
               showSizeChanger: true,
             }}
             loading={this.props.tableLoading}

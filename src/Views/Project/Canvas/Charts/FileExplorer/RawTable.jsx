@@ -48,13 +48,13 @@ import GreenRoomUploader from '../../../Components/GreenRoomUploader';
 import FilesTable from './FilesTable';
 import styles from './index.module.scss';
 import {
-  getCurrentProject,
   getFileSize,
   timeConvert,
   checkIsVirtualFolder,
   checkUserHomeFolder,
   checkRootFolder,
   checkGreenAndCore,
+  useCurrentProject,
 } from '../../../../../Utility';
 import { setSuccessNum } from '../../../../../Redux/actions';
 import LineageGraph from './LineageGraph';
@@ -71,6 +71,7 @@ import Copy2CorePlugin from './Plugins/Copy2Core/Copy2CorePlugin';
 import VirtualFolderPlugin from './Plugins/VirtualFolders/VirtualFolderPlugin';
 import VirtualFolderFilesDeletePlugin from './Plugins/VirtualFolderDeleteFiles/VirtualFolderFilesDeletePlugin';
 import VirtualFolderDeletePlugin from './Plugins/VirtualFolderDelete/VirtualFolderDeletePlugin';
+import VirtualFolderRenamePlugin from './Plugins/VirtualFolderRename/VirtualFolderRenamePlugin';
 import ZipContentPlugin from './Plugins/ZipContent/ZipContentPlugin';
 import DeleteFilesPlugin from './Plugins/DeleteFiles/DeleteFilesPlugin';
 import ManifestManagementPlugin from './Plugins/ManifestManagement/ManifestManagementPlugin';
@@ -84,7 +85,6 @@ import i18n from '../../../../../i18n';
 import { FILE_OPERATIONS } from './FileOperationValues';
 import { JOB_STATUS } from '../../../../../Components/Layout/FilePanel/jobStatus';
 import { hideButton } from './hideButtons';
-import { dcmProjectCode, DcmSpaceID } from '../../../../../config';
 const { Panel } = Collapse;
 const { Title } = Typography;
 const _ = require('lodash');
@@ -120,7 +120,7 @@ function RawTable(props) {
   // const [tableLoading, setTableLoading] = useState(false);
 
   const sessionId = tokenManager.getCookie('sessionId');
-  const currentDataset = getCurrentProject(props.projectId);
+  const [currentDataset] = useCurrentProject();
   const projectActivePanel = useSelector(
     (state) => state.project && state.project.tree && state.project.tree.active,
   );
@@ -149,21 +149,21 @@ function RawTable(props) {
     currentRouting &&
     currentRouting.length === 0;
 
-  const getCurrentGeid = () => {
-    let currentGeid;
+  const getParentPathAndId = () => {
     if (currentRouting && currentRouting.length) {
-      currentGeid = currentRouting[currentRouting.length - 1].globalEntityId;
-      if (currentRouting[currentRouting.length - 1].name === props.username) {
-        currentGeid = null;
-      }
+      return {
+        parentPath: currentRouting.map((v) => v.name).join('.'),
+      };
     } else {
       if (isVFolder) {
-        return geid;
+        return {
+          parentId: geid,
+        };
       }
-      currentGeid = datasetGeid;
+      return {
+        parentPath: null,
+      };
     }
-
-    return currentGeid;
   };
   const currentRouteLength = 0 || currentRouting?.length;
 
@@ -213,13 +213,7 @@ function RawTable(props) {
     }
   }, [rawFiles.data]);
 
-  const getColumnWidth = (
-    panelKey,
-    isDCM,
-    isRootFolder,
-    sidepanelOpen,
-    columnKey,
-  ) => {
+  const getColumnWidth = (panelKey, isRootFolder, sidepanelOpen, columnKey) => {
     const OPEN_SIDE = {
       name: '65%',
       action: 100,
@@ -251,14 +245,6 @@ function RawTable(props) {
       owner: '35%',
       createTime: '25%',
     };
-    const GREENROOM_CORE_NOMAL_GEN = {
-      name: '25%',
-      owner: '17%',
-      dcmID: 140,
-      createTime: 120,
-      size: 100,
-      action: 80,
-    };
     if (sidepanelOpen) {
       return OPEN_SIDE[columnKey];
     }
@@ -273,11 +259,7 @@ function RawTable(props) {
       if (isRootFolder) {
         return GREENROOM_CORE_ROOT[columnKey];
       } else {
-        if (isDCM) {
-          return GREENROOM_CORE_NOMAL_GEN[columnKey];
-        } else {
-          return GREENROOM_CORE_NOMAL[columnKey];
-        }
+        return GREENROOM_CORE_NOMAL[columnKey];
       }
     }
   };
@@ -304,13 +286,7 @@ function RawTable(props) {
       dataIndex: 'fileName',
       key: 'fileName',
       sorter: true,
-      width: getColumnWidth(
-        panelKey,
-        currentDataset.code === dcmProjectCode,
-        isRootFolder,
-        sidepanel,
-        'name',
-      ),
+      width: getColumnWidth(panelKey, isRootFolder, sidepanel, 'name'),
       searchKey: !panelKey.startsWith('vfolder-') ? 'name' : null,
       render: (text, record) => {
         let filename = text;
@@ -348,19 +324,13 @@ function RawTable(props) {
               ) {
                 return;
               }
-              let recordGeid = record.geid;
-              if (
-                checkGreenAndCore(panelKey) &&
-                currentRouting?.length === 0 &&
-                record.name === props.username
-              ) {
-                recordGeid = null;
-              }
               if (record.nodeLabel.indexOf('Folder') !== -1) {
                 dispatch(setTableLayoutReset(panelKey));
                 refreshFiles({
-                  geid: recordGeid,
-                  sourceType: 'Folder',
+                  parentPath: record.displayPath
+                    ? record.displayPath + '.' + record.name
+                    : record.name,
+                  sourceType: 'folder',
                   node: { nodeLabel: record.nodeLabel },
                   resetTable: true,
                 });
@@ -402,13 +372,7 @@ function RawTable(props) {
         ['collaborator', 'contributor'].includes(permission)
           ? false
           : true,
-      width: getColumnWidth(
-        panelKey,
-        currentDataset.code === dcmProjectCode,
-        isRootFolder,
-        sidepanel,
-        'owner',
-      ),
+      width: getColumnWidth(panelKey, isRootFolder, sidepanel, 'owner'),
       searchKey:
         (projectActivePanel &&
           projectActivePanel.startsWith('greenroom-') &&
@@ -418,33 +382,6 @@ function RawTable(props) {
           : 'owner',
       ellipsis: true,
     },
-    currentDataset &&
-    currentDataset.code === dcmProjectCode &&
-    !panelKey.includes('trash') &&
-    !panelKey.startsWith('vfolder-')
-      ? {
-          title: DcmSpaceID,
-          dataIndex: 'dcmId',
-          key: 'dcmID',
-          sorter: true,
-          width: getColumnWidth(
-            panelKey,
-            currentDataset.code === dcmProjectCode,
-            isRootFolder,
-            sidepanel,
-            'dcmID',
-          ),
-          searchKey: 'dcmID',
-          ellipsis: true,
-          render: (text, record) => {
-            if (text === 'undefined') {
-              return '';
-            } else {
-              return text;
-            }
-          },
-        }
-      : {},
     !panelKey.includes('trash')
       ? {
           title: 'Created',
@@ -453,7 +390,6 @@ function RawTable(props) {
           sorter: true,
           width: getColumnWidth(
             panelKey,
-            currentDataset.code === dcmProjectCode,
             isRootFolder,
             sidepanel,
             'createTime',
@@ -472,7 +408,6 @@ function RawTable(props) {
           sorter: true,
           width: getColumnWidth(
             panelKey,
-            currentDataset.code === dcmProjectCode,
             isRootFolder,
             sidepanel,
             'deleteTime',
@@ -503,7 +438,6 @@ function RawTable(props) {
           ellipsis: true,
           width: getColumnWidth(
             panelKey,
-            currentDataset.code === dcmProjectCode,
             isRootFolder,
             sidepanel,
             'originalLocation',
@@ -517,20 +451,17 @@ function RawTable(props) {
           dataIndex: 'fileSize',
           key: 'fileSize',
           render: (text, record) => {
-            if ([undefined, null].includes(record.fileSize)) {
+            if (
+              record.nodeLabel.indexOf('Folder') !== -1 ||
+              [undefined, null].includes(record.fileSize)
+            ) {
               return '';
             }
             return getFileSize(text);
           },
           sorter: true,
           ellipsis: true,
-          width: getColumnWidth(
-            panelKey,
-            currentDataset.code === dcmProjectCode,
-            isRootFolder,
-            sidepanel,
-            'size',
-          ),
+          width: getColumnWidth(panelKey, isRootFolder, sidepanel, 'size'),
         }
       : {},
     (checkGreenAndCore(panelKey) && !isRootFolder) ||
@@ -538,29 +469,20 @@ function RawTable(props) {
       ? {
           title: 'Action',
           key: 'action',
-          width: getColumnWidth(
-            panelKey,
-            currentDataset.code === dcmProjectCode,
-            isRootFolder,
-            sidepanel,
-            'action',
-          ),
+          width: getColumnWidth(panelKey, isRootFolder, sidepanel, 'action'),
           render: (text, record) => {
             let file = record.name;
-            var folder = file && file.substring(0, file.lastIndexOf('/') + 1);
-            var filename =
-              file && file.substring(file.lastIndexOf('/') + 1, file.length);
+            // var folder = record.displayPath;
+            // var filename =
+            //   file && file.substring(file.lastIndexOf('/') + 1, file.length);
             let files = [
               {
-                file: filename,
-                path: folder,
-                geid: record.geid,
-                project_code: currentDataset.code,
+                id: record.geid,
               },
             ];
 
             const menu = (
-              <Menu>
+              <Menu style={{ borderRadius: '6px' }}>
                 <Menu.Item
                   disabled={
                     deletedFileList &&
@@ -591,9 +513,7 @@ function RawTable(props) {
                       downloadFilesAPI(
                         props.projectId,
                         files,
-                        null,
                         props.appendDownloadListCreator,
-                        sessionId,
                         currentDataset.code,
                         props.username,
                         panelKey.startsWith('greenroom') ? 'greenroom' : 'Core',
@@ -661,15 +581,17 @@ function RawTable(props) {
                   el.status === JOB_STATUS.RUNNING,
               );
             return (
-              <Dropdown
-                overlay={menu}
-                placement="bottomRight"
-                disabled={isDeleted !== undefined}
-              >
-                <Button shape="circle">
-                  <MoreOutlined />
-                </Button>
-              </Dropdown>
+              <div class={styles['file-explorer__action-button']}>
+                <Dropdown
+                  overlay={menu}
+                  placement="bottomRight"
+                  disabled={isDeleted !== undefined}
+                >
+                  <Button shape="circle">
+                    <MoreOutlined />
+                  </Button>
+                </Dropdown>
+              </div>
             );
           },
         }
@@ -687,29 +609,23 @@ function RawTable(props) {
   const datasetGeid = currentDataset?.globalEntityId;
   async function fetchData() {
     if (currentRouting && currentRouting.length) {
-      const leveledRoutes = currentRouting.sort((a, b) => {
-        return a.folderLevel - b.folderLevel;
-      });
-      const routeToGo = leveledRoutes.pop();
-      if (routeToGo) {
-        setRefreshing(true);
-        await refreshFiles({
-          geid:
-            routeToGo.displayPath === props.username
-              ? null
-              : routeToGo.globalEntityId,
-          sourceType: 'Folder',
-          node: { nodeLabel: routeToGo.labels },
-          resetTable: true,
-        });
-        dispatch(setTableLayoutReset(panelKey));
-        setRefreshing(false);
-      }
-    } else {
       setRefreshing(true);
       await refreshFiles({
-        geid: isVFolder ? geid : datasetGeid, // TODO: or dataset or folder Geid
-        sourceType: getSourceType(),
+        parentPath: currentRouting.map((v) => v.name).join('.'),
+        sourceType: 'folder',
+        node: { nodeLabel: currentRouting[currentRouting.length - 1].labels },
+        resetTable: true,
+      });
+      dispatch(setTableLayoutReset(panelKey));
+      setRefreshing(false);
+    } else {
+      setRefreshing(true);
+
+      const sourceTypePara = getSourceType();
+      await refreshFiles({
+        parentId: isVFolder ? geid : null, // TODO: or dataset or folder Geid
+        parentPath: null,
+        sourceType: sourceTypePara,
         resetTable: true,
       });
       dispatch(setTableLayoutReset(panelKey));
@@ -724,30 +640,33 @@ function RawTable(props) {
   }, [props.successNum, datasetGeid]);
 
   async function firstTimeLoad() {
-    let geidParam;
+    let pathParam;
+    let parentId;
     if (isVFolder) {
-      geidParam = geid;
+      pathParam = null;
+      parentId = geid;
     } else {
       if (checkUserHomeFolder(panelKey)) {
-        geidParam = null;
+        pathParam = props.username;
       } else {
-        geidParam = datasetGeid;
+        pathParam = null;
       }
     }
     const getSourceTypeParam = () => {
       if (checkIsVirtualFolder(panelKey)) {
-        return 'Collection';
+        return 'collection';
       } else if (panelKey.toLowerCase().includes('trash')) {
-        return 'TrashFile';
+        return 'trash';
       }
       if (checkRootFolder(panelKey)) {
-        return 'Project';
+        return 'project';
       } else {
-        return 'Folder';
+        return 'folder';
       }
     };
     refreshFiles({
-      geid: geidParam, // TODO: or dataset or folder Geid
+      parentId: parentId,
+      parentPath: pathParam, // TODO: or dataset or folder Geid
       sourceType: getSourceTypeParam(),
       resetTable: true,
     });
@@ -861,25 +780,18 @@ function RawTable(props) {
     selectedRows.forEach((i) => {
       let file = i;
       files.push({
-        owner: file.owner,
-        geid: file.geid,
-        project_code: currentDataset.code,
-        location: file.location,
+        id: file.geid,
       });
     });
     downloadFilesAPI(
       props.projectId,
       files,
-      setLoading,
       props.appendDownloadListCreator,
-      sessionId,
       currentDataset.code,
       props.username,
       panelKey.startsWith('greenroom') ? 'greenroom' : 'Core',
     )
       .then((res) => {
-        // if (files && files.length === 1)
-        //   dispatch(setSuccessNum(props.successNum + 1));
         if (res) {
           const url = res;
           window.open(url, '_blank');
@@ -991,15 +903,16 @@ function RawTable(props) {
     const isVFolder = checkIsVirtualFolder(panelKey);
 
     if (isVFolder) {
-      sourceType = 'Collection';
+      sourceType = 'collection';
     } else if (panelKey.toLowerCase().includes('trash')) {
-      sourceType = 'TrashFile';
+      sourceType = 'trash';
     } else {
-      sourceType = 'Project';
+      sourceType = 'project';
     }
 
     await refreshFiles({
-      geid: isVFolder ? geid : datasetGeid,
+      parentId: isVFolder ? geid : null,
+      parentPath: null,
       sourceType,
       resetTable: true,
     });
@@ -1007,16 +920,16 @@ function RawTable(props) {
 
   const getSourceType = () => {
     if (checkIsVirtualFolder(panelKey)) {
-      return 'Collection';
+      return 'collection';
     } else if (panelKey.toLowerCase().includes('trash')) {
-      return 'TrashFile';
+      return 'trash';
     }
 
     // this check is for table columns sorting and get source type when clicing on refresh button.
     if (checkGreenAndCore(panelKey) && currentRouting?.length > 0) {
-      return 'Folder';
+      return 'folder';
     } else {
-      return 'Project';
+      return 'project';
     }
   };
 
@@ -1035,7 +948,8 @@ function RawTable(props) {
    */
   async function refreshFiles(params) {
     let {
-      geid,
+      parentPath,
+      parentId,
       page = 0,
       pageSize = 10,
       orderBy = 'createTime',
@@ -1049,7 +963,6 @@ function RawTable(props) {
     if (tableLoading) return;
     setTableLoading(true);
     let res;
-
     try {
       if (!partial) {
         partial = [];
@@ -1058,7 +971,8 @@ function RawTable(props) {
         });
       }
       res = await getFiles(
-        geid,
+        parentPath,
+        parentId,
         page,
         pageSize,
         mapColumnKey(orderBy),
@@ -1068,7 +982,7 @@ function RawTable(props) {
         sourceType,
         partial,
         panelKey,
-        datasetGeid,
+        currentDataset?.code,
       );
       res = await insertManifest(res);
       const { files, total } = resKeyConvert(res);
@@ -1110,7 +1024,7 @@ function RawTable(props) {
             !reFreshing && fetchData();
           }}
           currentRouting={currentRouting}
-          projectCode={currentDataset.code}
+          projectCode={currentDataset?.code}
           uploader={props.username}
           panelKey={panelKey}
         />
@@ -1315,105 +1229,26 @@ function RawTable(props) {
         />
       ),
     },
+    {
+      condition:
+        props.type === DataSourceType.CORE_VIRTUAL_FOLDER &&
+        !currentRouting?.length &&
+        !hasSelected,
+      elm: <VirtualFolderRenamePlugin panelKey={panelKey} />,
+    },
   ];
-  const ToolTipsAndTable = (
-    <div style={{ position: 'relative' }}>
-      <div
-        style={{
-          marginBottom: 36,
-          marginTop: 20,
-          position: 'relative',
-        }}
-        className={`${styles.file_explore_actions} file_explorer_header_bar`}
-        ref={actionBarRef}
-      >
-        {currentRouting?.length ? (
-          <>
-            <div
+
+  const showFilePathBreadcrumb = () => {
+    if (currentRouting?.length) {
+      return (
+        <>
+          <Breadcrumb separator=">" className={`${styles.file_folder_path}`}>
+            <Breadcrumb.Item
               style={{
-                marginLeft: 10,
-                marginRight: 20,
-                display: 'inline-block',
+                cursor: 'pointer',
               }}
+              onClick={goRoot}
             >
-              <Breadcrumb
-                separator=">"
-                style={{ maxWidth: 500, display: 'inline-block' }}
-                className={`${styles.file_folder_path}`}
-              >
-                <Breadcrumb.Item
-                  style={{
-                    cursor: 'pointer',
-                  }}
-                  onClick={goRoot}
-                >
-                  {checkIsVirtualFolder(panelKey)
-                    ? titleText
-                    : panelKey.toLowerCase().includes('trash')
-                    ? 'Trash'
-                    : panelKey.toLowerCase().includes('core')
-                    ? 'Core'
-                    : 'Green Room'}
-                </Breadcrumb.Item>
-                {currentRouting.length > 4 ? (
-                  <Breadcrumb.Item>...</Breadcrumb.Item>
-                ) : null}
-                {orderRouting
-                  .slice(checkIsVirtualFolder(panelKey) ? -1 : -3)
-                  .map((v) => {
-                    let geid = v.globalEntityId;
-                    if (v.displayPath === props.username) {
-                      geid = null;
-                    }
-                    return (
-                      <Breadcrumb.Item
-                        style={
-                          v.globalEntityId ===
-                          orderRouting[orderRouting.length - 1].globalEntityId
-                            ? null
-                            : { cursor: 'pointer' }
-                        }
-                        onClick={() => {
-                          if (
-                            v.globalEntityId ===
-                            orderRouting[orderRouting.length - 1].globalEntityId
-                          ) {
-                            return;
-                          }
-                          clearFilesSelection();
-                          refreshFiles({
-                            geid,
-                            sourceType: 'Folder',
-                            resetTable: true,
-                            node: { nodeLabel: v.labels },
-                          });
-                          dispatch(setTableLayoutReset(panelKey));
-                        }}
-                      >
-                        {v.name.length > 23 ? (
-                          <Tip title={v.name}>
-                            {v.name.slice(0, 20) + '...'}
-                          </Tip>
-                        ) : (
-                          v.name
-                        )}
-                      </Breadcrumb.Item>
-                    );
-                  })}
-              </Breadcrumb>
-            </div>
-          </>
-        ) : (
-          <Breadcrumb
-            style={{
-              maxWidth: 500,
-              display: 'inline-block',
-              marginLeft: 10,
-              marginRight: 30,
-            }}
-            className={styles.file_folder_path}
-          >
-            <Breadcrumb.Item onClick={goRoot}>
               {checkIsVirtualFolder(panelKey)
                 ? titleText
                 : panelKey.toLowerCase().includes('trash')
@@ -1422,8 +1257,77 @@ function RawTable(props) {
                 ? 'Core'
                 : 'Green Room'}
             </Breadcrumb.Item>
+            {currentRouting.length > 4 ? (
+              <Breadcrumb.Item>...</Breadcrumb.Item>
+            ) : null}
+            {orderRouting
+              .slice(checkIsVirtualFolder(panelKey) ? -1 : -3)
+              .map((v, index) => {
+                return (
+                  <Breadcrumb.Item
+                    style={
+                      index === orderRouting.length - 1
+                        ? null
+                        : { cursor: 'pointer' }
+                    }
+                    onClick={() => {
+                      if (index === orderRouting.length - 1) {
+                        return;
+                      }
+                      clearFilesSelection();
+                      refreshFiles({
+                        parentPath: v.displayPath
+                          ? v.displayPath + '.' + v.name
+                          : v.name,
+                        sourceType: 'folder',
+                        resetTable: true,
+                        node: { nodeLabel: v.labels },
+                      });
+                      dispatch(setTableLayoutReset(panelKey));
+                    }}
+                  >
+                    {v.name.length > 23 ? (
+                      <Tip title={v.name}>{v.name.slice(0, 20) + '...'}</Tip>
+                    ) : (
+                      v.name
+                    )}
+                  </Breadcrumb.Item>
+                );
+              })}
           </Breadcrumb>
-        )}
+        </>
+      );
+    } else {
+      return (
+        <Breadcrumb
+          style={{
+            maxWidth: 500,
+            display: 'inline-block',
+            marginLeft: 10,
+            marginRight: 30,
+          }}
+          className={styles.file_folder_path}
+        >
+          <Breadcrumb.Item onClick={goRoot}>
+            {checkIsVirtualFolder(panelKey)
+              ? titleText
+              : panelKey.toLowerCase().includes('trash')
+              ? 'Trash'
+              : panelKey.toLowerCase().includes('core')
+              ? 'Core'
+              : 'Green Room'}
+          </Breadcrumb.Item>
+        </Breadcrumb>
+      );
+    }
+  };
+
+  const ToolTipsAndTable = (
+    <div style={{ position: 'relative' }}>
+      <div
+        className={`${styles.file_explore_actions} file_explorer_header_bar`}
+        ref={actionBarRef}
+      >
         {showPlugins &&
           plugins.map(({ condition, elm }) => {
             if (condition) {
@@ -1437,9 +1341,9 @@ function RawTable(props) {
             overlayClassName={styles['drop-down']}
             overlay={
               <Menu className={styles[`show-menu-${menuItems}`]}>
-                {plugins.map(({ condition, elm }) => {
+                {plugins.map(({ condition, elm }, ind) => {
                   if (condition) {
-                    return <Menu.Item>{elm}</Menu.Item>;
+                    return <Menu.Item key={'menu-' + ind}>{elm}</Menu.Item>;
                   } else {
                     return null;
                   }
@@ -1477,6 +1381,8 @@ function RawTable(props) {
         }
       </div>
 
+      {showFilePathBreadcrumb()}
+
       <FilesTable
         columns={columns}
         dataSource={rawFiles.data}
@@ -1493,7 +1399,7 @@ function RawTable(props) {
         tags={value}
         selectedRecord={currentRecord}
         tableState={tableState}
-        getCurrentGeid={getCurrentGeid}
+        getParentPathAndId={getParentPathAndId}
         tableLoading={tableLoading}
         currentRouting={currentRouting}
       />
@@ -1532,16 +1438,7 @@ function RawTable(props) {
       )}
 
       <div id="rawTable-sidePanel" style={{ display: 'flex' }} ref={ref}>
-        <div
-          style={{
-            borderRight: '1px solid rgb(240, 240, 240)',
-            // paddingRight: '16px',
-            marginRight: sidepanel ? '16px' : 0,
-            width: tableWidth,
-          }}
-        >
-          {ToolTipsAndTable}
-        </div>
+        <div>{ToolTipsAndTable}</div>
         {sidepanel && (
           <div
             style={{
@@ -1652,7 +1549,6 @@ function RawTable(props) {
         cancel={() => {
           toggleModal(false);
         }}
-        datasetId={parseInt(props.projectId)}
         panelKey={panelKey}
       />
       <FileBasicsModal
@@ -1693,17 +1589,20 @@ function RawTable(props) {
     const geidsList = res.data.result.entities
       .filter((e) => e.attributes?.nodeLabel?.indexOf('Folder') === -1)
       .map((e) => e.geid);
-    let attrsMap = await getFileManifestAttrs(geidsList);
-    attrsMap = attrsMap.data.result;
-    res.data.result.entities = res.data.result.entities.map((entity) => {
-      return {
-        ...entity,
-        manifest:
-          attrsMap[entity.geid] && attrsMap[entity.geid].length
-            ? attrsMap[entity.geid]
-            : null,
-      };
-    });
+    if (geidsList && geidsList.length) {
+      let attrsMap = await getFileManifestAttrs(geidsList);
+      attrsMap = attrsMap.data.result;
+      res.data.result.entities = res.data.result.entities.map((entity) => {
+        return {
+          ...entity,
+          manifest:
+            attrsMap[entity.geid] && attrsMap[entity.geid].length
+              ? attrsMap[entity.geid]
+              : null,
+        };
+      });
+    }
+
     return res;
   }
 }
@@ -1767,11 +1666,10 @@ function resKeyConvert(res) {
 
 const mapColumnKey = (column) => {
   const columnMap = {
-    createTime: 'time_created',
+    createTime: 'created_time',
     fileName: 'name',
-    owner: 'uploader',
-    fileSize: 'file_size',
-    dcmID: 'dcm_id',
+    owner: 'owner',
+    fileSize: 'size',
   };
   return columnMap[column] || column;
 };

@@ -1,3 +1,4 @@
+@import '../../../Themes/base.scss';
 .file_explore_actions {
   :global {
     .ant-btn-link {
@@ -7,7 +8,7 @@
       color: rgba(0, 0, 0, 0.65);
     }
     .ant-btn-link:hover {
-      color: #40a9ff;
+      color: $primary-color-light-1;
     }
   }
 }
@@ -69,7 +70,9 @@
       align-items: center;
     }
     .ant-form-item-explain {
-      margin-left: 10px;
+      margin-left: 2px;
+      font-size: 11px;
+      white-space: nowrap;
     }
   }
 }
@@ -82,7 +85,9 @@
       align-items: center;
     }
     .ant-form-item-explain {
-      margin-left: 15px;
+      margin-left: 2px;
+      font-size: 11px;
+      white-space: nowrap;
     }
   }
 }

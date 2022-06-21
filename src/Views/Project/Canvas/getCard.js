@@ -12,6 +12,7 @@ import FileExplorer from './Charts/FileExplorer/FileExplorer';
 import Description from './Charts/Description/Description';
 import FileStats from './Cards/FileStats';
 import UserStats from './Cards/UserStats';
+import Charts from './Cards/Charts';
 import FileStatModal from '../Canvas/Modals/FileStatModal';
 import Superset from './Cards/Superset';
 
@@ -31,11 +32,10 @@ const getcard = (card, data, actions, state, handleExpand) => {
       const onExpand = () =>
         handleExpand(
           React.cloneElement(<FileStatModal />, {
-            datasetId: state.currentDataset,
             currentUser: state.currentUser,
             isAdmin: state.currentRole === 'admin',
           }),
-          "File Stream Advanced Search"||card.title,
+          'File Stream Advanced Search' || card.title,
           '55vw',
         );
       res = (
@@ -86,34 +86,9 @@ const getcard = (card, data, actions, state, handleExpand) => {
       };
       break;
     }
-    case 'datasets': {
-      res = (size, exportState, onExportClick) => (
-        <List
-          className="demo-loadmore-list"
-          itemLayout="horizontal"
-          dataSource={state.children}
-          renderItem={(item) => (
-            <List.Item
-              actions={[
-                // eslint-disable-next-line
-                <a key="list-loadmore-edit">
-                  <Link to={`/project/${parseInt(item.id)}/canvas`}>Enter</Link>{' '}
-                </a>,
-                // eslint-disable-next-line
-                <a key="list-loadmore-more">More</a>,
-              ]}
-            >
-              <List.Item.Meta
-                title={<a href="https://ant.design">{item.dataset_name}</a>}
-                description={'the description of ' + item.dataset_name}
-              />
-              {/*  <div>content</div> */}
-            </List.Item>
-          )}
-        />
-      );
+    case 'charts':
+      res = <Charts projectRole={state.currentProjectRole} />;
       break;
-    }
     default:
       break;
   }

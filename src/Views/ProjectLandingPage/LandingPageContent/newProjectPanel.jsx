@@ -29,7 +29,7 @@ import { trimString } from '../../../Utility';
 import styles from './index.module.scss';
 import _ from 'lodash';
 import {} from '../../../APIs';
-import { useSelector } from 'react-redux';
+import variables from '../../../Themes/base.scss';
 function NewProjectPanel({
   tags,
   username,
@@ -40,9 +40,7 @@ function NewProjectPanel({
 }) {
   const cancelAxios = { cancelFunction: () => {} };
   const [form] = Form.useForm();
-  const onFinish = () => {};
   const [submitting, toggleSubmitting] = useState(false);
-  const [description, setDescription] = useState('');
   const [imgURL, setImgURL] = useState('');
   const [discoverable, setDiscoverable] = useState(true);
   const { t } = useTranslation(['tooltips', 'success', 'formErrorMessages']);
@@ -56,7 +54,6 @@ function NewProjectPanel({
   };
 
   const onDescriptionChange = (e) => {
-    setDescription(e.target.value);
     form.setFieldsValue({ description: e.target.value });
   };
 
@@ -109,30 +106,29 @@ function NewProjectPanel({
     }
 
     if (values.description) values.description = trimString(values.description);
-
-    createProjectAPI(
-      {
-        name: _.trimStart(values.name),
-        code: values.code,
-        tags: values.tags,
-        discoverable: discoverable,
-        type: 'project',
-        icon: imgURL,
-        description: values.description,
-      },
-      cancelAxios,
-    )
+    const params = {
+      name: _.trimStart(values.name),
+      code: values.code,
+      tags: values.tags,
+      discoverable: discoverable,
+      type: 'project',
+      description: values.description,
+    };
+    if (imgURL && imgURL.split(',').length > 1) {
+      params['icon'] = imgURL.split(',')[1];
+    }
+    createProjectAPI(params, cancelAxios)
       .then(async (res) => {
         toggleSubmitting(false);
         const {
-          data: { result: containersPermission },
+          data: { results: containersPermission },
         } = await listUsersContainersPermission(username, {
-          order_by: 'time_created',
+          order_by: 'created_at',
           order_type: 'desc',
           is_all: true,
         });
         setContainersPermissionCreator(containersPermission);
-        UpdateDatasetCreator(res.data.result, 'All Projects');
+        UpdateDatasetCreator(res.data.results, 'All Projects');
         message.success(t('success:createProject'));
         onToggleCreateNewProject();
       })
@@ -480,7 +476,7 @@ function NewProjectPanel({
                   }}
                   onClick={onToggleCreateNewProject}
                 >
-                  <p style={{ color: '#1890FF' }}>Cancel</p>
+                  <p style={{ color: variables.primaryColorLight1 }}>Cancel</p>
                 </Button>
               </div>
             </Form.Item>

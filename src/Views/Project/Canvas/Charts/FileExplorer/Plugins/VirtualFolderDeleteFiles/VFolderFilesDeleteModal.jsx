@@ -17,6 +17,7 @@ const VFolderFilesDeleteModal = ({
   const dispatch = useDispatch();
   const successNum = useSelector((state) => state.successNum);
   const project = useSelector((state) => state.project);
+  const username = useSelector((state) => state.username);
   // eslint-disable-next-line
   const [confirmLoading, setConfirmLoading] = React.useState(false);
   const [vfolders, setVFolders] = useState([]);
@@ -29,7 +30,7 @@ const VFolderFilesDeleteModal = ({
     const vfolder = vfolders.find((v) => v.name === vfolderName);
     if (vfolder) {
       try {
-        await removeFromVirtualFolder(vfolder.geid, files);
+        await removeFromVirtualFolder(vfolder.id, files);
         clearSelection();
         message.success(`${i18n.t('success:virtualFolder.removeFiles')}`, 3);
         dispatch(setSuccessNum(successNum - files.length));
@@ -50,7 +51,7 @@ const VFolderFilesDeleteModal = ({
   };
   useEffect(() => {
     async function loadVFolders() {
-      const res = await listAllVirtualFolder(project.profile?.globalEntityId);
+      const res = await listAllVirtualFolder(project.profile?.code, username);
       const virualFolders = res.data.result;
       setVFolders(virualFolders);
     }

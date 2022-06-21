@@ -1,26 +1,14 @@
 import {
   serverAxiosNoIntercept,
   serverAxios as axios,
-  devOpServer as devOpAxios,
-  devOpServerNoIntercept,
-  kongAPI,
   uploadAxios,
   serverAxios,
+  downloadGRAxios,
 } from './config';
 import { objectKeysToSnakeCase, checkGreenAndCore } from '../Utility';
-import { message } from 'antd';
 import _ from 'lodash';
 import { keycloak } from '../Service/keycloak';
-import { API_PATH, dcmId, dcm_id } from '../config';
-
-function uploadFileApi(containerId, data, cancelToken) {
-  return devOpAxios({
-    url: `/v1/containers/${containerId}/files`,
-    method: 'POST',
-    data,
-    cancelToken,
-  });
-}
+import { API_PATH, DOWNLOAD_GR, DOWNLOAD_CORE } from '../config';
 
 function uploadFileApi2(data, sessionId, cancelToken) {
   return uploadAxios({
@@ -100,8 +88,8 @@ function checkDownloadStatus(sessionId, projectCode, operator) {
 }
 
 function deleteDownloadStatus(sessionId) {
-  return axios({
-    url: `/download/gr/v1/download/status`,
+  return downloadGRAxios({
+    url: `/v1/download/status`,
     method: 'DELETE',
     headers: {
       'Session-ID': `${sessionId}`,
@@ -132,39 +120,6 @@ function getFilesAPI(datasetId) {
     //url: `/${studyId}/files`,
     url: `/v1/${datasetId}/files`,
     method: 'GET',
-  });
-}
-
-/**
- * This API allows the member of a usecase(or dataset) to list all file/folder name inside.
- *
- *  ticket-152
- * @param {number} datasetId
- * @param {string} path
- */
-function listFoldersAndFilesUnderContainerApi(containerId, path) {
-  return devOpAxios({
-    url: `/v1/folders`,
-    params: { path, container_id: containerId },
-  });
-}
-
-/**
- * create a sub folder in a given dataset with a path
- *
- * @param {number} datasetId
- * @param {string} path
- * @param {string} folderName
- */
-function createFolderApi(containerId, path, folderName) {
-  return devOpAxios({
-    url: `/v1/folders`,
-    method: 'POST',
-    headers: { 'Refresh-token': keycloak.refreshToken },
-    data: {
-      path: path ? path + '/' + folderName : folderName,
-      container_id: containerId,
-    },
   });
 }
 
@@ -210,8 +165,8 @@ async function getRequestFiles(
   res.data.result.entities = res.data.result.data.map((item) => {
     res.data.result.approximateCount = res.data.total;
     let formatRes = {
-      geid: item.entityGeid,
-      key: item.entityGeid,
+      geid: item.entityId,
+      key: item.entityId,
       archived: item.archived,
       createTime: item.uploadedAt,
       nodeLabel:
@@ -225,10 +180,6 @@ async function getRequestFiles(
       path: item.path,
       location: item.location,
       folderRelativePath: item.folderRelativePath,
-      dcmId:
-        item['dcmId'] && typeof item['dcmId'] !== 'undefined'
-          ? item['dcmId']
-          : undefined,
       tags: [],
       reviewedAt: item.reviewedAt,
       reviewedBy: item.reviewedBy,
@@ -256,25 +207,27 @@ async function getRequestFilesDetailByGeid(geids) {
     url: `/v1/files/bulk/detail`,
     method: 'POST',
     data: {
-      geids,
+      ids: geids,
     },
   });
 }
 
 /**
  * ticket-1314
- * @param {string} geid the geid of a virtual folder or folder, like bcae46e0-916c-11eb-be94-eaff9e667817-1617118177
+ * @param {string} parentPath the parent path of the request files
+ * @param {string} parentId collection id if request virtual folder
  * @param {number} page the nth page. start from ?
  * @param {number} pageSize the number of items in each page
  * @param {string} orderBy order by which column. should be one of the column name
  * @param {"desc"|"asc"} orderType
  * @param {*} filters the query filter like {"name":"hello"}
  * @param {"Greenroom"|"Core"|"All"} zone if the sourceType is "Trash", the zone is All
- * @param {"Project"|"Folder"|"TrashFile"|"Collection"} sourceType The Folder are the folders inside file explorer.
+ * @param {"project"|"folder"|"trash"|"collection"} sourceType The Folder are the folders inside file explorer.
  * @param {string[]} partial what queries should be partial search.
  */
 async function getFiles(
-  geid,
+  parentPath,
+  parentId,
   page,
   pageSize,
   orderBy,
@@ -284,61 +237,105 @@ async function getFiles(
   sourceType,
   partial,
   panelKey,
-  projectGeid,
+  projectCode,
 ) {
   const archived = panelKey.toLowerCase().includes('trash') ? true : false;
   filters['archived'] = archived;
-  let url;
-  if (checkGreenAndCore(panelKey) && geid === null) {
-    url = `/v1/files/entity/meta/`;
-  } else {
-    url = `/v1/files/entity/meta/${geid}`;
-  }
+  filters = _.omit(filters, ['tags']);
+  let url = `/v1/files/meta`;
   const params = {
     page,
     page_size: pageSize,
     order_by: orderBy,
     order_type: orderType,
-    partial,
-    query: _.omit(filters, ['tags']),
-    zone: zone,
-    sourceType,
-    project_geid: projectGeid,
+    zone: zone.toLowerCase(),
+    project_code: projectCode,
+    parent_path: parentPath,
+    source_type: sourceType,
+    ...filters,
   };
+  if (parentId) {
+    params['parent_id'] = parentId;
+  }
   let res;
   res = await axios({
     url,
     params: objectKeysToSnakeCase(params),
   });
-  res.data.result.entities = res.data.result.data;
-  res.data.result.entities = res.data.result.entities.map((item) => {
-    res.data.result.approximateCount = res.data.total;
+
+  function generateLabels(item) {
+    const labels = [];
+    if (item.zone === 'greenroom') {
+      labels.push('Greenroom');
+    }
+    if (item.zone === 'core') {
+      labels.push('Core');
+    }
+    if (item.archived) {
+      labels.push('TrashFile');
+    }
+    if (item.type === 'folder' || item.type === 'name_folder') {
+      labels.push('Folder');
+    } else {
+      labels.push('File');
+    }
+    return labels;
+  }
+  const objFormatted = {
+    entities: res.data.result,
+    approximateCount: res.data.total,
+  };
+  let parentPath4Routing = parentPath;
+  let parentId4Routing;
+  let parentZone = objFormatted.entities[0] && objFormatted.entities[0].zone;
+  objFormatted.entities = objFormatted.entities.map((item) => {
+    parentId4Routing = item.parent;
+    const tags =
+      item.extended.extra &&
+      item.extended.extra.tags &&
+      item.extended.extra.tags.length
+        ? item.extended.extra.tags
+        : [];
+    const systemTags =
+      item.extended.extra &&
+      item.extended.extra.systemTags &&
+      item.extended.extra.systemTags.length
+        ? item.extended.extra.systemTags
+        : [];
     let formatRes = {
-      guid: item.guid,
-      geid: item.globalEntityId,
+      guid: item.id,
+      geid: item.id,
       archived: item.archived,
       attributes: {
-        createTime: item.timeCreated,
-        nodeLabel: item.labels,
-        displayPath: item.displayPath,
+        createTime: item.createdTime,
+        nodeLabel: generateLabels(item),
+        displayPath: item.parentPath,
         fileName: item.name,
-        fileSize: item.fileSize,
-        owner: item.uploader,
-        path: item.path,
-        location: item.location,
-        folderRelativePath: item.folderRelativePath,
-        dcmId:
-          item['dcmId'] && typeof item['dcmId'] !== 'undefined'
-            ? item['dcmId']
-            : 'undefined',
+        fileSize: item.size,
+        owner: item.owner,
+        location: item.storage.locationUri,
       },
-      labels:
-        item.systemTags && item.systemTags.length
-          ? item.tags.concat(item.systemTags)
-          : item.tags,
+      labels: tags.length || systemTags.length ? tags.concat(systemTags) : [],
     };
     return formatRes;
   });
+  res.data.result = objFormatted;
+
+  const routingArr = parentPath4Routing ? parentPath4Routing.split('.') : [];
+  const routingFormated = [];
+  for (let i = 0; i < routingArr.length; i++) {
+    routingFormated.push({
+      folderLevel: i,
+      name: routingArr[i],
+      displayPath: routingFormated.map((v) => v.name).join('.'),
+      labels: parentZone ? [_.capitalize(parentZone)] : [],
+    });
+  }
+  res.data.result.routing = routingFormated;
+  if (routingFormated && routingFormated.length) {
+    res.data.result.routing[routingFormated.length - 1].globalEntityId =
+      parentId4Routing;
+  }
   return res;
 }
 
@@ -356,8 +353,8 @@ function checkDownloadStatusAPI(
   setSuccessNumDispatcher,
   successNum,
 ) {
-  return axios({
-    url: `/download/gr/v1/download/status/${hashCode}`,
+  return downloadGRAxios({
+    url: `/v1/download/status/${hashCode}`,
     method: 'GET',
   })
     .then((res) => {
@@ -367,10 +364,14 @@ function checkDownloadStatusAPI(
           namespace.toLowerCase() === 'greenroom' ? 'gr' : 'core';
         updateDownloadItemDispatch({ key: taskId, status: 'success' });
         const hashCode = res.data.result?.payload?.hashCode;
-        const url =
-          API_PATH + `/download/${namespaceUrl}/v1/download/${hashCode}`;
+        let url;
+        if (namespaceUrl === 'gr') {
+          url = DOWNLOAD_GR + `/v1/download/${hashCode}`;
+        }
+        if (namespaceUrl === 'core') {
+          url = DOWNLOAD_CORE + `/v1/download/${hashCode}`;
+        }
         // Start to download zip file
-        console.log(API_PATH, url);
         window.open(url, '_blank');
         setTimeout(() => {
           setSuccessNumDispatcher(successNum + 1);
@@ -396,29 +397,27 @@ function checkDownloadStatusAPI(
 async function downloadFilesAPI(
   containerId,
   files,
-  setLoading,
   appendDownloadListCreator,
-  sessionId,
   projectCode,
   operator,
   namespace,
   requestId, // only for request to core table
 ) {
-  console.log(namespace);
   const options = {
     url: `/v2/download/pre`,
     method: 'post',
     headers: { 'Refresh-token': keycloak.refreshToken },
     data: {
       files,
-      project_code: projectCode,
+      container_type: 'project',
+      container_code: projectCode,
       operator: operator,
-      session_id: sessionId,
     },
   };
   if (requestId) {
     options.data['approval_request_id'] = requestId;
   }
+
   return axios(options).then((res) => {
     let fileName = res.data.result.source;
     const status = res.data.result.status;
@@ -426,10 +425,16 @@ async function downloadFilesAPI(
     fileName = fileNamesArr.length && fileNamesArr[fileNamesArr.length - 1];
     const namespaceUrl =
       namespace.toLowerCase() === 'greenroom' ? 'gr' : 'core';
+
     if (status === 'READY_FOR_DOWNLOADING') {
       const hashCode = res.data.result.payload.hashCode;
-      const url =
-        API_PATH + `/download/${namespaceUrl}/v1/download/${hashCode}`;
+      let url;
+      if (namespaceUrl === 'gr') {
+        url = DOWNLOAD_GR + `/v1/download/${hashCode}`;
+      }
+      if (namespaceUrl === 'core') {
+        url = DOWNLOAD_CORE + `/v1/download/${hashCode}`;
+      }
       return url;
     }
 
@@ -514,9 +519,9 @@ function projectFileCountTotal(geid, params) {
  * @param {int} containerId containerId
  * @param {dict} data data
  */
-function updateProjectTagsAPI(fileType, geid, data) {
+function updateProjectTagsAPI(geid, data) {
   return axios({
-    url: `/v2/${fileType}/${geid}/tags`,
+    url: `/v2/${geid}/tags`,
     method: 'POST',
     data,
   });
@@ -550,7 +555,7 @@ function fileLineageAPI(key, typeName, direction) {
   return axios({
     url: `/v1/lineage`,
     method: 'GET',
-    params: { geid: key, direction, type_name: typeName },
+    params: { item_id: key, direction, type_name: typeName },
   });
 }
 
@@ -559,7 +564,7 @@ function addToVirtualFolder(collectionGeid, geids) {
     url: `/v1/collections/${collectionGeid}/files`,
     method: 'POST',
     data: {
-      file_geids: geids,
+      item_ids: geids,
     },
   });
 }
@@ -575,7 +580,7 @@ function removeFromVirtualFolder(collectionGeid, geids) {
     url: `/v1/collections/${collectionGeid}/files`,
     method: 'DELETE',
     data: {
-      file_geids: geids,
+      item_ids: geids,
     },
   });
 }
@@ -643,7 +648,7 @@ function commitFileAction(
   payload,
   operator,
   operation,
-  projectGeid,
+  projectCode,
   sessionId,
 ) {
   return axios({
@@ -658,7 +663,7 @@ function commitFileAction(
       payload,
       operator,
       operation,
-      project_geid: projectGeid,
+      project_code: projectCode,
       session_id: sessionId,
     },
   });
@@ -707,10 +712,7 @@ function reviewSelectedRequestFiles(
 }
 
 export {
-  uploadFileApi,
   getFilesAPI,
-  listFoldersAndFilesUnderContainerApi,
-  createFolderApi,
   downloadFilesAPI,
   checkDownloadStatusAPI,
   checkPendingStatusAPI,

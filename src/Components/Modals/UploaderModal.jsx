@@ -1,11 +1,10 @@
-import React, { useState } from "react";
-import { Modal, Button, Form, Input, Select, Upload, message } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
+import React, { useState } from 'react';
+import { Modal, Button, Form, Input, Select, Upload, message } from 'antd';
+import { UploadOutlined } from '@ant-design/icons';
 // import { uploadFileAPI } from "../../API";
-import { DynamicKeyValue } from "../Form";
-import { fileUpload } from "../../Utility";
-import { connect ,useSelector} from "react-redux";
- 
+import { DynamicKeyValue } from '../Form';
+import { fileUpload } from '../../Utility';
+import { connect, useSelector } from 'react-redux';
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -23,12 +22,12 @@ const UploaderModal = ({ uploader: visible, cancel, datasetList }) => {
   const [form] = Form.useForm();
   const [isLoading, setIsloading] = useState(false);
   const [cancelTokens, setCancelTokens] = useState([]);
-  const {username} = useSelector(state=>state);
+  const { username } = useSelector((state) => state);
   const stopLoading = () => {
     setIsloading(false);
   };
 
-  const addCancelToken = source => {
+  const addCancelToken = (source) => {
     const newCancelTokens = cancelTokens.concat([source]);
     setCancelTokens(newCancelTokens);
   };
@@ -36,14 +35,14 @@ const UploaderModal = ({ uploader: visible, cancel, datasetList }) => {
   const handleOk = () => {
     form
       .validateFields()
-      .then(values => {
+      .then((values) => {
         setIsloading(true);
         const data = Object.assign({}, values, {
           name: values.file.file.name,
           file_type: values.file.file.type,
 
           //TODO: placeholder for user id
-          uploader:  username
+          uploader: username,
         });
 
         // form.resetFields();
@@ -52,16 +51,10 @@ const UploaderModal = ({ uploader: visible, cancel, datasetList }) => {
           data,
           addCancelToken,
           //TODO: this.addProgress,
-          stopLoading
+          stopLoading,
         );
-
-        // uploadFileAPI(datasetId, data).then(() => {
-        //   message.success("File is uploaded successfully");
-        //   setIsloading(false);
-        //   cancel();
-        // });
       })
-      .catch(info => {
+      .catch((info) => {
         setIsloading(false);
       });
   };
@@ -69,7 +62,7 @@ const UploaderModal = ({ uploader: visible, cancel, datasetList }) => {
   const props = {
     beforeUpload() {
       return false;
-    }
+    },
   };
 
   return (
@@ -81,7 +74,6 @@ const UploaderModal = ({ uploader: visible, cancel, datasetList }) => {
         onCancel={cancel}
         maskClosable={false}
         closable={false}
-
         footer={[
           <Button key="back" onClick={cancel}>
             Close
@@ -93,7 +85,7 @@ const UploaderModal = ({ uploader: visible, cancel, datasetList }) => {
             onClick={handleOk}
           >
             Submit
-          </Button>
+          </Button>,
         ]}
       >
         <Form
@@ -101,7 +93,7 @@ const UploaderModal = ({ uploader: visible, cancel, datasetList }) => {
           layout="vertical"
           name="form_in_modal"
           initialValues={{
-            modifier: "public"
+            modifier: 'public',
           }}
         >
           <Form.Item
@@ -110,19 +102,19 @@ const UploaderModal = ({ uploader: visible, cancel, datasetList }) => {
             rules={[
               {
                 required: true,
-                message: "Please select a dataset"
-              }
+                message: 'Please select a dataset',
+              },
             ]}
           >
             <Select
-              onChange={value => {
+              onChange={(value) => {
                 console.log(value);
               }}
-              initialvalues={"1"}
-              style={{ width: "100%" }}
+              initialvalues={'1'}
+              style={{ width: '100%' }}
             >
               {datasetList &&
-                datasetList.map(item => (
+                datasetList.map((item) => (
                   <Option value={item.id}>{item.items.name}</Option>
                 ))}
             </Select>
@@ -140,9 +132,9 @@ const UploaderModal = ({ uploader: visible, cancel, datasetList }) => {
           <Form.Item name="tags" label="Tags">
             <Select
               mode="tags"
-              style={{ width: "100%" }}
+              style={{ width: '100%' }}
               onChange={handleChange}
-              tokenSeparators={[","]}
+              tokenSeparators={[',']}
             >
               {children}
             </Select>
@@ -154,7 +146,7 @@ const UploaderModal = ({ uploader: visible, cancel, datasetList }) => {
   );
 };
 
-export default connect(state => {
+export default connect((state) => {
   const { datasetList } = state;
   return { datasetList };
 })(UploaderModal);

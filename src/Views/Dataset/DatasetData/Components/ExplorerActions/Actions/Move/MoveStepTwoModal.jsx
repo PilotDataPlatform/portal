@@ -56,11 +56,7 @@ export function MoveStepTwoModal(props) {
         <ul className={styles['ul']}>
           {ignoreList.map((item) => (
             <li>
-              {item.labels.includes('File') ? (
-                <FileOutlined />
-              ) : (
-                <FolderOutlined />
-              )}
+              {item.type === 'file' ? <FileOutlined /> : <FolderOutlined />}
               <span className={styles['file-name']}>{item.name}</span>
             </li>
           ))}

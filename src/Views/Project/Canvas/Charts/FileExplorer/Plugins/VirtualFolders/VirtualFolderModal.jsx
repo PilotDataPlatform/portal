@@ -21,6 +21,7 @@ const VirtualFolderModal = ({ visible, setVisible, files }) => {
   const [vfolders, setVFolders] = useState([]);
   const dispatch = useDispatch();
   const project = useSelector((state) => state.project);
+  const username = useSelector((state) => state.username);
   function updateVFolder(vfolders) {
     const vfoldersNodes = vfolders.map((folder) => {
       return {
@@ -29,11 +30,10 @@ const VirtualFolderModal = ({ visible, setVisible, files }) => {
         icon: <CollectionIcon width={14} style={{ color: '#1b90fe' }} />,
         disabled: false,
         children: null,
-        geid: folder.geid,
+        geid: folder.id,
         createdTime: folder.timeCreated,
       };
     });
-    console.log(vfolders, 'vfolders');
     dispatch(setCurrentProjectTreeVFolder(vfoldersNodes));
   }
   function handleOk() {}
@@ -53,7 +53,8 @@ const VirtualFolderModal = ({ visible, setVisible, files }) => {
     async function loadVFolders() {
       if (visible) {
         const allVirtualRes = await listAllVirtualFolder(
-          project.profile?.globalEntityId,
+          project.profile?.code,
+          username,
         );
         const virualFolders = allVirtualRes.data.result;
         setVFolders(virualFolders);
@@ -90,14 +91,15 @@ const VirtualFolderModal = ({ visible, setVisible, files }) => {
     const collection = trimString(values.Name);
     try {
       const res = await createVirtualFolder(
-        project.profile?.globalEntityId,
+        project.profile.code,
         collection,
+        username,
       );
       if (parseInt(res.data.code / 100) !== 2) {
         setSentBtnLoading(false);
         return;
       }
-      const folderGeid = res.data.result.globalEntityId;
+      const folderGeid = res.data.result.id;
       if (!folderGeid) {
         message.error(
           `${i18n.t('errormessages:createVirtualFolder.default.0')}`,
@@ -108,7 +110,8 @@ const VirtualFolderModal = ({ visible, setVisible, files }) => {
       }
       await addToVirtualFolder(folderGeid, files);
       const allVirtualRes = await listAllVirtualFolder(
-        project.profile?.globalEntityId,
+        project.profile?.code,
+        username,
       );
       const virualFolders = allVirtualRes.data.result;
       updateVFolder(virualFolders);
@@ -170,7 +173,7 @@ const VirtualFolderModal = ({ visible, setVisible, files }) => {
               <Select>
                 {vfolders.map((v) => {
                   return (
-                    <Option key={v.geid} value={v.geid}>
+                    <Option key={v.id} value={v.id}>
                       {v.name}
                     </Option>
                   );

@@ -64,7 +64,7 @@ export default function DatasetContent(props) {
 
   return (
     <Content className={styles['content']}>
-      <DatasetHeader  setDatasetDrawerVisibility={setDatasetDrawerVisibility} />
+      <DatasetHeader setDatasetDrawerVisibility={setDatasetDrawerVisibility} />
       <DatasetDrawer
         datasetDrawerVisibility={datasetDrawerVisibility}
         setDatasetDrawerVisibility={setDatasetDrawerVisibility}
@@ -83,8 +83,9 @@ export default function DatasetContent(props) {
       </Menu>
 
       <Switch>
-        {datasetRoutes.map((route) => (
+        {datasetRoutes.map((route, ind) => (
           <Route
+            key={`route-${ind}`}
             path={'/dataset/:datasetCode' + route.path}
             render={(props) => <route.component></route.component>}
           ></Route>

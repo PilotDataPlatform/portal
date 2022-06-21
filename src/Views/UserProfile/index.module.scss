@@ -228,21 +228,12 @@
           border-radius: 8px !important;
           padding: 10px 20px;
 
-          // &:hover {
-          //   cursor: pointer;
-          //   border: 1px solid #1890ff;
-          // }
-
           &:not(:first-child) {
             margin-top: 10px;
           }
 
           &:last-child {
             border-bottom: 1px solid #f0f0f0 !important;
-
-            // &:hover {
-            //   border-bottom: 1px solid #1890ff !important;
-            // }
           }
 
           &-meta-title {

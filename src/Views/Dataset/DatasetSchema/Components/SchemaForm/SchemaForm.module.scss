@@ -1,3 +1,4 @@
+@import '../../../../../Themes/base.scss';
 .schema_form {
   position: relative;
   padding-top: 40px;
@@ -69,8 +70,8 @@
     position: absolute;
     right: 0;
     top: 2px;
-    background-color: #1890ff;
-    border: #1890ff;
+    background-color: $primary-color-light-1;
+    border: $primary-color-light-1;
     border-radius: 6px;
     padding: 2px 20px;
     color: white;

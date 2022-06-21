@@ -1,7 +1,7 @@
 import { serverAxios, serverAxiosNoIntercept } from './config';
 import { keycloak } from '../Service/keycloak';
 import _ from 'lodash';
-import { API_PATH, DOWNLOAD_PREFIX, DOWNLOAD_PREFIX_V1 } from '../config';
+import { API_PATH, DOWNLOAD_PREFIX_V2, DOWNLOAD_PREFIX_V1 } from '../config';
 
 /**
  * ticket-1645
@@ -48,41 +48,7 @@ export function createDatasetApi(
   });
 }
 
-/**
- * ticket-1645
- * @param {string} username
- * @param {string} orderBy
- * @param {"desc"|"asc"} orderType
- * @param {number} page starts from 0
- * @param {number} pageSize
- * @param {object} filter
- * @returns
- */
-export function getMyDatasetsApi(
-  username,
-  page = 0,
-  pageSize = 10,
-  orderBy = 'time_created',
-  orderType = 'desc',
-  filter = {},
-) {
-  if (!username) {
-    throw new Error('username is not specified');
-  }
-  return serverAxios({
-    url: `/v1/users/${username}/datasets`,
-    method: 'post',
-    data: {
-      filter,
-      order_by: orderBy,
-      order_type: orderType,
-      page,
-      page_size: pageSize,
-    },
-  });
-}
-
-export function listDatasetFiles(
+export async function listDatasetFiles(
   datasetGeid,
   folderGeid,
   page,
@@ -91,6 +57,24 @@ export function listDatasetFiles(
   orderType,
   query,
 ) {
+  function generateLabels(item) {
+    const labels = [];
+    if (item.zone === 'greenroom') {
+      labels.push('Greenroom');
+    }
+    if (item.zone === 'core') {
+      labels.push('Core');
+    }
+    if (item.archived) {
+      labels.push('TrashFile');
+    }
+    if (item.type === 'folder' || item.type === 'name_folder') {
+      labels.push('Folder');
+    } else {
+      labels.push('File');
+    }
+    return labels;
+  }
   const params = {
     folder_geid: folderGeid,
     page: page,
@@ -99,13 +83,34 @@ export function listDatasetFiles(
     order_type: orderType,
     query: query,
   };
-  return serverAxios({
+  const res = await serverAxios({
     url: `/v1/dataset/${datasetGeid}/files`,
     params: params,
   });
+  const objFormatted = res.data?.result?.data.map((item) => {
+    let formatRes = {
+      globalEntityId: item.id,
+      datasetCode: item.containerCode,
+      archived: item.archived,
+      timeCreated: item.createdTime,
+      timeLastmodified: item.lastUpdatedTime,
+      labels: generateLabels(item),
+      displayPath: item.parentPath,
+      name: item.name,
+      fileSize: item.size,
+      operator: item.owner,
+      location: item.storage.locationUri,
+    };
+    return formatRes;
+  });
+  res.data.result.data = objFormatted;
+  return res;
 }
 
 const mapBasicInfo = (result) => {
+  function parseToObj(str) {
+    return typeof str === 'string' ? JSON.parse(str.replaceAll(`'`, `"`)) : str;
+  }
   const {
     timeCreated,
     creator,
@@ -120,18 +125,17 @@ const mapBasicInfo = (result) => {
     size,
     totalFiles,
     description,
-    globalEntityId: geid,
+    id: geid,
     tags,
   } = result;
-
   const basicInfo = {
     timeCreated,
     creator,
     title,
-    authors,
+    authors: parseToObj(authors),
     type,
-    modality,
-    collectionMethod,
+    modality: parseToObj(modality),
+    collectionMethod: parseToObj(collectionMethod),
     license,
     code,
     projectGeid,
@@ -139,7 +143,7 @@ const mapBasicInfo = (result) => {
     totalFiles,
     description,
     geid,
-    tags,
+    tags: parseToObj(tags),
   };
 
   return basicInfo;
@@ -197,13 +201,13 @@ export function getDatasetActivityLogsAPI(datasetGeid, params) {
   });
 }
 
-export function downloadDataset(datasetGeid, operator, sessionId) {
+export function downloadDataset(datasetCode, operator, sessionId) {
   return serverAxios({
     url: `/v2/dataset/download/pre`,
     method: 'POST',
     headers: { 'Refresh-token': keycloak.refreshToken },
     data: {
-      dataset_geid: datasetGeid,
+      dataset_code: datasetCode,
       session_id: sessionId,
       operator: operator,
     },
@@ -216,23 +220,19 @@ export function checkDatasetDownloadStatusAPI(hashCode) {
     method: 'GET',
   });
 }
-export function downloadDatasetFiles(
-  datasetGeid,
-  fileGeids,
-  operator,
-  sessionId,
-) {
-  return serverAxios({
+export function downloadDatasetFiles(datasetCode, files, operator, sessionId) {
+  const options = {
     url: `/v2/download/pre`,
-    method: 'POST',
+    method: 'post',
     headers: { 'Refresh-token': keycloak.refreshToken },
     data: {
-      dataset_geid: datasetGeid,
-      files: fileGeids,
-      session_id: sessionId,
+      files,
+      container_type: 'dataset',
+      container_code: datasetCode,
       operator: operator,
     },
-  });
+  };
+  return serverAxios(options);
 }
 
 export function previewDatasetFile(datasetGeid, fileGeid) {
@@ -308,11 +308,11 @@ export function datasetDownloadReturnURLAPI(datasetGeid, version) {
 
 export function datasetDownloadAPI(hash) {
   return serverAxios({
-    url: `${DOWNLOAD_PREFIX}/${hash}`,
+    url: `${DOWNLOAD_PREFIX_V2}/${hash}`,
     method: 'GET',
     headers: { 'Refresh-token': keycloak.refreshToken },
   }).then((res) => {
-    const url = API_PATH + DOWNLOAD_PREFIX + '/' + hash;
+    const url = API_PATH + DOWNLOAD_PREFIX_V2 + '/' + hash;
     window.open(url, '_blank');
   });
 }

@@ -11,7 +11,7 @@ import { LoadingOutlined } from '@ant-design/icons';
 import _ from 'lodash';
 import { deleteNodeWithGeids } from '../DatasetDataExplorer/utility';
 import { initTree } from './initTree';
-
+import variables from '../../../../../Themes/base.scss';
 const page = 0,
   pageSize = 10000,
   orderBy = 'create_time',
@@ -82,7 +82,7 @@ export function ExplorerTree(props) {
     });
   }
   function getTreeDataElm(list) {
-    return list.map((node) => {
+    return list?.map((node) => {
       node.key = node.globalEntityId;
       node.isLeaf = node.labels.indexOf('File') !== -1;
       node.title = titleRender(
@@ -146,7 +146,7 @@ export function ExplorerTree(props) {
           position: 'absolute',
           top: '30%',
           left: '50%',
-          color: '#1890ff',
+          color: variables.primaryColorLight1,
           transform: 'translate(-50%, -50%)',
         }}
       />

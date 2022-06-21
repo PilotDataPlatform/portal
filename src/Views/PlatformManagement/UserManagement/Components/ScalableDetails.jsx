@@ -23,10 +23,10 @@ function ScalableDetails(props) {
   useEffect(() => {
     listUsersContainersPermission(record.name, {
       is_all: true,
-      order_by: 'time_created',
+      order_by: 'created_at',
       order_type: 'desc',
     }).then((res) => {
-      const projectList = res.data.result;
+      const projectList = res.data.results;
       setProjectList(projectList);
     });
   }, [record.name]);

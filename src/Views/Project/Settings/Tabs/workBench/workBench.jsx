@@ -4,7 +4,7 @@ import { Button, message } from 'antd';
 import { RocketOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { getCurrentProject } from '../../../../../Utility';
+import { useCurrentProject } from '../../../../../Utility';
 import { getWorkbenchInfo } from '../../../../../APIs';
 import WorkbenchModal from './workbenchModal';
 import moment from 'moment-timezone';
@@ -53,12 +53,10 @@ const deployedInfo = (
         </>
       );
     } else if (workbenchInfo.deployed === true) {
-      const deployedBy =
-        workbenchInfo.deployedBy.charAt(0).toUpperCase() +
-        workbenchInfo.deployedBy.slice(1);
-      const deployedDate = moment(workbenchInfo.deployedDate).format(
-        'YYYY-MM-DD',
-      );
+      const deployByUsername =
+        workbenchInfo.deployByUsername.charAt(0).toUpperCase() +
+        workbenchInfo.deployByUsername.slice(1);
+      const deployedAt = moment(workbenchInfo.deployedAt).format('YYYY-MM-DD');
       return (
         <>
           <div style={{ margin: '0px 44px 0px 65px' }}>
@@ -69,7 +67,7 @@ const deployedInfo = (
             />
           </div>
           <p style={{ margin: '0px', color: '#595959', fontWeight: 600 }}>
-            Deployed for project on {deployedDate} / By: {deployedBy}
+            Deployed for project on {deployedAt} / By: {deployByUsername}
           </p>
         </>
       );
@@ -100,10 +98,10 @@ const deployedInfo = (
           </>
         );
       } else if (workbenchInfo.deployed === true) {
-        const deployedBy =
-          workbenchInfo.deployedBy.charAt(0).toUpperCase() +
-          workbenchInfo.deployedBy.slice(1);
-        const deployedDate = moment(workbenchInfo.deployedDate).format(
+        const deployByUsername =
+          workbenchInfo.deployByUsername.charAt(0).toUpperCase() +
+          workbenchInfo.deployByUsername.slice(1);
+        const deployedAt = moment(workbenchInfo.deployedAt).format(
           'YYYY-MM-DD',
         );
         return (
@@ -122,7 +120,7 @@ const deployedInfo = (
                 fontWeight: 600,
               }}
             >
-              Deployed for project on {deployedDate} / By: {deployedBy}
+              Deployed for project on {deployedAt} / By: {deployByUsername}
             </p>
           </>
         );
@@ -137,23 +135,22 @@ const WorkBench = (props) => {
   const { t } = useTranslation(['errormessages', 'success']);
   const [guacamoleInfo, setGuacamoleInfo] = useState({
     deployed: '',
-    deployedDate: '',
-    deployedBy: '',
+    deployedAt: '',
+    deployByUsername: '',
   });
   const [supersetInfo, setSupersetInfo] = useState({
     deployed: '',
-    deployedDate: '',
-    deployedBy: '',
+    deployedAt: '',
+    deployByUsername: '',
   });
   const [jupyterhubInfo, setJupyterhubInfo] = useState({
     deployed: '',
-    deployedDate: '',
-    deployedBy: '',
+    deployedAt: '',
+    deployByUsername: '',
   });
   const [showModal, setShowModal] = useState(false);
   const [workbench, setWorkbench] = useState('');
-  const datasetId = props.match.params.datasetId;
-  const currentProject = getCurrentProject(datasetId);
+  const [currentProject] = useCurrentProject();
 
   const getWorkbenchInformation = async () => {
     try {
@@ -161,7 +158,7 @@ const WorkBench = (props) => {
       const workbenchKeys = Object.keys(res.data.result);
       if (workbenchKeys.length > 0) {
         if (workbenchKeys.includes('guacamole')) {
-          setGuacamoleInfo({ ...res.data.result['guacamole'] });
+          setGuacamoleInfo({ ...res.data.result['guacamole'], deployed: true });
         } else {
           setGuacamoleInfo({
             ...guacamoleInfo,
@@ -169,7 +166,7 @@ const WorkBench = (props) => {
           });
         }
         if (workbenchKeys.includes('superset')) {
-          setSupersetInfo({ ...res.data.result['superset'] });
+          setSupersetInfo({ ...res.data.result['superset'], deployed: true });
         } else {
           setSupersetInfo({
             ...supersetInfo,
@@ -177,7 +174,10 @@ const WorkBench = (props) => {
           });
         }
         if (workbenchKeys.includes('jupyterhub')) {
-          setJupyterhubInfo({ ...res.data.result['jupyterhub'] });
+          setJupyterhubInfo({
+            ...res.data.result['jupyterhub'],
+            deployed: true,
+          });
         } else {
           setJupyterhubInfo({
             ...jupyterhubInfo,
@@ -198,7 +198,7 @@ const WorkBench = (props) => {
           deployed: false,
         });
       }
-    }catch(error) {
+    } catch (error) {
       message.error(t('errormessages:projectWorkench.getWorkbench.default.0'));
     }
   };

@@ -1,4 +1,4 @@
-import { getMyDatasetsApi } from '../../../../APIs';
+import { getDatasetsListingAPI } from '../../../../APIs';
 import { store } from '../../../../Redux/store';
 import { myDatasetListCreators } from '../../../../Redux/actions';
 import { message } from 'antd';
@@ -21,8 +21,13 @@ export const fetchMyDatasets = (username, page = 1, pageSize) => {
     throw new TypeError('pageSize should be a number');
   }
   dispatch(myDatasetListCreators.setLoading(true));
-
-  getMyDatasetsApi(username, page - 1, pageSize)
+  getDatasetsListingAPI(username, {
+    filter: {},
+    order_by: 'time_created',
+    order_type: 'desc',
+    page: page - 1,
+    page_size: pageSize,
+  })
     .then((res) => {
       dispatch(myDatasetListCreators.setDatasets(res.data.result));
       dispatch(myDatasetListCreators.setTotal(res.data.total));

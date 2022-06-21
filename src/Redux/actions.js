@@ -28,7 +28,7 @@ import {
   UPDATE_DOWNLOAD_ITEM,
   SET_DOWNLOAD_LIST,
   SET_CURRENT_PROJECT_PROFILE,
-  SET_CURRENT_PROJECT_MANIFEST,
+  SET_CURRENT_PROJECT_SYSTEM_TAGS,
   SET_CURRENT_PROJECT_TREE,
   SET_CURRENT_PROJECT_TREE_VFOLDER,
   SET_CURRENT_PROJECT_TREE_GREEN_ROOM,
@@ -59,6 +59,8 @@ import {
   FILE_EXPLORER_TABLE as FILE_EXPLORER_TABLE,
   COPY_REQUEST,
   NOTIFICATIONS,
+  SET_CANVAS_PAGE,
+  SET_VIRTUAL_FOLDER_OPERATION,
 } from './actionTypes';
 
 export const AddDatasetCreator = (datasetList, title) => ({
@@ -237,8 +239,8 @@ export const setCurrentProjectProfile = (profile) => ({
   payload: profile,
 });
 
-export const setCurrentProjectManifest = (manifest) => ({
-  type: SET_CURRENT_PROJECT_MANIFEST,
+export const setCurrentProjectSystemTags = (manifest) => ({
+  type: SET_CURRENT_PROJECT_SYSTEM_TAGS,
   payload: manifest,
 });
 
@@ -633,5 +635,32 @@ export const notificationActions = {
   setEditNotification: (payload) => ({
     type: NOTIFICATIONS.SET_EDIT_NOTIFICATION,
     payload,
+  }),
+};
+
+export const canvasPageActions = {
+  setCanvasPage: (payload) => ({
+    type: SET_CANVAS_PAGE,
+    payload,
+  }),
+};
+
+export const VIRTUAL_FOLDER_OPERATIONS = {
+  RENAME: 'rename',
+  CREATE: 'create',
+};
+
+export const vFolderOperation = {
+  setVFolderOperationRename: (geid) => ({
+    type: SET_VIRTUAL_FOLDER_OPERATION,
+    payload: { operation: VIRTUAL_FOLDER_OPERATIONS.RENAME, geid },
+  }),
+  setVFolderOperationCreate: () => ({
+    type: SET_VIRTUAL_FOLDER_OPERATION,
+    payload: { operation: VIRTUAL_FOLDER_OPERATIONS.CREATE, geid: null },
+  }),
+  clearVFolderOperation: () => ({
+    type: SET_VIRTUAL_FOLDER_OPERATION,
+    payload: { operation: null, geid: null },
   }),
 };

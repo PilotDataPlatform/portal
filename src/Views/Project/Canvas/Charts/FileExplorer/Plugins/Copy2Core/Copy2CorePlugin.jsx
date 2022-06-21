@@ -1,10 +1,10 @@
 import React, { useState, useRef } from 'react';
 import { CopyOutlined, LeftOutlined } from '@ant-design/icons';
 import { TABLE_STATE } from '../../RawTableValues';
-import { useSelector } from 'react-redux';
 import { Button, message, Modal } from 'antd';
 import Copy2CoreModal from './Copy2CoreModal';
 import i18n from '../../../../../../../i18n';
+import variables from '../../../../../../../Themes/base.scss';
 function Copy2CorePlugin({
   selectedRowKeys,
   clearSelection,
@@ -24,8 +24,6 @@ function Copy2CorePlugin({
         uploader: v.owner,
         geid: v.geid,
         nodeLabel: v.nodeLabel,
-        dcm_id:
-          v["dcmId"] && v["dcmId"] !== 'undefined' ? v["dcmId"] : null,
       };
     })
     .filter((v) => !!v);
@@ -63,7 +61,7 @@ function Copy2CorePlugin({
       <div
         style={{
           display: 'inline-block',
-          color: '#1890ff',
+          color: variables.primaryColorLight1,
           cursor: 'pointer',
           marginLeft: 40,
         }}
@@ -71,7 +69,7 @@ function Copy2CorePlugin({
           setTableState(TABLE_STATE.NORMAL);
         }}
       >
-        <LeftOutlined fill="#1890ff" /> <span>Back</span>
+        <LeftOutlined fill={variables.primaryColorLight1} /> <span>Back</span>
       </div>
       <div style={{ marginLeft: 60, display: 'inline-block' }}>
         <Button type="primary" ghost onClick={copy2Core}>

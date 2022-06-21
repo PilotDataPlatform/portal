@@ -28,15 +28,13 @@ export default function CreateFolderModal(props) {
       .then((values) => {
         const { folderName } = values;
         const zone = getZone(panelKey);
-        const destinationGeid =
-          currentRouting[currentRouting.length - 1]?.globalEntityId;
         createSubFolderApi(
           trimString(folderName),
-          destinationGeid,
+          currentRouting.map((r) => r.name).join('.'),
           projectCode,
           uploader,
           zone,
-          currentDataset.globalEntityId
+          currentDataset.globalEntityId,
         )
           .then((res) => {
             if (res.status === 409) {

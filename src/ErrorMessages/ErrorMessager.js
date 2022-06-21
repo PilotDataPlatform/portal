@@ -305,23 +305,23 @@ export default function ErrorMessager(name) {
     [namespace.teams.inviteUser]: {
       403: (err, params) => {
         message.error(
-          `${i18n.t('errormessages:selfRegistration.403.0')} ${
+          `${i18n.t('errormessages:inviteUser.403.0')} ${
             params.email
-          }, ${i18n.t('errormessages:selfRegistration.403.1')}`,
+          }, ${i18n.t('errormessages:inviteUser.403.1')}`,
         );
       },
       404: (err, params) => {
         message.error(
-          `${i18n.t('errormessages:selfRegistration.404.0')} ${
-            params.email
-          } ${i18n.t('errormessages:selfRegistration.404.1')}`,
+          `${i18n.t('errormessages:inviteUser.404.0')} ${params.email} ${i18n.t(
+            'errormessages:inviteUser.404.1',
+          )}`,
         );
       },
       500: (err, params) => {
         message.error(
-          `${i18n.t('errormessages:selfRegistration.500.0')} ${
-            params.email
-          } ${i18n.t('errormessages:selfRegistration.500.1')}`,
+          `${i18n.t('errormessages:inviteUser.500.0')} ${params.email} ${i18n.t(
+            'errormessages:inviteUser.500.1',
+          )}`,
         );
       },
       default: (err, params) => {
@@ -450,20 +450,20 @@ export default function ErrorMessager(name) {
         message.error(`${i18n.t('errormessages:getDataset.default.0')}`);
       },
     },
-    [namespace.common.listAllContainersPermission]: {
+    [namespace.common.listUsersContainersPermission]: {
       401: (err, params) => {
         message.error(
-          `${i18n.t('errormessages:listAllContainersPermission.401.0')}`,
+          `${i18n.t('errormessages:listUsersContainersPermission.401.0')}`,
         );
       },
       404: (err, params) => {
         message.error(
-          `${i18n.t('errormessages:listAllContainersPermission.404.0')}`,
+          `${i18n.t('errormessages:listUsersContainersPermission.404.0')}`,
         );
       },
       default: (err, params) => {
         message.error(
-          `${i18n.t('errormessages:listAllContainersPermission.default.0')}`,
+          `${i18n.t('errormessages:listUsersContainersPermission.default.0')}`,
         );
       },
     },

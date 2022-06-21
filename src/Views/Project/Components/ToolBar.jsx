@@ -6,6 +6,7 @@ import {
   LoadingOutlined,
   SearchOutlined,
   PullRequestOutlined,
+  CompassOutlined,
 } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
@@ -36,7 +37,7 @@ const ToolBar = ({
   const { t } = useTranslation(['errormessages', 'success']);
   const [isShown, toggleModal] = useState(false);
   const [showRequestToCoreRedDot, setShowRequestToCoreRedDot] = useState(false);
-  const [iconSelected, toggleIcon] = useState(pathname.split('/')[3]);
+  const iconSelected = pathname ? pathname.split('/')[3] : null;
   const [showRequestModal, toggleRequestModal] = useState(false);
   const [requestItem, setRequestItem] = useState('');
   const [requests, setRequests] = useState(null);
@@ -45,23 +46,18 @@ const ToolBar = ({
   const [guacamoleDeployed, setGuacamoleDeployed] = useState('');
   const [supersetDeployed, setSupersetDeployed] = useState('');
   const [jupyterhubDeployed, setJupyterhubDeployed] = useState('');
-
+  const [lowerIcon, setLowerIcon] = useState('');
   const adminPermission =
     role === 'admin' ||
     _.some(containersPermission, (item) => {
-      return (
-        parseInt(item.id) === parseInt(params.datasetId) &&
-        item.permission === 'admin'
-      );
+      return item.code === params.projectCode && item.permission === 'admin';
     });
   const collaboratorPermission = _.some(containersPermission, (item) => {
     return (
-      parseInt(item.id) === parseInt(params.datasetId) &&
-      item.permission === 'collaborator'
+      item.code === params.projectCode && item.permission === 'collaborator'
     );
   });
-  let currentProject = useCurrentProject();
-  currentProject = currentProject[0];
+  let [currentProject] = useCurrentProject();
   const projectCode = currentProject?.code;
 
   const getWorkbenchInformation = async () => {
@@ -70,17 +66,17 @@ const ToolBar = ({
       const workbenchKeys = Object.keys(res.data.result);
       if (workbenchKeys.length > 0) {
         if (workbenchKeys.includes('guacamole')) {
-          setGuacamoleDeployed(res.data.result['guacamole'].deployed);
+          setGuacamoleDeployed(true);
         } else {
           setGuacamoleDeployed(false);
         }
         if (workbenchKeys.includes('superset')) {
-          setSupersetDeployed(res.data.result['superset'].deployed);
+          setSupersetDeployed(true);
         } else {
           setSupersetDeployed(false);
         }
         if (workbenchKeys.includes('jupyterhub')) {
-          setJupyterhubDeployed(res.data.result['jupyterhub'].deployed);
+          setJupyterhubDeployed(true);
         } else {
           setJupyterhubDeployed(false);
         }
@@ -157,7 +153,7 @@ const ToolBar = ({
 
     getResourceRequests();
     requestToCorePendingCheck();
-  }, [params.datasetId]);
+  }, [params.projectCode]);
 
   const superSet = (
     platFormRole,
@@ -171,7 +167,12 @@ const ToolBar = ({
     if (supersetDeployed === true) {
       if (platFormRole === 'admin' || superSetActive === false) {
         return (
-          <Menu.Item key="superset">
+          <Menu.Item
+            key="superset"
+            onClick={(e) => {
+              setLowerIcon(e);
+            }}
+          >
             <a
               href={`/bi/${currentProject?.code}/superset/welcome`}
               //rel="noopener noreferrer"
@@ -192,9 +193,10 @@ const ToolBar = ({
         return (
           <Menu.Item
             key="superset"
-            onClick={() => {
+            onClick={(e) => {
               setRequestItem('Superset');
               toggleRequestModal(true);
+              setLowerIcon(e);
             }}
           >
             <span role="img" className="anticon">
@@ -241,7 +243,12 @@ const ToolBar = ({
     if (guacamoleDeployed === true) {
       if (platFormRole === 'admin' || guacamoleActive === false) {
         return (
-          <Menu.Item key="guacamole">
+          <Menu.Item
+            key="guacamole"
+            onClick={(e) => {
+              setLowerIcon(e);
+            }}
+          >
             <a
               href={`/workbench/${currentProject?.code}/guacamole/`}
               //rel="noopener noreferrer"
@@ -262,9 +269,10 @@ const ToolBar = ({
         return (
           <Menu.Item
             key="guacamole"
-            onClick={() => {
+            onClick={(e) => {
               setRequestItem('Guacamole');
               toggleRequestModal(true);
+              setLowerIcon(e);
             }}
           >
             <span role="img" className="anticon">
@@ -307,7 +315,12 @@ const ToolBar = ({
     }
     if (jupyterhubDeployed === true) {
       return (
-        <Menu.Item key="jupyter">
+        <Menu.Item
+          key="jupyter"
+          onClick={(e) => {
+            setLowerIcon(e);
+          }}
+        >
           <a
             href={`/workbench/${currentProject?.code}/j/`}
             //rel="noopener noreferrer"
@@ -349,7 +362,6 @@ const ToolBar = ({
   };
 
   const handleRequestToCoreOnClick = () => {
-    toggleIcon('');
     setShowRequestToCoreRedDot(false);
   };
 
@@ -361,19 +373,26 @@ const ToolBar = ({
         selectedKeys={[pathname.split('/')[3]]}
         className={style.upperMenu}
       >
-        <Menu.Item key="canvas" onClick={() => toggleIcon('canvas')}>
+        <div
+          className={
+            iconSelected === 'canvas'
+              ? style['menu-spacing--after-selected']
+              : style['no-radius']
+          }
+        ></div>
+        <Menu.Item key="canvas" style={{ position: 'relative' }}>
           <Link to="canvas">
             {iconSelected === 'canvas' ? (
               <span role="img" className="anticon">
                 <img
-                  style={{ width: 15 }}
+                  style={{ width: 17, marginLeft: -17 }}
                   src={require('../../../Images/Dashboard-selected.svg')}
                 />
               </span>
             ) : (
               <span role="img" className="anticon">
                 <img
-                  style={{ width: 15 }}
+                  style={{ width: 17, marginLeft: -17 }}
                   src={require('../../../Images/Dashboard.svg')}
                 />
               </span>
@@ -381,21 +400,119 @@ const ToolBar = ({
             <span>Canvas</span>
           </Link>
         </Menu.Item>
-        <Menu.Item key="search" onClick={() => toggleIcon('')}>
+        <div
+          className={
+            iconSelected === 'data' ? style['space--prev-selected'] : ''
+          }
+        ></div>
+        <div
+          className={
+            iconSelected === 'canvas'
+              ? style['menu-spacing--prev-selected']
+              : iconSelected === 'data'
+              ? style['menu-spacing--after-selected']
+              : style['no-radius']
+          }
+        ></div>
+        <div
+          className={
+            iconSelected === 'canvas'
+              ? style['space--prev-selected']
+              : iconSelected === 'data'
+              ? ''
+              : style['space--after-selected']
+          }
+        ></div>
+        <Menu.Item key="data">
+          <Link to="data">
+            <CompassOutlined />
+            <span>File Explorer</span>
+          </Link>
+        </Menu.Item>
+        <div
+          className={
+            iconSelected === 'search' ? style['space--prev-selected'] : ''
+          }
+        ></div>
+        <div
+          className={
+            iconSelected === 'data'
+              ? style['menu-spacing--prev-selected']
+              : iconSelected === 'search'
+              ? style['menu-spacing--after-selected']
+              : style['no-radius']
+          }
+        ></div>
+        <div
+          className={
+            iconSelected === 'data'
+              ? style['space--prev-selected']
+              : iconSelected === 'search'
+              ? ''
+              : style['space--after-selected']
+          }
+        ></div>
+        <div className={iconSelected === 'data' ? style['space'] : ''}></div>
+        <Menu.Item key="search">
           <Link to="search">
             <SearchOutlined />
             <span>Search</span>
           </Link>
         </Menu.Item>
-        <Menu.Item
-          title={null}
-          key="announcement"
-          onClick={() => toggleIcon('')}
-        >
+        <div
+          className={
+            iconSelected === 'announcement' ? style['space--prev-selected'] : ''
+          }
+        ></div>
+
+        <div
+          className={
+            iconSelected === 'search'
+              ? style['menu-spacing--prev-selected']
+              : iconSelected === 'announcement'
+              ? style['menu-spacing--after-selected']
+              : style['no-radius']
+          }
+        ></div>
+        <div
+          className={
+            iconSelected === 'search'
+              ? style['space--prev-selected']
+              : iconSelected === 'announcement'
+              ? ''
+              : style['space--after-selected']
+          }
+        ></div>
+
+        <Menu.Item title={null} key="announcement">
           <AnnouncementButton currentProject={currentProject} />
         </Menu.Item>
+        <div
+          className={
+            iconSelected === 'teams' ? style['space--prev-selected'] : ''
+          }
+        ></div>
+        <div
+          className={
+            iconSelected === 'announcement'
+              ? style['menu-spacing--prev-selected']
+              : iconSelected === 'teams'
+              ? style['menu-spacing--after-selected']
+              : style['no-radius']
+          }
+        ></div>
+        <div
+          className={
+            iconSelected === 'announcement'
+              ? style['space--prev-selected']
+              : iconSelected === 'teams'
+              ? ''
+              : style['space--after-selected']
+          }
+        ></div>
+
         {adminPermission && (
-          <Menu.Item key="teams" onClick={() => toggleIcon('')}>
+          <Menu.Item key="teams">
             <Link to="teams">
               <TeamOutlined />
               <span>Members</span>
@@ -403,12 +520,73 @@ const ToolBar = ({
           </Menu.Item>
         )}
         {adminPermission && (
-          <Menu.Item key="settings" onClick={() => toggleIcon('')}>
+          <div
+            className={
+              iconSelected === 'settings' ? style['space--prev-selected'] : ''
+            }
+          ></div>
+        )}
+        {adminPermission && (
+          <div
+            className={
+              iconSelected === 'teams'
+                ? style['menu-spacing--prev-selected']
+                : iconSelected === 'settings'
+                ? style['menu-spacing--after-selected']
+                : style['no-radius']
+            }
+          ></div>
+        )}
+        {adminPermission && (
+          <div
+            className={
+              iconSelected === 'teams'
+                ? style['space--prev-selected']
+                : iconSelected === 'settings'
+                ? ''
+                : style['space--after-selected']
+            }
+          ></div>
+        )}
+
+        {adminPermission && (
+          <Menu.Item key="settings">
             <Link to="settings">
               <SettingOutlined />
               <span>Settings</span>
             </Link>
           </Menu.Item>
+        )}
+        {adminPermission && (
+          <div
+            className={
+              iconSelected === 'requestToCore'
+                ? style['space--prev-selected']
+                : ''
+            }
+          ></div>
+        )}
+        {adminPermission && (
+          <div
+            className={
+              iconSelected === 'settings'
+                ? style['menu-spacing--prev-selected']
+                : iconSelected === 'requestToCore'
+                ? style['menu-spacing--after-selected']
+                : style['no-radius']
+            }
+          ></div>
+        )}
+        {adminPermission && (
+          <div
+            className={
+              iconSelected === 'settings'
+                ? style['space--prev-selected']
+                : iconSelected === 'requestToCore'
+                ? ''
+                : style['space--after-selected']
+            }
+          ></div>
         )}
         {(adminPermission || collaboratorPermission) && (
           <Menu.Item key="requestToCore" onClick={handleRequestToCoreOnClick}>
@@ -417,6 +595,18 @@ const ToolBar = ({
               <span>Requests</span>
             </Link>
           </Menu.Item>
+        )}
+        {adminPermission && (
+          <div className={style['menu-spacing']}>
+            <div className={style.temp}></div>
+            <div
+              className={
+                iconSelected === 'requestToCore' || iconSelected === ''
+                  ? style['radius']
+                  : style['radius-bottom']
+              }
+            ></div>
+          </div>
         )}
         {(adminPermission || collaboratorPermission) && (
           <>
@@ -439,6 +629,15 @@ const ToolBar = ({
             )}
           </>
         )}
+        {(adminPermission || collaboratorPermission) && (
+          <div
+            className={
+              iconSelected === 'requestToCore'
+                ? style['menu-spacing--prev-selected']
+                : style['no-radius']
+            }
+          ></div>
+        )}
       </Menu>
 
       <Menu
@@ -453,6 +652,17 @@ const ToolBar = ({
           superSetActive,
         )}
 
+        {/* <div>
+          <div className={style.temp}></div>
+          <div
+            className={
+              lowerIcon === 'superset'
+                ? style['radius']
+                : style['radius-bottom']
+            }
+          ></div>
+        </div> */}
+
         {guacamole(
           role,
           currentProject?.permission,
@@ -460,9 +670,29 @@ const ToolBar = ({
           guacamoleActive,
         )}
 
+        {/* <div>
+          <div className={style.temp}></div>
+          <div
+            className={
+              lowerIcon === 'guacamole'
+                ? style['radius']
+                : style['radius-bottom']
+            }
+          ></div>
+        </div> */}
+
         {jupyterhub(currentProject?.permission, jupyterhubDeployed)}
 
-        <Menu.Item key="xwiki">
+        {/* <div>
+          <div className={style.temp}></div>
+          <div
+            className={
+              lowerIcon === 'jupyter' ? style['radius'] : style['radius-bottom']
+            }
+          ></div>
+        </div> */}
+
+        <Menu.Item key="xwiki" onClick={(e) => setLowerIcon(e)}>
           <a
             href={`/xwiki/wiki/${currentProject?.code}/view/Main/`}
             //rel="noopener noreferrer"
@@ -478,22 +708,27 @@ const ToolBar = ({
             <span>XWiki</span>
           </a>
         </Menu.Item>
+        {/* <div>
+          <div className={style.temp}></div>
+          <div
+            className={
+              lowerIcon === 'xwiki' ? style['radius'] : style['radius-bottom']
+            }
+          ></div>
+        </div> */}
       </Menu>
       <GreenRoomUploader
         isShown={isShown}
         cancel={() => {
           toggleModal(false);
         }}
-        datasetId={parseInt(params.datasetId)}
       />
       <RequestAccessModal
         showRequestModal={showRequestModal}
         requestItem={requestItem}
         toggleRequestModal={toggleRequestModal}
         username={username && username}
-        projectGeid={
-          project && project.profile && project.profile.globalEntityId
-        }
+        projectGeid={project && project.profile && project.profile.id}
       />
     </>
   );

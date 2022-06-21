@@ -1,0 +1,16 @@
+.fileExplorer {
+  &__container {
+    margin: 1.7rem 1.7rem 0 3.5rem;
+  }
+
+  &__card {
+    margin-top: 1.5rem;
+
+    :global {
+      .ant-card-body {
+        padding-top: 0 !important;
+        padding-right: 0 !important;
+      }
+    }
+  }
+}

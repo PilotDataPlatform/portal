@@ -6,7 +6,7 @@ import TermsOfUseModal from '../../Components/Modals/TermsOfUseModal';
 import { useKeycloak } from '@react-keycloak/web';
 import { changeUserStatusAPI, lastLoginAPI } from '../../APIs';
 import { PORTAL_PREFIX } from '../../config';
-
+import variables from '../../Themes/base.scss';
 const { Content } = Layout;
 function TermsOfUse(props) {
   const { keycloak } = useKeycloak();
@@ -34,32 +34,6 @@ function TermsOfUse(props) {
       user.given_name,
     );
     if (res.status === 200) {
-      // if (res.data.result.projectDetails.length) {
-      //   try {
-      //     const { name, globalEntityId, projectDetails } = res.data.result;
-      //     setAcceptLoading(true);
-      //     for (let i = 0; i < projectDetails.length; i++) {
-      //       await createSubFolderApi(
-      //         name,
-      //         globalEntityId,
-      //         projectDetails[i].projectCode,
-      //         name,
-      //         'Greenroom',
-      //       );
-      //       await createSubFolderApi(
-      //         name,
-      //         globalEntityId,
-      //         projectDetails[i].projectCode,
-      //         name,
-      //         'Core',
-      //       );
-      //     }
-      //     setAcceptLoading(false);
-      //   } catch (error) {
-      //     setAcceptLoading(false);
-      //     console.log(error);
-      //   }
-      // }
       setAcceptLoading(false);
       setVisible(false);
       await lastLoginAPI(username);
@@ -98,7 +72,7 @@ function TermsOfUse(props) {
           <br /> Please accept{' '}
           <b
             style={{
-              color: '#1890FF',
+              color: variables.primaryColorLight1,
               cursor: 'pointer',
               textDecoration: 'underline',
             }}
@@ -119,9 +93,7 @@ function TermsOfUse(props) {
               style={{ float: 'left' }}
             >
               <a
-                href={
-                  PORTAL_PREFIX + '/files/Website Privacy Policy draft.pdf'
-                }
+                href={PORTAL_PREFIX + '/files/Website Privacy Policy draft.pdf'}
                 download
                 target="_self"
               >

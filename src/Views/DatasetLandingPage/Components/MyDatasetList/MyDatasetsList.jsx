@@ -8,7 +8,6 @@ import { useHistory } from 'react-router-dom';
 import { useQueryParams } from '../../../../Utility';
 
 function MyDatasetsList() {
-  
   const { loading, datasets, total } = useSelector(
     (state) => state.myDatasetList,
   );
@@ -30,7 +29,7 @@ function MyDatasetsList() {
 
   const paginationProps = {
     showSizeChanger: true,
-    current: parseInt(page) ,
+    current: parseInt(page),
     pageSize: parseInt(pageSize),
     onChange: onPageChange,
     total,

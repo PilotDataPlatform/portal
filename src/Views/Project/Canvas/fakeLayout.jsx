@@ -1,4 +1,3 @@
-
 const info = {
   type: 'info',
   key: '0',
@@ -9,10 +8,19 @@ const info = {
   exportable: false,
 };
 
+const charts = {
+  type: 'charts',
+  key: '1',
+  title: 'Charts',
+  defaultSize: 'm',
+  expandable: false,
+  exportable: false,
+};
+
 const fileStats = {
   type: 'fileStats',
   key: '2',
-  title: 'File Statistics',
+  title: 'Go To',
   defaultSize: 'm',
   expandable: false,
   exportable: false,
@@ -38,41 +46,41 @@ const userStats = {
 };
 
 const superset = {
-  type:'superset',
-  key:'4',
-  title:"Superset",
+  type: 'superset',
+  key: '4',
+  title: 'Superset',
   defaultSize: 'm',
   expandable: false,
   exportable: false,
-}
+};
 
 const cardsAttr = {
   initial: [],
   //admin: [info, fileStats, files, userStats,superset],
-  admin: [fileStats, files, userStats],
+  admin: [fileStats, charts, userStats],
   contributor: [
     fileStats,
     {
       ...userStats,
-      title: 'Contributor Statistics',
+      title: 'Recent File Stream',
     },
-    files,
+    charts,
   ],
   collaborator: [
     fileStats,
     {
       ...userStats,
-      title: 'Collaborator Statistics',
+      title: 'Recent File Stream',
     },
-    files,
+    charts,
   ],
   member: [
     info,
     {
       ...userStats,
-      title: 'Contributor Statistics',
+      title: 'Recent File Stream',
     },
-    files,
+    charts,
   ],
 };
 
