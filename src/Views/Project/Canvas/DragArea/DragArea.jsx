@@ -52,13 +52,10 @@ export default class DragArea extends React.Component {
 
   render() {
     return (
-      <div style={{ marginTop: '15px', minWidth: '100%' }}>
+      <div style={{ minWidth: '100%' }}>
         {this.state.layouts ? (
           <ResponsiveReactGridLayout
             {...this.props}
-            style={{
-              marginTop: 10,
-            }}
             layouts={this.state.layouts}
             onBreakpointChange={this.onBreakpointChange}
             draggableHandle={'.dragarea'}
