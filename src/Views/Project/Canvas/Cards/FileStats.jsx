@@ -70,22 +70,22 @@ function FileStats(props) {
         className={styles['shortcut--greenhome']}
         onClick={() => goToPage('greenroom-home')}
       >
-        <span className={styles.iconColumn}>
-          <HomeOutlined className={styles.icon1} />
+        <span className={styles['icon-column']}>
+          <HomeOutlined className={styles['icon--greenhome']} />
         </span>
-        <span className={styles.fileFont}>Green Room</span>
-        <span className={styles.fileNumber}>Files {greenRoomCount}</span>
+        <span className={styles['file-font']}>Green Room</span>
+        <span className={styles['file-number ']}>Files {greenRoomCount}</span>
       </div>
       {props.projectRole !== 'contributor' && coreCount !== null ? (
         <div
           className={styles['shortcut--core']}
           onClick={() => goToPage('core-home')}
         >
-          <span className={styles.iconColumn}>
-            <CloudServerOutlined className={styles.icon2} />
+          <span className={styles['icon-column']}>
+            <CloudServerOutlined className={styles['icon--core']} />
           </span>
-          <span className={styles.fileFont}>Core</span>
-          <span className={styles.fileNumber}>Files {coreCount}</span>
+          <span className={styles['file-font']}>Core</span>
+          <span className={styles['file-number ']}>Files {coreCount}</span>
         </div>
       ) : null}
       {props.projectRole !== 'contributor' ? (
@@ -93,9 +93,9 @@ function FileStats(props) {
           className={styles['shortcut--collections']}
           onClick={() => goToPage('collection')}
         >
-          <span className={styles.iconColumn}>
+          <span className={styles['icon-column']}>
             <PaperClipOutlined
-              className={styles.icon3}
+              className={styles['icon--collection']}
               style={{
                 cursor: collections.length === 0 ? '' : 'pointer',
                 opacity: collections.length === 0 ? 0.5 : 1,
@@ -103,7 +103,7 @@ function FileStats(props) {
             />
           </span>
           <span
-            className={styles.fileFont}
+            className={styles['file-font']}
             style={{ opacity: collections.length === 0 ? 0.5 : 1 }}
           >
             <span
