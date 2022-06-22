@@ -185,11 +185,11 @@
   margin-top: -0.4rem;
 }
 
-.pageination {
+.pagination {
   position: absolute;
   left: 0;
-  bottom: 0;
-  width: 100%;
+  bottom: 6px;
+  right: 0;
   border-top: 1px solid $background-color-2;
 
   :global {
@@ -235,6 +235,9 @@
       font-size: 1.2rem;
     }
   }
+}
+.card_inner {
+  min-width: 280px;
 }
 
 .pageText {

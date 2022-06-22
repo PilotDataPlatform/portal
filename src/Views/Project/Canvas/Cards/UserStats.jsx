@@ -168,7 +168,7 @@ function UserStats(props) {
   };
 
   return (
-    <div>
+    <div className={styles.card_inner}>
       <Col span={24} style={{ position: 'relative', margin: '10px 0' }}>
         {sortedAllFileStreams.length === 0 ? (
           <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
@@ -214,7 +214,7 @@ function UserStats(props) {
           })
         )}
       </Col>
-      <div className={styles.pageination}>
+      <div className={styles.pagination}>
         <CustomPagination
           onChange={getCurrentVal}
           total={total}
