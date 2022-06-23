@@ -61,15 +61,17 @@ export default function DatasetHeader(props) {
         data: { result: basicInfo },
       } = await getDatasetByDatasetCode(datasetCode);
 
-      // if (basicInfo.geid) {
-      //   const bidsResult = await getBidsResult(basicInfo.geid);
-      //   if (bidsResult.status === 200) {
-      //     basicInfo['bidsResult'] = bidsResult.data.result.validateOutput;
-      //     basicInfo['bidsUpdatedTime'] = bidsResult.data.result.updatedTime;
-      //     basicInfo['bidsCreatedTime'] = bidsResult.data.result.createdTime;
-      //     basicInfo['bidsLoading'] = false;
-      //   }
-      // }
+      if (basicInfo.geid) {
+        const bidsResult = await getBidsResult(basicInfo.geid);
+        if (bidsResult.status === 200) {
+          basicInfo['bidsResult'] = JSON.parse(
+            bidsResult.data.result.validateOutput,
+          );
+          basicInfo['bidsUpdatedTime'] = bidsResult.data.result.updatedTime;
+          basicInfo['bidsCreatedTime'] = bidsResult.data.result.createdTime;
+          basicInfo['bidsLoading'] = false;
+        }
+      }
       dispatch(datasetInfoCreators.setDatasetVersion(''));
       dispatch(datasetInfoCreators.setBasicInfo(basicInfo));
       dispatch(datasetInfoCreators.setHasInit(true));

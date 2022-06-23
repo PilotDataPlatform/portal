@@ -65,7 +65,7 @@ function FileStats(props) {
   };
 
   return currentProject ? (
-    <div style={{ flexDirection: 'column', display: 'flex' }}>
+    <div style={{ flexDirection: 'column', display: 'flex', minWidth: 130 }}>
       <div
         className={styles['shortcut--greenhome']}
         onClick={() => goToPage('greenroom-home')}

@@ -299,7 +299,7 @@ async function getProjectManifestList(projectCode) {
     v.globalEntityId = v.id;
     v.attributes = v.attributes.map((attr) => {
       if (attr.type === 'multiple_choice') {
-        attr.value = attr.options.join(',');
+        attr.value = attr.options ? attr.options.join(',') : [];
       }
       return attr;
     });

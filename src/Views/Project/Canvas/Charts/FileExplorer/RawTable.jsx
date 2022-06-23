@@ -1064,7 +1064,7 @@ function RawTable(props) {
       ),
     },
     {
-      condition: !panelKey.includes('trash') && hasSelected,
+      condition: !isRootFolder && !panelKey.includes('trash') && hasSelected,
       elm: (
         <Button
           onClick={downloadFiles}
