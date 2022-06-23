@@ -1,8 +1,8 @@
 const { login, logout } = require('../../../../utils/login.js');
 const { init } = require('../../../../utils/commonActions.js');
-const { collaborator } =require('../../../../users');
+const { disabletest, collaborator } = require('../../../../users');
 const { baseUrl, dataConfig } = require('../../../config');
-const { projectId } = dataConfig.userProfile;
+const { projectId, projectCode } = dataConfig.userProfile;
 const {
   fileName,
   folderName,
@@ -52,11 +52,12 @@ describe('Project List', () => {
     await page.waitForTimeout(3000);
   }
   it('2.12.1 Project administrator should be able to filter/sort in members page,1.filter by username', async () => {
-    await page.goto(`${baseUrl}project/${projectId}/teams`);
+    await page.goto(`${baseUrl}project/${projectCode}/teams`);
 
     await findDisabletestUser();
 
-    await page.waitForXPath("//tr[contains(@class,'ant-table-row')]");
+    // await page.waitForXPath("//tr[contains(@class,'ant-table-row')]");
+    await page.waitForTimeout(5000);
     //check if disabletest not exist
     const disabletest = await page.$x("//tr[@data-row-key='disabletest']");
 
