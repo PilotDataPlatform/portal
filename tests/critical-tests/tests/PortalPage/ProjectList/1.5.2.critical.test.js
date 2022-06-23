@@ -1,8 +1,8 @@
 const { login, logout } = require('../../../../utils/login.js');
 const { init } = require('../../../../utils/commonActions.js');
-const { collaborator } =require('../../../../users');
+const { collaborator } = require('../../../../users');
 const { baseUrl, dataConfig } = require('../../../config');
-const { projectId } = dataConfig.userProfile;
+const { projectId, projectCode } = dataConfig.userProfile;
 jest.setTimeout(700000);
 
 describe('Project List', () => {
@@ -11,7 +11,7 @@ describe('Project List', () => {
     const context = await browser.createIncognitoBrowserContext();
     page = await context.newPage();
     await page.goto(baseUrl);
-    await page.setViewport({ width: 1920, height: 1080 });
+    await page.setViewport({ width: 3000, height: 1080 });
     await login(page, 'admin');
     await init(page, { closeBanners: false });
   });
@@ -20,7 +20,10 @@ describe('Project List', () => {
     await page.waitForTimeout(3000);
   });
   it('1.5.2 Numbers of admins, contributors, collaborators matches the number in the members page. ', async () => {
-    await page.goto(`${baseUrl}project/${projectId}/canvas`);
+    await page.goto(`${baseUrl}project/${projectCode}/canvas`);
+    await page.waitForXPath(
+      "//div[@class='ant-row']/main[@class='ant-layout-content']//span[@aria-label='down-circle']",
+    );
     const downBtn = await page.waitForXPath(
       "//div[@class='ant-row']/main[@class='ant-layout-content']//span[@aria-label='down-circle']",
     );
@@ -48,7 +51,7 @@ describe('Project List', () => {
       (el) => el.textContent,
     );
     //member page
-    await page.goto(`${baseUrl}project/${projectId}/teams`);
+    await page.goto(`${baseUrl}project/${projectCode}/teams`);
     await page.waitForXPath("//tr[contains(@class,'ant-table-row')]");
 
     const admin = await page.$x("//td[text()='Project Administrator']");

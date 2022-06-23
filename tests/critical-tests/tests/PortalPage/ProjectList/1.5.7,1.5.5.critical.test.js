@@ -1,8 +1,8 @@
 const { login, logout } = require('../../../../utils/login.js');
 const { init } = require('../../../../utils/commonActions.js');
-const { collaborator } =require('../../../../users');
+const { collaborator } = require('../../../../users');
 const { baseUrl, dataConfig } = require('../../../config');
-const { projectId } = dataConfig.userProfile;
+const { projectId, projectCode } = dataConfig.userProfile;
 jest.setTimeout(700000);
 
 describe('Project List', () => {
@@ -20,7 +20,7 @@ describe('Project List', () => {
     await page.waitForTimeout(3000);
   });
   it('1.5.5 Add tag within limit (32 char), tag should be displayed properly', async () => {
-    await page.goto(`${baseUrl}project/${projectId}/settings`);
+    await page.goto(`${baseUrl}project/${projectCode}/settings`);
     await page.waitForXPath('//form//label[text()="Project Name"]');
     let editBtn = await page.waitForXPath(
       '//div[contains(@class, "ant-tabs-top-bar")]//button',

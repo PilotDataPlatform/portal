@@ -1,6 +1,6 @@
 const { login, logout } = require('../../../../utils/login.js');
 const { init } = require('../../../../utils/commonActions.js');
-const { collaborator } =require('../../../../users');
+const { collaborator } = require('../../../../users');
 const { baseUrl, dataConfig } = require('../../../config');
 jest.setTimeout(700000);
 
@@ -34,6 +34,7 @@ describe('Project List', () => {
     const porjects = await page.$x(
       "//div[contains(@class,'ant-tabs-tabpane-active')]/div/div[@id='uploadercontent_project_list']/div[@class='ant-spin-nested-loading']/div[@class='ant-spin-container']/ul[@class = 'ant-list-items']/*",
     );
+    console.log(porjects.length);
     expect(porjects.length).toBeGreaterThan(0);
   });
 });
