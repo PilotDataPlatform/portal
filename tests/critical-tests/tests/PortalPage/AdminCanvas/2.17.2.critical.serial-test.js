@@ -8,6 +8,7 @@ const {
 const { baseUrl, dataConfig } = require('../../../config');
 const {
   uploadFile,
+  deleteAction,
   deleteFileFromGreenroom,
   selectGreenroomFile,
   clickFileAction,
@@ -20,7 +21,7 @@ jest.setTimeout(700000);
 
 describe('2.17.2', () => {
   let page;
-  const fileName = 'tinified.zip';
+  const fileName = 'License.md';
   beforeAll(async () => {
     const context = await browser.createIncognitoBrowserContext();
     page = await context.newPage();
@@ -37,11 +38,41 @@ describe('2.17.2', () => {
     await logout(page);
     await page.waitForTimeout(3000);
   });
+  async function removeExistFile(file) {
+    const searchB = await page.waitForXPath(
+      "//span[contains(@class,'search')]",
+    );
+    await searchB.click();
+    const fileInput = await page.waitForXPath(
+      '//div[contains(@class, "ant-dropdown")]//input[@placeholder="Search name"]',
+      { visible: true },
+    );
+    await fileInput.type(file);
+    const searchFileBtn = await page.waitForXPath(
+      '//div[contains(@class, "ant-dropdown")]//button[contains(@class, "ant-btn-primary")]',
+      { visible: true },
+    );
+    await searchFileBtn.click();
+    await page.waitForTimeout(2000);
+    let fileInTable = await page.$x(
+      `//td[@class='ant-table-cell']//span[text()='${file}']`,
+    );
+
+    if (fileInTable.length !== 0) {
+      await selectGreenroomFile(page, file);
+      await deleteAction(page);
+    }
+  }
   it('prepare file for test', async () => {
     await page.goto(`${baseUrl}project/${projectCode}/data`);
     if (!fs.existsSync(`${process.cwd()}/tests/uploads/test/${fileName}`)) {
       await createDummyFile('Test Files', fileName, '10kb');
     }
+    await page.waitForTimeout(6000);
+    await removeExistFile(fileName);
+    await page.waitForTimeout(3000);
+    await clickFileAction(page, 'Refresh');
+    await page.waitForTimeout(6000);
     await uploadFile(page, 'Test Files', fileName);
   });
   it("Project admin could access any users' name folder download any file", async () => {

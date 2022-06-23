@@ -37,7 +37,8 @@ describe('1.1.0 One or more file upload', () => {
     await page.waitForTimeout(3000);
   });
 
-  async function removeExistFile(page, file) {
+  async function removeExistFile(file) {
+    await page.waitForTimeout(6000);
     let searchBtn = await page.waitForXPath(
       "//span[contains(@class,'search')]//parent::span",
     );
@@ -65,30 +66,35 @@ describe('1.1.0 One or more file upload', () => {
 
   it('1.1.0.1 - Should be able to upload one or more than one file', async () => {
     const fileNames = fs.readdirSync(`./tests/uploads/${folderName}`);
+    fileNames.pop();
 
     const filePaths = fileNames.map(
       (file) => `${process.cwd()}/tests/uploads/${folderName}/${file}`,
     );
 
     for (let file of fileNames) {
-      await page.waitForTimeout(2000);
-      await removeExistFile(page, file);
+      await removeExistFile(file);
       await clickFileAction(page, 'Refresh');
-      await page.waitForTimeout(3000);
+      await page.waitForTimeout(6000);
     }
     await clickFileAction(page, 'Refresh');
-    // await page.waitForTimeout(3000);
+    await page.waitForTimeout(3000);
     await uploadMultipleFiles(page, filePaths, fileNames);
   });
 
   it('Cleanup greenroom', async () => {
     // await cleanupGreenroom(page);
     const fileNames = fs.readdirSync(`./tests/uploads/${folderName}`);
+    fileNames.pop();
     for (let file of fileNames) {
-      await page.waitForTimeout(2000);
-      await removeExistFile(page, file);
+      await removeExistFile(file);
       await clickFileAction(page, 'Refresh');
-      await page.waitForTimeout(3000);
+      await page.waitForTimeout(6000);
+      const deletedFile = await page.waitForXPath(
+        `//tr[contains(@class, 'ant-table-row')]/descendant::span[contains(text(), '${file}')]`,
+        { timeout: 15000, hidden: true },
+      );
+      expect(deletedFile).toBeNull();
     }
   });
 });
