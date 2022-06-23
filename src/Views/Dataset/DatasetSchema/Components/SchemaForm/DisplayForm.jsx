@@ -33,7 +33,12 @@ function renderObject(schemaTPL, formData, uiSchema, xpath) {
   if (xpath.length && xpath !== '/') {
     const pathKeys = xpath.split('/').splice(1);
     for (let pathKey of pathKeys) {
-      uiSchema = uiSchema[pathKey];
+      if (uiSchema[pathKey]) {
+        uiSchema = uiSchema[pathKey];
+      } else {
+        uiSchema = null;
+        break;
+      }
     }
   }
   // add support for "anyOf" here
