@@ -1,7 +1,8 @@
 const { login, logout } = require('../../../../utils/login.js');
 const { admin } = require('../../../../users');
 const { init } = require('../../../../utils/commonActions.js');
-const { baseUrl } = require('../../../config');
+const { baseUrl, dataConfig } = require('../../../config');
+const { projectCode } = dataConfig.fileDelete;
 const {
   selectGreenroomFile,
   fileName,
@@ -15,7 +16,6 @@ const {
 
 describe('3.2 The selected file/folder can be deleted by using delete button', () => {
   let page;
-  const projectId = 96722;
   jest.setTimeout(7000000); //sets timeout for entire test suite
 
   beforeAll(async () => {
@@ -29,7 +29,7 @@ describe('3.2 The selected file/folder can be deleted by using delete button', (
 
   beforeEach(async () => {
     await page.setCacheEnabled(false);
-    await page.goto(`${baseUrl}project/${projectId}/canvas`);
+    await page.goto(`${baseUrl}project/${projectCode}/data`);
   });
 
   afterAll(async () => {
@@ -51,7 +51,7 @@ describe('3.2 The selected file/folder can be deleted by using delete button', (
     expect(deleteTag).toBeTruthy();
 
     // wait for file to be deleted before proceeding
-    await toggleFilePanel(page)
+    await toggleFilePanel(page);
     await checkFilePanelStatus(page, fileName);
   });
 });

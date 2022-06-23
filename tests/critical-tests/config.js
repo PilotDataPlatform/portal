@@ -11,6 +11,9 @@ const dataConfig = {
     projectId: 60023,
     contributorProjId: 75044,
   },
+  fileDelete: {
+    projectCode: 'tp0621',
+  },
   canvas: {
     projectId: 67239,
     projectCode: 'test20220222',

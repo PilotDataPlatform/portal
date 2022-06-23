@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const fileName = 'tinified.zip';
+const fileName = 'test001.md';
 const folderName = 'Test Files';
 const coreFolderName = 'Test Folder';
 const coreSubFolderName = 'Test Sub Folder';
@@ -355,9 +355,7 @@ const cleanupGreenroom = async (page) => {
   }
 };
 
-const cleanupCore = async (
-  page,
-) => {
+const cleanupCore = async (page) => {
   // wait for file explorer to load
   await page.waitForXPath(
     `//div[contains(@class, 'FileExplorer_file_folder_path')]/span[2]`,
@@ -378,7 +376,7 @@ const cleanupCore = async (
   // unselect test folder
   await deleteAction(page);
   await page.waitForTimeout(2000);
-  
+
   await toggleFilePanel(page);
   const filesDeleting = [];
   for (let file of fileNames) {
@@ -519,7 +517,7 @@ const clickFileAction = async (page, actionText) => {
     });
     if (showOutSide) {
       // await actionBtnOutside[0].click();
-      await actionBtnOutside[0].evaluate(ele => ele.click())
+      await actionBtnOutside[0].evaluate((ele) => ele.click());
       return;
     }
   }
@@ -545,7 +543,7 @@ const navigatePaginationAndFind = async (page, file) => {
     try {
       targetFile = await page.waitForXPath(
         `//tr[contains(@class, 'ant-table-row')]/descendant::span[contains(text(), '${file}')]`,
-        { timeout: 7500 }
+        { timeout: 7500 },
       );
     } catch {
       await nextPageLink.click();
