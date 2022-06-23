@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const fileName = 'tinified.zip';
+const fileName = 'test001.md';
 const folderName = 'Test Files';
 const coreFolderName = 'Test Folder';
 const coreSubFolderName = 'Test Sub Folder';
