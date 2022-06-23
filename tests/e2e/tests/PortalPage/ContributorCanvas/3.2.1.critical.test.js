@@ -1,9 +1,9 @@
 const { login, logout } = require('../../../../utils/login.js');
 const { init } = require('../../../../utils/commonActions.js');
-const { collaborator } =require('../../../../users');
+const { collaborator } = require('../../../../users');
 const { baseUrl, dataConfig } = require('../../../config');
 jest.setTimeout(700000);
-const { projectId } = dataConfig.contributorCanvas;
+const { projectCode } = dataConfig.contributorCanvas;
 
 describe('Contributor Canvas', () => {
   let page;
@@ -20,10 +20,10 @@ describe('Contributor Canvas', () => {
     await page.waitForTimeout(3000);
   });
   it('3.2.1 Contributor should not see the Core folder ', async () => {
-    await page.goto(`${baseUrl}project/${projectId}/canvas`);
+    await page.goto(`${baseUrl}project/${projectCode}/canvas`);
 
     const coreFolder = await page.waitForXPath(
-      "//span[@class='FileExplorer_core_title__1kpRo' and @id='core_title']",
+      "//div[contains(@class,'shortcut--core')]",
       { hidden: true },
     );
 

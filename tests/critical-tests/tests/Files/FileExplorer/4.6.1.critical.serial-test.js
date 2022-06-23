@@ -1,5 +1,5 @@
 const { login, logout } = require('../../../../utils/login.js');
-const { admin } =require('../../../../users');
+const { admin } = require('../../../../users');
 const { init } = require('../../../../utils/commonActions.js');
 const { baseUrl } = require('../../../config');
 const {
@@ -13,7 +13,8 @@ const {
 
 describe('4.6 File tag could be added / removed in file details panel', () => {
   let page;
-  const projectId = 96722;
+  // const projectId = 96722;
+  const projectCode = 'tp0621';
   jest.setTimeout(7000000); //sets timeout for entire test suite
 
   beforeAll(async () => {
@@ -27,7 +28,7 @@ describe('4.6 File tag could be added / removed in file details panel', () => {
 
   beforeEach(async () => {
     await page.setCacheEnabled(false);
-    await page.goto(`${baseUrl}project/${projectId}/canvas`);
+    await page.goto(`${baseUrl}project/${projectCode}/data`);
   });
 
   afterAll(async () => {
@@ -64,5 +65,5 @@ describe('4.6 File tag could be added / removed in file details panel', () => {
 
   it('Cleanup greenroom', async () => {
     await deleteFileFromGreenroom(page, fileName);
-  })
+  });
 });

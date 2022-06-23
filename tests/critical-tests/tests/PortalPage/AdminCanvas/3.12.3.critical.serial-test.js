@@ -13,14 +13,14 @@ const {
   clickFileAction,
 } = require('../../../../utils/greenroomActions.js');
 const { createDummyFile } = require('../../../../utils/createDummyFile');
-const { collaborator, admin } =require('../../../../users');
+const { collaborator, admin, contributor } = require('../../../../users');
 const fs = require('fs');
-const { projectId } = dataConfig.canvas;
+const { projectCode, projectCodeContributor } = dataConfig.canvas;
 jest.setTimeout(700000);
 
 describe('3.12.3', () => {
   let page;
-  const fileName = 'tinified.zip';
+  const fileName = 'License.md';
   beforeAll(async () => {
     const context = await browser.createIncognitoBrowserContext();
     page = await context.newPage();
@@ -38,7 +38,7 @@ describe('3.12.3', () => {
     await page.waitForTimeout(3000);
   });
   it('prepare file for test', async () => {
-    await page.goto(`${baseUrl}project/${projectId}/canvas`);
+    await page.goto(`${baseUrl}project/${projectCode}/data`);
     await page.waitForXPath(
       '//div[contains(@class, "FileExplorer_file_folder_path")]//span[@class="ant-breadcrumb-link" and text()="' +
         admin.username +
@@ -83,9 +83,13 @@ describe('3.12.3', () => {
   });
   it('Contributor can download any file from its name folder, including uploaded by others', async () => {
     await logout(page);
+    await page.waitForTimeout(6000);
+
     await login(page, 'contributor');
+    await init(page, { closeBanners: true });
+
     // need to be fixed later
-    await page.goto(`${baseUrl}project/${61268}/canvas`);
+    await page.goto(`${baseUrl}project/${projectCode}/data`);
     await page.waitForTimeout(3000);
 
     const fileKebabBtn = await page.waitForXPath(

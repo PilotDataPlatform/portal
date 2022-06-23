@@ -1,5 +1,5 @@
 const { login, logout } = require('../../../../utils/login.js');
-const { admin } =require('../../../../users');
+const { admin } = require('../../../../users');
 const { init } = require('../../../../utils/commonActions.js');
 const { baseUrl } = require('../../../config');
 const {
@@ -15,7 +15,8 @@ const {
 
 describe('1.1.1 Files upload with tags', () => {
   let page;
-  const projectId = 96722;
+  // const projectId = 96722;
+  const projectCode = 'generate';
   jest.setTimeout(7000000); //sets timeout for entire test suite
 
   beforeAll(async () => {
@@ -29,7 +30,7 @@ describe('1.1.1 Files upload with tags', () => {
 
   beforeEach(async () => {
     await page.setCacheEnabled(false);
-    await page.goto(`${baseUrl}project/${projectId}/canvas`);
+    await page.goto(`${baseUrl}project/${projectCode}/data`);
   });
 
   afterAll(async () => {
