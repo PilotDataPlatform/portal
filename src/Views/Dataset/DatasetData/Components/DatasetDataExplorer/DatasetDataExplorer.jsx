@@ -44,7 +44,6 @@ export default function DatasetDataExplorer(props) {
   };
 
   let socketIoUrl = `${process.env['REACT_APP_SOCKET_PROTOCOL']}://${DOMAIN}`;
-   
 
   useEffect(() => {
     if (geid) {

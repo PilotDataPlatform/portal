@@ -64,7 +64,9 @@ export default function DatasetHeader(props) {
       if (basicInfo.geid) {
         const bidsResult = await getBidsResult(basicInfo.geid);
         if (bidsResult.status === 200) {
-          basicInfo['bidsResult'] = bidsResult.data.result.validateOutput;
+          basicInfo['bidsResult'] = JSON.parse(
+            bidsResult.data.result.validateOutput,
+          );
           basicInfo['bidsUpdatedTime'] = bidsResult.data.result.updatedTime;
           basicInfo['bidsCreatedTime'] = bidsResult.data.result.createdTime;
           basicInfo['bidsLoading'] = false;
