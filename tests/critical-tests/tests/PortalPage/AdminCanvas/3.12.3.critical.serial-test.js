@@ -10,17 +10,18 @@ const {
   uploadFile,
   deleteFileFromGreenroom,
   selectGreenroomFile,
+  deleteAction,
   clickFileAction,
 } = require('../../../../utils/greenroomActions.js');
 const { createDummyFile } = require('../../../../utils/createDummyFile');
-const { collaborator, admin } =require('../../../../users');
+const { collaborator, admin, contributor } = require('../../../../users');
 const fs = require('fs');
-const { projectId } = dataConfig.canvas;
+const { projectCode, projectCodeContributor } = dataConfig.canvas;
 jest.setTimeout(700000);
 
 describe('3.12.3', () => {
   let page;
-  const fileName = 'tinified.zip';
+  const fileName = 'License.md';
   beforeAll(async () => {
     const context = await browser.createIncognitoBrowserContext();
     page = await context.newPage();
@@ -37,8 +38,31 @@ describe('3.12.3', () => {
     await logout(page);
     await page.waitForTimeout(3000);
   });
+  async function removeExistFile(file) {
+    const search = await page.waitForXPath("//span[contains(@class,'search')]");
+    await search.click();
+    const nameInput = await page.waitForXPath(
+      '//div[contains(@class, "ant-dropdown")]//input[@placeholder="Search name"]',
+      { visible: true },
+    );
+    await nameInput.type(file);
+    const searchFileBtn = await page.waitForXPath(
+      '//div[contains(@class, "ant-dropdown")]//button[contains(@class, "ant-btn-primary")]',
+      { visible: true },
+    );
+    await searchFileBtn.click();
+    await page.waitForTimeout(2000);
+    let fileInTable = await page.$x(
+      `//td[@class='ant-table-cell']//span[text()='${file}']`,
+    );
+
+    if (fileInTable.length !== 0) {
+      await selectGreenroomFile(page, file);
+      await deleteAction(page);
+    }
+  }
   it('prepare file for test', async () => {
-    await page.goto(`${baseUrl}project/${projectId}/canvas`);
+    await page.goto(`${baseUrl}project/${projectCode}/data`);
     await page.waitForXPath(
       '//div[contains(@class, "FileExplorer_file_folder_path")]//span[@class="ant-breadcrumb-link" and text()="' +
         admin.username +
@@ -76,16 +100,25 @@ describe('3.12.3', () => {
     );
     await userFolder.click();
     await page.waitForTimeout(3000);
+
     if (!fs.existsSync(`${process.cwd()}/tests/uploads/test/${fileName}`)) {
       await createDummyFile('Test Files', fileName, '10kb');
     }
+
+    await removeExistFile(fileName);
+    await page.waitForTimeout(3000);
+
     await uploadFile(page, 'Test Files', fileName);
   });
   it('Contributor can download any file from its name folder, including uploaded by others', async () => {
     await logout(page);
+    await page.waitForTimeout(6000);
+
     await login(page, 'contributor');
+    await init(page, { closeBanners: true });
+
     // need to be fixed later
-    await page.goto(`${baseUrl}project/${61268}/canvas`);
+    await page.goto(`${baseUrl}project/${projectCode}/data`);
     await page.waitForTimeout(3000);
 
     const fileKebabBtn = await page.waitForXPath(

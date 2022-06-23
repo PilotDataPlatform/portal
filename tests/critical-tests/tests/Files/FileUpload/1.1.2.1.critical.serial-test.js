@@ -1,5 +1,5 @@
 const { login, logout } = require('../../../../utils/login.js');
-const { admin } =require('../../../../users');
+const { admin } = require('../../../../users');
 const { init } = require('../../../../utils/commonActions.js');
 const { baseUrl } = require('../../../config');
 const {
@@ -17,12 +17,13 @@ const {
   createSimpleManifest,
   selectManifestDuringUpload,
   ATTR_NAME,
-  ATTR_VALS
+  ATTR_VALS,
 } = require('../../../../utils/manifest');
 
 describe('1.1.2 File upload with attribute', () => {
   let page;
-  const projectId = 96722;
+  // const projectId = 96722;
+  const projectCode = 'generate';
   const manifestName = 'test manifest';
   jest.setTimeout(7000000); //sets timeout for entire test suite
 
@@ -37,7 +38,7 @@ describe('1.1.2 File upload with attribute', () => {
 
   beforeEach(async () => {
     await page.setCacheEnabled(false);
-    await page.goto(`${baseUrl}project/${projectId}/canvas`);
+    await page.goto(`${baseUrl}project/${projectCode}/data`);
   });
 
   afterAll(async () => {
@@ -73,7 +74,9 @@ describe('1.1.2 File upload with attribute', () => {
     expect(uploadedFile).toBeTruthy();
 
     await selectFileProperties(page, fileName);
-    const fileAttributesPanel = await page.waitForXPath('//div[contains(@class, "ant-collapse-header") and contains(text(), "File Attributes")]')
+    const fileAttributesPanel = await page.waitForXPath(
+      '//div[contains(@class, "ant-collapse-header") and contains(text(), "File Attributes")]',
+    );
     await fileAttributesPanel.click();
 
     const manifestDetails = await Promise.all([
@@ -81,12 +84,14 @@ describe('1.1.2 File upload with attribute', () => {
         `//div[contains(@class, "ant-collapse-header") and contains(text(), "File Attributes")]/following-sibling::div/descendant::h3[contains(text(), "${manifestName}")]`,
       ), // manifest name
       page.waitForXPath(
-      `//div[contains(@class, "ant-collapse-header") and contains(text(), "File Attributes")]/following-sibling::div/descendant::h3[contains(text(), "${manifestName}")]/parent::div/descendant::table/descendant::span[contains(text(), "${ATTR_NAME}")]`), // attribute name
+        `//div[contains(@class, "ant-collapse-header") and contains(text(), "File Attributes")]/following-sibling::div/descendant::h3[contains(text(), "${manifestName}")]/parent::div/descendant::table/descendant::span[contains(text(), "${ATTR_NAME}")]`,
+      ), // attribute name
       page.waitForXPath(
-      `//div[contains(@class, "ant-collapse-header") and contains(text(), "File Attributes")]/following-sibling::div/descendant::h3[contains(text(), "test manifest")]/parent::div/descendant::table/descendant::span/span[contains(text(), "${ATTR_VALS[0]}")]`) // attribute value
+        `//div[contains(@class, "ant-collapse-header") and contains(text(), "File Attributes")]/following-sibling::div/descendant::h3[contains(text(), "test manifest")]/parent::div/descendant::table/descendant::span/span[contains(text(), "${ATTR_VALS[0]}")]`,
+      ), // attribute value
     ]);
 
-    for (let item of manifestDetails){
+    for (let item of manifestDetails) {
       expect(item).toBeTruthy();
     }
   });

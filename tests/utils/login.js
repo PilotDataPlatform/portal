@@ -1,4 +1,4 @@
-const { admin, collaborator, disabletest } = require('../users');
+const { admin, collaborator, disabletest, contributor } = require('../users');
 const dotenv = require('dotenv');
 /**
  * login
@@ -12,12 +12,16 @@ async function login(page, role) {
       ? admin.username
       : role === 'disabletest'
       ? disabletest.username
+      : role == 'contributor'
+      ? contributor.username
       : collaborator.username;
   const password =
     role === 'admin'
       ? admin.password
       : role === 'disabletest'
       ? disabletest.password
+      : role == 'contributor'
+      ? contributor.password
       : collaborator.password;
 
   try {
@@ -62,14 +66,16 @@ async function logout(page) {
   await page.waitForSelector('.ant-modal-body .ant-btn.ant-btn-primary');
   await page.click('.ant-modal-body .ant-btn.ant-btn-primary');
 
-  await page.waitForTimeout(2500);
+  await page.waitForTimeout(3500);
   const url = new URL(await page.url());
+
   const pathname =
     process.env.REACT_APP_TEST_ENV === 'dev'
       ? url.pathname === process.env.REACT_APP_PORTAL_PATH ||
         url.pathname === '/'
       : url.pathname === process.env.REACT_APP_PORTAL_PATH ||
         url.pathname === process.env.REACT_APP_PORTAL_PATH + '/login';
+
   await expect(pathname).toBeTruthy();
 }
 

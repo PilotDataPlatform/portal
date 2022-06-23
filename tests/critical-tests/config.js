@@ -14,6 +14,7 @@ const dataConfig = {
   canvas: {
     projectId: 67239,
     projectCode: 'test20220222',
+    projectCodeContributor: 'testproject0413',
   },
   contributorCanvas: {
     projectId: 68129,
@@ -25,6 +26,7 @@ const dataConfig = {
   },
   userProfile: {
     projectId: 104234,
+    projectCode: 'test20220222',
   },
 };
 
