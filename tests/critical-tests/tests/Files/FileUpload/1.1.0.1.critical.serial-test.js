@@ -8,6 +8,7 @@ const {
   uploadMultipleFiles,
   deleteAction,
   selectGreenroomFile,
+  clickFileAction,
   cleanupGreenroom,
 } = require('../../../../utils/greenroomActions.js');
 
@@ -35,31 +36,30 @@ describe('1.1.0 One or more file upload', () => {
     await logout(page);
     await page.waitForTimeout(3000);
   });
-  async function removeExistFiles(fileNames) {
-    if (fileNames.length > 0) {
-      fileNames.forEach(async (file) => {
-        const search = await page.waitForXPath(
-          "//span[contains(@class,'search')]",
-        );
-        await search.click();
-        const nameInput = await page.waitForXPath(
-          '//div[contains(@class, "ant-dropdown")]//input[@placeholder="Search name"]',
-          { visible: true },
-        );
-        await nameInput.type(file);
-        const searchFileBtn = await page.waitForXPath(
-          '//div[contains(@class, "ant-dropdown")]//button[contains(@class, "ant-btn-primary")]',
-          { visible: true },
-        );
-        await searchFileBtn.click();
-        let fileInTable = await page.$x(
-          `//td[@class='ant-table-cell']//span[text()=${file}]`,
-        );
-        if (fileInTable.length > 0) {
-          await selectGreenroomFile(page, file);
-          await deleteAction(page);
-        }
-      });
+
+  async function removeExistFile(page, file) {
+    let searchBtn = await page.waitForXPath(
+      "//span[contains(@class,'search')]//parent::span",
+    );
+    await searchBtn.click();
+    let nameInput = await page.waitForXPath(
+      '//div[contains(@class, "ant-dropdown")]//input[@placeholder="Search name"]',
+      { visible: true },
+    );
+    await nameInput.type(file);
+    let searchFileBtn = await page.waitForXPath(
+      '//div[contains(@class, "ant-dropdown")]//button[contains(@class, "ant-btn-primary")]',
+      { visible: true },
+    );
+    await searchFileBtn.click();
+    await page.waitForTimeout(2000);
+    let fileInTable = await page.$x(
+      `//td[@class='ant-table-cell']//span[text()='${file}']`,
+    );
+
+    if (fileInTable.length !== 0) {
+      await selectGreenroomFile(page, file);
+      await deleteAction(page);
     }
   }
 
@@ -70,12 +70,25 @@ describe('1.1.0 One or more file upload', () => {
       (file) => `${process.cwd()}/tests/uploads/${folderName}/${file}`,
     );
 
-    await removeExistFiles(fileNames);
-
+    for (let file of fileNames) {
+      await page.waitForTimeout(2000);
+      await removeExistFile(page, file);
+      await clickFileAction(page, 'Refresh');
+      await page.waitForTimeout(3000);
+    }
+    await clickFileAction(page, 'Refresh');
+    // await page.waitForTimeout(3000);
     await uploadMultipleFiles(page, filePaths, fileNames);
   });
 
   it('Cleanup greenroom', async () => {
-    await cleanupGreenroom(page);
+    // await cleanupGreenroom(page);
+    const fileNames = fs.readdirSync(`./tests/uploads/${folderName}`);
+    for (let file of fileNames) {
+      await page.waitForTimeout(2000);
+      await removeExistFile(page, file);
+      await clickFileAction(page, 'Refresh');
+      await page.waitForTimeout(3000);
+    }
   });
 });

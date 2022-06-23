@@ -10,6 +10,7 @@ const {
   uploadFile,
   deleteFileFromGreenroom,
   selectGreenroomFile,
+  deleteAction,
   clickFileAction,
 } = require('../../../../utils/greenroomActions.js');
 const { createDummyFile } = require('../../../../utils/createDummyFile');
@@ -37,6 +38,29 @@ describe('3.12.3', () => {
     await logout(page);
     await page.waitForTimeout(3000);
   });
+  async function removeExistFile(file) {
+    const search = await page.waitForXPath("//span[contains(@class,'search')]");
+    await search.click();
+    const nameInput = await page.waitForXPath(
+      '//div[contains(@class, "ant-dropdown")]//input[@placeholder="Search name"]',
+      { visible: true },
+    );
+    await nameInput.type(file);
+    const searchFileBtn = await page.waitForXPath(
+      '//div[contains(@class, "ant-dropdown")]//button[contains(@class, "ant-btn-primary")]',
+      { visible: true },
+    );
+    await searchFileBtn.click();
+    await page.waitForTimeout(2000);
+    let fileInTable = await page.$x(
+      `//td[@class='ant-table-cell']//span[text()='${file}']`,
+    );
+
+    if (fileInTable.length !== 0) {
+      await selectGreenroomFile(page, file);
+      await deleteAction(page);
+    }
+  }
   it('prepare file for test', async () => {
     await page.goto(`${baseUrl}project/${projectCode}/data`);
     await page.waitForXPath(
@@ -76,9 +100,14 @@ describe('3.12.3', () => {
     );
     await userFolder.click();
     await page.waitForTimeout(3000);
+
     if (!fs.existsSync(`${process.cwd()}/tests/uploads/test/${fileName}`)) {
       await createDummyFile('Test Files', fileName, '10kb');
     }
+
+    await removeExistFile(fileName);
+    await page.waitForTimeout(3000);
+
     await uploadFile(page, 'Test Files', fileName);
   });
   it('Contributor can download any file from its name folder, including uploaded by others', async () => {

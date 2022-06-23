@@ -69,18 +69,13 @@ async function logout(page) {
   await page.waitForTimeout(3500);
   const url = new URL(await page.url());
 
-  console.log(url);
-  console.log(process.env.REACT_APP_PORTAL_PATH + '/login');
-  console.log(process.env.REACT_APP_TEST_ENV === 'dev');
-  console.log(url.pathname === process.env.REACT_APP_PORTAL_PATH + '/login');
-
   const pathname =
     process.env.REACT_APP_TEST_ENV === 'dev'
       ? url.pathname === process.env.REACT_APP_PORTAL_PATH ||
         url.pathname === '/'
       : url.pathname === process.env.REACT_APP_PORTAL_PATH ||
         url.pathname === process.env.REACT_APP_PORTAL_PATH + '/login';
-  console.log(pathname);
+
   await expect(pathname).toBeTruthy();
 }
 
