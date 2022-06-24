@@ -69,6 +69,7 @@ function Project(props) {
     if (project.profile) {
       dispatch(triggerEvent('LOAD_COPY_LIST'));
       dispatch(triggerEvent('LOAD_DELETED_LIST'));
+      dispatch(triggerEvent('LOAD_UPLOAD_LIST'));
     }
   }, [project.profile]);
 

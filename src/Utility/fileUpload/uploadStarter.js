@@ -114,10 +114,10 @@ const uploadStarter = async (data, q) => {
   });
 };
 
-const getUploadKey = (file, timeStamp) => {
-  return file.originFileObj.webkitRelativePath
-    ? `${file.originFileObj.webkitRelativePath}/`
-    : '' + file.originFileObj.name + timeStamp;
-};
+const getUploadKey = (file, timeStamp) =>
+  file.originFileObj.webkitRelativePath
+    ? file.originFileObj.webkitRelativePath + timeStamp
+    : file.originFileObj.name + timeStamp;
 
 export default uploadStarter;
+  

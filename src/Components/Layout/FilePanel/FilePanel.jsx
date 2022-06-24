@@ -12,7 +12,6 @@ import {
 } from 'antd';
 import Icon from '@ant-design/icons';
 import {
-  ProfileOutlined,
   CloseOutlined,
   SyncOutlined,
   CloudUploadOutlined,
@@ -30,6 +29,7 @@ import {
   setSuccessNum,
   setDeletedFileList,
   updateDeletedFileList,
+  appendUploadListCreator,
 } from '../../../Redux/actions';
 import { useIsMount, keepAlive } from '../../../Utility';
 import {
@@ -37,14 +37,13 @@ import {
   deleteDownloadStatus,
   listAllCopy2CoreFiles,
   loadDeletedFiles,
+  checkUploadStatus,
   deleteFileActionStatus,
 } from '../../../APIs';
 import { tokenManager } from '../../../Service/tokenManager';
 import { JOB_STATUS } from './jobStatus';
 
 const { TabPane } = Tabs;
-
-const format = 'YYYY-MM-DD';
 
 function FilePanel(props) {
   const sessionId = tokenManager.getCookie('sessionId');
@@ -59,6 +58,7 @@ function FilePanel(props) {
   const loadDeletedEvent = useSelector(
     (state) => state.events.LOAD_DELETED_LIST,
   );
+  const loadUploadEvent = useSelector((state) => state.events.LOAD_UPLOAD_LIST);
   let deletedFileList = useSelector((state) => state.deletedFileList);
 
   const projectCode = props.projectCode;
@@ -154,6 +154,73 @@ function FilePanel(props) {
     }
   }
 
+  async function loadUploadedFilesList() {
+    if (project && project.profile) {
+      const response = await new Promise((resolve, _) => {
+        setTimeout(() => {
+          resolve(checkUploadStatus(project.profile.code, '*', sessionId));
+        }, 2000);
+      });
+      const result = response.data.result;
+
+      if (result.length) {
+        if (
+          result.filter(
+            (v) =>
+              v.status === JOB_STATUS.PRE_UPLOADED ||
+              v.status === JOB_STATUS.CHUNK_UPLOADED,
+          ).length > 0
+        ) {
+          refreshJobStart = true;
+          keepAlive();
+          setTimeout(() => {
+            loadUploadedFilesList();
+          }, 2 * 1000);
+        } else {
+          // last call
+          const timestamp = Date.now();
+          // reduce to array of completed jobs that are not in redux store eg.,(retrives and stores upload info in redux when page is refreshed) - pending jobs are updated in the store by Portal.js
+          const appendToUploadList = result.reduce(
+            (appendList, currentItem) => {
+              const existingUpload = uploadList.find(
+                (storeItem) => storeItem.jobId === currentItem.jobId,
+              );
+
+              if (existingUpload) {
+                return appendList;
+              }
+              // add to redux only if there isn't an existingUpload - result contains completed upload jobs only
+              // uploadStarter.js dispatches new uploads and Portal.js updates status of uploads
+              appendList.push({
+                status: currentItem.status === 'SUCCEED' ? 'success' : 'error',
+                progress: currentItem.progress,
+                projectId: project.profile.id,
+                fileName: currentItem.source,
+                projectName: project.profile.name,
+                projectCode: project.profile.code,
+                createdTime: null, // null for items that have already been uploaded
+                jobId: currentItem.jobId,
+                updatedTime: currentItem.updateTimestamp, // property for items that are retrieved from uploadStatus API (completed upload)
+              });
+
+              return appendList;
+            },
+            [],
+          );
+
+          if (appendToUploadList.length) {
+            dispatch(appendUploadListCreator(appendToUploadList));
+          }
+
+          if (refreshJobStart) {
+            dispatch(setSuccessNum(successNum + 1));
+            refreshJobStart = false;
+          }
+        }
+      }
+    }
+  }
+
   useEffect(() => {
     if (loadCopyEvent !== 0) {
       // eslint-disable-next-line
@@ -169,6 +236,14 @@ function FilePanel(props) {
       loadDeletedFilesList();
     }
   }, [loadDeletedEvent]);
+
+  useEffect(() => {
+    if (loadUploadEvent !== 0) {
+      // eslint-disable-next-line
+      refreshJobStart = false;
+      loadUploadedFilesList();
+    }
+  }, [loadUploadEvent]);
 
   useEffect(() => {
     if (isMount) {

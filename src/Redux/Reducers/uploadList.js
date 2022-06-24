@@ -19,6 +19,7 @@ function uploadList(state = init, action) {
         return [...state, appendContent];
       }
     }
+    // update status of upload item eg.,('pending', 'uploading', 'error')
     case UPDATE_UPLOAD_LIST_ITEM: {
       const { item } = payload;
       const currentItem = state.find((ele) => {
