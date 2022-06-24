@@ -67,9 +67,7 @@ export default function DatasetHeader(props) {
           bidsResult.status === 200 &&
           bidsResult.data.result.validateOutput
         ) {
-          basicInfo['bidsResult'] = JSON.parse(
-            bidsResult.data.result.validateOutput,
-          );
+          basicInfo['bidsResult'] = bidsResult.data.result.validateOutput;
           basicInfo['bidsUpdatedTime'] = bidsResult.data.result.updatedTime;
           basicInfo['bidsCreatedTime'] = bidsResult.data.result.createdTime;
           basicInfo['bidsLoading'] = false;
