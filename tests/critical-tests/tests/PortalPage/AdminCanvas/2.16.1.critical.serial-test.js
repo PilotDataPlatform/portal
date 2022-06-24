@@ -37,8 +37,31 @@ describe('2.16.1', () => {
     await logout(page);
     await page.waitForTimeout(3000);
   });
+  async function removeExistFile(file) {
+    const search = await page.waitForXPath("//span[contains(@class,'search')]");
+    await search.click();
+    const nameInput = await page.waitForXPath(
+      '//div[contains(@class, "ant-dropdown")]//input[@placeholder="Search name"]',
+      { visible: true },
+    );
+    await nameInput.type(file);
+    const searchFileBtn = await page.waitForXPath(
+      '//div[contains(@class, "ant-dropdown")]//button[contains(@class, "ant-btn-primary")]',
+      { visible: true },
+    );
+    await searchFileBtn.click();
+    await page.waitForTimeout(2000);
+    let fileInTable = await page.$x(
+      `//td[@class='ant-table-cell']//span[text()='${file}']`,
+    );
+    console.log(fileInTable.length);
+    if (fileInTable.length !== 0) {
+      await selectGreenroomFile(page, file);
+      await deleteAction(page);
+    }
+  }
   it('prepare manifest and file', async () => {
-    await page.goto(`${baseUrl}project/${projectId}/settings`);
+    await page.goto(`${baseUrl}project/${projectCode}/settings`);
     await page.waitForTimeout(3000);
     const manifestTab = await page.waitForXPath(
       '//div[text()="File Attributes"]',
@@ -53,10 +76,15 @@ describe('2.16.1', () => {
     if (manifestExist.length === 0) {
       await createSimpleManifest(page, manifestName);
     }
-    await page.goto(`${baseUrl}project/${projectId}/canvas`);
+    await page.goto(`${baseUrl}project/${projectCode}/data`);
     if (!fs.existsSync(`${process.cwd()}/tests/uploads/test/${fileName}`)) {
       await createDummyFile('test', fileName, '10kb');
     }
+    await page.waitForTimeout(6000);
+    await removeExistFile(fileName);
+    await page.waitForTimeout(3000);
+    await clickFileAction(page, 'Refresh');
+    await page.waitForTimeout(6000);
     await uploadFile(page, 'test', fileName);
   });
   it('Attach manifest to any file in the project that does not have a manifest yet', async () => {
@@ -94,7 +122,7 @@ describe('2.16.1', () => {
     await page.waitForTimeout(2000);
   });
   it('Delete test files from test project', async () => {
-    await page.goto(`${baseUrl}project/${projectId}/canvas`);
+    await page.goto(`${baseUrl}project/${projectCode}/data`);
     await page.waitForTimeout(3000);
     await deleteFileFromGreenroom(page, fileName);
     await page.waitForTimeout(5000);
