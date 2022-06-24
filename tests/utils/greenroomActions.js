@@ -7,7 +7,7 @@ const coreSubFolderName = 'Test Sub Folder';
 
 const waitForFileExplorer = async (page, breadcrumb) => {
   await page.waitForXPath(
-    `//div[contains(@class, 'FileExplorer_file_explore_actions')]/descendant::span[contains(@class, 'ant-breadcrumb-link') and contains(text(), '${breadcrumb}')]`,
+    `//span[contains(@class, 'ant-breadcrumb-link') and contains(text(), '${breadcrumb}')]`,
   );
 };
 

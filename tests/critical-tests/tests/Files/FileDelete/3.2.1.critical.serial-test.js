@@ -17,7 +17,32 @@ const {
 describe('3.2 The selected file/folder can be deleted by using delete button', () => {
   let page;
   jest.setTimeout(7000000); //sets timeout for entire test suite
+  async function removeExistFile(file) {
+    await page.waitForTimeout(5000);
+    const search = await page.waitForXPath(
+      "//tr//th[position()=3]//span[contains(@class,'search')]",
+    );
+    await search.click();
+    const nameInput = await page.waitForXPath(
+      '//div[contains(@class, "ant-dropdown")]//input[@placeholder="Search name"]',
+      { visible: true },
+    );
+    await nameInput.type(file);
+    const searchFileBtn = await page.waitForXPath(
+      '//div[contains(@class, "ant-dropdown")]//button[contains(@class, "ant-btn-primary")]',
+      { visible: true },
+    );
+    await searchFileBtn.click();
+    await page.waitForTimeout(2000);
+    let fileInTable = await page.$x(
+      `//td[@class='ant-table-cell']//span[text()='${file}']`,
+    );
 
+    if (fileInTable.length !== 0) {
+      await selectGreenroomFile(page, file);
+      await deleteAction(page);
+    }
+  }
   beforeAll(async () => {
     const context = await browser.createIncognitoBrowserContext();
     page = await context.newPage();
@@ -42,9 +67,7 @@ describe('3.2 The selected file/folder can be deleted by using delete button', (
   });
 
   it('3.2.1 - The file will have "to be deleted" tag after clicking the delete button', async () => {
-    await waitForFileExplorer(page, admin.username);
-    await selectGreenroomFile(page, fileName);
-    await deleteAction(page);
+    await removeExistFile(fileName);
     const deleteTag = page.waitForXPath(
       '//div[contains(@class, "ant-tabs-tabpane-active")]/descendant::div[contains(@class, "ant-table-layout")]/descendant::td[3]/descendant::span[contains(text(), "to be deleted")]',
     );

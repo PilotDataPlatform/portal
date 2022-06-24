@@ -9,7 +9,7 @@ let mailHogPort;
 let dataConfig;
 switch (process.env.REACT_APP_TEST_ENV) {
   case 'local':
-    baseUrl = `${process.env.REACT_APP_DOMAIN}/${PORTAL_PREFIX}/`;
+    baseUrl = `http://localhost:3000${PORTAL_PREFIX}/`;
     mailHogHost = '10.3.7.106';
     mailHogPort = 8025;
     dataConfig = {
@@ -34,7 +34,7 @@ switch (process.env.REACT_APP_TEST_ENV) {
     };
     break;
   case 'dev':
-    baseUrl = `http://10.3.7.220${PORTAL_PREFIX}/`;
+    baseUrl = `http://${process.env.REACT_APP_DOMAIN}${PORTAL_PREFIX}/`;
     mailHogHost = '10.3.7.106';
     mailHogPort = 8025;
     dataConfig = {

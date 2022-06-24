@@ -39,7 +39,10 @@ describe('3.12.3', () => {
     await page.waitForTimeout(3000);
   });
   async function removeExistFile(file) {
-    const search = await page.waitForXPath("//span[contains(@class,'search')]");
+    await page.waitForTimeout(2000);
+    const search = await page.waitForXPath(
+      "//tr//th[position()=3]//span[contains(@class,'search')]",
+    );
     await search.click();
     const nameInput = await page.waitForXPath(
       '//div[contains(@class, "ant-dropdown")]//input[@placeholder="Search name"]',
