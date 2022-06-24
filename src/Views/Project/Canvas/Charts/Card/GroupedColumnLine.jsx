@@ -70,7 +70,7 @@ function GroupedColumnLine({
   };
 
   return (
-    <div className={styles['grouped-column-line-container']}>
+    <div className={styles['grouped-column-line__container']}>
       {showLegend && <GroupedColumnLineLegend legendLabels={legendLabels} />}
       <DualAxes {...config} />
     </div>

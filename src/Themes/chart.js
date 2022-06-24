@@ -7,6 +7,7 @@ export default {
     column: [variables.primaryColor2, variables.primaryColorLight1],
     line: variables.primaryColor4,
   },
+  stackedAreaPlot: [variables.primaryColor2, variables.primaryColorLight1],
   heatgraph: {
     range: {
       green: [

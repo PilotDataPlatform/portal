@@ -35,20 +35,20 @@
   }
 }
 
-.grouped-column-line-legend {
+.grouped-column-line__legend {
   composes: heatmap-legend;
   position: static;
   margin-bottom: 0.4rem;
   margin-left: 3rem;
 
-  &__legend-item {
+  .grouped-column-line__legend-item {
     display: flex;
     align-items: center;
     font-size: 0.8rem;
     font-weight: 600;
   }
 
-  &__label {
+  .grouped-column-line__legend-label {
     font-weight: 400;
     text-transform: capitalize;
   }
