@@ -1,7 +1,7 @@
 const { login, logout } = require('../../../../utils/login.js');
 const { admin } = require('../../../../users');
 const { init } = require('../../../../utils/commonActions.js');
-const { baseUrl } = require('../../../config');
+const { baseUrl, dataConfig } = require('../../../config');
 const {
   uploadFile,
   waitForFileExplorer,
@@ -14,7 +14,7 @@ const {
 describe('4.6 File tag could be added / removed in file details panel', () => {
   let page;
   // const projectId = 96722;
-  const projectCode = 'tp0621';
+  const projectCode = dataConfig.fileExplorer.projectCode;
   jest.setTimeout(7000000); //sets timeout for entire test suite
 
   beforeAll(async () => {

@@ -39,6 +39,12 @@ const dataConfig = {
   fileDownload: {
     projectCode: 'tp0621',
   },
+  fileUpload: {
+    projectCode: 'test0621',
+  },
+  fileExplorer: {
+    projectCode: 'tp0621',
+  },
   userProfile: {
     projectId: 104234,
     projectCode: 'test20220222',

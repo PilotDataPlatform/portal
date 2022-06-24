@@ -2,20 +2,18 @@ const fs = require('fs');
 const { login, logout } = require('../../../../utils/login.js');
 const { admin } = require('../../../../users');
 const { init } = require('../../../../utils/commonActions.js');
-const { baseUrl } = require('../../../config');
+const { baseUrl, dataConfig } = require('../../../config');
 const {
   folderName,
   uploadMultipleFiles,
   deleteAction,
   selectGreenroomFile,
   clickFileAction,
-  cleanupGreenroom,
 } = require('../../../../utils/greenroomActions.js');
 
 describe('1.1.0 One or more file upload', () => {
   let page;
-  // const projectId = 96722;
-  const projectCode = 'test0621';
+  const projectCode = dataConfig.fileUpload.projectCode;
   jest.setTimeout(7000000); //sets timeout for entire test suite
 
   beforeAll(async () => {

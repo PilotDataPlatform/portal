@@ -1,7 +1,7 @@
 const { login, logout } = require('../../../../utils/login.js');
 const { admin } = require('../../../../users');
 const { init } = require('../../../../utils/commonActions.js');
-const { baseUrl } = require('../../../config');
+const { baseUrl, dataConfig } = require('../../../config');
 const {
   toggleFilePanel,
   checkFilePanelStatus,
@@ -23,7 +23,7 @@ const {
 describe('1.1.2 File upload with attribute', () => {
   let page;
   // const projectId = 96722;
-  const projectCode = 'generate';
+  const projectCode = dataConfig.fileUpload.projectCode;
   const manifestName = 'test manifest';
   jest.setTimeout(7000000); //sets timeout for entire test suite
 

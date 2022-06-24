@@ -1,14 +1,14 @@
 const { login, logout } = require('../../../../utils/login.js');
-const { admin } =require('../../../../users');
+const { admin } = require('../../../../users');
 const { init } = require('../../../../utils/commonActions.js');
-const { baseUrl } = require('../../../config');
+const { baseUrl, dataConfig } = require('../../../config');
 const {
   waitForFileExplorer,
 } = require('../../../../utils/greenroomActions.js');
 
 describe('4.2 File explorer should display properly', () => {
   let page;
-  const projectId = 96722;
+  const projectCode = dataConfig.fileExplorer.projectCode;
   jest.setTimeout(7000000); //sets timeout for entire test suite
 
   beforeAll(async () => {
@@ -22,7 +22,7 @@ describe('4.2 File explorer should display properly', () => {
 
   beforeEach(async () => {
     await page.setCacheEnabled(false);
-    await page.goto(`${baseUrl}project/${projectId}/canvas`);
+    await page.goto(`${baseUrl}project/${projectCode}/data`);
   });
 
   afterAll(async () => {
@@ -33,19 +33,14 @@ describe('4.2 File explorer should display properly', () => {
   it('4.2.1 - Folder path should always exist for Core and Greenrom even without any files', async () => {
     await waitForFileExplorer(page, admin.username);
     // check there are no files
-    const tablePlaceholder = page.waitForXPath(
-      '//div[contains(@class, "ant-tabs-tabpane-active")]/descendant::div[contains(@class, "ant-table-layout")]/descendant::tr[contains(@class, "ant-table-placeholder")]',
-    );
     const breadcrumbGreenroom = page.waitForXPath(
       '//div[contains(@class, "FileExplorer_file_folder_path")]/span/span[contains(text(), "Green Room")]',
     );
     const breadcrumbUsername = page.waitForXPath(
-      `//div[contains(@class, "FileExplorer_file_folder_path")]/span/span[contains(text(), "${admin.username}")]`
-      ,
+      `//div[contains(@class, "FileExplorer_file_folder_path")]/span/span[contains(text(), "${admin.username}")]`,
     );
 
     const resolvedItems = await Promise.all([
-      tablePlaceholder,
       breadcrumbGreenroom,
       breadcrumbUsername,
     ]);

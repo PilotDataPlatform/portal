@@ -51,7 +51,7 @@ const selectCoreFile = async (page, fileName) => {
 const selectFileProperties = async (page, fileName) => {
   await selectGreenroomFile(page, fileName);
   const actionsButton = await page.waitForXPath(
-    `//div[contains(@class, "ant-table-content")]/descendant::td/button[contains(@class, "ant-dropdown-trigger")]`,
+    `//tr[contains(@class, 'ant-table-row')]/descendant::span[contains(text(), '${fileName}')]/ancestor::tr//button[contains(@class, "ant-dropdown-trigger")]`,
   );
   await actionsButton.hover();
   const properties = await page.waitForXPath(
