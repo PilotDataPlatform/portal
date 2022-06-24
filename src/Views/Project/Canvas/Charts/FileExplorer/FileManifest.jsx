@@ -32,7 +32,7 @@ function FileManifest({ currentRecord, permission, updateFileManifest }) {
 
   useEffect(() => {
     const manifestId = currentRecord?.manifest[0]?.manifest_id;
-    if (typeof manifestId === 'number') {
+    if (manifestId) {
       getManifestById(manifestId)
         .then((res) => {
           const { attributes } = res.data.result;
@@ -93,6 +93,7 @@ function FileManifest({ currentRecord, permission, updateFileManifest }) {
     newAttr[index].draft = value;
     setAttributes(newAttr);
   };
+
   return (
     <>
       <h3 style={{ color: 'rgba(0,0,0,0.45)', fontSize: 14 }}>
@@ -122,11 +123,9 @@ function FileManifest({ currentRecord, permission, updateFileManifest }) {
                     {_.find(
                       manifests,
                       (manifest) => manifest.name === item.name,
-                    )
-                      ?.value?.split(',')
-                      ?.map((option) => {
-                        return <Option value={option}>{option}</Option>;
-                      })}
+                    )?.options?.map((option) => {
+                      return <Option value={option}>{option}</Option>;
+                    })}
                     {item.optional && (
                       <Option value="">
                         <em>null</em>
