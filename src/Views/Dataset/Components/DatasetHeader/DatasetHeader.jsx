@@ -63,7 +63,10 @@ export default function DatasetHeader(props) {
 
       if (basicInfo.geid) {
         const bidsResult = await getBidsResult(basicInfo.geid);
-        if (bidsResult.status === 200) {
+        if (
+          bidsResult.status === 200 &&
+          bidsResult.data.result.validateOutput
+        ) {
           basicInfo['bidsResult'] = JSON.parse(
             bidsResult.data.result.validateOutput,
           );
