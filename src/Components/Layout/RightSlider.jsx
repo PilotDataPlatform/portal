@@ -1,6 +1,6 @@
 import React from 'react';
 import { Layout } from 'antd';
-import variables from '../../Themes/theme';
+import variables from '../../Themes/base.scss';
 const { Sider } = Layout;
 
 export default class RightSlider extends React.Component {
