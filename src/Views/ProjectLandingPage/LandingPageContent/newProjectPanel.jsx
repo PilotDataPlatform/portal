@@ -42,6 +42,7 @@ function NewProjectPanel({
   const [form] = Form.useForm();
   const [submitting, toggleSubmitting] = useState(false);
   const [imgURL, setImgURL] = useState('');
+  const [descriptionVal, setDescriptionVal] = useState('');
   const [discoverable, setDiscoverable] = useState(true);
   const { t } = useTranslation(['tooltips', 'success', 'formErrorMessages']);
 
@@ -54,6 +55,7 @@ function NewProjectPanel({
   };
 
   const onDescriptionChange = (e) => {
+    setDescriptionVal(e.target.value);
     form.setFieldsValue({ description: e.target.value });
   };
 
@@ -154,7 +156,6 @@ function NewProjectPanel({
 
     callback();
   };
-
   return (
     <div className={styles.createNewProjectCard}>
       <Card>
@@ -443,9 +444,7 @@ function NewProjectPanel({
                 onChange={onDescriptionChange}
               ></Input.TextArea>
               <span style={{ position: 'absolute', bottom: -30, right: 0 }}>{`${
-                form.getFieldValue('description')
-                  ? form.getFieldValue('description').length
-                  : 0
+                descriptionVal ? descriptionVal.length : 0
               }/250`}</span>
             </Form.Item>
           </div>
