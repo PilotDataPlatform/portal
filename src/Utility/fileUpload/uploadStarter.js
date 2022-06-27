@@ -2,14 +2,19 @@ import reduxActionWrapper from '../reduxActionWrapper';
 import {
   appendUploadListCreator,
   updateUploadItemCreator,
+  triggerEvent,
 } from '../../Redux/actions';
 import { preUpload } from './preUpload';
 import { message } from 'antd';
 import { FILE_OPERATIONS } from '../../Views/Project/Canvas/Charts/FileExplorer/FileOperationValues';
 import { ErrorMessager, namespace } from '../../ErrorMessages';
 import { getPath } from './getPath';
-const [appendUploadListDispatcher, updateUploadItemDispatcher] =
-  reduxActionWrapper([appendUploadListCreator, updateUploadItemCreator]);
+const [appendUploadListDispatcher, updateUploadItemDispatcher, triggerEventDispatcher] =
+  reduxActionWrapper([
+    appendUploadListCreator,
+    updateUploadItemCreator,
+    triggerEvent,
+  ]);
 
 /**
  * start the upload process
@@ -19,26 +24,7 @@ const [appendUploadListDispatcher, updateUploadItemDispatcher] =
 const uploadStarter = async (data, q) => {
   const timeStamp = Date.now();
   const fileList = data.fileList;
-  const fileActions = fileList.map((item) => {
-    const file = item.originFileObj;
-    const uploadKey = getUploadKey(item, timeStamp);
-    const relativePath = getPath(file.webkitRelativePath);
 
-    return {
-      uploadKey,
-      status: 'waiting',
-      progress: null,
-      projectId: data.dataset,
-      fileName: relativePath
-        ? data.folderPath + '/' + relativePath + '/' + file.name
-        : data.folderPath + '/' + file.name,
-      projectName: data.projectName,
-      projectCode: data.projectCode,
-      createdTime: Date.now(),
-    };
-  });
-
-  appendUploadListDispatcher(fileActions);
   preUpload(
     data.projectCode,
     data.uploader,
@@ -51,33 +37,50 @@ const uploadStarter = async (data, q) => {
   )
     .then((res) => {
       const result = res.data.result;
-      if (result && result.length > 0) {
-        const newFileList = fileList.map((item, index) => {
+      if (result?.length > 0) {
+        // map array files to be uploaded and dispatch to store
+        const fileActions = fileList.map((item, index) => {
+          const file = item.originFileObj;
+          const relativePath = getPath(file.webkitRelativePath);
           const resFile = result[index];
+
           return {
-            ...item,
-            sessionId: resFile.sessionId,
-            resumableIdentifier: resFile.payload.resumableIdentifier,
+            status: 'waiting',
+            progress: null,
+            projectId: data.dataset,
+            fileName: relativePath
+              ? data.folderPath + '/' + relativePath + '/' + file.name
+              : data.folderPath + '/' + file.name,
+            projectName: data.projectName,
+            projectCode: data.projectCode,
+            createdTime: Date.now(),
             jobId: resFile.jobId,
           };
         });
-        q.push(
-          newFileList.map((item) => ({
+        appendUploadListDispatcher(fileActions);
+        triggerEventDispatcher('LOAD_UPLOAD_LIST');
+
+        // map array of files to be uploaded and push to queue
+        const newFileList = fileList.map((item, index) => {
+          const resFile = result[index];
+
+          return {
             file: item.originFileObj,
-            uploadKey: getUploadKey(item, timeStamp),
             datasetId: data.dataset,
             uploader: data.uploader,
             projectCode: data.projectCode,
             tags: data.tags,
             manifest: data.manifest,
             createdTime: Date.now(),
-            sessionId: item.sessionId,
-            resumableIdentifier: item.resumableIdentifier,
-            jobId: item.jobId,
+            sessionId: resFile.sessionId,
+            resumableIdentifier: resFile.payload.resumableIdentifier,
+            jobId: resFile.jobId,
             toExistingFolder: data.toExistingFolder,
             folderPath: data.folderPath,
-          })),
-        );
+          };
+        });
+
+        q.push(newFileList);
       } else {
         throw new Error('Failed to get identifiers from response');
       }
@@ -101,7 +104,6 @@ const uploadStarter = async (data, q) => {
       }
       for (const file of fileList) {
         updateUploadItemDispatcher({
-          uploadKey: getUploadKey(file, timeStamp),
           status: 'error',
           uploadedTime: Date.now(),
           projectCode: data.projectCode,
@@ -113,11 +115,4 @@ const uploadStarter = async (data, q) => {
     console.log(`task ${task} error`);
   });
 };
-
-const getUploadKey = (file, timeStamp) =>
-  file.originFileObj.webkitRelativePath
-    ? file.originFileObj.webkitRelativePath + timeStamp
-    : file.originFileObj.name + timeStamp;
-
 export default uploadStarter;
-  

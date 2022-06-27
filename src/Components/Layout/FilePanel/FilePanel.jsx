@@ -178,7 +178,6 @@ function FilePanel(props) {
           }, 2 * 1000);
         } else {
           // last call
-          const timestamp = Date.now();
           // reduce to array of completed jobs that are not in redux store eg.,(retrives and stores upload info in redux when page is refreshed) - pending jobs are updated in the store by Portal.js
           const appendToUploadList = result.reduce(
             (appendList, currentItem) => {
@@ -200,7 +199,7 @@ function FilePanel(props) {
                 projectCode: project.profile.code,
                 createdTime: null, // null for items that have already been uploaded
                 jobId: currentItem.jobId,
-                updatedTime: currentItem.updateTimestamp, // property for items that are retrieved from uploadStatus API (completed upload)
+                updatedTime: parseInt(currentItem.updateTimestamp), // property for items that are retrieved from uploadStatus API (completed upload)
               });
 
               return appendList;

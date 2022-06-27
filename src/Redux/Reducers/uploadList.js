@@ -23,7 +23,7 @@ function uploadList(state = init, action) {
     case UPDATE_UPLOAD_LIST_ITEM: {
       const { item } = payload;
       const currentItem = state.find((ele) => {
-        return ele.uploadKey === item.uploadKey;
+        return ele.jobId === item.jobId;
       });
       if(!currentItem){
         return state;
@@ -32,7 +32,6 @@ function uploadList(state = init, action) {
         return [...state];
       currentItem["progress"] = item["progress"];
       currentItem["status"] = item["status"];
-      currentItem["jobId"] = item["jobId"];
       currentItem['uploadedTime'] = item["uploadedTime"]
       return [...state];
     }

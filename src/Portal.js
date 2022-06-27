@@ -231,7 +231,6 @@ function Portal(props) {
 
       if (currentProject) {
         const sessionId = tokenManager.getCookie('sessionId');
-        console.log('refresh upload list');
         const res = await checkUploadStatus(
           currentProject.code,
           '*',
@@ -266,10 +265,6 @@ function Portal(props) {
                 fileName: item.source,
                 status: itemStatus(item.status),
                 progress: 1,
-                uploadKey:
-                  task.file.name === item.source
-                    ? task.data.uploadKey
-                    : undefined,
                 uploadedTime: parseInt(item.updateTimestamp),
                 projectCode: item.projectCode,
               });

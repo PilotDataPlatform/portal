@@ -22,9 +22,6 @@ import {
 import { uploadStarter, useCurrentProject } from '../../../Utility';
 import { withRouter } from 'react-router-dom';
 import { connect, useSelector } from 'react-redux';
-import {
-  triggerEvent
-} from '../../../Redux/actions';
 import _ from 'lodash';
 import { UploadQueueContext } from '../../../Context';
 import { getProjectManifestList } from '../../../APIs';
@@ -107,7 +104,6 @@ const GreenRoomUploader = ({
             .map((v) => v.name);
           folderPath = folderNames.join('/');
         }
-        console.log(values)
         const data = Object.assign({}, values, {
           /*           name: values.file.file.name,
           file_type: values.file.file.type, */
@@ -126,7 +122,6 @@ const GreenRoomUploader = ({
             : null,
         });
         uploadStarter(data, q);
-        dispatchTriggerEvent('LOAD_UPLOAD_LIST');
         setSelManifest(null);
         form.resetFields();
         setIsFiles(false);
@@ -489,6 +484,5 @@ export default withRouter(
       const { tags, containersPermission, uploadList } = state;
       return { tags, containersPermission, uploadList };
     },
-    { dispatchTriggerEvent: triggerEvent },
   )(GreenRoomUploader),
 );

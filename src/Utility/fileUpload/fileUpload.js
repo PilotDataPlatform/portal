@@ -66,7 +66,6 @@ function slice(file, piece = 1024 * 1024 * 5) {
  */
 async function fileUpload(data, resolve, reject) {
   const {
-    uploadKey,
     datasetId,
     uploader,
     file,
@@ -78,7 +77,6 @@ async function fileUpload(data, resolve, reject) {
     toExistingFolder,
     folderPath,
   } = data;
-
   setNewUploadIndicatorDispatcher();
 
   let chunks = slice(file, MAX_LENGTH);
@@ -86,7 +84,7 @@ async function fileUpload(data, resolve, reject) {
   let uploadedSize = 0;
   const sessionId = tokenManager.getCookie('sessionId');
   updateUploadItemDispatcher({
-    uploadKey,
+    jobId,
     status: 'uploading',
     progress: 0,
     projectId: datasetId,
@@ -179,7 +177,6 @@ async function fileUpload(data, resolve, reject) {
           attributes: manifest && manifest.attributes,
         });
       updateUploadItemDispatcher({
-        uploadKey,
         progress: 1,
         status: 'pending',
         jobId,
@@ -208,7 +205,6 @@ async function fileUpload(data, resolve, reject) {
           .then(async (res) => {
             uploadedSize += chunk.size;
             updateUploadItemDispatcher({
-              uploadKey,
               progress: uploadedSize / totalSize,
               status: 'uploading',
               projectCode,
@@ -246,7 +242,7 @@ async function fileUpload(data, resolve, reject) {
     }
 
     updateUploadItemDispatcher({
-      uploadKey,
+      jobId,
       progress: uploadedSize / totalSize,
       status: 'error',
       uploadedTime: Date.now(),
