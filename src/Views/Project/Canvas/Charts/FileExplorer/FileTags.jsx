@@ -15,6 +15,7 @@ import { connect } from 'react-redux';
 import { PanelKey } from './RawTableValues';
 import styles from './index.module.scss';
 import i18n from '../../../../../i18n';
+import { SYSTEM_TAGS } from './RawTableValues';
 const { Paragraph } = Typography;
 const _ = require('lodash');
 
@@ -30,7 +31,6 @@ class FileTags extends Component {
       expand: false,
       saveTagsLoading: false,
       counter: 0,
-      manifest: this.props.project.manifest,
     };
   }
 
@@ -78,7 +78,7 @@ class FileTags extends Component {
       });
       return;
     }
-    const projectSystemTags = this.state.manifest.tags;
+    const projectSystemTags = [SYSTEM_TAGS.COPIED_TAG];
     if (projectSystemTags && projectSystemTags.indexOf(inputValue) !== -1) {
       this.setState({
         errorMessage: this.props.t(
@@ -122,7 +122,7 @@ class FileTags extends Component {
     try {
       const { record } = this.props;
       const customizedTags = this.state.tagsEdited.filter(
-        (el) => !this.state.manifest.tags.includes(el),
+        (el) => el !== SYSTEM_TAGS.COPIED_TAG,
       );
       const fileType = record.nodeLabel.includes('Folder') ? 'Folder' : 'File';
       await updateProjectTagsAPI(record.geid, {
@@ -227,9 +227,8 @@ class FileTags extends Component {
     if (!this.props.record) {
       return null;
     }
-    const { inputVisible, inputValue, errorMessage, edit, manifest } =
-      this.state;
-    const projectSystemTags = manifest?.tags;
+    const { inputVisible, inputValue, errorMessage, edit } = this.state;
+    const projectSystemTags = [SYSTEM_TAGS.COPIED_TAG];
 
     const systemTags = this.state.tagsEdited.filter(
       (v) => projectSystemTags && projectSystemTags.indexOf(v) !== -1,
