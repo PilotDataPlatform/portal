@@ -11,7 +11,6 @@ const { Paragraph } = Typography;
 const _ = require('lodash');
 
 function FileTags(props) {
-  const [currentDataset] = useCurrentProject();
   const { t } = useTranslation(['tooltips', 'success', 'formErrorMessages']);
   const fileExplorerCtx = useContext(FileExplorerContext);
   const sidePanelCfg = fileExplorerCtx.sidePanelCfg;
@@ -27,7 +26,6 @@ function FileTags(props) {
   const [edit, setEdit] = useState(false);
   const [expand, setExpand] = useState(false);
   const [counter, setCounter] = useState(0);
-  const manifest = currentDataset;
   const handleClose = (removedTag) => {
     const tags = customizedTags.filter((tag) => tag !== removedTag);
     setCustomizedTags(tags);
@@ -44,7 +42,7 @@ function FileTags(props) {
       setErrorMessage(t('formErrorMessages:project.filePanel.tags.valid'));
       return;
     }
-    const projectSystemTags = manifest.systemTags;
+    const projectSystemTags = ['copied-to-core'];
     if (
       projectSystemTags &&
       projectSystemTags.indexOf(inputValueLowercase) !== -1
