@@ -56,6 +56,7 @@ import {
   checkGreenAndCore,
   useCurrentProject,
 } from '../../../../../Utility';
+import { backgroundColor1 } from '../../../../../Themes/base.scss';
 import { setSuccessNum } from '../../../../../Redux/actions';
 import LineageGraph from './LineageGraph';
 import FileBasics from './FileBasics';
@@ -1323,7 +1324,13 @@ function RawTable(props) {
   };
 
   const ToolTipsAndTable = (
-    <div style={{ position: 'relative' }}>
+    <div
+      style={{
+        position: 'relative',
+        marginRight: '16px',
+        borderRight: `1px solid ${backgroundColor1}`,
+      }}
+    >
       <div
         className={`${styles.file_explore_actions} file_explorer_header_bar`}
         ref={actionBarRef}
@@ -1438,14 +1445,15 @@ function RawTable(props) {
       )}
 
       <div id="rawTable-sidePanel" style={{ display: 'flex' }} ref={ref}>
-        <div>{ToolTipsAndTable}</div>
+        {ToolTipsAndTable}
         {sidepanel && (
           <div
             style={{
-              width: detailsPanelWidth,
               position: 'relative',
-              minWidth: '180px',
-              maxWidth: '500px',
+              paddingTop: '5px',
+              paddingRight: '12px',
+              minWidth: '215px',
+              flex: '1 0 20%',
             }}
           >
             <Button

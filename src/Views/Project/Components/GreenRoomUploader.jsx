@@ -22,11 +22,6 @@ import {
 import { uploadStarter, useCurrentProject } from '../../../Utility';
 import { withRouter } from 'react-router-dom';
 import { connect, useSelector } from 'react-redux';
-import {
-  appendUploadListCreator,
-  updateUploadItemCreator,
-  setNewUploadIndicator,
-} from '../../../Redux/actions';
 import _ from 'lodash';
 import { UploadQueueContext } from '../../../Context';
 import { getProjectManifestList } from '../../../APIs';
@@ -43,6 +38,7 @@ const GreenRoomUploader = ({
   cancel,
   fetch: fetchTree,
   panelKey,
+  dispatchTriggerEvent,
 }) => {
   const [form] = Form.useForm();
   const [isLoading, setIsloading] = useState(false);
@@ -488,6 +484,5 @@ export default withRouter(
       const { tags, containersPermission, uploadList } = state;
       return { tags, containersPermission, uploadList };
     },
-    { appendUploadListCreator, updateUploadItemCreator, setNewUploadIndicator },
   )(GreenRoomUploader),
 );
