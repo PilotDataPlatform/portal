@@ -1,3 +1,4 @@
+@import '../../../../../../../Themes/base.scss';
 .create-folder-modal {
   :global {
     .ant-modal-content {
@@ -6,7 +7,7 @@
       overflow: hidden !important;
     }
     .ant-modal-title {
-      color: #003262;
+      color: $primary-color-1;
     }
     label {
       color: #818181;
@@ -16,13 +17,13 @@
       border: 1px solid #c3c6c8;
       border-radius: 6px;
     }
-    .ant-btn-primary{
-        border-radius: 6px;
-        font-weight: 600;
+    .ant-btn-primary {
+      border-radius: 6px;
+      font-weight: 600;
     }
-    .ant-btn-link{
-        color: #595959;
-        font-weight: 600;
+    .ant-btn-link {
+      color: #595959;
+      font-weight: 600;
     }
   }
 }

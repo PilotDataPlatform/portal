@@ -9,6 +9,7 @@ import { getWorkbenchInfo } from '../../../../../APIs';
 import WorkbenchModal from './workbenchModal';
 import moment from 'moment-timezone';
 import { useTranslation } from 'react-i18next';
+import variables from '../../../../../Themes/base.scss';
 
 const mapStateToProps = (state) => {
   return {
@@ -221,7 +222,13 @@ const WorkBench = (props) => {
           />
         </div>
         <div style={{ width: '100px' }}>
-          <span style={{ color: '#003262', fontSize: '16px', fontWeight: 600 }}>
+          <span
+            style={{
+              color: variables.primaryColor1,
+              fontSize: '16px',
+              fontWeight: 600,
+            }}
+          >
             Guacamole
           </span>
         </div>
@@ -244,7 +251,13 @@ const WorkBench = (props) => {
           />
         </div>
         <div style={{ width: '100px' }}>
-          <span style={{ color: '#003262', fontSize: '16px', fontWeight: 600 }}>
+          <span
+            style={{
+              color: variables.primaryColor1,
+              fontSize: '16px',
+              fontWeight: 600,
+            }}
+          >
             Superset
           </span>
         </div>
@@ -267,7 +280,13 @@ const WorkBench = (props) => {
           />
         </div>
         <div style={{ width: '100px' }}>
-          <span style={{ color: '#003262', fontSize: '16px', fontWeight: 600 }}>
+          <span
+            style={{
+              color: variables.primaryColor1,
+              fontSize: '16px',
+              fontWeight: 600,
+            }}
+          >
             Jupyterhub
           </span>
         </div>

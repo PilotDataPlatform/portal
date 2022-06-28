@@ -1,3 +1,4 @@
+@import '../../../../Themes/base.scss';
 .tags-container {
   position: absolute;
   bottom: 30px;
@@ -11,41 +12,38 @@
   }
 }
 
-.statistics-container{
+.statistics-container {
   // margin-left: 50px;
 
-.statistics {
-  margin-left: 26px;
-  line-height: 32px;
-  .statistics-title {
-    color: #818181;
-    font-size: 12px;
-    font-weight: 300;
-  }
-
-  .statistics-value {
-    color: #003262;
-    font-weight: bold;
-    margin-left: 9px;
-    font-size: 16px;
-  }
-}
-}
-
-
-@media only screen and (min-width: 1366px) {
-  .statistics-container{
-  
   .statistics {
+    margin-left: 26px;
     line-height: 32px;
     .statistics-title {
-      font-size: 15px;
+      color: #818181;
+      font-size: 12px;
+      font-weight: 300;
     }
-  
+
     .statistics-value {
-      font-size: 20px;
+      color: $primary-color-1;
+      font-weight: bold;
+      margin-left: 9px;
+      font-size: 16px;
     }
-  }
   }
 }
 
+@media only screen and (min-width: 1366px) {
+  .statistics-container {
+    .statistics {
+      line-height: 32px;
+      .statistics-title {
+        font-size: 15px;
+      }
+
+      .statistics-value {
+        font-size: 20px;
+      }
+    }
+  }
+}

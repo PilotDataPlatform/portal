@@ -9,6 +9,7 @@ import DatasetActivityViewSelector from './DatasetActicityViewSelector';
 import { getDatasetActivityLogsAPI } from '../../../APIs/index';
 import logsInfo from './DatasetActivityLogsDisplay';
 import styles from './DatasetActivity.module.scss';
+import variables from '../../../Themes/base.scss';
 
 const { RangePicker } = DatePicker;
 const format = 'YYYY-MM-DD HH:mm:ss';
@@ -35,7 +36,13 @@ const DatasetActivity = (props) => {
       render: (item, row, index) => {
         if (publishRecord.includes(index)) {
           return (
-            <p style={{ fontWeight: 'bold', color: '#003262', margin: '0px' }}>
+            <p
+              style={{
+                fontWeight: 'bold',
+                color: variables.primaryColor1,
+                margin: '0px',
+              }}
+            >
               {moment.unix(item.source.createTimestamp).format(format)}
             </p>
           );
@@ -60,7 +67,13 @@ const DatasetActivity = (props) => {
       render: (item, row, index) => {
         if (publishRecord.includes(index)) {
           return (
-            <p style={{ fontWeight: 'bold', color: '#003262', margin: '0px' }}>
+            <p
+              style={{
+                fontWeight: 'bold',
+                color: variables.primaryColor1,
+                margin: '0px',
+              }}
+            >
               {item.source.operator}
             </p>
           );
@@ -148,7 +161,7 @@ const DatasetActivity = (props) => {
         }
       }
     } catch {
-      setLastUpdateTime(null)
+      setLastUpdateTime(null);
     }
   };
 

@@ -3,6 +3,7 @@ import { Modal, Button } from 'antd';
 import { CloseOutlined, ArrowRightOutlined } from '@ant-design/icons';
 import styles from './resetpasswd.module.scss';
 import { ORGANIZATION_PORTAL_DOMAIN } from '../../config';
+import variables from '../../Themes/base.scss';
 const ResetPasswordModal = (props) => {
   return (
     <Modal
@@ -17,7 +18,13 @@ const ResetPasswordModal = (props) => {
               alignItems: 'center',
             }}
           >
-            <b style={{ color: '#003262', fontSize: 14, lineHeight: '40px' }}>
+            <b
+              style={{
+                color: variables.primaryColor1,
+                fontSize: 14,
+                lineHeight: '40px',
+              }}
+            >
               Password Reset
             </b>
             <CloseOutlined

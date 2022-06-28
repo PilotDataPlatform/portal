@@ -6,6 +6,7 @@ import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { deployWorkbenchAPI } from '../../../../../APIs';
 import { useTranslation } from 'react-i18next';
 import { setCurrentProjectWorkbench } from '../../../../../Redux/actions';
+import variables from '../../../../../Themes/base.scss';
 
 const modalTitle = (
   <p style={{ padding: '14px 0px 0px 29px' }}>
@@ -60,7 +61,7 @@ const WorkbenchModal = (props) => {
       <div>
         <p style={{ marginLeft: '38px' }}>
           Do you confirm to configure{' '}
-          <span style={{ color: '#003262' }}>
+          <span style={{ color: variables.primaryColor1 }}>
             <strong>{workbench}</strong>
           </span>
           ?

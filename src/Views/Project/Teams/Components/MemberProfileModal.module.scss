@@ -1,3 +1,4 @@
+@import '../../../../Themes/base.scss';
 :global {
   #members-section {
     .ant-modal-wrap {
@@ -18,7 +19,7 @@
       border-radius: 8px;
       overflow: hidden;
       .ant-modal-header .ant-modal-title {
-        color: #003262 !important;
+        color: $primary-color-1 !important;
       }
     }
     .ant-modal-body {
