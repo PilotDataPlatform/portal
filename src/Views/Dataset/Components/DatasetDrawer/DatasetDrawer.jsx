@@ -3,6 +3,7 @@ import { Drawer, Table } from 'antd';
 import {
   getDatasetVersionsAPI,
   datasetDownloadReturnURLAPI,
+  datasetDownloadAPI,
 } from '../../../../APIs';
 import { useDispatch, useSelector } from 'react-redux';
 import { DownloadOutlined } from '@ant-design/icons';
@@ -24,8 +25,7 @@ const DatasetDrawer = (props) => {
     try {
       const res = await datasetDownloadReturnURLAPI(basicInfo.geid, version);
       const hash = res.data.result.downloadHash;
-      const url = API_PATH + DOWNLOAD_PREFIX_V2 + '/' + hash;
-      window.open(url, '_blank');
+      await datasetDownloadAPI(hash);
     } catch (err) {
       if (err.response) {
         const errorMessager = new ErrorMessager(

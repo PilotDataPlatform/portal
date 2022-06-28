@@ -306,6 +306,17 @@ export function datasetDownloadReturnURLAPI(datasetGeid, version) {
   });
 }
 
+export function datasetDownloadAPI(hash) {
+  return serverAxios({
+    url: `${DOWNLOAD_PREFIX_V2}/${hash}`,
+    method: 'GET',
+    headers: { 'Refresh-token': keycloak.refreshToken },
+  }).then((res) => {
+    console.log(res);
+    window.open(res.data.url, '_blank');
+  });
+}
+
 export function datasetVersionLogs(datsetGeid, params) {
   return serverAxios({
     url: `v1/activity-logs/version/${datsetGeid}`,
