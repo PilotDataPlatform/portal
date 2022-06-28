@@ -89,7 +89,7 @@ function ProjectItemCard({ item, currentRole, platformRole }) {
             >
               <span
                 style={{
-                  color: '#1F93FA',
+                  color: variables.primaryColorLight1,
                   fontSize: '12px',
                   marginRight: '20px',
                   fontWeight: 'normal',

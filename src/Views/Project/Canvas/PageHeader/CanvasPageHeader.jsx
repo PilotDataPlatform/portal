@@ -30,7 +30,7 @@ import {
 import userRoles from '../../../../Utility/project-roles.json';
 import styles from '../index.module.scss';
 import { PLATFORM } from '../../../../config';
-import '../../../../Themes/base.scss';
+import variables from '../../../../Themes/base.scss';
 const { Content } = Layout;
 const { Paragraph } = Typography;
 
@@ -150,7 +150,7 @@ class CanvasPageHeader extends Component {
               >
                 <span
                   style={{
-                    color: '#1F93FA',
+                    color: variables.primaryColorLight1,
                     fontSize: '12px',
                     marginRight: '20px',
                     fontWeight: 'normal',
