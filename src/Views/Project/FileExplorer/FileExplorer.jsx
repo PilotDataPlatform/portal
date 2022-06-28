@@ -5,14 +5,7 @@ import CanvasPageHeader from '../Canvas/PageHeader/CanvasPageHeader';
 
 import styles from './index.module.scss';
 
-const FileExplorerView = ({
-  datasetId,
-  userListOnDataset,
-  containerDetails,
-  getUserOnProjectAPI,
-  setUserListOnDataset,
-  rolesDetail,
-}) => {
+const FileExplorerView = () => {
   return (
     <div className={styles['fileExplorer__container']}>
       <CanvasPageHeader variant="fileExplorer" />
