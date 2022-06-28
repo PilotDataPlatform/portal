@@ -33,7 +33,7 @@ async function fetchFileOperations(type, datasetCode, dispatch) {
   }
 }
 
-async function fetchDatasetFiles (datasetGeid, dispatch) {
+async function fetchDatasetFiles(datasetGeid, dispatch) {
   const page = 0,
     pageSize = 10000,
     orderBy = 'create_time',
@@ -55,14 +55,14 @@ function onRenameFinish(payload, oldTreeData, dispatch) {
   const newTreeData = _.cloneDeep(oldTreeData);
   const targetNode = findNodeWithGeid(
     { children: newTreeData },
-    payload?.source?.globalEntityId,
+    payload?.source?.id,
   );
 
   if (targetNode) {
     //payload.payload is the new node
     //payload.payload is the old node
     targetNode['name'] = payload.payload.name;
-    targetNode['globalEntityId'] = payload.payload.globalEntityId;
+    targetNode['globalEntityId'] = payload.payload.id;
     dispatch(datasetDataActions.setTreeData(newTreeData));
   }
 }
