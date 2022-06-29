@@ -23,8 +23,58 @@ import {
   listAllCopyRequests,
 } from '../../../APIs';
 import { useTranslation } from 'react-i18next';
+import variables from '../../../Themes/base.scss';
 
 const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
+
+const DashboardSelected = () => {
+  return (
+    <svg
+      id="Layer_1"
+      data-name="Layer 1"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 17 16"
+      width="16"
+    >
+      <rect
+        id="Rectangle_262"
+        fill={variables.primaryColor1}
+        data-name="Rectangle 262"
+        width="5"
+        height="7"
+        rx="1"
+      />
+      <rect
+        id="Rectangle_263"
+        data-name="Rectangle 263"
+        fill={variables.primaryColor1}
+        x="11"
+        y="9"
+        width="6"
+        height="7"
+        rx="1"
+      />
+      <rect
+        id="Rectangle_264"
+        data-name="Rectangle 264"
+        fill={variables.primaryColor1}
+        x="7"
+        width="10"
+        height="7"
+        rx="1"
+      />
+      <rect
+        id="Rectangle_265"
+        data-name="Rectangle 265"
+        fill={variables.primaryColor1}
+        y="9"
+        width="9"
+        height="7"
+        rx="1"
+      />
+    </svg>
+  );
+};
 
 const ToolBar = ({
   location: { pathname },
@@ -384,9 +434,10 @@ const ToolBar = ({
           <Link to="canvas">
             {iconSelected === 'canvas' ? (
               <span role="img" className="anticon">
-                <img
-                  style={{ width: 17, marginLeft: -17 }}
-                  src={require('../../../Images/Dashboard-selected.svg')}
+                <DashboardSelected
+                  style={{
+                    marginLeft: -17,
+                  }}
                 />
               </span>
             ) : (
