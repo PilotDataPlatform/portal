@@ -247,7 +247,7 @@ function NewProjectPanel({
             >
               <p
                 style={{
-                  color: '#1790FA',
+                  color: variables.primaryColorLight1,
                   opacity: '50%',
                 }}
               >

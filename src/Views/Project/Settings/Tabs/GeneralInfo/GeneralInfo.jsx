@@ -17,6 +17,7 @@ import { updateDatasetIcon } from '../../../../../APIs';
 import { withCurrentProject } from '../../../../../Utility';
 import ImgCrop from 'antd-img-crop';
 import { PLATFORM } from '../../../../../config';
+import variables from '../../../../../Themes/base.scss';
 const { TextArea } = Input;
 const { Paragraph } = Typography;
 function GeneralInfo(props) {
@@ -87,7 +88,10 @@ function GeneralInfo(props) {
             <Avatar src={datasetInfo.imageUrl} size={65}></Avatar>
           ) : (
             <Avatar
-              style={{ backgroundColor: '#13c2c2', verticalAlign: 'middle' }}
+              style={{
+                backgroundColor: variables.primaryColor1,
+                verticalAlign: 'middle',
+              }}
               size={65}
             >
               <span

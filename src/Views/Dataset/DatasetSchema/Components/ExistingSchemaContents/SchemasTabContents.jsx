@@ -2,6 +2,7 @@ import React from 'react';
 import { Spin, Space } from 'antd';
 import { FileOutlined, LoadingOutlined } from '@ant-design/icons';
 import styles from './index.module.scss';
+import variables from '../../../../../Themes/base.scss';
 
 const SchemasTabContents = (props) => {
   const {
@@ -14,7 +15,7 @@ const SchemasTabContents = (props) => {
   } = props;
 
   return (
-    <div style={{height: '100%', minHeight: '400px'}}>
+    <div style={{ height: '100%', minHeight: '400px' }}>
       {schemas.length ? (
         schemas
           .filter((el) => !el.isDraft && el.standard === 'default') // hide draft schemas and openMINDS schemas when renders
@@ -22,7 +23,10 @@ const SchemasTabContents = (props) => {
             <div
               style={
                 schemaGeid === el.geid
-                  ? { ...tabContentStyle, backgroundColor: '#E6F5FF' }
+                  ? {
+                      ...tabContentStyle,
+                      backgroundColor: variables.primaryColorLightest1,
+                    }
                   : tabContentStyle
               }
               onClick={() => handleOnClick(el)}
@@ -55,7 +59,11 @@ const SchemasTabContents = (props) => {
             </div>
           ))
       ) : (
-        <Spin indicator={<LoadingOutlined />} className={styles.loading_icon} size="large" />
+        <Spin
+          indicator={<LoadingOutlined />}
+          className={styles.loading_icon}
+          size="large"
+        />
       )}
     </div>
   );

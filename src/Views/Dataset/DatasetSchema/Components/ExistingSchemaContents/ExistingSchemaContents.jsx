@@ -14,6 +14,7 @@ import { ESSENTIAL_SCHEMA_NAME } from '../../GlobalDefinition';
 import { schemaTemplatesActions } from '../../../../../Redux/actions';
 import { useTranslation } from 'react-i18next';
 import { PLATFORM } from '../../../../../config';
+import variables from '../../../../../Themes/base.scss';
 
 const { TabPane } = Tabs;
 
@@ -104,7 +105,10 @@ export function ExistingSchemaContents(props) {
     <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
       <Button
         icon={<EyeOutlined />}
-        style={{ border: '0px', backgroundColor: '#E6F5FF' }}
+        style={{
+          border: '0px',
+          backgroundColor: variables.primaryColorLightest1,
+        }}
         disabled={templateManagerMode !== 'hide'}
         onClick={() => handleEditSchema(item)}
       />
@@ -119,7 +123,7 @@ export function ExistingSchemaContents(props) {
           }}
           style={{
             border: '0px',
-            backgroundColor: '#E6F5FF',
+            backgroundColor: variables.primaryColorLightest1,
             marginRight: '15px',
           }}
         />

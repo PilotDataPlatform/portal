@@ -236,7 +236,9 @@ function ProjectItemCard({ item, currentRole, platformRole }) {
       {currentRole === 'admin' && pageHeaderExpand && usersInfo ? (
         <div style={{ marginTop: '2px', textAlign: 'right', marginRight: 44 }}>
           <div style={{ textAlign: 'right' }}>
-            <UserOutlined style={{ fontSize: '22px', color: '#1C5388' }} />
+            <UserOutlined
+              style={{ fontSize: '22px', color: variables.primaryColor1 }}
+            />
           </div>
           <div style={{ height: 35, lineHeight: '35px' }}>
             <span

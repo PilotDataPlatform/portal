@@ -3,6 +3,7 @@ import { Button } from 'antd';
 import { CloudUploadOutlined } from '@ant-design/icons';
 import { FileOutlined } from '@ant-design/icons';
 import styles from './index.module.scss';
+import variables from '../../../../../Themes/base.scss';
 
 const OpenMindsSchemaTabContents = (props) => {
   const {
@@ -35,7 +36,10 @@ const OpenMindsSchemaTabContents = (props) => {
                   <div
                     style={
                       schemaGeid === el.geid
-                        ? { ...tabContentStyle, backgroundColor: '#E6F5FF' }
+                        ? {
+                            ...tabContentStyle,
+                            backgroundColor: variables.primaryColorLightest1,
+                          }
                         : tabContentStyle
                     }
                     onClick={() => handleOnClick(el)}

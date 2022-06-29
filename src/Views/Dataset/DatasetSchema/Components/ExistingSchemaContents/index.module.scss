@@ -1,3 +1,4 @@
+@import '../../../../../Themes/base.scss';
 .actions {
   height: 30px;
   border-bottom: 1px solid rgb(240, 240, 240);
@@ -26,7 +27,7 @@
         margin: 0px !important;
       }
       .ant-tabs-tab-active {
-        background-color: #ace4fd;
+        background-color: $primary-color-lightest-1;
         border-radius: 3px;
       }
       .ant-tabs-content {

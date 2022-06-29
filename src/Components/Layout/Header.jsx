@@ -39,6 +39,7 @@ import { BellNotifications, BannerNotifications } from '../Notifications';
 import UpcomingMaintenanceModal from '../Modals/UpcomingMaintenanceModal';
 import { tokenManager } from '../../Service/tokenManager';
 import { BRANDING_PREFIX } from '../../config';
+import variables from '../../Themes/base.scss';
 
 const { confirm } = Modal;
 const { Header } = Layout;
@@ -423,7 +424,7 @@ class AppHeader extends Component {
             key="bell-notificiation"
             style={{
               float: 'right',
-              color: '#FF8B18',
+              color: variables.primaryColor5,
               position: 'relative',
               paddingTop: '0.7rem',
               lineHeight: '5.9rem',

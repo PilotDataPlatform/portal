@@ -149,7 +149,7 @@
 
 .fileStatusTitle {
   font-size: 14px;
-  color: #1c5388;
+  color: $primary-color-1;
   font-weight: bold;
 }
 
@@ -180,7 +180,7 @@
 }
 
 .tabTitle {
-  color: #1c5388;
+  color: $primary-color-1;
 }
 .tab {
   overflow: hidden;
@@ -211,13 +211,13 @@
 .icons {
   width: 18px;
   height: 12px;
-  color: #1c5388 !important;
+  color: $primary-color-1 !important;
   margin-right: 2%;
 }
 .icons-fail {
   width: 18px;
   height: 12px;
-  color: #ff4d4f !important;
+  color: $primary-color-3 !important;
   margin-right: 2%;
 }
 :global {

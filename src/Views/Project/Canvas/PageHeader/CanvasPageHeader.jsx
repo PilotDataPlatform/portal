@@ -270,7 +270,9 @@ class CanvasPageHeader extends Component {
             style={{ marginTop: '2px', textAlign: 'right', marginRight: 44 }}
           >
             <div style={{ textAlign: 'right' }}>
-              <UserOutlined style={{ fontSize: '18px', color: '#1C5388' }} />
+              <UserOutlined
+                style={{ fontSize: '18px', color: variables.primaryColor1 }}
+              />
             </div>
             <div style={{ height: 35, lineHeight: '35px' }}>
               <span

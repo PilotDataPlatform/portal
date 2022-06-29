@@ -361,12 +361,12 @@
 
       :global {
         .anticon {
-          color: #002a51;
+          color: $primary-color-1;
           margin-right: 12px;
         }
         .anticon-close,
         .anticon-exclamation {
-          color: #ff4d4f;
+          color: $primary-color-3;
         }
 
         .ant-row {

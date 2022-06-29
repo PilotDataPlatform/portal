@@ -10,6 +10,9 @@ import WorkbenchModal from './workbenchModal';
 import moment from 'moment-timezone';
 import { useTranslation } from 'react-i18next';
 import variables from '../../../../../Themes/base.scss';
+import { ReactComponent as Guacamole } from '../../../../../Images/Guacamole-Blue.svg';
+import { ReactComponent as SuperSet } from '../../../../../Images/SuperSet-Blue.svg';
+import { ReactComponent as Jupyterhub } from '../../../../../Images/Jupyter-Blue.svg';
 
 const mapStateToProps = (state) => {
   return {
@@ -212,13 +215,17 @@ const WorkBench = (props) => {
     setShowModal(false);
   };
 
+  // const guacmoleSvg = () => {
+  //   return
+  // }
+
   return (
     <div className={styles.workBench}>
       <div className={styles.guacamole}>
         <div style={{ width: '100px', textAlign: 'center' }}>
-          <img
+          <Guacamole
             style={{ width: 23, height: 23 }}
-            src={require('../../../../../Images/Guacamole-Blue.svg')}
+            fill={variables.primaryColor1}
           />
         </div>
         <div style={{ width: '100px' }}>
@@ -245,9 +252,9 @@ const WorkBench = (props) => {
       </div>
       <div className={styles.superset}>
         <div style={{ width: '100px', textAlign: 'center' }}>
-          <img
-            style={{ width: 23, height: 23 }}
-            src={require('../../../../../Images/SuperSet-Blue.svg')}
+          <SuperSet
+            style={{ width: 25, height: 25 }}
+            fill={variables.primaryColor1}
           />
         </div>
         <div style={{ width: '100px' }}>
@@ -274,9 +281,9 @@ const WorkBench = (props) => {
       </div>
       <div className={styles.jupyterhub}>
         <div style={{ width: '100px', textAlign: 'center' }}>
-          <img
+          <Jupyterhub
             style={{ width: 23, height: 23 }}
-            src={require('../../../../../Images/Jupyter-Blue.svg')}
+            fill={variables.primaryColor1}
           />
         </div>
         <div style={{ width: '100px' }}>

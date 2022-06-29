@@ -15,6 +15,7 @@ import { Rename } from './Rename/Rename';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { tokenManager } from '../../../../Service/tokenManager';
+import variables from '../../../../Themes/base.scss';
 
 import _ from 'lodash';
 
@@ -24,28 +25,28 @@ const getTabTitle = (action) => {
   switch (action) {
     case 'Import':
       return (
-        <div style={{ color: '#1c5388' }}>
+        <div style={{ color: variables.primaryColor1 }}>
           <SyncOutlined />
           <span>Import</span>
         </div>
       );
     case 'Move':
       return (
-        <div style={{ color: '#1c5388' }}>
+        <div style={{ color: variables.primaryColor1 }}>
           <SwapOutlined />
           <span>Move</span>
         </div>
       );
     case 'Rename':
       return (
-        <div style={{ color: '#1c5388' }}>
+        <div style={{ color: variables.primaryColor1 }}>
           <EditOutlined />
           <span>Rename</span>
         </div>
       );
     case 'Delete':
       return (
-        <div style={{ color: '#1c5388' }}>
+        <div style={{ color: variables.primaryColor1 }}>
           <DeleteOutlined />
           <span>Delete</span>
         </div>
