@@ -342,23 +342,25 @@ function ProjectItemCard({ item, currentRole, platformRole }) {
       shape="circle"
       src={item.imageUrl}
       style={{
-        border: variables.primaryColor1,
+        border: variables.primaryColorDark1,
+
         borderWidth: '1px',
         width: 42,
         height: 42,
-        background: '#043262',
+        background: variables.primaryColor1,
       }}
     ></Avatar>
   ) : (
     <Avatar
       shape="circle"
       style={{
-        border: variables.primaryColor1,
+        border: variables.primaryColorDark1,
+
         borderWidth: '1px',
         width: 42,
         height: 42,
         paddingTop: 4,
-        background: '#043262',
+        background: variables.primaryColor1,
       }}
     >
       <span
