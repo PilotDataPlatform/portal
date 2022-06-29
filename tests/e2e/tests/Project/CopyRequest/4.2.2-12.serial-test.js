@@ -243,7 +243,7 @@ describe('CopyRequest', () => {
     await page.waitForTimeout(5000);
   }
 
-  it('7.2.2 each new requests should displayed properly', async () => {
+  it('4.2.2 each new requests should displayed properly', async () => {
     await page.goto(`${baseUrl}project/${projectId}/requestToCore`);
     const firstReq = await page.waitForXPath(
       '//ul//li[contains(@class, "NewRequestsList_list_item") and position()=1]',
@@ -320,7 +320,7 @@ describe('CopyRequest', () => {
     expect(addedBy).not.toBe('');
     expect(createdAt).not.toBe('');
   });
-  it('7.2.3 each completed requests should displayed properly', async () => {
+  it('4.2.3 each completed requests should displayed properly', async () => {
     const completedBtn = await page.waitForXPath(
       '//div[contains(@class, "RequestToCore_completed") and text()="Completed"]',
     );
@@ -415,7 +415,7 @@ describe('CopyRequest', () => {
     expect(reviewedAt).not.toBe('');
     expect(reviewedBy).not.toBe('');
   });
-  it('7.2.4 Project admin could download file in the request table', async () => {
+  it('4.2.4 Project admin could download file in the request table', async () => {
     const actionButton = await page.waitForXPath(
       '//button[contains(@class, "ant-dropdown-trigger")]',
     );
@@ -444,7 +444,7 @@ describe('CopyRequest', () => {
     //remove file when test ends
     await fs.unlinkSync(`./tests/downloads/${fileName}`);
   });
-  it('7.2.5 Project admin should be able to select files/folders and approve. Once approved the copy will start immediately', async () => {
+  it('4.2.5 Project admin should be able to select files/folders and approve. Once approved the copy will start immediately', async () => {
     await page.goto(`${baseUrl}project/${projectId}/requestToCore`);
     await findReqWithOneLeftItem(true);
     await approveFirstItem();
@@ -471,7 +471,7 @@ describe('CopyRequest', () => {
     );
     expect(downloadItem).not.toBe(null);
   });
-  it('7.2.6 Project admin should be able to select files/folders and deny', async () => {
+  it('4.2.6 Project admin should be able to select files/folders and deny', async () => {
     await page.goto(`${baseUrl}project/${projectId}/requestToCore`);
     await findReqWithOneLeftItem(false, true);
     await denyFirstItem();
@@ -483,7 +483,7 @@ describe('CopyRequest', () => {
     );
     expect(successMsg).not.toBe(null);
   });
-  it('7.2.7 Files will display status for approved or denied, but folders has no status', async () => {
+  it('4.2.7 Files will display status for approved or denied, but folders has no status', async () => {
     await page.goto(`${baseUrl}project/${projectId}/requestToCore`);
     await findReqWithZeroLeftItem();
     const status = await getFirstRecordStatus();
@@ -505,7 +505,7 @@ describe('CopyRequest', () => {
       expect(denyIcon).not.toBe(null);
     }
   });
-  it('7.2.9 If project admin select subfolder/file approve, and then in outside folder select deny/approve folder, a modal should pop to show how n files approved n files denied && 7.2.11 Once approved or denied, the decision cannot be changed/revert', async () => {
+  it('4.2.9 If project admin select subfolder/file approve, and then in outside folder select deny/approve folder, a modal should pop to show how n files approved n files denied && 4.2.11 Once approved or denied, the decision cannot be changed/revert', async () => {
     await page.goto(`${baseUrl}project/${projectId}/requestToCore`);
     await findReqWithOneLeftItem(false, false);
     await denyFirstItem();
@@ -522,7 +522,7 @@ describe('CopyRequest', () => {
     const curStatus = await getFirstRecordStatus();
     expect(curStatus).toBe('denied');
   });
-  it('7.2.12 Only when all files/folders marked as approve/deny project admin could mark as completed', async () => {
+  it('4.2.12 Only when all files/folders marked as approve/deny project admin could mark as completed', async () => {
     await page.goto(`${baseUrl}project/${projectId}/requestToCore`);
     await findReqWithOneLeftItem(true);
     const closeReqBtn = await page.waitForXPath(

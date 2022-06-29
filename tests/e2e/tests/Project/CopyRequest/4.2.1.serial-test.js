@@ -21,7 +21,7 @@ describe('CopyRequest', () => {
     await logout(page);
     await page.waitForTimeout(3000);
   });
-  it('7.2.1 All project admins could receive email notification with correct information including project code, username and user email', async () => {
+  it('4.2.1 All project admins could receive email notification with correct information including project code, username and user email', async () => {
     const adminEmail = 'jzhang@indocresearch.org';
     const result = await mailhog.messages(0, 10);
     const emailConfirmation = result.items.find((item) => {

@@ -40,7 +40,7 @@ describe('CopyRequest', () => {
       }
     }
   }
-  it('7.3.2 File/folders in the request can be reviewed of streaming metadata (tags, attributes, lineage)', async () => {
+  it('4.3.2 File/folders in the request can be reviewed of streaming metadata (tags, attributes, lineage)', async () => {
     await page.goto(`${baseUrl}project/${projectId}/requestToCore`);
     await findReqWithOneLeftFile();
     const actionButton = await page.waitForXPath(
@@ -82,7 +82,7 @@ describe('CopyRequest', () => {
     });
     expect(data).not.toBe(dataBefore);
   });
-  it('7.3.4 File/folders in the request can be zip previewed if it is a zip. ', async () => {
+  it('4.3.4 File/folders in the request can be zip previewed if it is a zip. ', async () => {
     await page.goto(`${baseUrl}project/${projectId}/requestToCore`);
     await findReqWithOneLeftFile();
     const actionButton = await page.waitForXPath(

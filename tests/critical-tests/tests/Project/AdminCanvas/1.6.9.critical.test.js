@@ -10,7 +10,7 @@ const {
 } = require('../../../../utils/greenroomActions.js');
 jest.setTimeout(700000);
 
-describe('Project List', () => {
+describe('1.6.9', () => {
   let page;
   beforeAll(async () => {
     const context = await browser.createIncognitoBrowserContext();
@@ -51,7 +51,7 @@ describe('Project List', () => {
 
     await page.waitForTimeout(3000);
   }
-  it('2.12.1 Project administrator should be able to filter/sort in members page,1.filter by username', async () => {
+  it('1.6.9 Project administrator should be able to filter/sort in members page, 1.filter by username', async () => {
     await page.goto(`${baseUrl}project/${projectCode}/teams`);
 
     await findDisabletestUser();

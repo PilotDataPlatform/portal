@@ -21,7 +21,7 @@ jest.setTimeout(700000);
  *  - one folder named test-folder-files with 2 files within
  *  - one file
  */
-describe('2.16.1', () => {
+describe('1.5.4', () => {
   let page;
   const fileName = 'file-manifest-test';
   const manifestName = 'Auto Manifest';

@@ -1,6 +1,6 @@
 const { login, logout } = require('../../../../utils/login.js');
 const { init } = require('../../../../utils/commonActions.js');
-const { collaborator } =require('../../../../users');
+const { collaborator } = require('../../../../users');
 const { baseUrl, dataConfig } = require('../../../config');
 jest.setTimeout(700000);
 
@@ -18,7 +18,7 @@ describe('Project List', () => {
     await logout(page);
     await page.waitForTimeout(3000);
   });
-  it('1.1.3 Search project. ', async () => {
+  it('2.2.3 Search project', async () => {
     await page.goto(`${baseUrl}landing`);
     const searchIcon = await page.waitForXPath(
       '//button//span[contains(@class, "anticon-search")]',

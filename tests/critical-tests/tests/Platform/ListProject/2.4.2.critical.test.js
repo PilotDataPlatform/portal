@@ -19,7 +19,7 @@ describe('Project List', () => {
     await logout(page);
     await page.waitForTimeout(3000);
   });
-  it('1.5.2 Numbers of admins, contributors, collaborators matches the number in the members page. ', async () => {
+  it('2.4.2 Numbers of admins, contributors, collaborators matches the number in the members page. ', async () => {
     await page.goto(`${baseUrl}project/${projectCode}/canvas`);
     await page.waitForXPath(
       "//div[@class='ant-row']/main[@class='ant-layout-content']//span[@aria-label='down-circle']",

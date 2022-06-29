@@ -26,7 +26,7 @@ describe('CopyRequest', () => {
     await page.waitForTimeout(3000);
   });
 
-  it('7.1.1 project collaborator will have a button for requesting copy request', async () => {
+  it('4.1.1 project collaborator will have a button for requesting copy request', async () => {
     await page.goto(`${baseUrl}project/${projectId}/canvas`);
     prepareActions(page);
     const copyToRequestBtn = await page.waitForXPath(
@@ -39,7 +39,7 @@ describe('CopyRequest', () => {
     expect(text).toBe('Request to Core');
     await page.waitForTimeout(4000);
   });
-  it('7.1.2 The Request to Core button should only in Greenroom tab', async () => {
+  it('4.1.2 The Request to Core button should only in Greenroom tab', async () => {
     await page.goto(`${baseUrl}project/${projectId}/canvas`);
     const coreTab = await page.waitForXPath('//span[@id="core_title"]');
     await coreTab.click();
@@ -49,7 +49,7 @@ describe('CopyRequest', () => {
     );
     expect(copyToRequestBtn).toBe(null);
   });
-  it('7.1.3 User needs to select at least one file to click Request to Core', async () => {
+  it('4.1.3 User needs to select at least one file to click Request to Core', async () => {
     await page.goto(`${baseUrl}project/${projectId}/canvas`);
     const copyToRequestBtn = await page.waitForXPath(
       '//button[@type="button" and contains(span[2], "Request to Core")]/span[2]',
@@ -57,7 +57,7 @@ describe('CopyRequest', () => {
     );
     expect(copyToRequestBtn).toBe(null);
   });
-  it('7.1.4 User must input request notes to confirm request', async () => {
+  it('4.1.4 User must input request notes to confirm request', async () => {
     await page.goto(`${baseUrl}project/${projectId}/canvas`);
     prepareActions(page);
     const copyToRequestBtn = await page.waitForXPath(
@@ -86,7 +86,7 @@ describe('CopyRequest', () => {
     );
     expect(isConfirmBtnDisabled).toBe(true);
   });
-  it('7.1.5 Request notes must contain no more than 250 characters, support other language', async () => {
+  it('4.1.5 Request notes must contain no more than 250 characters, support other language', async () => {
     await page.goto(`${baseUrl}project/${projectId}/canvas`);
     prepareActions(page);
     const copyToRequestBtn = await page.waitForXPath(
@@ -102,7 +102,7 @@ describe('CopyRequest', () => {
     );
     expect(noteInputVal).toBe(dummyText.slice(0, 250));
   });
-  it('7.1.6 Request notes should be cleared after user submitted, cancel or closed model', async () => {
+  it('4.1.6 Request notes should be cleared after user submitted, cancel or closed model', async () => {
     await page.goto(`${baseUrl}project/${projectId}/canvas`);
     prepareActions(page);
     // cancel
@@ -148,7 +148,7 @@ describe('CopyRequest', () => {
     });
     expect(noteInputValAfterSubmit).toBe('');
   });
-  it('7.1.7 User must select destination to confirm request', async () => {
+  it('4.1.7 User must select destination to confirm request', async () => {
     await page.goto(`${baseUrl}project/${projectId}/canvas`);
     prepareActions(page);
     const copyToRequestBtn = await page.waitForXPath(
@@ -169,7 +169,7 @@ describe('CopyRequest', () => {
     expect(folderPath).toBe(null);
     expect(isConfirmBtnDisabled).toBe(true);
   });
-  it('7.1.8 The default rule will be displayed on the top of the modal, and when hover it will display the complete rule', async () => {
+  it('4.1.8 The default rule will be displayed on the top of the modal, and when hover it will display the complete rule', async () => {
     await page.goto(`${baseUrl}project/${projectId}/canvas`);
     prepareActions(page);
     const copyToRequestBtn = await page.waitForXPath(
@@ -190,7 +190,7 @@ describe('CopyRequest', () => {
     );
     expect(ruleContent).not.toBe(null);
   });
-  it('7.1.11 Project collaborator should be able to view all the files they have added, should be consistent with the file explorer at the time when adding them to copy request', async () => {
+  it('4.1.11 Project collaborator should be able to view all the files they have added, should be consistent with the file explorer at the time when adding them to copy request', async () => {
     await page.goto(`${baseUrl}project/${projectId}/canvas`);
     const requestMenuItem = await page.waitForXPath(
       '//div[contains(@class, "ant-layout-sider-children")]//li[contains(@class,"ant-menu-item")]//span[contains(text(), "Requests")]//preceding-sibling::span',
@@ -211,7 +211,7 @@ describe('CopyRequest', () => {
     );
     expect(text).toBe('test-folder-files');
   });
-  it('7.1.11 Project collaborator should be able to view all the files they have added, should be consistent with the file explorer at the time when adding them to copy request', async () => {
+  it('4.1.11 Project collaborator should be able to view all the files they have added, should be consistent with the file explorer at the time when adding them to copy request', async () => {
     await page.goto(`${baseUrl}project/${projectId}/canvas`);
     const checkBox = await page.waitForSelector(
       '#files_table > div > div > table > tbody > tr > td.ant-table-cell.ant-table-selection-column > label > span > input',
@@ -230,7 +230,7 @@ describe('CopyRequest', () => {
     );
     expect(fileList.length).toBe(2);
   });
-  it('7.1.12 Project collaborator could see the copy icon on the side bar', async () => {
+  it('4.1.12 Project collaborator could see the copy icon on the side bar', async () => {
     await page.goto(`${baseUrl}project/${projectId}/canvas`);
     const RequestMenuItem = await page.waitForXPath(
       '//div[contains(@class, "ant-layout-sider-children")]//li[contains(@class,"ant-menu-item")]//span[contains(text(), "Requests")]',
@@ -240,7 +240,7 @@ describe('CopyRequest', () => {
     );
     expect(RequestMenuItem).not.toBe(null);
   });
-  it('7.1.13 User could submit same file to different copy request to different/the same destination folder', async () => {
+  it('4.1.13 User could submit same file to different copy request to different/the same destination folder', async () => {
     await page.goto(`${baseUrl}project/${projectId}/canvas`);
     prepareActions(page, true);
     await submitCopyRequest(page);
@@ -248,7 +248,7 @@ describe('CopyRequest', () => {
     prepareActions(page, true);
     await submitCopyRequest(page);
   });
-  it('7.1.15 User should be able to open any folder inside their request include empty folder', async () => {
+  it('4.1.15 User should be able to open any folder inside their request include empty folder', async () => {
     await page.goto(`${baseUrl}project/${projectId}/canvas`);
     await page.waitForSelector(
       '#files_table > div > div > table > tbody > tr > td.ant-table-cell.ant-table-selection-column > label > span > input',
@@ -283,7 +283,7 @@ describe('CopyRequest', () => {
     );
     await firstItem.click();
   });
-  it('7.1.16 The requested time for New request/Completed request should match user’s local time in different time zone', async () => {
+  it('4.1.16 The requested time for New request/Completed request should match user’s local time in different time zone', async () => {
     await page.goto(`${baseUrl}project/${projectId}/canvas`);
     const requestMenuItem = await page.waitForXPath(
       '//div[contains(@class, "ant-layout-sider-children")]//li[contains(@class,"ant-menu-item")]//span[contains(text(), "Requests")]//preceding-sibling::span',

@@ -10,7 +10,7 @@ const {
 } = require('../../../../utils/greenroomActions.js');
 jest.setTimeout(700000);
 
-describe('Project List', () => {
+describe('1.4.7', () => {
   let page;
   beforeAll(async () => {
     const context = await browser.createIncognitoBrowserContext();
@@ -24,15 +24,9 @@ describe('Project List', () => {
     await logout(page);
     await page.waitForTimeout(3000);
   });
-  it('2.2 Project administrator should be able to invite user 1.Check sidebar position', async () => {
-    await page.goto(`${baseUrl}project/${projectCode}/canvas`);
-    const team = await page.waitForXPath(
-      "//li[@class='ant-menu-item ant-menu-item-only-child' and @role='menuitem']//span[@aria-label='team']",
-    );
-    expect(team).not.toBe(null);
-  });
 
-  it('2.5.6 The search result in ‘Advanced search’ should be displayed properly', async () => {
+  it('The search result in ‘Advanced search’ should be displayed properly', async () => {
+    await page.goto(`${baseUrl}project/${projectCode}/canvas`);
     // const fileKebabBtn = await page.waitForXPath(
     //   '//span[text()="' +
     //     fileName +

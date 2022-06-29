@@ -72,7 +72,7 @@ describe('CopyRequest', () => {
     await firstItemNameNode.click();
     await page.waitForTimeout(5000);
   }
-  it('7.3.1 If a folder has been sent to request, any new added file into the folder after the request was made will not be part of the request.', async () => {
+  it('4.3.1 If a folder has been sent to request, any new added file into the folder after the request was made will not be part of the request.', async () => {
     await page.goto(`${baseUrl}project/${projectId}/canvas`);
     await page.waitForSelector(
       '#files_table > div > div > table > tbody > tr > td.ant-table-cell.ant-table-selection-column > label > span > input',
@@ -104,7 +104,7 @@ describe('CopyRequest', () => {
     );
     expect(fileList.length).toBe(0);
   });
-  it('7.3.5 After a folder/file has been sent in a request, if it has been deleted, in the request it will be marked as not available (grey out), no approve/deny action can be executed on it.', async () => {
+  it('4.3.5 After a folder/file has been sent in a request, if it has been deleted, in the request it will be marked as not available (grey out), no approve/deny action can be executed on it.', async () => {
     await page.goto(`${baseUrl}project/${projectId}/canvas`);
     await page.waitForSelector(
       '#files_table > div > div > table > tbody > tr > td.ant-table-cell.ant-table-selection-column > label > span > input',
@@ -137,7 +137,7 @@ describe('CopyRequest', () => {
     );
     expect(deletedFileList.length).toBe(1);
   });
-  it('7.3.6 Greyed out file/folder can be reviewed of metadata in Properties, but can NOT be downloaded or zip previewed.', async () => {
+  it('4.3.6 Greyed out file/folder can be reviewed of metadata in Properties, but can NOT be downloaded or zip previewed.', async () => {
     const actionButton = await page.waitForXPath(
       '//button[contains(@class, "ant-dropdown-trigger")]',
     );

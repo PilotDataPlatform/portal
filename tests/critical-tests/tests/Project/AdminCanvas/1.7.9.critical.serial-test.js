@@ -1,7 +1,7 @@
 const { login, logout } = require('../../../../utils/login.js');
 const { init } = require('../../../../utils/commonActions.js');
 const { collaborator, disabletest } = require('../../../../users');
-const { baseUrl, dataConfig } = require('../../../config');
+const { baseUrl, dataConfig } = require('../../../../e2e/config');
 const { projectId } = dataConfig.userProfile;
 
 jest.setTimeout(700000);

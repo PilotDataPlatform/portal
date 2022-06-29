@@ -19,7 +19,7 @@ const fs = require('fs');
 const { projectCode, projectCodeContributor } = dataConfig.canvas;
 jest.setTimeout(700000);
 
-describe('3.12.3', () => {
+describe('2.5.5', () => {
   let page;
   const fileName = 'License.md';
   beforeAll(async () => {

@@ -9,7 +9,7 @@ jest.setTimeout(700000);
  *  - one folder named test-folder-files with 2 files within
  *  - one file
  */
-describe('2.1.2', () => {
+describe('click cancel button', () => {
   let page;
   let newName;
   const newTag = 'test';
@@ -70,7 +70,7 @@ describe('2.1.2', () => {
     }, projectDesNode);
     expect(projectDes).not.toBe(newDescription);
   }
-  it('Project administrator cancel input', async () => {
+  it('click cancel button, the description should not be saved, the tag should not be saved, the project name should not be saved, any previous error message should not be displayed again', async () => {
     await page.goto(`${baseUrl}project/${projectId}/settings`);
     await page.waitForXPath('//form//label[text()="Project Name"]');
     let editBtn = await page.waitForXPath(

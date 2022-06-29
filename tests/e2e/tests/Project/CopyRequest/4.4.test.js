@@ -1,6 +1,6 @@
 const { login, logout } = require('../../../../utils/login.js');
 const { init } = require('../../../../utils/commonActions.js');
-const { collaborator } =require('../../../../users');
+const { collaborator } = require('../../../../users');
 const { baseUrl, dataConfig } = require('../../../config');
 jest.setTimeout(700000);
 
@@ -21,7 +21,7 @@ describe('CopyRequest', () => {
     await logout(page);
     await page.waitForTimeout(3000);
   });
-  it('7.4.1 Project admin should be able to see all past requests and new requests', async () => {
+  it('4.4.1 Project admin should be able to see all past requests and new requests', async () => {
     await page.goto(`${baseUrl}project/${projectId}/requestToCore`);
     //61390
     await page.waitForSelector(`#layout-wrapper ul.ant-list-items`);
@@ -42,7 +42,7 @@ describe('CopyRequest', () => {
     await logout(page);
     await page.waitForTimeout(3000);
   });
-  it('7.4.2 Project collaborator could ONLY see their own new request and past requests,  not others', async () => {
+  it('4.4.2 Project collaborator could ONLY see their own new request and past requests,  not others', async () => {
     await login(page, 'collaborator');
     await init(page, { closeBanners: false });
     await page.goto(`${baseUrl}project/${projectId}/requestToCore`);
@@ -65,7 +65,7 @@ describe('CopyRequest', () => {
     await logout(page);
     await page.waitForTimeout(3000);
   });
-  it('7.4.3 When project contributor tried to access requestToCore page by changed url, they should be redirect to 403 page', async () => {
+  it('4.4.3 When project contributor tried to access requestToCore page by changed url, they should be redirect to 403 page', async () => {
     await login(page, 'contributor');
     await init(page, { closeBanners: false });
     await page.goto(`${baseUrl}project/${contributorProjId}/requestToCore`);

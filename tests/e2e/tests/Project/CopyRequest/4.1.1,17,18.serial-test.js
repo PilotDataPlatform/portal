@@ -104,7 +104,7 @@ describe('CopyRequest', () => {
     await page.click('.ant-modal-footer button.approve-btn');
     await page.waitForTimeout(1000);
   }
-  it('7.1.1 project admin will not have a button for requesting copy request', async () => {
+  it('4.1.1 project admin will not have a button for requesting copy request', async () => {
     await page.goto(`${baseUrl}project/${projectId}/canvas`);
     const checkBox = await page.waitForSelector(
       '#files_table > div > div > table > tbody > tr > td.ant-table-cell.ant-table-selection-column > label > span > input',
@@ -116,7 +116,7 @@ describe('CopyRequest', () => {
     );
     expect(copyToRequestBtn).toBe(null);
   });
-  it('7.1.1b Inside project, project admin could see the request icon, if new request received then there will be a red dot', async () => {
+  it('4.1.1b Inside project, project admin could see the request icon, if new request received then there will be a red dot', async () => {
     await page.goto(`${baseUrl}project/${projectId}/canvas`);
     const redDot = await page.waitForSelector(
       '#side-bar li >span.ant-badge-status',
@@ -126,7 +126,7 @@ describe('CopyRequest', () => {
     );
     expect(redDot).not.toBe(null);
   });
-  it('7.1.17 The copy request approval confirmation modal should be consistent with the copy-to-core modal in File Explorer', async () => {
+  it('4.1.17 The copy request approval confirmation modal should be consistent with the copy-to-core modal in File Explorer', async () => {
     await page.goto(`${baseUrl}project/${projectId}/requestToCore`);
     await findReqWithOneLeftItem();
     await openApporveModal();
@@ -140,7 +140,7 @@ describe('CopyRequest', () => {
     );
     expect(warningTxt).not.toBe(null);
   });
-  it('7.1.18 The complete request modal shall be opened with empty notes', async () => {
+  it('4.1.18 The complete request modal shall be opened with empty notes', async () => {
     await page.goto(`${baseUrl}project/${projectId}/requestToCore`);
     await findReqWithOneLeftFile();
     await approveFirstItem();

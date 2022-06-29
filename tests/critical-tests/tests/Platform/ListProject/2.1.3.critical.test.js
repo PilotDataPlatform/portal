@@ -18,7 +18,7 @@ describe('Project List', () => {
     await logout(page);
     await page.waitForTimeout(3000);
   });
-  it('1.3.3 Check All Projects. ', async () => {
+  it('2.1.3 Click All Projects. ', async () => {
     await page.goto(`${baseUrl}landing`);
     const allProjectsIcon = await page.waitForXPath(
       '//*[@id="tab-All Projects"]',
