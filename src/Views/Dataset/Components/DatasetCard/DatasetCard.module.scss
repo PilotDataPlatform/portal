@@ -1,3 +1,4 @@
+@import '../../../../Themes/base.scss';
 $headerHeight: 48px;
 
 .card {
@@ -9,11 +10,11 @@ $headerHeight: 48px;
 
   :global {
     .ant-card-head {
-       height: 48px;
+      height: 48px;
       .ant-card-head-title {
         padding: 12px 0;
         font-weight: 500;
-        color: #003262;
+        color: $primary-color-1;
         font-size: 14px;
       }
       .ant-card-extra {
@@ -25,10 +26,9 @@ $headerHeight: 48px;
 
 @media only screen and (min-width: 1366px) {
   .card {
-  
     :global {
       .ant-card-head {
-         height: 62px;
+        height: 62px;
         .ant-card-head-title {
           font-size: 18px;
         }

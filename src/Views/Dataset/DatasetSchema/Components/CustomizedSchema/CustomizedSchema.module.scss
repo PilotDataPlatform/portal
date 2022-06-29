@@ -36,7 +36,7 @@ $twoRowSeparate: 1400px;
       margin-right: 210px;
     }
     .template-bar-title {
-      color: #003262;
+      color: $primary-color-1;
       font-size: 12px;
       line-height: 28px;
     }
@@ -105,7 +105,7 @@ $twoRowSeparate: 1400px;
 .confirm_modal {
   :global {
     .ant-modal-title {
-      color: #003262;
+      color: $primary-color-1;
       font-weight: bold;
     }
     .ant-modal-content {

@@ -1,7 +1,8 @@
+@import '../../../../../../Themes/base.scss';
 .error-modal {
   :global {
     .ant-modal-title {
-      color: #003262;
+      color: $primary-color-1;
       margin: 0px;
     }
     .ant-modal-content {
@@ -17,7 +18,7 @@
     }
     .ul {
       list-style-type: none;
-      color: #ff6d72;
+      color: $primary-color-5;
       padding-left: 0;
 
       .li {

@@ -13,6 +13,7 @@ import map from 'async/map';
 import asyncify from 'async/asyncify';
 import UploadErrorModal from '../UploadErrorModal/UploadErrorModal';
 import { useTranslation } from 'react-i18next';
+import variables from '../../../../../../Themes/base.scss';
 const MAX_UPLOAD = 20;
 
 const UploadSchemaModal = (props) => {
@@ -158,7 +159,7 @@ const UploadSchemaModal = (props) => {
       <Modal
         className={styles.upload_schema_modal}
         title={
-          <p style={{ color: '#003262', margin: '0px' }}>
+          <p style={{ color: variables.primaryColor1, margin: '0px' }}>
             Upload openMINDS Schemas
           </p>
         }
@@ -181,7 +182,7 @@ const UploadSchemaModal = (props) => {
               type="primary"
               icon={<CloudUploadOutlined />}
               loading={loading}
-              disabled={fileList.length===0}
+              disabled={fileList.length === 0}
               onClick={onSubmit}
             >
               Upload

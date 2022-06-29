@@ -8,6 +8,7 @@ import {
   ImportOutlined,
   EditOutlined,
 } from '@ant-design/icons';
+import variables from '../../../Themes/base.scss';
 
 const datasetUpdateInfoDisplay = (caseType) => {
   let type;
@@ -23,7 +24,9 @@ const datasetUpdateInfoDisplay = (caseType) => {
 
   return (
     <div style={{ display: 'flex', alignItems: 'center' }}>
-      <SyncOutlined style={{ color: '#003262', marginRight: '10px' }} />
+      <SyncOutlined
+        style={{ color: variables.primaryColor1, marginRight: '10px' }}
+      />
       <p style={{ margin: '0px' }}>Updated Dataset {type}</p>
     </div>
   );
@@ -32,7 +35,9 @@ const datasetUpdateInfoDisplay = (caseType) => {
 const datasetDownloadInfoDisplay = (details) => {
   return (
     <div style={{ display: 'flex', alignItems: 'center' }}>
-      <DownloadOutlined style={{ color: '#003262', marginRight: '10px' }} />
+      <DownloadOutlined
+        style={{ color: variables.primaryColor1, marginRight: '10px' }}
+      />
       {typeof details.source === 'string' ? (
         <p style={{ margin: '0px' }}>Downloaded a Dataset</p>
       ) : (
@@ -53,7 +58,7 @@ const datasetVersionInfoDisplay = (details) => {
       <p
         style={{
           fontWeight: 'bold',
-          color: '#003262',
+          color: variables.primaryColor1,
           margin: '0px 0px 0px 23px',
         }}
       >
@@ -66,7 +71,9 @@ const datasetVersionInfoDisplay = (details) => {
 const datasetCreateInfoDisplay = () => {
   return (
     <div style={{ display: 'flex', alignItems: 'center' }}>
-      <PlusOutlined style={{ color: '#003262', marginRight: '10px' }} />
+      <PlusOutlined
+        style={{ color: variables.primaryColor1, marginRight: '10px' }}
+      />
       <p style={{ margin: '0px' }}>Created a Dataset</p>
     </div>
   );
@@ -136,7 +143,9 @@ const datasetAddAndRemoveInfoDisplayHelper = (caseType, action, details) => {
   return (
     <div style={{ display: 'flex', alignItems: 'center' }}>
       {action === 'ADD' ? (
-        <PlusOutlined style={{ color: '#003262', marginRight: '10px' }} />
+        <PlusOutlined
+          style={{ color: variables.primaryColor1, marginRight: '10px' }}
+        />
       ) : (
         <CloseOutlined style={{ color: '#FF6D72', marginRight: '10px' }} />
       )}
@@ -270,7 +279,9 @@ const schemaInfoDisplay = {
   schemaCreateInfoDisplay: (details) => {
     return (
       <div style={{ display: 'flex', alignItems: 'center' }}>
-        <PlusOutlined style={{ color: '#003262', marginRight: '10px' }} />
+        <PlusOutlined
+          style={{ color: variables.primaryColor1, marginRight: '10px' }}
+        />
         <p style={{ margin: '0px' }}>
           Created a schema:{' '}
           <span style={{ fontWeight: 600 }}>
@@ -290,7 +301,9 @@ const schemaInfoDisplay = {
   schemaRemoveInfoDisplay: (details) => {
     return (
       <div style={{ display: 'flex', alignItems: 'center' }}>
-        <CloseOutlined style={{ color: '#FF6D72', marginRight: '10px' }} />
+        <CloseOutlined
+          style={{ color: variables.primaryColorLight3, marginRight: '10px' }}
+        />
         <p style={{ margin: '0px' }}>
           Deleted a schema:{' '}
           <span style={{ fontWeight: 600 }}>
@@ -310,7 +323,9 @@ const schemaInfoDisplay = {
   schemaUpdateInfoDisplay: (details) => {
     return (
       <div style={{ display: 'flex', alignItems: 'center' }}>
-        <SyncOutlined style={{ color: '#003262', marginRight: '10px' }} />
+        <SyncOutlined
+          style={{ color: variables.primaryColor1, marginRight: '10px' }}
+        />
         <p style={{ margin: '0px' }}>
           {`Updated a schema (${
             details.name.length > 40 ? (
@@ -342,7 +357,9 @@ const schemaTemplateInfoDisplay = {
   schemaTemplateCreateInfoDisplay: (details) => {
     return (
       <div style={{ display: 'flex', alignItems: 'center' }}>
-        <PlusOutlined style={{ color: '#003262', marginRight: '10px' }} />
+        <PlusOutlined
+          style={{ color: variables.primaryColor1, marginRight: '10px' }}
+        />
         <p style={{ margin: '0px' }}>
           Added a Custom Schema Template:{' '}
           <span style={{ fontWeight: 600 }}>
@@ -370,7 +387,9 @@ const fileInfoDisplay = (caseType, action, details) => {
     ) {
       return (
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <ImportOutlined style={{ color: '#003262', marginRight: '10px' }} />
+          <ImportOutlined
+            style={{ color: variables.primaryColor1, marginRight: '10px' }}
+          />
           <p style={{ margin: '0px' }}>
             Moved a file/folder from:{' '}
             <span style={{ fontWeight: 600 }}>
@@ -401,7 +420,9 @@ const fileInfoDisplay = (caseType, action, details) => {
       const { project } = details;
       return (
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <PlusOutlined style={{ color: '#003262', marginRight: '10px' }} />
+          <PlusOutlined
+            style={{ color: variables.primaryColor1, marginRight: '10px' }}
+          />
           <p style={{ margin: '0px' }}>
             {details.sourceList.length > 1
               ? `Added file(s)/folder(s): `
@@ -415,7 +436,9 @@ const fileInfoDisplay = (caseType, action, details) => {
     } else if (action === 'REMOVE' && details.hasOwnProperty('sourceList')) {
       return (
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <CloseOutlined style={{ color: '#FF6D72', marginRight: '10px' }} />
+          <CloseOutlined
+            style={{ color: variables.primaryColorLight3, marginRight: '10px' }}
+          />
           <p style={{ margin: '0px' }}>
             Deleted a file/folder:{' '}
             <span style={{ fontWeight: 600 }}>{details.sourceList[0]}</span>
@@ -429,7 +452,9 @@ const fileInfoDisplay = (caseType, action, details) => {
     ) {
       return (
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <EditOutlined style={{ color: '#003262', marginRight: '10px' }} />
+          <EditOutlined
+            style={{ color: variables.primaryColor1, marginRight: '10px' }}
+          />
           <p style={{ margin: '0px' }}>
             Renamed a file/folder from:{' '}
             <span style={{ fontWeight: 600 }}>

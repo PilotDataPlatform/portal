@@ -396,7 +396,9 @@ const Copy2CoreModal = ({
           </div>
           <div style={{ display: 'flex' }}>
             <div style={{ width: '22px', margin: '0px 5px' }}>
-              <ExclamationCircleOutlined style={{ color: '#FFC118' }} />
+              <ExclamationCircleOutlined
+                style={{ color: variables.primaryColor5 }}
+              />
             </div>
             <div style={{ flex: 1 }}>
               <p style={{ marginBottom: '8px' }}>
@@ -429,7 +431,9 @@ const Copy2CoreModal = ({
       return (
         <div style={{ display: 'flex' }}>
           <div style={{ width: '22px', margin: '0px 5px' }}>
-            <ExclamationCircleOutlined style={{ color: '#FFC118' }} />
+            <ExclamationCircleOutlined
+              style={{ color: variables.primaryColor5 }}
+            />
           </div>
           <div style={{ flex: 1 }}>
             <p style={{ marginBottom: '8px' }}>
@@ -881,7 +885,9 @@ const Copy2CoreModal = ({
       {step === 3 && (
         <div style={{ display: 'flex' }}>
           <div style={{ width: '22px', margin: '0px 5px' }}>
-            <ExclamationCircleOutlined style={{ color: '#FFC118' }} />
+            <ExclamationCircleOutlined
+              style={{ color: variables.primaryColor5 }}
+            />
           </div>
           <div style={{ flex: 1 }}>
             <p style={{ marginBottom: '8px' }}>
@@ -929,7 +935,9 @@ const Copy2CoreModal = ({
       {step === 5 && (
         <div style={{ display: 'flex' }}>
           <div style={{ width: '22px', margin: '0px 5px' }}>
-            <ExclamationCircleOutlined style={{ color: '#FFC118' }} />
+            <ExclamationCircleOutlined
+              style={{ color: variables.primaryColor5 }}
+            />
           </div>
           <div style={{ flex: 1, marginTop: '-4px' }}>
             <p

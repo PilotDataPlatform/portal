@@ -1,3 +1,5 @@
+@import '../../../../Themes/base.scss';
+
 .toolTip-div {
   margin-top: -4px;
   :global {
@@ -7,7 +9,7 @@
       vertical-align: bottom;
       overflow: hidden;
       text-overflow: ellipsis;
-      color: #003262;
+      color: $primary-color-1;
       font-size: 25px;
       text-overflow: ellipsis;
     }
@@ -23,7 +25,7 @@
       vertical-align: bottom;
       overflow: hidden;
       text-overflow: ellipsis;
-      color: #003262;
+      color: $primary-color-1;
       font-size: 25px;
     }
   }
