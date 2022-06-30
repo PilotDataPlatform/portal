@@ -4,7 +4,7 @@ const { collaborator } = require('../../../../../users');
 const { baseUrl, dataConfig } = require('../../../../config');
 jest.setTimeout(700000);
 
-const projectId = dataConfig.copyReq.projectId;
+const projectCode = dataConfig.adminCanvas.projectCode;
 
 describe('Project administrator should be able to invite user', () => {
   let page;
@@ -21,9 +21,11 @@ describe('Project administrator should be able to invite user', () => {
     await page.waitForTimeout(3000);
   });
   it('members button on the sidebar', async () => {
-    await page.goto(`${baseUrl}project/${projectId}/teams`);
-    const icon = await page.waitForSelector(`#side-bar > li:nth-child(4)`);
-    expect(icon).not.toBeNull();
+    await page.goto(`${baseUrl}project/${projectCode}/teams`);
+    const icon = await page.waitForXPath(
+      `//ul[@id="side-bar"]/li//span[contains(text(), "Members")]`,
+    );
+    expect(icon).toBeTruthy();
   });
   //#layout-wrapper > main > div.ant-row > div > div > div > button
 

@@ -3,7 +3,7 @@ const { init } = require('../../../../utils/commonActions.js');
 const { baseUrl, dataConfig } = require('../../../config');
 jest.setTimeout(700000);
 
-const projectId = dataConfig.copyReq.projectId;
+const projectCode = dataConfig.copyReq.projectCode;
 
 describe('CopyRequest', () => {
   let page;
@@ -41,7 +41,7 @@ describe('CopyRequest', () => {
     }
   }
   it('4.3.2 File/folders in the request can be reviewed of streaming metadata (tags, attributes, lineage)', async () => {
-    await page.goto(`${baseUrl}project/${projectId}/requestToCore`);
+    await page.goto(`${baseUrl}project/${projectCode}/requestToCore`);
     await findReqWithOneLeftFile();
     const actionButton = await page.waitForXPath(
       '//button[contains(@class, "ant-dropdown-trigger")]',
@@ -83,7 +83,7 @@ describe('CopyRequest', () => {
     expect(data).not.toBe(dataBefore);
   });
   it('4.3.4 File/folders in the request can be zip previewed if it is a zip. ', async () => {
-    await page.goto(`${baseUrl}project/${projectId}/requestToCore`);
+    await page.goto(`${baseUrl}project/${projectCode}/requestToCore`);
     await findReqWithOneLeftFile();
     const actionButton = await page.waitForXPath(
       '//button[contains(@class, "ant-dropdown-trigger")]',

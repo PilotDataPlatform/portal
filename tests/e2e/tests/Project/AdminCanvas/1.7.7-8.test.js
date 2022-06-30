@@ -2,7 +2,7 @@ const { login, logout } = require('../../../../utils/login.js');
 const { clearInput, clearSelector } = require('../../../../utils/inputBox.js');
 const { init } = require('../../../../utils/commonActions.js');
 const { baseUrl, dataConfig } = require('../../../config');
-const { projectId } = dataConfig.canvas;
+const { projectCode } = dataConfig.adminCanvas;
 jest.setTimeout(700000);
 /**
  * Before running this test, plese make sure you have following files under your user folder
@@ -71,7 +71,7 @@ describe('click cancel button', () => {
     expect(projectDes).not.toBe(newDescription);
   }
   it('click cancel button, the description should not be saved, the tag should not be saved, the project name should not be saved, any previous error message should not be displayed again', async () => {
-    await page.goto(`${baseUrl}project/${projectId}/settings`);
+    await page.goto(`${baseUrl}project/${projectCode}/settings`);
     await page.waitForXPath('//form//label[text()="Project Name"]');
     let editBtn = await page.waitForXPath(
       '//div[contains(@class, "ant-tabs-top-bar")]//button',

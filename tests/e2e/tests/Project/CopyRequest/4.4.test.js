@@ -4,8 +4,8 @@ const { collaborator } = require('../../../../users');
 const { baseUrl, dataConfig } = require('../../../config');
 jest.setTimeout(700000);
 
-const projectId = dataConfig.copyReq.projectId;
-const contributorProjId = dataConfig.copyReq.contributorProjId;
+const projectCode = dataConfig.copyReq.projectCode;
+const contributorProjectCode = dataConfig.copyReq.contributorProjectCode;
 
 describe('CopyRequest', () => {
   let page;
@@ -22,7 +22,7 @@ describe('CopyRequest', () => {
     await page.waitForTimeout(3000);
   });
   it('4.4.1 Project admin should be able to see all past requests and new requests', async () => {
-    await page.goto(`${baseUrl}project/${projectId}/requestToCore`);
+    await page.goto(`${baseUrl}project/${projectCode}/requestToCore`);
     //61390
     await page.waitForSelector(`#layout-wrapper ul.ant-list-items`);
     const requestsNames = await page.$$eval(
@@ -45,7 +45,7 @@ describe('CopyRequest', () => {
   it('4.4.2 Project collaborator could ONLY see their own new request and past requests,  not others', async () => {
     await login(page, 'collaborator');
     await init(page, { closeBanners: false });
-    await page.goto(`${baseUrl}project/${projectId}/requestToCore`);
+    await page.goto(`${baseUrl}project/${projectCode}/requestToCore`);
     await page.waitForSelector(`#layout-wrapper ul.ant-list-items`);
     const requestsNames = await page.$$eval(
       `#layout-wrapper ul.ant-list-items>li`,
@@ -68,7 +68,9 @@ describe('CopyRequest', () => {
   it('4.4.3 When project contributor tried to access requestToCore page by changed url, they should be redirect to 403 page', async () => {
     await login(page, 'contributor');
     await init(page, { closeBanners: false });
-    await page.goto(`${baseUrl}project/${contributorProjId}/requestToCore`);
+    await page.goto(
+      `${baseUrl}project/${contributorProjectCode}/requestToCore`,
+    );
     //61390
     await page.waitForTimeout(3000);
     /* await page.waitForNavigation() */

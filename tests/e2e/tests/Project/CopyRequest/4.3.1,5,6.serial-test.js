@@ -10,7 +10,7 @@ const {
 jest.setTimeout(700000);
 const folderName = 'temp-folder';
 const fileName = 'tinified.zip';
-const projectId = dataConfig.copyReq.projectId;
+const projectCode = dataConfig.copyReq.projectCode;
 
 describe('CopyRequest', () => {
   let page;
@@ -23,12 +23,12 @@ describe('CopyRequest', () => {
     await init(page, { closeBanners: false });
   });
   afterAll(async () => {
-    await page.goto(`${baseUrl}project/${projectId}/canvas`);
+    await page.goto(`${baseUrl}project/${projectCode}/canvas`);
     await deleteFileFromGreenroom(page, folderName);
     await page.waitForTimeout(30 * 1000);
     await logout(page);
     await login(page, 'admin');
-    await page.goto(`${baseUrl}project/${projectId}/requestToCore`);
+    await page.goto(`${baseUrl}project/${projectCode}/requestToCore`);
     await page.waitForTimeout(3000);
     await cleanReqCreated();
   });
@@ -73,7 +73,7 @@ describe('CopyRequest', () => {
     await page.waitForTimeout(5000);
   }
   it('4.3.1 If a folder has been sent to request, any new added file into the folder after the request was made will not be part of the request.', async () => {
-    await page.goto(`${baseUrl}project/${projectId}/canvas`);
+    await page.goto(`${baseUrl}project/${projectCode}/canvas`);
     await page.waitForSelector(
       '#files_table > div > div > table > tbody > tr > td.ant-table-cell.ant-table-selection-column > label > span > input',
     );
@@ -96,7 +96,7 @@ describe('CopyRequest', () => {
     await page.waitForTimeout(2000);
     await uploadFile(page, 'Test Files', fileName);
     await page.waitForTimeout(3000);
-    await page.goto(`${baseUrl}project/${projectId}/requestToCore`);
+    await page.goto(`${baseUrl}project/${projectCode}/requestToCore`);
     await clickIntoFirstFolder();
     await page.waitForTimeout(3000);
     const fileList = await page.$x(
@@ -105,7 +105,7 @@ describe('CopyRequest', () => {
     expect(fileList.length).toBe(0);
   });
   it('4.3.5 After a folder/file has been sent in a request, if it has been deleted, in the request it will be marked as not available (grey out), no approve/deny action can be executed on it.', async () => {
-    await page.goto(`${baseUrl}project/${projectId}/canvas`);
+    await page.goto(`${baseUrl}project/${projectCode}/canvas`);
     await page.waitForSelector(
       '#files_table > div > div > table > tbody > tr > td.ant-table-cell.ant-table-selection-column > label > span > input',
     );
@@ -129,7 +129,7 @@ describe('CopyRequest', () => {
     await deleteFileFromGreenroom(page, fileName);
     await page.waitForTimeout(60 * 1000);
     // check it is deleted
-    await page.goto(`${baseUrl}project/${projectId}/requestToCore`);
+    await page.goto(`${baseUrl}project/${projectCode}/requestToCore`);
     await clickIntoFirstFolder();
     await page.waitForTimeout(3000);
     const deletedFileList = await page.$x(

@@ -7,7 +7,7 @@ const {
 } = require('../../../../utils/copyReqActions.js');
 jest.setTimeout(700000);
 
-const projectId = dataConfig.copyReq.projectId;
+const projectCode = dataConfig.copyReq.projectCode;
 
 describe('CopyRequest', () => {
   let page;
@@ -19,10 +19,10 @@ describe('CopyRequest', () => {
     await login(page, 'collaborator');
     await init(page, { closeBanners: false });
     try {
-      await page.goto(`${baseUrl}project/${projectId}/canvas`);
+      await page.goto(`${baseUrl}project/${projectCode}/canvas`);
       await prepareActions(page, true);
       await submitCopyRequest(page);
-      await page.goto(`${baseUrl}project/${projectId}/canvas`);
+      await page.goto(`${baseUrl}project/${projectCode}/canvas`);
       await prepareActions(page, true);
       await submitCopyRequest(page);
     } catch (e) {
@@ -105,7 +105,7 @@ describe('CopyRequest', () => {
     await page.waitForTimeout(1000);
   }
   it('4.1.1 project admin will not have a button for requesting copy request', async () => {
-    await page.goto(`${baseUrl}project/${projectId}/canvas`);
+    await page.goto(`${baseUrl}project/${projectCode}/canvas`);
     const checkBox = await page.waitForSelector(
       '#files_table > div > div > table > tbody > tr > td.ant-table-cell.ant-table-selection-column > label > span > input',
     );
@@ -117,7 +117,7 @@ describe('CopyRequest', () => {
     expect(copyToRequestBtn).toBe(null);
   });
   it('4.1.1b Inside project, project admin could see the request icon, if new request received then there will be a red dot', async () => {
-    await page.goto(`${baseUrl}project/${projectId}/canvas`);
+    await page.goto(`${baseUrl}project/${projectCode}/canvas`);
     const redDot = await page.waitForSelector(
       '#side-bar li >span.ant-badge-status',
       {
@@ -127,7 +127,7 @@ describe('CopyRequest', () => {
     expect(redDot).not.toBe(null);
   });
   it('4.1.17 The copy request approval confirmation modal should be consistent with the copy-to-core modal in File Explorer', async () => {
-    await page.goto(`${baseUrl}project/${projectId}/requestToCore`);
+    await page.goto(`${baseUrl}project/${projectCode}/requestToCore`);
     await findReqWithOneLeftItem();
     await openApporveModal();
     await page.click('.ant-modal-footer button.approve-btn');
@@ -141,7 +141,7 @@ describe('CopyRequest', () => {
     expect(warningTxt).not.toBe(null);
   });
   it('4.1.18 The complete request modal shall be opened with empty notes', async () => {
-    await page.goto(`${baseUrl}project/${projectId}/requestToCore`);
+    await page.goto(`${baseUrl}project/${projectCode}/requestToCore`);
     await findReqWithOneLeftFile();
     await approveFirstItem();
     //close

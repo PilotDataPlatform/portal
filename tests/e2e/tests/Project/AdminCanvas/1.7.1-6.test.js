@@ -2,7 +2,7 @@ const { login, logout } = require('../../../../utils/login.js');
 const { clearInput, clearSelector } = require('../../../../utils/inputBox.js');
 const { init } = require('../../../../utils/commonActions.js');
 const { baseUrl, dataConfig } = require('../../../config');
-const { projectId, projectCode } = dataConfig.canvas;
+const { projectCode } = dataConfig.adminCanvas;
 jest.setTimeout(700000);
 /**
  * Before running this test, plese make sure you have following files under your user folder
@@ -24,7 +24,7 @@ describe('Project administrator should be able to edit project information', () 
     await page.waitForTimeout(3000);
   });
   it('a. Project admin should be able to edit project name. If user changed project name then user can see the change immediately in the project page and teams page', async () => {
-    await page.goto(`${baseUrl}project/${projectId}/settings`);
+    await page.goto(`${baseUrl}project/${projectCode}/settings`);
     await page.waitForXPath('//form//label[text()="Project Name"]');
     const editBtn = await page.waitForXPath(
       '//div[contains(@class, "ant-tabs-top-bar")]//button',
@@ -97,7 +97,7 @@ describe('Project administrator should be able to edit project information', () 
     await page.waitForTimeout(2000);
   });
   it('c. Project admin should be able to edit project description, which should less than 250 characters and capable of handling input with enter, but description should not contain only space and new line', async () => {
-    await page.goto(`${baseUrl}project/${projectId}/settings`);
+    await page.goto(`${baseUrl}project/${projectCode}/settings`);
     await page.waitForXPath('//form//label[text()="Project Name"]');
     let editBtn = await page.waitForXPath(
       '//div[contains(@class, "ant-tabs-top-bar")]//button',
@@ -172,7 +172,7 @@ describe('Project administrator should be able to edit project information', () 
     expect(length).toBeLessThan(251);
   });
   it('e. After saved editing, the space in the beginning of the project name should be automatically removed', async () => {
-    await page.goto(`${baseUrl}project/${projectId}/settings`);
+    await page.goto(`${baseUrl}project/${projectCode}/settings`);
     await page.waitForXPath('//form//label[text()="Project Name"]');
     const editBtn = await page.waitForXPath(
       '//div[contains(@class, "ant-tabs-top-bar")]//button',
