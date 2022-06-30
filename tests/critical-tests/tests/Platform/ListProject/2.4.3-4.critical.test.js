@@ -19,7 +19,7 @@ describe('Project List', () => {
     await logout(page);
     await page.waitForTimeout(3000);
   });
-  it('1.5.5 Add tag within limit (32 char), tag should be displayed properly', async () => {
+  it('2.4.3 List all Project tags which within limit (32 char), tag should be displayed properly', async () => {
     await page.goto(`${baseUrl}project/${projectCode}/settings`);
     await page.waitForXPath('//form//label[text()="Project Name"]');
     let editBtn = await page.waitForXPath(
@@ -48,7 +48,7 @@ describe('Project List', () => {
 
     expect(tag).not.toBe(null);
   });
-  it('1.5.7 Add description of 250 char, description should be displayed properly ', async () => {
+  it('2.4.4 List Project description which within limit of 250 char, description should be displayed properly ', async () => {
     let editBtn = await page.waitForXPath(
       '//div[contains(@class, "ant-tabs-top-bar")]//button',
     );
