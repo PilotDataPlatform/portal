@@ -27,33 +27,38 @@ function FileStats(props) {
 
   useEffect(() => {
     if (currentProject) {
+      //need new api to get
       // projectFileCountTotal(currentProject.globalEntityId, {
       //   start_date: moment().startOf('day').unix(),
       //   end_date: moment().endOf('day').unix(),
       // }).then((res) => {
       //   const statistics = res?.data?.result;
+      //   console.log(res);
       //   if (res.status === 200 && statistics) {
+      //     console.log(statistics);
       //     setGreenRoomCount(statistics.greenroom);
       //     setCoreCount(statistics.core);
-      //     setCopyCount(statistics.approved);
-      //     setDownloadCount(statistics.downloaded);
-      //     setUploadCount(statistics.uploaded);
       //   }
       // });
+      listAllVirtualFolder(currentProject.code, props.username).then((res) => {
+        setCollections(res.data.result);
+      });
     }
   }, [currentProject, props.successNum]);
 
   const goToPage = (page) => {
     // console.log(page);
     if (page === 'collection') {
-      dispatch(
-        canvasPageActions.setCanvasPage({
-          page: page,
-          name: collections.length > 0 ? collections[0].name : '',
-          id: collections.length > 0 ? collections[0].id : '',
-        }),
-      );
-      history.push(`/project/${currentProject.code}/data`);
+      if (collections.length > 0) {
+        dispatch(
+          canvasPageActions.setCanvasPage({
+            page: page,
+            name: collections.length > 0 ? collections[0].name : '',
+            id: collections.length > 0 ? collections[0].id : '',
+          }),
+        );
+        history.push(`/project/${currentProject.code}/data`);
+      }
     } else {
       dispatch(
         canvasPageActions.setCanvasPage({
