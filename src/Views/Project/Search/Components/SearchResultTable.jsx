@@ -16,16 +16,13 @@ const { Panel } = Collapse;
 
 function SearchResultTable({
   files,
-  conditions,
   page,
   setPage,
   pageSize,
-  filesQuery,
-  filters,
+  zone,
   setFilters,
   onTableChange,
   loading,
-  searchFiles,
   attributeList,
   searchConditions,
   greenRoomTotal,
@@ -37,25 +34,8 @@ function SearchResultTable({
   const [locationValue, setLocationValue] = useState('');
   const [showDataSetsModal, setShowDataSetsModal] = useState(false);
   const currentProject = useCurrentProject();
-  const zone = filters.find((el) => el.category === 'zone');
 
-  const getTotalFilesNum = () => {
-    if (
-      filesQuery &&
-      filesQuery['zone'] &&
-      filesQuery['zone']['value'] === 'greenroom'
-    ) {
-      return greenRoomTotal;
-    } else if (
-      filesQuery &&
-      filesQuery['zone'] &&
-      filesQuery['zone']['value'] === 'core'
-    ) {
-      return coreTotal;
-    } else {
-      return 0;
-    }
-  };
+  console.log(zone)
 
   const currentProjectRole = currentProject[0].permission;
   const columns = [
@@ -72,12 +52,12 @@ function SearchResultTable({
     },
   ];
 
-  const newFiles = files.map((el, index) => {
-    return {
-      ...el,
-      key: index,
-    };
-  });
+  // const newFiles = files.map((el, index) => {
+  //   return {
+  //     ...el,
+  //     key: index,
+  //   };
+  // });
 
   const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {
@@ -95,17 +75,16 @@ function SearchResultTable({
 
   const locationOnChange = (e) => {
     setLocationValue(e.target.value);
-
-    const filter = filters.find((el) => el.category === 'zone');
-    const newFilters = [...filters];
-    if (!filter) {
-      newFilters.push({ category: 'zone', value: e.target.value });
-    } else {
-      newFilters.forEach((el) => {
-        if ((el) => el.category === 'zone') el.value = e.target.value;
-      });
-    }
-    setFilters(newFilters);
+    // const filter = filters.find((el) => el.category === 'zone');
+    // const newFilters = [...filters];
+    // if (!filter) {
+    //   newFilters.push({ category: 'zone', value: e.target.value });
+    // } else {
+    //   newFilters.forEach((el) => {
+    //     if ((el) => el.category === 'zone') el.value = e.target.value;
+    //   });
+    // }
+    setFilters({ zone: e.target.value.toLowerCase() });
     setPage(0);
   };
 
@@ -162,7 +141,7 @@ function SearchResultTable({
   return (
     <div style={{ position: 'relative' }}>
       <div className={styles.search_result_actions}>
-        {zone.value === 'Core' ? (
+        {zone === 'core' ? (
           <Button
             type="link"
             //style={{border: '0px'}}
@@ -196,7 +175,7 @@ function SearchResultTable({
 
             <Radio.Group
               style={{ marginLeft: 10 }}
-              value={zone.value}
+              value={zone}
               onChange={locationOnChange}
             >
               <Radio value="greenroom" style={{ marginRight: '50px' }}>
@@ -239,9 +218,9 @@ function SearchResultTable({
               }}
               className={styles.search_result_table}
               columns={columns}
-              dataSource={newFiles}
+              dataSource={files[zone]}
               pagination={{
-                total: getTotalFilesNum(),
+                total: zone === 'greenroom' ? greenRoomTotal : coreTotal,
                 pageSize: pageSize,
                 current: page + 1,
                 showSizeChanger: true,
@@ -280,7 +259,7 @@ function SearchResultTable({
                   <p
                     onClick={() => {
                       setLocationValue('');
-                      setFilters([]);
+                      setFilters({});
                     }}
                   >
                     Reset All
