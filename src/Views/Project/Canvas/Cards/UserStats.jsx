@@ -207,7 +207,9 @@ function UserStats(props) {
                     <span className={styles.time}>
                       {el &&
                         el.createdTime &&
-                        moment.unix(el.createdTime).format(format)}
+                        moment(el.createdTime * 1000).format(
+                          'YYYY-MM-DD HH:mm:ss',
+                        )}
                     </span>
                   </div>
                 </Row>
