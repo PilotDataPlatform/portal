@@ -24,6 +24,7 @@ const dataConfig = {
     projectId: 67239,
     projectCode: 'test20220222',
     projectCodeContributor: 'testproject0413',
+    projectGeid: '248874d6-7a4d-4cf4-acac-d30a3007a97d',
   },
   contributorCanvas: {
     projectId: 68129,
