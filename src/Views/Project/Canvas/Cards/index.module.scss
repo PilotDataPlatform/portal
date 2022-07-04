@@ -271,9 +271,9 @@
   }
 
   .meta {
-    &__files,
+    &__file-total,
     &__file-size,
-    &__project-members {
+    &__users-total {
       .meta-stat {
         color: $primary-color-1;
       }

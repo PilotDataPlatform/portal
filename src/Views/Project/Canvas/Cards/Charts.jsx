@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import moment from 'moment';
 import {
   FileTextOutlined,
   HddOutlined,
@@ -14,7 +16,9 @@ import {
   convertToFileSizeInUnit,
   setLabelsDate,
   getCurrentYear,
-} from '../Charts/utils';
+  getFileSize,
+} from '../../../../Utility';
+import { getProjectStatistics, getUserOnProjectAPI } from '../../../../APIs';
 
 const HEATMAP_DOWNLOAD_DATA = [
   {
@@ -5335,6 +5339,8 @@ const STACKED_AREA_PLOT_DATA = [
 
 function Charts() {
   const theme = useTheme();
+  const { project, role } = useSelector((state) => state);
+  const [projectStats, setProjectStats] = useState({});
 
   const SAPCurrentYear = getCurrentYear(STACKED_AREA_PLOT_DATA);
   const stackedAreaPlotConfig = {
@@ -5350,54 +5356,116 @@ function Charts() {
     },
   };
 
+  const getStatAttrs = (metaObj, meta) => {
+    const stat = metaObj[meta];
+
+    switch (meta) {
+      case 'total_count':
+        return {
+          class: 'file-total',
+          title: 'Total Files',
+          icon: <FileTextOutlined />,
+          stat,
+        };
+      case 'total_size':
+        return {
+          class: 'file-size',
+          title: 'Total File Size',
+          icon: <HddOutlined />,
+          stat: getFileSize(stat, { roundingLimit: 1 }),
+        };
+      case 'total_users':
+        return {
+          class: 'users-total',
+          title: 'Project Members',
+          icon: <TeamOutlined />,
+          stat,
+        };
+      case 'today_uploaded':
+        return {
+          class: 'uploaded',
+          title: 'Uploaded',
+          icon: <CloudUploadOutlined />,
+          stat,
+        };
+      case 'today_downloaded':
+        return {
+          class: 'downloaded',
+          title: 'Downloaded',
+          icon: <DownloadOutlined />,
+          stat,
+        };
+    }
+  };
+
+  const appendProjectStats = () => {
+    const results = Object.keys(projectStats).reduce(
+      (componentList, statObj) => {
+        const metaKeys = Object.keys(projectStats[statObj]);
+        const metaObj = projectStats[statObj];
+
+        metaKeys.forEach((meta) => {
+          const attrs = getStatAttrs(metaObj, meta);
+          componentList.push(
+            <li className={styles[`meta__${attrs.class}`]}>
+              <div>
+                <span>{attrs.title}</span>
+                <div className={styles['meta-stat']}>
+                  {attrs.icon}
+                  <span>{attrs.stat}</span>
+                </div>
+              </div>
+            </li>,
+          );
+        });
+
+        return componentList;
+      },
+      [],
+    );
+
+    return results;
+  };
+
+  useEffect(() => {
+    async function fetchProjectStats() {
+      if (project?.profile) {
+        const tzOffset = moment().utcOffset() / 60 + ':00';
+        const params = { time_zone: tzOffset };
+        // const statsResults = await getProjectStatistics(
+        //   params,
+        //   project.profile.code,
+        // );
+        const statsResults = {
+          files: {
+            total_count: 226,
+            total_size: 16000000000,
+          },
+          activity: {
+            today_uploaded: 100,
+            today_downloaded: 150,
+          },
+        };
+        const usersResults = await getUserOnProjectAPI(project.profile.id, {
+          page: 0,
+          pageSize: 10,
+          orderBy: 'time_created',
+          orderType: 'desc',
+        });
+
+        setProjectStats({
+          ...statsResults,
+          users: { total_users: usersResults.data.total },
+        });
+      }
+    }
+    fetchProjectStats();
+  }, [project]);
+
   return (
     <div className={styles.charts}>
       <ul className={styles['charts__meta']}>
-        <li className={styles['meta__files']}>
-          <div>
-            <span>Total Files</span>
-            <div className={styles['meta-stat']}>
-              <FileTextOutlined />
-              <span>226</span>
-            </div>
-          </div>
-        </li>
-        <li className={styles['meta__file-size']}>
-          <div>
-            <span>Total File Size</span>
-            <div className={styles['meta-stat']}>
-              <HddOutlined />
-              <span>1.7TB</span>
-            </div>
-          </div>
-        </li>
-        <li className={styles['meta__project-members']}>
-          <div>
-            <span>Project Members</span>
-            <div className={styles['meta-stat']}>
-              <TeamOutlined />
-              <span>28</span>
-            </div>
-          </div>
-        </li>
-        <li className={styles['meta__uploaded']}>
-          <div>
-            <span>Uploaded</span>
-            <div className={styles['meta-stat']}>
-              <CloudUploadOutlined />
-              <span>150</span>
-            </div>
-          </div>
-        </li>
-        <li className={styles['meta__downloaded']}>
-          <div>
-            <span>Downloaded</span>
-            <div className={styles['meta-stat']}>
-              <DownloadOutlined />
-              <span>180</span>
-            </div>
-          </div>
-        </li>
+        {appendProjectStats()}
       </ul>
 
       <div className={styles['charts__graphs']}>
