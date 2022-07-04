@@ -7,7 +7,11 @@ import { Modal, message, Button, Spin } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { Loading } from './Components/Layout/Loading';
 import { useSelector } from 'react-redux';
-import { setIsLoginCreator, setIsKeycloakReady } from './Redux/actions';
+import {
+  setIsLoginCreator,
+  setIsKeycloakReady,
+  setUserStatus,
+} from './Redux/actions';
 import { ReactKeycloakProvider as KeycloakProvider } from '@react-keycloak/web';
 import { keycloak } from './Service/keycloak';
 import { store } from './Redux/store';
@@ -168,27 +172,9 @@ function KeyCloakMiddleware() {
         console.log('onReady');
         if (!keycloak.authenticated) {
           tokenManager.clearCookies();
-        } else {
-          if (!tokenManager.getCookie('sessionId')) {
-            const sourceId = uuidv4();
-            tokenManager.setCookies({
-              sessionId: `${keycloak?.tokenParsed.preferred_username}-${sourceId}`,
-            });
-            getUserstatusAPI()
-              .then((res) => {
-                console.log('keycloak onReady', res.data);
-                if (res.data.result.status !== 'pending') {
-                  lastLoginAPI(keycloak?.tokenParsed.preferred_username);
-                }
-              })
-              .catch((error) => console.log(error.response));
-          }
         }
         store.dispatch(setIsLoginCreator(keycloak.authenticated));
         store.dispatch(setIsKeycloakReady(true));
-        if (keycloak.authenticated) {
-          // console.log(keycloak.token, 'access_token'); // successfully get it. So once authenticated === true, access_token has value.
-        }
         break;
       }
       case 'onAuthError': {
@@ -204,6 +190,21 @@ function KeyCloakMiddleware() {
         break;
       }
       case 'onAuthSuccess': {
+        getUserstatusAPI()
+          .then((res) => {
+            if (!tokenManager.getCookie('sessionId')) {
+              const sourceId = uuidv4();
+              tokenManager.setCookies({
+                sessionId: `${keycloak?.tokenParsed.preferred_username}-${sourceId}`,
+              });
+              if (res.data.result.status !== 'pending') {
+                lastLoginAPI(keycloak?.tokenParsed.preferred_username);
+              }
+            }
+
+            store.dispatch(setUserStatus(res.data.result.status));
+          })
+          .catch((error) => console.log(error.response));
         break;
       }
       case 'onAuthRefreshSuccess': {
