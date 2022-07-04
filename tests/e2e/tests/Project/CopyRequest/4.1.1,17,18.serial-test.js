@@ -2,7 +2,7 @@ const { login, logout } = require('../../../../utils/login.js');
 const { baseUrl, dataConfig } = require('../../../config');
 const { init } = require('../../../../utils/commonActions.js');
 const {
-  prepareActions,
+  checkFile,
   submitCopyRequest,
 } = require('../../../../utils/copyReqActions.js');
 jest.setTimeout(700000);
@@ -19,11 +19,11 @@ describe('CopyRequest', () => {
     await login(page, 'collaborator');
     await init(page, { closeBanners: false });
     try {
-      await page.goto(`${baseUrl}project/${projectCode}/canvas`);
-      await prepareActions(page, true);
+      await page.goto(`${baseUrl}project/${projectCode}/data`);
+      await checkFile(page);
       await submitCopyRequest(page);
-      await page.goto(`${baseUrl}project/${projectCode}/canvas`);
-      await prepareActions(page, true);
+      await page.goto(`${baseUrl}project/${projectCode}/data`);
+      await checkFile(page);
       await submitCopyRequest(page);
     } catch (e) {
       console.log('error while trying to create dummy data');
@@ -105,7 +105,7 @@ describe('CopyRequest', () => {
     await page.waitForTimeout(1000);
   }
   it('4.1.1 project admin will not have a button for requesting copy request', async () => {
-    await page.goto(`${baseUrl}project/${projectCode}/canvas`);
+    await page.goto(`${baseUrl}project/${projectCode}/data`);
     const checkBox = await page.waitForSelector(
       '#files_table > div > div > table > tbody > tr > td.ant-table-cell.ant-table-selection-column > label > span > input',
     );
@@ -117,7 +117,7 @@ describe('CopyRequest', () => {
     expect(copyToRequestBtn).toBe(null);
   });
   it('4.1.1b Inside project, project admin could see the request icon, if new request received then there will be a red dot', async () => {
-    await page.goto(`${baseUrl}project/${projectCode}/canvas`);
+    await page.goto(`${baseUrl}project/${projectCode}/data`);
     const redDot = await page.waitForSelector(
       '#side-bar li >span.ant-badge-status',
       {

@@ -1,6 +1,11 @@
 const { login, logout } = require('../../../../utils/login.js');
 const { init } = require('../../../../utils/commonActions.js');
-const { baseUrl, mailHogHost, mailHogPort } = require('../../../config');
+const {
+  baseUrl,
+  mailHogHost,
+  mailHogPort,
+  mailHogAdminEmail,
+} = require('../../../config');
 jest.setTimeout(700000);
 const mailhog = require('mailhog')({
   host: mailHogHost,
@@ -22,10 +27,9 @@ describe('CopyRequest', () => {
     await page.waitForTimeout(3000);
   });
   it('4.2.1 All project admins could receive email notification with correct information including project code, username and user email', async () => {
-    const adminEmail = 'jzhang@indocresearch.org';
     const result = await mailhog.messages(0, 10);
     const emailConfirmation = result.items.find((item) => {
-      const hasEmail = item.from.replace(/\+/g, '').includes(adminEmail);
+      const hasEmail = item.from.replace(/\+/g, '').includes(mailHogAdminEmail);
       const hasSubject = item.subject
         .replace(/_/g, ' ')
         .toLowerCase()

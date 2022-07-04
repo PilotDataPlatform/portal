@@ -2,7 +2,7 @@ const { login, logout } = require('../../../../utils/login.js');
 const { init } = require('../../../../utils/commonActions.js');
 const { baseUrl, dataConfig } = require('../../../config');
 const {
-  prepareActions,
+  checkFile,
   submitCopyRequest,
 } = require('../../../../utils/copyReqActions.js');
 const moment = require('moment-timezone');
@@ -26,16 +26,16 @@ describe('CopyRequest', () => {
     await init(page, { closeBanners: false });
     try {
       await page.goto(`${baseUrl}project/${projectCode}/canvas`);
-      await prepareActions(page);
+      await checkFile(page);
       await submitCopyRequest(page);
       await page.goto(`${baseUrl}project/${projectCode}/canvas`);
-      await prepareActions(page, true);
+      await checkFile(page);
       await submitCopyRequest(page);
       await page.goto(`${baseUrl}project/${projectCode}/canvas`);
-      await prepareActions(page, true);
+      await checkFile(page);
       await submitCopyRequest(page);
       await page.goto(`${baseUrl}project/${projectCode}/canvas`);
-      await prepareActions(page, false, true);
+      await checkFile(page, 'test-empty-folder');
       await submitCopyRequest(page);
     } catch (e) {
       console.log('error while trying to create dummy data');
