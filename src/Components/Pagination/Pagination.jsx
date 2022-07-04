@@ -28,7 +28,7 @@ const CustomPagination = (props) => {
   };
 
   const changePageSize = (value) => {
-    var info = { cur: 1, pageSize: value };
+    let info = { cur: 1, pageSize: value };
     props.onChange(info);
     setPageSize(value);
     setCurrent(1);
@@ -36,7 +36,7 @@ const CustomPagination = (props) => {
 
   const goToPreview = () => {
     if (current > 1) {
-      var info = { cur: current - 1, pageSize: pageSize };
+      let info = { cur: current - 1, pageSize: pageSize };
       props.onChange(info);
       setCurrent(current - 1);
     }
@@ -45,7 +45,7 @@ const CustomPagination = (props) => {
   const goToNext = () => {
     let totalPage = calcPageSize();
     if (current < totalPage) {
-      var info = { cur: current + 1, pageSize: pageSize };
+      let info = { cur: current + 1, pageSize: pageSize };
       props.onChange(info);
       setCurrent(current + 1);
     }

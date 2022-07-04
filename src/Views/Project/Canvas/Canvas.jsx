@@ -413,11 +413,13 @@ class Canvas extends Component {
             >
               <Row style={{ paddingBottom: '10px' }}>
                 <Col span={24}>
+                  <div style={{ height: 77 }} />
                   <div
                     style={{
                       position: 'absolute',
                       zIndex: 1,
                       width: '100%',
+                      top: 0,
                     }}
                   >
                     <CanvasPageHeader />
@@ -432,7 +434,7 @@ class Canvas extends Component {
                     {cardContents &&
                       cardContents.map((card) => {
                         return (
-                          <div key={card.key} style={{ marginTop: 70 }}>
+                          <div key={card.key}>
                             <BasicCard
                               title={card.title}
                               expandable={card.expandable}

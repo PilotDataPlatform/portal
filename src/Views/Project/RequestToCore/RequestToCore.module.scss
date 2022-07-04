@@ -74,7 +74,7 @@
             padding: 12px 0px;
             font-size: 14px;
             font-weight: 600;
-            color: #003262;
+            color: $primary-color-1;
           }
         }
       }
@@ -156,12 +156,12 @@
   min-width: 170px;
   p {
     margin: 0;
-    color: #003262;
+    color: $primary-color-1;
     text-align: right;
   }
   h4 {
     margin: 0;
-    color: #003262;
+    color: $primary-color-1;
     text-align: right;
   }
 }

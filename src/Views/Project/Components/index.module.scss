@@ -5,6 +5,7 @@
   // top: 110px;
   z-index: 10;
 }
+
 .menu-spacing {
   &--after-selected {
     height: 13px;
@@ -116,7 +117,7 @@
     .anticon {
       margin-top: 2px;
       margin-left: -17px !important;
-      color: $background-color-1;
+      color: $background-color-1 !important;
       .svg {
         font-size: 17px !important;
       }
@@ -249,7 +250,7 @@
       color: white;
     }
     .ant-popover-inner {
-      background-color: #003262;
+      background-color: $primary-color-1;
     }
     .ant-popover-inner-content {
       padding: 0 16px;

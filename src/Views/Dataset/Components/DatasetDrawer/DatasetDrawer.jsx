@@ -10,6 +10,7 @@ import { DownloadOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import styles from './DatasetDrawer.module.scss';
 import { namespace, ErrorMessager } from '../../../../ErrorMessages';
+import variables from '../../../../Themes/base.scss';
 const DatasetDrawer = (props) => {
   const { datasetDrawerVisibility, setDatasetDrawerVisibility } = props;
   const [currentPage, setCurrentPage] = useState(1);
@@ -23,7 +24,8 @@ const DatasetDrawer = (props) => {
   const downloadDataset = async (version) => {
     try {
       const res = await datasetDownloadReturnURLAPI(basicInfo.geid, version);
-      await datasetDownloadAPI(res.data.result.downloadHash);
+      const hash = res.data.result.downloadHash;
+      await datasetDownloadAPI(hash);
     } catch (err) {
       if (err.response) {
         const errorMessager = new ErrorMessager(
@@ -63,7 +65,7 @@ const DatasetDrawer = (props) => {
                 style={{
                   margin: '0px',
                   fontSize: '16px',
-                  color: '#003262',
+                  color: variables.primaryColor1,
                   fontWeight: 'bold',
                 }}
               >
@@ -120,7 +122,13 @@ const DatasetDrawer = (props) => {
     <Drawer
       className={styles.dataset_drawer}
       title={
-        <p style={{ margin: '0px', fontSize: '16px', color: '#003262' }}>
+        <p
+          style={{
+            margin: '0px',
+            fontSize: '16px',
+            color: variables.primaryColor1,
+          }}
+        >
           Versions
         </p>
       }

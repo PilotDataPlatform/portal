@@ -45,9 +45,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 1.8rem;
-  border-radius: 0.6rem;
-  padding: 0.5rem;
+
   background-color: #e6f2d9;
 }
 
@@ -55,9 +53,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 1.8rem;
-  border-radius: 0.6rem;
-  padding: 0.5rem;
+
   background-color: #d8ebf2;
 }
 
@@ -65,41 +61,39 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 1.8rem;
-  border-radius: 0.6rem;
-  padding: 0.5rem;
+
   background-color: #f7e8bc;
 }
 
-.icon1,
-.icon2,
-.icon3 {
+.icon--greenhome,
+.icon--core,
+.icon--collection {
   font-size: 2.4rem;
   opacity: 1;
 }
 
-.icon1 {
+.icon--greenhome {
   color: $primary-color-2 !important;
   cursor: pointer;
 }
 
-.icon2 {
+.icon--core {
   color: $primary-color-light-5 !important;
   cursor: pointer;
 }
 
-.icon3 {
+.icon--collection {
   color: $primary-color-5 !important;
 }
 
-.fileNumber {
+.file-number {
   font-size: 1rem;
   color: #a5b0b6;
   font-weight: 500;
   margin-top: -0.3rem;
 }
 
-.fileFont {
+.file-font {
   color: $font-color-primary !important;
   font-size: 1.2rem;
   font-weight: 500;
@@ -111,7 +105,7 @@
   color: $primary-color-4 !important;
 }
 
-.iconColumn {
+.icon-column {
   margin-top: 0.8rem;
 }
 
@@ -121,7 +115,7 @@
   margin-bottom: 1.1rem;
 }
 
-.fileStreamIcon {
+.file-stream--icon {
   height: 11.56px;
   width: 17.82px;
   font-size: 1.4rem;
@@ -137,7 +131,7 @@
   margin-top: 0.3rem;
 }
 
-.fileName {
+.file-name {
   // flex: 1;
   font-size: 1.2rem;
   font-weight: 500;
@@ -150,7 +144,7 @@
 }
 
 @media only screen and (min-width: 1286px) {
-  .fileName {
+  .file-name {
     // flex: 1;
     font-size: 1.2rem;
     font-weight: 500;
@@ -170,7 +164,7 @@
   white-space: nowrap;
 }
 
-.userName {
+.user-name {
   font-size: 1.2rem;
   color: #a5b0b6;
   font-style: italic;
@@ -185,11 +179,11 @@
   margin-top: -0.4rem;
 }
 
-.pageination {
+.pagination {
   position: absolute;
   left: 0;
-  bottom: 0;
-  width: 100%;
+  bottom: 6px;
+  right: 0;
   border-top: 1px solid $background-color-2;
 
   :global {
@@ -236,6 +230,9 @@
     }
   }
 }
+.card_inner {
+  min-width: 280px;
+}
 
 .pageText {
   color: $font-color-light !important;
@@ -246,6 +243,7 @@
 
 .charts {
   margin-bottom: -18px;
+  min-width: 750px;
   &__meta {
     display: flex;
     justify-content: space-around;

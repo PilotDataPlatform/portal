@@ -1,3 +1,4 @@
+@import '../../../../Themes/base.scss';
 .pageHeader {
   padding: 0 !important;
   display: inline-block;
@@ -26,7 +27,7 @@
     margin-left: 6px;
     font-size: 12px;
     font-weight: 600;
-    color: #003262;
+    color: $primary-color-1;
   }
 }
 
@@ -47,7 +48,7 @@
   color: #595959 !important;
   font-size: 12px !important;
   // padding-left: 0;
-  margin-top:-3px;
+  margin-top: -3px;
   margin-left: -14px;
   font-family: 300;
 }
@@ -62,7 +63,7 @@
       vertical-align: bottom;
       overflow: hidden;
       text-overflow: ellipsis;
-      color: #003262;
+      color: $primary-color-1;
       font-size: 24px;
       text-overflow: ellipsis;
     }
@@ -80,7 +81,7 @@
       vertical-align: bottom;
       overflow: hidden;
       text-overflow: ellipsis;
-      color: #003262;
+      color: $primary-color-1;
       font-size: 24px;
       text-overflow: ellipsis;
     }
@@ -88,19 +89,16 @@
 }
 
 @media only screen and (min-width: 1366px) {
-  .createdTime{
-    font-size: 15px;
-    
-  }
-  
-  .editor{
+  .createdTime {
     font-size: 15px;
   }
-  
+
+  .editor {
+    font-size: 15px;
+  }
+
   .download-button {
-   
-    margin-top:-3px;
-    
+    margin-top: -3px;
   }
 
   .no-toolTip-div {

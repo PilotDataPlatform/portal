@@ -1,3 +1,4 @@
+@import '../../../../../Themes/base.scss';
 .notification {
   height: 100%;
   .new-notification-header {
@@ -243,7 +244,7 @@
         margin-left: 10px;
         margin-right: 15px;
         margin-bottom: 0px;
-        color: #003262;
+        color: $primary-color-1;
         font-size: 16px;
         font-weight: 600;
       }
@@ -254,7 +255,7 @@
           width: 16px;
           height: 12px;
           font-size: 15px;
-          color: #003262;
+          color: $primary-color-1;
         }
         .ant-switch {
           margin-top: 2px;
@@ -380,7 +381,7 @@
         .ant-modal-title {
           p {
             margin-bottom: 0px;
-            color: #003262;
+            color: $primary-color-1;
           }
         }
       }

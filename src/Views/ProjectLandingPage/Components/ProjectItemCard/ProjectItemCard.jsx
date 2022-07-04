@@ -19,6 +19,7 @@ import { getUsersOnDatasetAPI, getAdminsOnDatasetAPI } from '../../../../APIs';
 import { objectKeysToCamelCase, getTags } from '../../../../Utility';
 import { PLATFORM } from '../../../../config';
 import styles from './index.module.scss';
+import variables from '../../../../Themes/base.scss';
 const { Content } = Layout;
 const { Paragraph } = Typography;
 function ProjectItemCard({ item, currentRole, platformRole }) {
@@ -66,7 +67,7 @@ function ProjectItemCard({ item, currentRole, platformRole }) {
       >
         <span
           style={{
-            color: '#003262',
+            color: variables.primaryColor1,
             fontSize: '14px',
             marginRight: '20px',
             fontWeight: 'normal',
@@ -88,7 +89,7 @@ function ProjectItemCard({ item, currentRole, platformRole }) {
             >
               <span
                 style={{
-                  color: '#1F93FA',
+                  color: variables.primaryColorLight1,
                   fontSize: '12px',
                   marginRight: '20px',
                   fontWeight: 'normal',
@@ -115,7 +116,7 @@ function ProjectItemCard({ item, currentRole, platformRole }) {
                     verticalAlign: 'bottom',
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
-                    color: '#003262',
+                    color: variables.primaryColor1,
                     fontSize: '24px',
                   }}
                 >
@@ -132,7 +133,7 @@ function ProjectItemCard({ item, currentRole, platformRole }) {
                   verticalAlign: 'bottom',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
-                  color: '#003262',
+                  color: variables.primaryColor1,
                   fontSize: '24px',
                 }}
               >
@@ -150,7 +151,7 @@ function ProjectItemCard({ item, currentRole, platformRole }) {
               verticalAlign: 'bottom',
               overflow: 'hidden',
               textOverflow: 'ellipsis',
-              color: '#003262',
+              color: variables.primaryColor1,
               fontSize: '24px',
             }}
           >
@@ -250,7 +251,7 @@ function ProjectItemCard({ item, currentRole, platformRole }) {
             </span>
             <span
               style={{
-                color: '#003262',
+                color: variables.primaryColor1,
                 fontSize: '24px',
                 fontWeight: 'bold',
                 verticalAlign: 'middle',
@@ -273,7 +274,7 @@ function ProjectItemCard({ item, currentRole, platformRole }) {
             </span>
             <span
               style={{
-                color: '#003262',
+                color: variables.primaryColor1,
                 fontSize: '24px',
                 fontWeight: 'bold',
                 verticalAlign: 'middle',
@@ -296,7 +297,7 @@ function ProjectItemCard({ item, currentRole, platformRole }) {
             </span>
             <span
               style={{
-                color: '#003262',
+                color: variables.primaryColor1,
                 fontSize: '24px',
                 fontWeight: 'bold',
                 verticalAlign: 'middle',
@@ -341,23 +342,25 @@ function ProjectItemCard({ item, currentRole, platformRole }) {
       shape="circle"
       src={item.imageUrl}
       style={{
-        border: '#003262',
+        border: variables.primaryColorDark1,
+
         borderWidth: '1px',
         width: 42,
         height: 42,
-        background: '#043262',
+        background: variables.primaryColor1,
       }}
     ></Avatar>
   ) : (
     <Avatar
       shape="circle"
       style={{
-        border: '#003262',
+        border: variables.primaryColorDark1,
+
         borderWidth: '1px',
         width: 42,
         height: 42,
         paddingTop: 4,
-        background: '#043262',
+        background: variables.primaryColor1,
       }}
     >
       <span

@@ -1,3 +1,4 @@
+@import '../../Themes/base.scss';
 .user-profile {
   &__container {
     padding: 30px 30px 0 0;
@@ -73,7 +74,7 @@
       min-height: auto;
       padding: 0 28px;
       .ant-card-head-title {
-        color: #003262;
+        color: $primary-color-1;
         font-weight: 500;
       }
       .ant-card-head-title,
@@ -237,7 +238,7 @@
           }
 
           &-meta-title {
-            color: #003262;
+            color: $primary-color-1;
             margin-bottom: 2px;
             font-weight: 500;
           }

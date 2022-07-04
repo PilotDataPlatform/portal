@@ -168,7 +168,7 @@ function UserStats(props) {
   };
 
   return (
-    <div>
+    <div className={styles.card_inner}>
       <Col span={24} style={{ position: 'relative', margin: '10px 0' }}>
         {sortedAllFileStreams.length === 0 ? (
           <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
@@ -178,10 +178,10 @@ function UserStats(props) {
             return (
               <div className={styles.file}>
                 <Row>
-                  <span className={styles.fileStreamIcon}>
+                  <span className={styles['file-stream--icon']}>
                     {fileStreamIcon(el.tag)}
                   </span>
-                  <span className={styles.fileName}>
+                  <span className={styles['file-name']}>
                     {el && el.action !== 'data_download' ? (
                       <Tooltip title={folderPath}>
                         {getFileDisplayName(el)}
@@ -194,9 +194,11 @@ function UserStats(props) {
                 <Row>
                   <div className={styles['connect-line']}></div>
                   <div className={styles['file-descr']}>
-                    <span className={styles.userName}>{el && el.operator}</span>
+                    <span className={styles['user-name']}>
+                      {el && el.operator}
+                    </span>
                     <span
-                      className={styles.userName}
+                      className={styles['user-name']}
                       style={{ margin: '-0.4rem 0.5rem' }}
                     >
                       {' '}
@@ -214,7 +216,7 @@ function UserStats(props) {
           })
         )}
       </Col>
-      <div className={styles.pageination}>
+      <div className={styles.pagination}>
         <CustomPagination
           onChange={getCurrentVal}
           total={total}

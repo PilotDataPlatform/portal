@@ -27,33 +27,38 @@ function FileStats(props) {
 
   useEffect(() => {
     if (currentProject) {
+      //need new api to get
       // projectFileCountTotal(currentProject.globalEntityId, {
       //   start_date: moment().startOf('day').unix(),
       //   end_date: moment().endOf('day').unix(),
       // }).then((res) => {
       //   const statistics = res?.data?.result;
+      //   console.log(res);
       //   if (res.status === 200 && statistics) {
+      //     console.log(statistics);
       //     setGreenRoomCount(statistics.greenroom);
       //     setCoreCount(statistics.core);
-      //     setCopyCount(statistics.approved);
-      //     setDownloadCount(statistics.downloaded);
-      //     setUploadCount(statistics.uploaded);
       //   }
       // });
+      listAllVirtualFolder(currentProject.code, props.username).then((res) => {
+        setCollections(res.data.result);
+      });
     }
   }, [currentProject, props.successNum]);
 
   const goToPage = (page) => {
     // console.log(page);
     if (page === 'collection') {
-      dispatch(
-        canvasPageActions.setCanvasPage({
-          page: page,
-          name: collections.length > 0 ? collections[0].name : '',
-          id: collections.length > 0 ? collections[0].id : '',
-        }),
-      );
-      history.push(`/project/${currentProject.code}/data`);
+      if (collections.length > 0) {
+        dispatch(
+          canvasPageActions.setCanvasPage({
+            page: page,
+            name: collections.length > 0 ? collections[0].name : '',
+            id: collections.length > 0 ? collections[0].id : '',
+          }),
+        );
+        history.push(`/project/${currentProject.code}/data`);
+      }
     } else {
       dispatch(
         canvasPageActions.setCanvasPage({
@@ -65,27 +70,27 @@ function FileStats(props) {
   };
 
   return currentProject ? (
-    <div style={{ flexDirection: 'column', display: 'flex' }}>
+    <div style={{ flexDirection: 'column', display: 'flex', minWidth: 130 }}>
       <div
         className={styles['shortcut--greenhome']}
         onClick={() => goToPage('greenroom-home')}
       >
-        <span className={styles.iconColumn}>
-          <HomeOutlined className={styles.icon1} />
+        <span className={styles['icon-column']}>
+          <HomeOutlined className={styles['icon--greenhome']} />
         </span>
-        <span className={styles.fileFont}>Green Room</span>
-        <span className={styles.fileNumber}>Files {greenRoomCount}</span>
+        <span className={styles['file-font']}>Green Room</span>
+        <span className={styles['file-number ']}>Files {greenRoomCount}</span>
       </div>
       {props.projectRole !== 'contributor' && coreCount !== null ? (
         <div
           className={styles['shortcut--core']}
           onClick={() => goToPage('core-home')}
         >
-          <span className={styles.iconColumn}>
-            <CloudServerOutlined className={styles.icon2} />
+          <span className={styles['icon-column']}>
+            <CloudServerOutlined className={styles['icon--core']} />
           </span>
-          <span className={styles.fileFont}>Core</span>
-          <span className={styles.fileNumber}>Files {coreCount}</span>
+          <span className={styles['file-font']}>Core</span>
+          <span className={styles['file-number ']}>Files {coreCount}</span>
         </div>
       ) : null}
       {props.projectRole !== 'contributor' ? (
@@ -93,9 +98,9 @@ function FileStats(props) {
           className={styles['shortcut--collections']}
           onClick={() => goToPage('collection')}
         >
-          <span className={styles.iconColumn}>
+          <span className={styles['icon-column']}>
             <PaperClipOutlined
-              className={styles.icon3}
+              className={styles['icon--collection']}
               style={{
                 cursor: collections.length === 0 ? '' : 'pointer',
                 opacity: collections.length === 0 ? 0.5 : 1,
@@ -103,7 +108,7 @@ function FileStats(props) {
             />
           </span>
           <span
-            className={styles.fileFont}
+            className={styles['file-font']}
             style={{ opacity: collections.length === 0 ? 0.5 : 1 }}
           >
             <span

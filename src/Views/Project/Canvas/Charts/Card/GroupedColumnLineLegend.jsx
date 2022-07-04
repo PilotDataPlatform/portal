@@ -39,10 +39,10 @@ function GroupedColumnLineLegend({ legendLabels }) {
       return (
         <li
           key={uuidv4()}
-          className={styles['grouped-column-line-legend__legend-item']}
+          className={styles['grouped-column-line__legend-item']}
         >
           <span style={legendColorStyles} />
-          <span className={styles['grouped-column-line-legend__label']}>
+          <span className={styles['grouped-column-line__legend-label']}>
             {legendLabel}
           </span>
         </li>
@@ -50,7 +50,7 @@ function GroupedColumnLineLegend({ legendLabels }) {
     });
   }
   return (
-    <ul className={styles['grouped-column-line-legend']}>{appendLegend()}</ul>
+    <ul className={styles['grouped-column-line__legend']}>{appendLegend()}</ul>
   );
 }
 

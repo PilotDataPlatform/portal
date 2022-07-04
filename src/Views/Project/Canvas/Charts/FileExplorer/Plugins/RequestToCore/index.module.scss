@@ -1,3 +1,4 @@
+@import '../../../../../../../Themes/base.scss';
 .request2core_popover {
   :global {
     .ant-popover-content {
@@ -38,7 +39,7 @@
             span:nth-child(1) {
               font-size: 14px;
               font-weight: 600;
-              color: #003262;
+              color: $primary-color-1;
             }
           }
         }

@@ -263,7 +263,7 @@ function FilesContent(props) {
           key: PanelKey.CORE_HOME,
           content: {
             projectId,
-            type: DataSourceType.GREENROOM_HOME,
+            type: DataSourceType.CORE_HOME,
           },
         };
       }

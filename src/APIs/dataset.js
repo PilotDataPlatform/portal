@@ -312,8 +312,8 @@ export function datasetDownloadAPI(hash) {
     method: 'GET',
     headers: { 'Refresh-token': keycloak.refreshToken },
   }).then((res) => {
-    const url = API_PATH + DOWNLOAD_PREFIX_V2 + '/' + hash;
-    window.open(url, '_blank');
+    console.log(res);
+    window.open(res.data.url, '_blank');
   });
 }
 
