@@ -34,6 +34,8 @@ import {
   checkRootFolder,
   checkGreenAndCore,
 } from './panelKey';
+
+import { convertToFileSizeInUnit, setLabelsDate, getCurrentYear } from './cavasCharts';
 export { useQueryParams } from './useQueryParams';
 export {
   fileUpload,
@@ -71,6 +73,9 @@ export {
   checkGreenAndCore,
   getTags,
   usePrevious,
+  convertToFileSizeInUnit,
+  setLabelsDate,
+  getCurrentYear,
 };
 export { randomTxt } from './randomTxt';
 export { logout, refresh, login } from './keycloakActions';
