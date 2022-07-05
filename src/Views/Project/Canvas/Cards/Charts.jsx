@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import moment from 'moment';
+import { message, Spin } from 'antd';
 import {
   FileTextOutlined,
   HddOutlined,
@@ -5341,6 +5342,7 @@ function Charts() {
   const theme = useTheme();
   const { project, role } = useSelector((state) => state);
   const [projectStats, setProjectStats] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const SAPCurrentYear = getCurrentYear(STACKED_AREA_PLOT_DATA);
   const stackedAreaPlotConfig = {
@@ -5398,48 +5400,56 @@ function Charts() {
 
   useEffect(() => {
     async function fetchProjectStats() {
-      if (project?.profile) {
+      if (project.profile?.id) {
         const tzOffset = moment().utcOffset() / 60 + ':00';
         const params = { time_zone: tzOffset };
-        // let statsResults = await getProjectStatistics(
-        //   params,
-        //   project.profile.code,
-        // );
-        const statsResults = {
-          files: {
-            total_count: 226,
-            total_size: 16000000000,
-          },
-          activity: {
-            today_uploaded: 100,
-            today_downloaded: 150,
-          },
-        };
 
-        const result = Object.keys(statsResults).map((stat) => ({
-          [stat]: statsResults[stat],
-        }));
+        try {
+          // let statsResults = await getProjectStatistics(
+          //   params,
+          //   project.profile.code,
+          // );
+          const statsResults = {
+            files: {
+              total_count: 226,
+              total_size: 16000000000,
+            },
+            activity: {
+              today_uploaded: 100,
+              today_downloaded: 150,
+            },
+          };
 
-        if (role === 'admin') {
-          const usersResults = await getUserOnProjectAPI(project.profile.id, {
-            page: 0,
-            pageSize: 10,
-            orderBy: 'time_created',
-            orderType: 'desc',
-          });
-          // move user stat to second item in array
-          result.splice(1, 0, {
-            user: { total_users: usersResults.data.total },
-          });
+          const result = Object.keys(statsResults).map((stat) => ({
+            [stat]: statsResults[stat],
+          }));
+
+          if (role === 'admin') {
+            const usersResults = await getUserOnProjectAPI(project.profile.id, {
+              page: 0,
+              pageSize: 10,
+              orderBy: 'time_created',
+              orderType: 'desc',
+            });
+            // move user stat to second item in array
+            result.splice(1, 0, {
+              user: { total_users: usersResults.data.total },
+            });
+          }
+          setProjectStats(result);
+        } catch {
+          message.error(
+            'Something went wrong while retrieving project statistics',
+          );
         }
 
-        setProjectStats(result);
+        setIsLoading(false);
       }
     }
     fetchProjectStats();
-  }, [project]);
+  }, [project?.profile]);
 
-  const sortProjectData = () => {
+  const sortProjectStats = () => {
     const stats = projectStats.map((item) => {
       const key = Object.keys(item)[0];
       return item[key];
@@ -5455,10 +5465,10 @@ function Charts() {
     }
 
     return statMapping;
-  }
+  };
 
   const appendProjectStats = () => {
-    const statMapping = sortProjectData();
+    const statMapping = sortProjectStats();
 
     return statMapping.map((metaObj) => {
       const key = Object.keys(metaObj)[0];
@@ -5480,7 +5490,9 @@ function Charts() {
 
   return (
     <div className={styles.charts}>
-      <ul className={styles['charts__meta']}>{appendProjectStats()}</ul>
+      <ul className={styles['charts__meta']}>
+        {isLoading ? <Spin spinning={isLoading} /> : appendProjectStats()}
+      </ul>
 
       <div className={styles['charts__graphs']}>
         <div className={styles['graphs__container']}>
