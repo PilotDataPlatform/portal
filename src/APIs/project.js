@@ -4,9 +4,16 @@ import _, { result } from 'lodash';
 import { keycloak } from '../Service/keycloak';
 
 function getProjectStatistics(params, projectCode){
-  console.log(params)
   return serverAxios({
     url: `v1/project-files/${projectCode}/statistics`,
+    method: 'GET',
+    params
+  })
+}
+
+function getProjectFileSize(params, projectCode){
+  return serverAxios({
+    url: `v1/project-files/${projectCode}/size`,
     method: 'GET',
     params
   })
@@ -661,6 +668,7 @@ function requestCompleteAPI(projectCode, requestId, status, reviewNotes) {
 }
 export {
   getProjectStatistics,
+  getProjectFileSize,
   getUserProjectActivitiesAPI,
   getDatasetsAPI,
   createProjectAPI,
