@@ -5193,8 +5193,10 @@ function Charts() {
   const theme = useTheme();
   const { project, role } = useSelector((state) => state);
   const [projectStats, setProjectStats] = useState([]);
+  const [isProjectStatsLoading, setIsProjectStatsLoading] = useState(true);
   const [projectFileSize, setProjectFileSize] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isProjectFileSizeLoading, setIsProjectFileSizeLoading] =
+    useState(true);
 
   const tzOffset = moment().utcOffset() / 60 + ':00';
 
@@ -5301,7 +5303,7 @@ function Charts() {
           );
         }
 
-        setIsLoading(false);
+        setIsProjectStatsLoading(false);
       }
     }
     fetchProjectStats();
@@ -5370,6 +5372,8 @@ function Charts() {
             'Something went wrong while retrieving project file size',
           );
         }
+        
+        setIsProjectFileSizeLoading(false);
       }
     }
 
@@ -5418,20 +5422,26 @@ function Charts() {
   return (
     <div className={styles.charts}>
       <ul className={styles['charts__meta']}>
-        {isLoading ? <Spin spinning={isLoading} /> : appendProjectStats()}
+        {isProjectStatsLoading ? (
+          <Spin spinning={isProjectStatsLoading} />
+        ) : (
+          appendProjectStats()
+        )}
       </ul>
 
       <div className={styles['charts__graphs']}>
         <div className={styles['graphs__container']}>
           <h4 className={styles['graphs__title']}>Projects File Size</h4>
-          <StackedAreaPlot
-            data={projectFileSize}
-            xField={SAPDataField.xField}
-            yField={SAPDataField.yField}
-            seriesField={SAPDataField.seriesField}
-            color={theme.charts.stackedAreaPlot}
-            chartConfig={SAPConfig}
-          />
+          <Spin spinning={isProjectFileSizeLoading}>
+            <StackedAreaPlot
+              data={projectFileSize}
+              xField={SAPDataField.xField}
+              yField={SAPDataField.yField}
+              seriesField={SAPDataField.seriesField}
+              color={theme.charts.stackedAreaPlot}
+              chartConfig={SAPConfig}
+            />
+          </Spin>
         </div>
         <div className={styles['graphs__container']}>
           <h4 className={styles['graphs__title']}>Project File Activity</h4>
