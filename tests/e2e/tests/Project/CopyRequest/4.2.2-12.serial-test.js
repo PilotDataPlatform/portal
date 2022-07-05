@@ -9,6 +9,8 @@ const { uploadFile } = require('../../../../utils/greenroomActions');
 const {
   generateLocalFile,
   createFolder,
+  removeLocalFile,
+  removeExistFile,
 } = require('../../../../utils/fileScaffoldActions');
 const moment = require('moment-timezone');
 const fs = require('fs');
@@ -63,6 +65,11 @@ describe('CopyRequest', () => {
     await login(page, 'admin');
   });
   afterAll(async () => {
+    await page.goto(`${baseUrl}project/${projectCode}/data`);
+    await page.waitForSelector('#files_table > div > div > table > tbody > tr');
+    await removeLocalFile(fileName1);
+    await removeExistFile(page, fileName1);
+    await page.waitForTimeout(3000);
     await logout(page);
     await page.waitForTimeout(3000);
   });

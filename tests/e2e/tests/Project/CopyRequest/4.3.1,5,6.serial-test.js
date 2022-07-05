@@ -5,8 +5,14 @@ const { submitCopyRequest } = require('../../../../utils/copyReqActions.js');
 const {
   uploadFile,
   deleteFileFromGreenroom,
-  createFolder,
 } = require('../../../../utils/greenroomActions');
+const {
+  generateLocalFile,
+  createFolder,
+  removeLocalFile,
+  clickIntoFolder,
+  removeExistFile,
+} = require('../../../../utils/fileScaffoldActions');
 jest.setTimeout(700000);
 
 const projectCode = dataConfig.copyReq.projectCode;
@@ -26,8 +32,12 @@ describe('CopyRequest', () => {
   });
   afterAll(async () => {
     await page.goto(`${baseUrl}project/${projectCode}/data`);
+    await page.waitForSelector('#files_table > div > div > table > tbody > tr');
+    await removeLocalFile(fileName1);
     await deleteFileFromGreenroom(page, folderName);
-    await page.waitForTimeout(30 * 1000);
+    await page.waitForTimeout(3 * 1000);
+    await deleteFileFromGreenroom(page, emptyFolderName);
+    await page.waitForTimeout(10 * 1000);
     await logout(page);
     await login(page, 'admin');
     await page.goto(`${baseUrl}project/${projectCode}/requestToCore`);
