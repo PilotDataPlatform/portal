@@ -587,7 +587,7 @@ function removeFromVirtualFolder(collectionGeid, geids) {
 
 function getZipContentAPI(fileGeid, projectGeid) {
   return serverAxiosNoIntercept({
-    url: '/v1/archive/',
+    url: '/v1/archive',
     params: {
       project_geid: projectGeid,
       file_id: fileGeid,
