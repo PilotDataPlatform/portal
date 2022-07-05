@@ -5340,7 +5340,7 @@ const STACKED_AREA_PLOT_DATA = [
 function Charts() {
   const theme = useTheme();
   const { project, role } = useSelector((state) => state);
-  const [projectStats, setProjectStats] = useState({});
+  const [projectStats, setProjectStats] = useState([]);
 
   const SAPCurrentYear = getCurrentYear(STACKED_AREA_PLOT_DATA);
   const stackedAreaPlotConfig = {
@@ -5356,9 +5356,7 @@ function Charts() {
     },
   };
 
-  const getStatAttrs = (metaObj, meta) => {
-    const stat = metaObj[meta];
-
+  const getStatAttrs = (meta, stat) => {
     switch (meta) {
       case 'total_count':
         return {
@@ -5398,41 +5396,12 @@ function Charts() {
     }
   };
 
-  const appendProjectStats = () => {
-    const results = Object.keys(projectStats).reduce(
-      (componentList, statObj) => {
-        const metaKeys = Object.keys(projectStats[statObj]);
-        const metaObj = projectStats[statObj];
-
-        metaKeys.forEach((meta) => {
-          const attrs = getStatAttrs(metaObj, meta);
-          componentList.push(
-            <li className={styles[`meta__${attrs.class}`]}>
-              <div>
-                <span>{attrs.title}</span>
-                <div className={styles['meta-stat']}>
-                  {attrs.icon}
-                  <span>{attrs.stat}</span>
-                </div>
-              </div>
-            </li>,
-          );
-        });
-
-        return componentList;
-      },
-      [],
-    );
-
-    return results;
-  };
-
   useEffect(() => {
     async function fetchProjectStats() {
       if (project?.profile) {
         const tzOffset = moment().utcOffset() / 60 + ':00';
         const params = { time_zone: tzOffset };
-        // const statsResults = await getProjectStatistics(
+        // let statsResults = await getProjectStatistics(
         //   params,
         //   project.profile.code,
         // );
@@ -5446,27 +5415,72 @@ function Charts() {
             today_downloaded: 150,
           },
         };
-        const usersResults = await getUserOnProjectAPI(project.profile.id, {
-          page: 0,
-          pageSize: 10,
-          orderBy: 'time_created',
-          orderType: 'desc',
-        });
 
-        setProjectStats({
-          ...statsResults,
-          users: { total_users: usersResults.data.total },
-        });
+        const result = Object.keys(statsResults).map((stat) => ({
+          [stat]: statsResults[stat],
+        }));
+
+        if (role === 'admin') {
+          const usersResults = await getUserOnProjectAPI(project.profile.id, {
+            page: 0,
+            pageSize: 10,
+            orderBy: 'time_created',
+            orderType: 'desc',
+          });
+          // move user stat to second item in array
+          result.splice(1, 0, {
+            user: { total_users: usersResults.data.total },
+          });
+        }
+
+        setProjectStats(result);
       }
     }
     fetchProjectStats();
   }, [project]);
 
+  const sortProjectData = () => {
+    const stats = projectStats.map((item) => {
+      const key = Object.keys(item)[0];
+      return item[key];
+    });
+
+    const statMapping = [];
+    for (let statsObj of stats) {
+      const statKeys = Object.keys(statsObj);
+
+      for (let stat of statKeys) {
+        statMapping.push({ [stat]: statsObj[stat] });
+      }
+    }
+
+    return statMapping;
+  }
+
+  const appendProjectStats = () => {
+    const statMapping = sortProjectData();
+
+    return statMapping.map((metaObj) => {
+      const key = Object.keys(metaObj)[0];
+      const attrs = getStatAttrs(key, metaObj[key]);
+
+      return (
+        <li className={styles[`meta__${attrs.class}`]}>
+          <div>
+            <span>{attrs.title}</span>
+            <div className={styles['meta-stat']}>
+              {attrs.icon}
+              <span>{attrs.stat}</span>
+            </div>
+          </div>
+        </li>
+      );
+    });
+  };
+
   return (
     <div className={styles.charts}>
-      <ul className={styles['charts__meta']}>
-        {appendProjectStats()}
-      </ul>
+      <ul className={styles['charts__meta']}>{appendProjectStats()}</ul>
 
       <div className={styles['charts__graphs']}>
         <div className={styles['graphs__container']}>
