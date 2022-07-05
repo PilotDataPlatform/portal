@@ -25,7 +25,7 @@ describe('CopyRequest', () => {
     await init(page, { closeBanners: false });
   });
   afterAll(async () => {
-    await page.goto(`${baseUrl}project/${projectCode}/canvas`);
+    await page.goto(`${baseUrl}project/${projectCode}/data`);
     await deleteFileFromGreenroom(page, folderName);
     await page.waitForTimeout(30 * 1000);
     await logout(page);
@@ -94,7 +94,7 @@ describe('CopyRequest', () => {
     emptyFolderName = await createFolder(page);
   });
   it('4.3.1 If a folder has been sent to request, any new added file into the folder after the request was made will not be part of the request.', async () => {
-    await page.goto(`${baseUrl}project/${projectCode}/canvas`);
+    await page.goto(`${baseUrl}project/${projectCode}/data`);
     await page.waitForSelector(
       '#files_table > div > div > table > tbody > tr > td.ant-table-cell.ant-table-selection-column > label > span > input',
     );
@@ -134,7 +134,7 @@ describe('CopyRequest', () => {
     expect(fileList.length).toBe(0);
   });
   it('4.3.5 After a folder/file has been sent in a request, if it has been deleted, in the request it will be marked as not available (grey out), no approve/deny action can be executed on it.', async () => {
-    await page.goto(`${baseUrl}project/${projectCode}/canvas`);
+    await page.goto(`${baseUrl}project/${projectCode}/data`);
     await page.waitForSelector(
       '#files_table > div > div > table > tbody > tr > td.ant-table-cell.ant-table-selection-column > label > span > input',
     );

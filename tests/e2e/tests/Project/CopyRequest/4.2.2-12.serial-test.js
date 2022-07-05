@@ -43,16 +43,16 @@ describe('CopyRequest', () => {
       await uploadFile(page, 'temp', fileName1);
     }
     try {
-      await page.goto(`${baseUrl}project/${projectCode}/canvas`);
+      await page.goto(`${baseUrl}project/${projectCode}/data`);
       await checkFile(page);
       await submitCopyRequest(page);
-      await page.goto(`${baseUrl}project/${projectCode}/canvas`);
+      await page.goto(`${baseUrl}project/${projectCode}/data`);
       await checkFile(page);
       await submitCopyRequest(page);
-      await page.goto(`${baseUrl}project/${projectCode}/canvas`);
+      await page.goto(`${baseUrl}project/${projectCode}/data`);
       await checkFile(page);
       await submitCopyRequest(page);
-      await page.goto(`${baseUrl}project/${projectCode}/canvas`);
+      await page.goto(`${baseUrl}project/${projectCode}/data`);
       await checkFile(page, 'test-empty-folder');
       await submitCopyRequest(page);
     } catch (e) {
