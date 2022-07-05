@@ -71,7 +71,6 @@ describe('CopyRequest', () => {
     await page.goto(
       `${baseUrl}project/${contributorProjectCode}/requestToCore`,
     );
-    //61390
     await page.waitForTimeout(3000);
     /* await page.waitForNavigation() */
     const url = await page.url();

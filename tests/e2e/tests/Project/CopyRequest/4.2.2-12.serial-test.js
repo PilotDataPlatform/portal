@@ -5,6 +5,11 @@ const {
   checkFile,
   submitCopyRequest,
 } = require('../../../../utils/copyReqActions.js');
+const { uploadFile } = require('../../../../utils/greenroomActions');
+const {
+  generateLocalFile,
+  createFolder,
+} = require('../../../../utils/fileScaffoldActions');
 const moment = require('moment-timezone');
 const fs = require('fs');
 jest.setTimeout(700000);
@@ -13,6 +18,7 @@ const projectCode = dataConfig.copyReq.projectCode;
 
 describe('CopyRequest', () => {
   let page;
+  let fileName1;
   beforeAll(async () => {
     const context = await browser.createIncognitoBrowserContext();
     page = await context.newPage();
@@ -24,6 +30,18 @@ describe('CopyRequest', () => {
     await page.setViewport({ width: 1920, height: 1080 });
     await login(page, 'collaborator');
     await init(page, { closeBanners: false });
+    await page.goto(`${baseUrl}project/${projectCode}/data`);
+    await page.waitForSelector('#files_table > div > div > table > tbody > tr');
+    await createFolder('test-empty-folder');
+    await page.waitForTimeout(2000);
+    fileName1 = await generateLocalFile(
+      `${process.cwd()}/tests/uploads/Test Files`,
+      'License.md',
+    );
+    if (fileName1) {
+      await page.waitForTimeout(3000);
+      await uploadFile(page, 'temp', fileName1);
+    }
     try {
       await page.goto(`${baseUrl}project/${projectCode}/canvas`);
       await checkFile(page);

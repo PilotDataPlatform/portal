@@ -36,44 +36,35 @@ describe('1.4 Canvas page – Recent File Stream ', () => {
     await logout(page);
     await page.waitForTimeout(3000);
   });
-  async function renameFile(path, file) {
-    let status = 1;
+  async function renameFile(sourcePath, sourceFile) {
     //get extension
-    let ext = file.split('.');
+    let fileArr = sourceFile.split('.');
+    let ext = sourceFile.length ? sourceFile[fileArr.length - 1] : null;
+    const destFileName = `${moment().unix()}${ext ? '.' + ext : ''}`;
     //copy file and rename
     try {
-      fs.copyFile(
-        `${path}/${file}`,
-        `${path}/1.4-test-${moment().unix()}.${ext[1]}`,
-        (err) => {
-          if (err) throw err;
-          console.log('success');
-        },
+      await fs.copyFileSync(
+        `${sourcePath}/${file}`,
+        `${sourcePath}/${destFileName}`,
       );
-      status = 0;
+      return destFileName;
     } catch (err) {
-      status = 1;
+      return null;
     }
-
-    if (status === 0) {
-      return `1.4-test-${moment().unix()}.${ext[1]}`;
-    }
-  }
-
-  function getResponseBody(resolve, reject) {
-    page.on('response', async function (response) {
-      if (response.url().includes(api)) {
-        console.log('get response');
-        resolve(await response.text());
-      }
-    });
   }
 
   async function convertToLocalTime(fileName) {
     console.log('get time start');
     api = `audit-logs`;
 
-    waitForResponse = new Promise(getResponseBody);
+    waitForResponse = new Promise((resolve, reject) => {
+      page.on('response', async function (response) {
+        if (response.url().includes(api)) {
+          console.log('get response');
+          resolve(await response.text());
+        }
+      });
+    });
     await page.goto(`${baseUrl}project/${projectCode}/canvas`, {
       waitUntil: 'networkidle0',
     });
@@ -92,33 +83,32 @@ describe('1.4 Canvas page – Recent File Stream ', () => {
   }
 
   it('1.4.1 Project admin could search download/upload/copy/delete/all activities in Recent File Stream. and 1.4.2 The operator in the log matches username and 1.4.3 Upload/download/copy/delete log matches device local time ', async () => {
-    // await page.goto(`${baseUrl}project/${projectCode}/data`);
+    await page.goto(`${baseUrl}project/${projectCode}/data`);
 
-    // await waitForFileExplorer(page, admin.username);
-    // await page.waitForTimeout(5000);
+    await waitForFileExplorer(page, admin.username);
+    await page.waitForTimeout(5000);
 
-    // //perpare file (upload)
-    // let renamedFileName = await renameFile(
-    //   `${process.cwd()}/tests/uploads/${folderName}`,
-    //   fileName,
-    // );
+    //perpare file (upload)
+    let renamedFileName = await renameFile(
+      `${process.cwd()}/tests/uploads/${folderName}`,
+      fileName,
+    );
 
-    // await uploadAction(page);
-    // const uploadInputField = await page.waitForSelector('#form_in_modal_file');
-    // await uploadInputField.uploadFile(
-    //   `${process.cwd()}/tests/uploads/${folderName}/${renamedFileName}`,
-    // );
+    await uploadAction(page);
+    const uploadInputField = await page.waitForSelector('#form_in_modal_file');
+    await uploadInputField.uploadFile(
+      `${process.cwd()}/tests/uploads/${folderName}/${renamedFileName}`,
+    );
 
-    // await page.click('#file_upload_submit_btn');
+    await page.click('#file_upload_submit_btn');
 
-    // await toggleFilePanel(page);
-    // await checkFilePanelStatus(page, renamedFileName);
+    await toggleFilePanel(page);
+    await checkFilePanelStatus(page, renamedFileName);
 
-    // const uploadedFile = await page.waitForXPath(
-    //   `//tr[contains(@class, 'ant-table-row')]/descendant::span[contains(text(), '${renamedFileName}')]`,
-    // );
-    // expect(uploadedFile).toBeTruthy();
-    let renamedFileName = '1.4-test-1656959515.md';
+    const uploadedFile = await page.waitForXPath(
+      `//tr[contains(@class, 'ant-table-row')]/descendant::span[contains(text(), '${renamedFileName}')]`,
+    );
+    expect(uploadedFile).toBeTruthy();
 
     await page.goto(`${baseUrl}project/${projectCode}/canvas`);
 

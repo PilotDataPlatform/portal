@@ -8,12 +8,14 @@ const {
   createFolder,
 } = require('../../../../utils/greenroomActions');
 jest.setTimeout(700000);
-const folderName = 'temp-folder';
-const fileName = 'tinified.zip';
+
 const projectCode = dataConfig.copyReq.projectCode;
 
 describe('CopyRequest', () => {
   let page;
+  let folderName;
+  let emptyFolderName;
+  let fileInFolderName;
   beforeAll(async () => {
     const context = await browser.createIncognitoBrowserContext();
     page = await context.newPage();
@@ -72,6 +74,25 @@ describe('CopyRequest', () => {
     await firstItemNameNode.click();
     await page.waitForTimeout(5000);
   }
+  it('prepare files', async () => {
+    await page.goto(`${baseUrl}project/${projectCode}/data`);
+    await page.waitForSelector('#files_table > div > div > table > tbody > tr');
+    folderName = await createFolder(page);
+    await clickIntoFolder(page, folderName);
+
+    const fileInFolderName = await generateLocalFile(
+      `${process.cwd()}/tests/uploads/Test Files`,
+      'tinified.zip',
+    );
+    if (fileInFolderName) {
+      await page.waitForTimeout(3000);
+      await uploadFile(page, 'temp', fileInFolderName);
+    }
+
+    await page.waitForTimeout(3000);
+    await page.goto(`${baseUrl}project/${projectCode}/data`);
+    emptyFolderName = await createFolder(page);
+  });
   it('4.3.1 If a folder has been sent to request, any new added file into the folder after the request was made will not be part of the request.', async () => {
     await page.goto(`${baseUrl}project/${projectCode}/canvas`);
     await page.waitForSelector(
@@ -79,22 +100,30 @@ describe('CopyRequest', () => {
     );
 
     await page.waitForTimeout(2000);
-    await createFolder(page, folderName);
     const checkBox = await page.waitForXPath(
-      `//tr//span[contains(text(),"${folderName}")]//ancestor::tr//span[@class="ant-checkbox"]`,
+      `//tr//span[contains(text(),"${emptyFolderName}")]//ancestor::tr//span[@class="ant-checkbox"]`,
     );
     await checkBox.click();
     await submitCopyRequest(page);
     await page.waitForTimeout(5000);
     const firstItemNameNode = await page.waitForXPath(
-      `//table//tbody[contains(@class,"ant-table-tbody")]//tr//span[contains(text(),"${folderName}")]`,
+      `//table//tbody[contains(@class,"ant-table-tbody")]//tr//span[contains(text(),"${emptyFolderName}")]`,
       {
         visible: true,
       },
     );
     await firstItemNameNode.click();
     await page.waitForTimeout(2000);
-    await uploadFile(page, 'Test Files', fileName);
+
+    const fileName1 = await generateLocalFile(
+      `${process.cwd()}/tests/uploads/Test Files`,
+      'License.md',
+    );
+    if (fileName1) {
+      await page.waitForTimeout(3000);
+      await uploadFile(page, 'temp', fileName1);
+    }
+
     await page.waitForTimeout(3000);
     await page.goto(`${baseUrl}project/${projectCode}/requestToCore`);
     await clickIntoFirstFolder();
@@ -126,7 +155,7 @@ describe('CopyRequest', () => {
       },
     );
     await firstItemNameNode.click();
-    await deleteFileFromGreenroom(page, fileName);
+    await deleteFileFromGreenroom(page, fileInFolderName);
     await page.waitForTimeout(60 * 1000);
     // check it is deleted
     await page.goto(`${baseUrl}project/${projectCode}/requestToCore`);

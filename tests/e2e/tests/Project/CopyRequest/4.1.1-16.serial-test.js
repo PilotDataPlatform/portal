@@ -8,17 +8,23 @@ const {
   checkFile,
   submitCopyRequest,
 } = require('../../../../utils/copyReqActions.js');
+const {
+  createFolder,
+  clickIntoFolder,
+  generateLocalFile,
+  removeExistFile,
+  removeLocalFile,
+} = require('../../../../utils/fileScaffoldActions.js');
 const { uploadFile } = require('../../../../utils/greenroomActions.js');
-const uuid = require('uuid');
 const projectCode = dataConfig.copyReq.projectCode;
 jest.setTimeout(700000);
 
 describe('CopyRequest', () => {
   let page;
-  let folderName = uuid.v4().slice(-10);
-  let fileName1 = uuid.v4().slice(-10);
-  let fileName2 = uuid.v4().slice(-10);
-  let zipFileName = `${uuid.v4().slice(-10)}.zip`;
+  let folderName;
+  let fileName1;
+  let fileName2;
+  let zipFileName;
   beforeAll(async () => {
     const context = await browser.createIncognitoBrowserContext();
     page = await context.newPage();
@@ -28,6 +34,16 @@ describe('CopyRequest', () => {
     await init(page, { closeBanners: true });
   });
   afterAll(async () => {
+    await page.goto(`${baseUrl}project/${projectCode}/data`);
+    await page.waitForSelector('#files_table > div > div > table > tbody > tr');
+    await removeLocalFile(fileName1);
+    await removeLocalFile(fileName2);
+    await removeLocalFile(zipFileName);
+    await removeExistFile(page, zipFileName);
+    await page.waitForTimeout(2000);
+    await removeExistFile(page, folderName);
+    await page.waitForTimeout(2000);
+
     await logout(page);
     await page.waitForTimeout(3000);
   });
@@ -39,49 +55,37 @@ describe('CopyRequest', () => {
   it('prepare files', async () => {
     await page.goto(`${baseUrl}project/${projectCode}/data`);
     await page.waitForSelector('#files_table > div > div > table > tbody > tr');
-    const newFolderBtn = await page.waitForXPath(
-      '//button//span[contains(text(), "New Folder")]',
-    );
-    await newFolderBtn.click();
-    await page.type('#folderName', folderName);
-    const createFolderBtn = await page.waitForXPath(
-      '//div[@class="ant-modal-footer"]//button//span[contains(text(), "Create")]',
-    );
-    await createFolderBtn.click();
-    await page.waitForTimeout(2000);
-    try {
-      const closeBtn = await page.waitForXPath(
-        '//span[@class="ant-modal-close-x"]',
-      );
-      await closeBtn.click();
-    } catch (e) {
-      console.log('close btn not found');
-    }
-    const folderNameElm = await page.waitForXPath(
-      `//table//td//span[text()="${folderName}"]`,
-    );
-    await folderNameElm.click();
-    if (!fs.existsSync(`${process.cwd()}/tests/uploads/test/${fileName1}`)) {
-      await createDummyFile('temp', fileName1, '10kb');
-    }
-    await page.waitForTimeout(3000);
-    await uploadFile(page, 'temp', fileName1);
+    folderName = await createFolder(page);
+    await clickIntoFolder(page, folderName);
 
-    if (!fs.existsSync(`${process.cwd()}/tests/uploads/test/${fileName2}`)) {
-      await createDummyFile('temp', fileName2, '10kb');
+    fileName1 = await generateLocalFile(
+      `${process.cwd()}/tests/uploads/Test Files`,
+      'License.md',
+    );
+    if (fileName1) {
+      await page.waitForTimeout(3000);
+      await uploadFile(page, 'temp', fileName1);
     }
-    await page.waitForTimeout(3000);
-    await uploadFile(page, 'temp', fileName2);
+
+    fileName2 = await generateLocalFile(
+      `${process.cwd()}/tests/uploads/Test Files`,
+      'License.md',
+    );
+    if (fileName2) {
+      await page.waitForTimeout(3000);
+      await uploadFile(page, 'temp', fileName2);
+    }
+
     await page.waitForTimeout(3000);
     await page.goto(`${baseUrl}project/${projectCode}/data`);
     await page.waitForTimeout(3000);
-    if (
-      fs.existsSync(`${process.cwd()}/tests/uploads/Test Files/tinified.zip`)
-    ) {
-      await fs.copyFileSync(
-        `${process.cwd()}/tests/uploads/Test Files/tinified.zip`,
-        `${process.cwd()}/tests/uploads/temp/${zipFileName}`,
-      );
+
+    zipFileName = await generateLocalFile(
+      `${process.cwd()}/tests/uploads/Test Files`,
+      'tinified.zip',
+    );
+    if (zipFileName) {
+      await page.waitForTimeout(3000);
       await uploadFile(page, 'temp', zipFileName);
     }
   });
