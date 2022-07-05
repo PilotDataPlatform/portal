@@ -19,7 +19,11 @@ import {
   getCurrentYear,
   getFileSize,
 } from '../../../../Utility';
-import { getProjectStatistics, getUserOnProjectAPI } from '../../../../APIs';
+import {
+  getProjectStatistics,
+  getProjectFileSize,
+  getUserOnProjectAPI,
+} from '../../../../APIs';
 
 const HEATMAP_DOWNLOAD_DATA = [
   {
@@ -5185,167 +5189,22 @@ const HEATMAP_COPY_DATA = [
   },
 ];
 
-const STACKED_AREA_PLOT_DATA = [
-  {
-    source: 'Greenroom',
-    date: '03-2021',
-    size: 64424509440,
-  },
-  {
-    source: 'Greenroom',
-    date: '04-2021',
-    size: 1073741824000,
-  },
-  {
-    source: 'Greenroom',
-    date: '05-2021',
-    size: 238370684928,
-  },
-  {
-    source: 'Greenroom',
-    date: '06-2021',
-    size: 2147483648,
-  },
-  {
-    source: 'Greenroom',
-    date: '07-2021',
-    size: 1288490188.8,
-  },
-  {
-    source: 'Greenroom',
-    date: '08-2021',
-    size: 708669603840,
-  },
-  {
-    source: 'Greenroom',
-    date: '09-2021',
-    size: 1288490188800,
-  },
-  {
-    source: 'Greenroom',
-    date: '10-2021',
-    size: 1932735283200,
-  },
-  {
-    source: 'Greenroom',
-    date: '11-2021',
-    size: 5368709120,
-  },
-  {
-    source: 'Greenroom',
-    date: '12-2021',
-    size: 128849018880,
-  },
-  {
-    source: 'Greenroom',
-    date: '01-2022',
-    size: 429496729.6,
-  },
-  {
-    source: 'Greenroom',
-    date: '02-2022',
-    size: 4294967296,
-  },
-  {
-    source: 'Greenroom',
-    date: '03-2022',
-    size: 268435456000,
-  },
-  {
-    source: 'Greenroom',
-    date: '04-2022',
-    size: 429496729600,
-  },
-  {
-    source: 'Greenroom',
-    date: '05-2022',
-    size: 858993459200,
-  },
-  {
-    source: 'Core',
-    date: '03-2021',
-    size: 536870912,
-  },
-  {
-    source: 'Core',
-    date: '04-2021',
-    size: 4294967296,
-  },
-  {
-    source: 'Core',
-    date: '05-2021',
-    size: 128849018880,
-  },
-  {
-    source: 'Core',
-    date: '06-2021',
-    size: 488552529920,
-  },
-  {
-    source: 'Core',
-    date: '07-2021',
-    size: 28991029248,
-  },
-  {
-    source: 'Core',
-    date: '08-2021',
-    size: 536870912,
-  },
-  {
-    source: 'Core',
-    date: '09-2021',
-    size: 336870912,
-  },
-  {
-    source: 'Core',
-    date: '10-2021',
-    size: 5336870912,
-  },
-  {
-    source: 'Core',
-    date: '11-2021',
-    size: 336870912,
-  },
-  {
-    source: 'Core',
-    date: '12-2021',
-    size: 1073741824,
-  },
-  {
-    source: 'Core',
-    date: '01-2022',
-    size: 26843545600,
-  },
-  {
-    source: 'Core',
-    date: '02-2022',
-    size: 211.7,
-  },
-  {
-    source: 'Core',
-    date: '03-2022',
-    size: 2576980377.6,
-  },
-  {
-    source: 'Core',
-    date: '04-2022',
-    size: 268435456000,
-  },
-  {
-    source: 'Core',
-    date: '05-2022',
-    size: 130996502528,
-  },
-];
-
 function Charts() {
   const theme = useTheme();
   const { project, role } = useSelector((state) => state);
   const [projectStats, setProjectStats] = useState([]);
+  const [projectFileSize, setProjectFileSize] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  const SAPCurrentYear = getCurrentYear(STACKED_AREA_PLOT_DATA);
-  const stackedAreaPlotConfig = {
+  const tzOffset = moment().utcOffset() / 60 + ':00';
+
+  const SAPDataField = {
+    xField: 'date',
+    yField: 'size',
+    seriesField: 'source',
+  };
+  const SAPCurrentYear = getCurrentYear(projectFileSize);
+  const SAPConfig = {
     meta: {
       size: {
         type: 'linear',
@@ -5401,7 +5260,6 @@ function Charts() {
   useEffect(() => {
     async function fetchProjectStats() {
       if (project.profile?.id) {
-        const tzOffset = moment().utcOffset() / 60 + ':00';
         const params = { time_zone: tzOffset };
 
         try {
@@ -5447,6 +5305,75 @@ function Charts() {
       }
     }
     fetchProjectStats();
+  }, [project?.profile]);
+
+  useEffect(() => {
+    async function fetchProjectFileSize() {
+      if (project.profile?.id) {
+        const toMonth = moment().startOf('month').format('YYYY-MM-DDTHH:mm:ss');
+        const fromMonth = moment()
+          .subtract(14, 'months')
+          .startOf('month')
+          .format('YYYY-MM-DDTHH:mm:ss');
+
+        const params = {
+          from: fromMonth,
+          to: toMonth,
+          group_by: 'month',
+          time_zone: tzOffset,
+        };
+        try {
+          // const fileSizeResults = await getProjectFileSize(params, project.profile.id);
+          const fileSizeResults = {
+            data: {
+              labels: ['2022-01', '2022-02', '2022-03'],
+              datasets: [
+                {
+                  label: 0, // Will be mapped to "greenroom" in bff
+                  values: [536870912, 715827882, 920350134],
+                },
+                {
+                  label: 1, // Will be mapped to "core" in bff
+                  values: [107374182, 143165576, 184070026],
+                },
+              ],
+            },
+          };
+
+          const plotData = fileSizeResults.data.datasets.reduce(
+            (result, dataset) => {
+              const datasetKeys = Object.keys(dataset);
+              const label = dataset[datasetKeys[0]];
+              const values = dataset[datasetKeys[1]];
+
+              values.forEach((val, index) => {
+                result.push({
+                  // to remove when API is live, labels will have proper names
+                  [SAPDataField.seriesField]:
+                    label === 0 ? 'Greenroom' : 'Core',
+                  [SAPDataField.xField]: fileSizeResults.data.labels[index]
+                    .split('-')
+                    .reverse()
+                    .join('-'),
+                  [SAPDataField.yField]: val,
+                });
+              });
+
+              return result;
+            },
+            [],
+          );
+
+          setProjectFileSize(plotData);
+        } catch {
+          message.error(
+            'Something went wrong while retrieving project file size',
+          );
+        }
+      }
+    }
+
+    fetchProjectFileSize();
   }, [project?.profile]);
 
   const sortProjectStats = () => {
@@ -5498,12 +5425,12 @@ function Charts() {
         <div className={styles['graphs__container']}>
           <h4 className={styles['graphs__title']}>Projects File Size</h4>
           <StackedAreaPlot
-            data={STACKED_AREA_PLOT_DATA}
-            xField="date"
-            yField="size"
-            seriesField="source"
+            data={projectFileSize}
+            xField={SAPDataField.xField}
+            yField={SAPDataField.yField}
+            seriesField={SAPDataField.seriesField}
             color={theme.charts.stackedAreaPlot}
-            chartConfig={stackedAreaPlotConfig}
+            chartConfig={SAPConfig}
           />
         </div>
         <div className={styles['graphs__container']}>
