@@ -19,6 +19,14 @@ function getProjectFileSize(params, projectCode){
   })
 }
 
+function getProjectActivity(params, projectCode){
+  return serverAxios({
+    url: `v1/project-files/${projectCode}/activity`,
+    method: 'GET',
+    params
+  })
+}
+
 function getUserProjectActivitiesAPI(params) {
   return serverAxios({
     url: '/v1/user/events',
@@ -669,6 +677,7 @@ function requestCompleteAPI(projectCode, requestId, status, reviewNotes) {
 export {
   getProjectStatistics,
   getProjectFileSize,
+  getProjectActivity,
   getUserProjectActivitiesAPI,
   getDatasetsAPI,
   createProjectAPI,

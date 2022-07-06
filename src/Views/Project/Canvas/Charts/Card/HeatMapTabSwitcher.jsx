@@ -14,6 +14,7 @@ function HeatMapTabSwitcher({
   uploadData,
   deleteData,
   copyData,
+  dataMapping,
 }) {
   const { charts } = useTheme();
   const activityColorMap = {
@@ -29,17 +30,85 @@ function HeatMapTabSwitcher({
     [COPY]: activityColorMap[COPY][1],
   };
 
+  const graphConfig = {
+    ...dataMapping,
+    meta: {
+      day: {
+        type: 'cat',
+        values: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+      },
+      week: {
+        type: 'cat',
+      },
+      commits: {
+        sync: true,
+      },
+    },
+    xAxis: {
+      position: 'top',
+      tickLine: null,
+      line: null,
+      label: {
+        offsetY: -8,
+        style: {
+          fontSize: 12,
+          fill: '#666',
+          textBaseline: 'top',
+        },
+        formatter: (val) => {
+          if (val === '2') {
+            return 'MAY';
+          } else if (val === '6') {
+            return 'JUN';
+          } else if (val === '10') {
+            return 'JUL';
+          } else if (val === '15') {
+            return 'AUG';
+          } else if (val === '19') {
+            return 'SEP';
+          } else if (val === '24') {
+            return 'OCT';
+          }
+
+          return val;
+        },
+      },
+    },
+  };
+
   const heatMapGraphs = useMemo(
     () => ({
       [DOWNLOAD]: (
-        <HeatMap data={downloadData} color={activityColorMap[DOWNLOAD]} />
+        <HeatMap
+          data={downloadData}
+          color={activityColorMap[DOWNLOAD]}
+          graphConfig={graphConfig}
+        />
       ),
-      [UPLOAD]: <HeatMap data={uploadData} color={activityColorMap[UPLOAD]} />,
-      [DELETE]: <HeatMap data={deleteData} color={activityColorMap[DELETE]} />,
-      [COPY]: <HeatMap data={copyData} color={activityColorMap[COPY]} />,
+      [UPLOAD]: (
+        <HeatMap
+          data={uploadData}
+          color={activityColorMap[UPLOAD]}
+          graphConfig={graphConfig}
+        />
+      ),
+      [DELETE]: (
+        <HeatMap
+          data={deleteData}
+          color={activityColorMap[DELETE]}
+          graphConfig={graphConfig}
+        />
+      ),
+      [COPY]: (
+        <HeatMap
+          data={copyData}
+          color={activityColorMap[COPY]}
+          graphConfig={graphConfig}
+        />
+      ),
     }),
     [downloadData, uploadData, deleteData, copyData],
-  ); 
+  );
 
   return <TabSwitcher contentMap={heatMapGraphs} colorMap={tabColorMap} />;
 }
