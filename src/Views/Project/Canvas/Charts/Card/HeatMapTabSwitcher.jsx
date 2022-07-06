@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import moment from 'moment'
 
 import { TabSwitcher } from '../../../Components/TabSwitcher';
 import HeatMap from './HeatMap';
@@ -55,23 +56,7 @@ function HeatMapTabSwitcher({
           fill: '#666',
           textBaseline: 'top',
         },
-        formatter: (val) => {
-          if (val === '2') {
-            return 'MAY';
-          } else if (val === '6') {
-            return 'JUN';
-          } else if (val === '10') {
-            return 'JUL';
-          } else if (val === '15') {
-            return 'AUG';
-          } else if (val === '19') {
-            return 'SEP';
-          } else if (val === '24') {
-            return 'OCT';
-          }
-
-          return val;
-        },
+        formatter: (val) => moment(`${val}`, 'W').format('MMM'),
       },
     },
   };
