@@ -8,6 +8,8 @@
 /.pnp
 .pnp.js
 
+/tests/uploads/temp
+
 # testing
 .nyc_output
 /coverage
