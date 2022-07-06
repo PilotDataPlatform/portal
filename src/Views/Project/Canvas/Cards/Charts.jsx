@@ -347,8 +347,8 @@ function Charts() {
           });
           // map a new array with objects to map with heatmap chart
           const result = {};
-          for (let activity in allActivities) {
-            const data = allActivities[activity].data.map((item) => {
+          for (let act in allActivities) {
+            const data = allActivities[act].data.map((item) => {
               const key = Object.keys(item)[0];
               const date = moment(key, 'YYYY MM DD');
 
@@ -359,7 +359,7 @@ function Charts() {
               };
             });
 
-            result[activity] = data;
+            result[act] = data;
           }
           setProjectFileActivity(result);
           setIsProjectFileActivityLoading(false);
@@ -414,13 +414,9 @@ function Charts() {
 
   return (
     <div className={styles.charts}>
-      <ul className={styles['charts__meta']}>
-        {isProjectStatsLoading ? (
-          <Spin spinning={isProjectStatsLoading} />
-        ) : (
-          appendProjectStats()
-        )}
-      </ul>
+      <Spin spinning={isProjectStatsLoading}>
+        <ul className={styles['charts__meta']}>{appendProjectStats()}</ul>
+      </Spin>
 
       <div className={styles['charts__graphs']}>
         <div className={styles['graphs__container']}>
@@ -436,6 +432,7 @@ function Charts() {
             />
           </Spin>
         </div>
+
         <div className={styles['graphs__container']}>
           <h4 className={styles['graphs__title']}>Project File Activity</h4>
           <Spin spinning={isProjectFileActivityLoading}>
