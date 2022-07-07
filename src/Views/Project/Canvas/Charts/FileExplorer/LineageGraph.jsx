@@ -39,21 +39,20 @@ const fittingString = (str, maxWidth, fontSize) => {
   return res;
 };
 const fileTypeMap = (labels) => {
-  if (hasCore(labels) && labels.indexOf('TrashFile') !== -1) {
-    return 'Core Trash File';
-  }
-  if (
-    labels.indexOf('Greenroom') !== -1 &&
-    labels.indexOf('TrashFile') !== -1
-  ) {
-    return 'Green Room Trash File';
+  if (hasCore(labels)) {
+    if (labels.indexOf('TrashFile') !== -1) {
+      return 'Core Trash File';
+    } else {
+      return 'Core File';
+    }
   }
 
-  if (labels.indexOf('Greenroom') !== -1 && labels.indexOf('File') !== -1) {
-    return 'Green Room File';
-  }
-  if (hasCore(labels) && labels.indexOf('File') !== -1) {
-    return 'Core File';
+  if (labels.indexOf('Greenroom') !== -1) {
+    if (labels.indexOf('TrashFile') !== -1) {
+      return 'Green Room Trash File';
+    } else {
+      return 'Green Room File';
+    }
   }
 };
 const hasCore = (labels) => {
@@ -138,6 +137,10 @@ export default function LineageGraph({
             .slice(0, displayPathArr.length - 1)
             .join('/');
         }
+        console.log(
+          nodeInfo.attributes?.zone,
+          fileTypeMap(nodeInfo.attributes?.zone),
+        );
         fileType =
           nodeInfo.attributes?.zone && fileTypeMap(nodeInfo.attributes?.zone);
         if (location && location.length > 40)
@@ -154,6 +157,7 @@ export default function LineageGraph({
         fileManifests = fileManifests.join(' ');
       }
 
+      console.log('typeName', fileType);
       nodeList.push({
         id: nodeInfo.guid,
         label,
@@ -266,11 +270,11 @@ export default function LineageGraph({
       },
       handleClick: (code, graph) => {
         if (code === 'center') {
-           if (data.nodes.length > 4) {
-             graph.fitView(10);
-           } else {
-             graph.fitCenter();
-           }
+          if (data.nodes.length > 4) {
+            graph.fitView(10);
+          } else {
+            graph.fitCenter();
+          }
         }
       },
     });
@@ -362,7 +366,9 @@ export default function LineageGraph({
         </Button>
       )}
       <div
-        style={!showFitView ? { display: 'flex', justifyContent: 'center' } : null}
+        style={
+          !showFitView ? { display: 'flex', justifyContent: 'center' } : null
+        }
         ref={ref}
       ></div>
     </>

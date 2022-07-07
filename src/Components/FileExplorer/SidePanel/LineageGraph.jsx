@@ -38,21 +38,20 @@ const fittingString = (str, maxWidth, fontSize) => {
   return res;
 };
 const fileTypeMap = (labels) => {
-  if (hasCore(labels) && labels.indexOf('TrashFile') !== -1) {
-    return 'Core Trash File';
-  }
-  if (
-    labels.indexOf('Greenroom') !== -1 &&
-    labels.indexOf('TrashFile') !== -1
-  ) {
-    return 'Green Room Trash File';
+  if (hasCore(labels)) {
+    if (labels.indexOf('TrashFile') !== -1) {
+      return 'Core Trash File';
+    } else {
+      return 'Core File';
+    }
   }
 
-  if (labels.indexOf('Greenroom') !== -1 && labels.indexOf('File') !== -1) {
-    return 'Green Room File';
-  }
-  if (hasCore(labels) && labels.indexOf('File') !== -1) {
-    return 'Core File';
+  if (labels.indexOf('Greenroom') !== -1) {
+    if (labels.indexOf('TrashFile') !== -1) {
+      return 'Green Room Trash File';
+    } else {
+      return 'Green Room File';
+    }
   }
 };
 
