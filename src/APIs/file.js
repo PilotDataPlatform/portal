@@ -604,11 +604,9 @@ function deleteFileAPI(data) {
   });
 }
 
-function searchFilesAPI(params, projectGeid) {
-  if (params?.query?.zone?.value)
-    params.query.zone.value = _.lowerCase(params.query.zone.value);
+function searchFilesAPI(params, projectCode) {
   return axios({
-    url: `/v1/${projectGeid}/files/search`,
+    url: `/v1/${projectCode}/files/search`,
     method: 'GET',
     params,
   });
