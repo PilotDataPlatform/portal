@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { Table, Button, Collapse, Radio, Divider, Spin } from 'antd';
+import React, { useState } from 'react';
+import { Table, Button, Collapse, Radio, Spin } from 'antd';
 import SearchResultCard from './SearchResultCard';
 import DataSetsModal from '../../Canvas/Charts/FileExplorer/Plugins/Datasets/DatasetsModal';
 import styles from '../index.module.scss';
 import { useCurrentProject } from '../../../../Utility';
 import {
-  FilterOutlined,
-  CloseOutlined,
   HomeOutlined,
   CloudServerOutlined,
   DeploymentUnitOutlined,
@@ -28,14 +26,9 @@ function SearchResultTable({
   greenRoomTotal,
   coreTotal,
 }) {
-  const [showClose, setShowClose] = useState(false);
   const [selectedRows, setSelectedRows] = useState([]);
-  const [collapseKeys, setCollapseKeys] = useState([]);
-  const [locationValue, setLocationValue] = useState('');
   const [showDataSetsModal, setShowDataSetsModal] = useState(false);
   const currentProject = useCurrentProject();
-
-  console.log(zone)
 
   const currentProjectRole = currentProject[0].permission;
   const columns = [
@@ -52,13 +45,6 @@ function SearchResultTable({
     },
   ];
 
-  // const newFiles = files.map((el, index) => {
-  //   return {
-  //     ...el,
-  //     key: index,
-  //   };
-  // });
-
   const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {
       setSelectedRows(selectedRows);
@@ -69,69 +55,9 @@ function SearchResultTable({
     }),
   };
 
-  const collapseOnChange = (values) => {
-    setCollapseKeys([...values]);
-  };
-
   const locationOnChange = (e) => {
-    setLocationValue(e.target.value);
-    // const filter = filters.find((el) => el.category === 'zone');
-    // const newFilters = [...filters];
-    // if (!filter) {
-    //   newFilters.push({ category: 'zone', value: e.target.value });
-    // } else {
-    //   newFilters.forEach((el) => {
-    //     if ((el) => el.category === 'zone') el.value = e.target.value;
-    //   });
-    // }
     setFilters({ zone: e.target.value.toLowerCase() });
     setPage(0);
-  };
-
-  const refineSearch = (showClose) => {
-    if (!showClose) {
-      return (
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            marginRight: '100px',
-            marginTop: '6px',
-            width: '100%',
-            justifyContent: 'flex-end',
-          }}
-        >
-          <FilterOutlined />
-          <p
-            onClick={() => setShowClose(true)}
-            style={{ margin: '0px 0px 0px 10px', cursor: 'pointer' }}
-          >
-            Refine your search
-          </p>
-        </div>
-      );
-    } else {
-      return null;
-      // the below code will be used in the future.
-      /* (
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            marginRight: '358px',
-            marginTop: '6px',
-            width: '100%',
-            justifyContent: 'flex-end',
-          }}
-        >
-          <p style={{ margin: '0px' }}>{selectedRows.length} Selected</p>
-          <CloseOutlined
-            onClick={() => setShowClose(false)}
-            style={{ marginLeft: '15px' }}
-          />
-        </div>
-      ) */
-    }
   };
 
   const openDatasetsModal = () => {
@@ -144,7 +70,6 @@ function SearchResultTable({
         {zone === 'core' ? (
           <Button
             type="link"
-            //style={{border: '0px'}}
             icon={<DeploymentUnitOutlined />}
             disabled={selectedRows.length ? false : true}
             onClick={() => {
@@ -154,9 +79,6 @@ function SearchResultTable({
             Add to Datasets
           </Button>
         ) : null}
-        {/* {['admin', 'collaborator'].includes(currentProjectRole)
-          ? refineSearch(showClose)
-          : null} */}
 
         {['admin', 'collaborator'].includes(currentProjectRole) ? (
           <div
@@ -229,65 +151,6 @@ function SearchResultTable({
             />
           </Spin>
         </div>
-        {showClose ? (
-          <div className={styles.search_collapse}>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'flex-end',
-                paddingRight: '20px',
-                backgroundColor: '#fafafa',
-                height: '35px',
-                marginBottom: '20px',
-                borderBottom: '1px solid #f0f0f0',
-              }}
-            >
-              <FilterOutlined />
-              <p style={{ margin: '0px 0px 0px 10px', cursor: 'pointer' }}>
-                Refine your search
-              </p>
-              <CloseOutlined
-                onClick={() => setShowClose(false)}
-                style={{ marginLeft: '15px' }}
-              />
-            </div>
-            <div className={styles.right_search_part}>
-              <Divider type="vertical"></Divider>
-              <div style={{ width: '100%', paddingLeft: '16px' }}>
-                <div className={styles.set_collapse}>
-                  <p
-                    onClick={() => {
-                      setLocationValue('');
-                      setFilters({});
-                    }}
-                  >
-                    Reset All
-                  </p>
-                  <p onClick={() => setCollapseKeys([])}>Collapse All</p>
-                </div>
-                <Collapse
-                  className={styles.collapse}
-                  activeKey={collapseKeys}
-                  bordered={false}
-                  ghost={false}
-                  expandIconPosition={'right'}
-                  onChange={collapseOnChange}
-                >
-                  <Panel header="Location" key="1">
-                    <Radio.Group
-                      value={locationValue}
-                      onChange={locationOnChange}
-                    >
-                      <Radio value="Core">Core</Radio>
-                      <Radio value="greenroom">Green Room</Radio>
-                    </Radio.Group>
-                  </Panel>
-                </Collapse>
-              </div>
-            </div>
-          </div>
-        ) : null}
       </div>
     </div>
   );

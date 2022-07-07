@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import moment from 'moment';
 import { Tag, Tooltip } from 'antd';
 import { FileOutlined, FolderOutlined } from '@ant-design/icons';
@@ -15,7 +15,6 @@ function SearchResultCard({ record, searchConditions }) {
     : [];
   
   const fileType = record.type;
-  // const info = record.source;
   const attributes = record.attributes;
   const tags = record.tags;
   const location = record.parentPath.split('.').join('/') + '/' + record.name;
