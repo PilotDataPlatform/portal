@@ -1,6 +1,6 @@
 const { login, logout } = require('../../../../utils/login.js');
 const { init } = require('../../../../utils/commonActions.js');
-const { baseUrl } = require('../../../config');
+const { baseUrl, dataConfig } = require('../../../config');
 const {
   createFolder,
   navigateInsideFolder,
@@ -9,13 +9,12 @@ const {
 } = require('../../../../utils/greenroomActions.js');
 const { createDummyFile } = require('../../../../utils/createDummyFile');
 const fs = require('fs');
-
+const { projectCode } = dataConfig.fileUpload;
 const folderName = 'Existing Folder';
 const fileName = '1gb-test';
 
 describe('1.5 Upload file/folder to existing folder', () => {
   let page;
-  const projectId = 96722;
   jest.setTimeout(700000000);
 
   beforeAll(async () => {
@@ -29,7 +28,7 @@ describe('1.5 Upload file/folder to existing folder', () => {
 
   beforeEach(async () => {
     await page.setCacheEnabled(false);
-    await page.goto(`${baseUrl}project/${projectId}/canvas`);
+    await page.goto(`${baseUrl}project/${projectCode}/data`);
   });
 
   afterAll(async () => {

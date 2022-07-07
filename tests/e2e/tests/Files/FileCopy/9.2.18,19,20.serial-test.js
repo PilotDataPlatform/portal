@@ -14,12 +14,11 @@ const {
   waitForFileExplorer,
   cleanupCore,
 } = require('../../../../utils/greenroomActions.js');
-const { adminProjectId } = dataConfig.fileCopy;
+const { adminProjectCode } = dataConfig.fileCopy;
 
 describe('9.2 File Copy', () => {
   let page;
 
-  const projectId = adminProjectId;
   jest.setTimeout(700000); //sets timeout for entire test suite
 
   beforeAll(async () => {
@@ -38,7 +37,7 @@ describe('9.2 File Copy', () => {
 
   beforeEach(async () => {
     await page.setCacheEnabled(false);
-    await page.goto(`${baseUrl}project/${projectId}/canvas`);
+    await page.goto(`${baseUrl}project/${adminProjectCode}/data`);
   });
 
   it('9.2.18 - User should select destination when copying files/folder otherwise an error message should display', async () => {

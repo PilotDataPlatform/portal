@@ -19,8 +19,11 @@ let dataConfig = {
     projectCode: 'testproject0413',
   },
   fileCopy: {
-    collaboratorProjectId: 61390,
-    adminProjectId: 104582,
+    adminProjectCode: 'test20220222',
+    collaboratorProjectCode: 'dluuwiptest',
+  },
+  fileUpload: {
+    projectCode: 'test0609',
   },
   userProfile: {
     projectCode: 'test0411',

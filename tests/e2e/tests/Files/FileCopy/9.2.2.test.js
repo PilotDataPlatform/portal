@@ -1,7 +1,12 @@
 const { login } = require('../../../../utils/login.js');
 const { init } = require('../../../../utils/commonActions.js');
 const { collaborator } = require('../../../../users');
-const { baseUrl, dataConfig, mailHogHost, mailHogPort } = require('../../../config');
+const {
+  baseUrl,
+  dataConfig,
+  mailHogHost,
+  mailHogPort,
+} = require('../../../config');
 const {
   requestToCore,
   fileName,
@@ -10,18 +15,24 @@ const {
   uploadFolder,
   waitForFileExplorer,
 } = require('../../../../utils/greenroomActions.js');
+const {
+  createFolder,
+  clickIntoFolder,
+  generateLocalFile,
+  removeExistFile,
+  removeLocalFile,
+} = require('../../../../utils/fileScaffoldActions');
 const mailhog = require('mailhog')({
   host: mailHogHost,
   port: mailHogPort,
 });
 
-const { collaboratorProjectId } = dataConfig.fileCopy;
+const { collaboratorProjectCode } = dataConfig.fileCopy;
 
 describe('9.2 File Copy', () => {
   let page;
 
-  const projectId = collaboratorProjectId;
-  const fileName = '3.png';
+  let fileName;
   jest.setTimeout(700000); //sets timeout for entire test suite
 
   beforeAll(async () => {
@@ -35,14 +46,30 @@ describe('9.2 File Copy', () => {
 
   beforeEach(async () => {
     await page.setCacheEnabled(false);
-    await page.goto(`${baseUrl}project/${projectId}/canvas`);
+    await page.goto(`${baseUrl}project/${collaboratorProjectCode}/data`);
   });
 
   afterAll(async () => {
+    await page.goto(`${baseUrl}project/${collaboratorProjectCode}/data`);
+    await page.waitForSelector('#files_table > div > div > table > tbody > tr');
+    await removeLocalFile(fileName);
+    await removeExistFile(page, fileName);
     await logout(page);
     await page.waitForTimeout(3000);
   });
 
+  it('prepare files', async () => {
+    await page.goto(`${baseUrl}project/${collaboratorProjectCode}/data`);
+    await page.waitForSelector('#files_table > div > div > table > tbody > tr');
+    fileName = await generateLocalFile(
+      `${process.cwd()}/tests/uploads/Test Files`,
+      'License.md',
+    );
+    if (fileName) {
+      await page.waitForTimeout(3000);
+      await uploadFile(page, 'temp', fileName);
+    }
+  });
   it('9.2.2 - File copy from raw to VRE core requires confirmation from Project Admin', async () => {
     const projectTitle = await page.waitForXPath(
       '//span[contains(@class, "ant-page-header-heading-title")]/descendant::span',
