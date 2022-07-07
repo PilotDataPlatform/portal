@@ -14,13 +14,13 @@ function SearchResultCard({ record, searchConditions }) {
     ? attributeConditions.attributes
     : [];
   
-  const fileType = record.source.dataType;
-  const info = record.source;
-  const attributes = info.attributes;
-  const tags = info.tags;
-  const location = info.displayPath;
+  const fileType = record.type;
+  // const info = record.source;
+  const attributes = record.attributes;
+  const tags = record.tags;
+  const location = record.parentPath.split('.').join('/') + '/' + record.name;
 
-  const uploadTime = moment(info.timeCreated * 1000).format(
+  const uploadTime = moment(record.createdTime).format(
     'YYYY-MM-DD HH:mm:ss',
   );
   const hightLightTemplateName = (name) => {
@@ -29,7 +29,7 @@ function SearchResultCard({ record, searchConditions }) {
       searchConditions.find((el) => el.category === 'attributes')['name']
     ) {
       return getHighlightedText(
-        info.attributes[0].name,
+        attributes[0].name,
         searchConditions.find((el) => el.category === 'attributes')['name'],
       );
     } else {
@@ -38,14 +38,14 @@ function SearchResultCard({ record, searchConditions }) {
   };
 
   const displayFileType = (fileType) => {
-    if (fileType === 'File') {
+    if (fileType === 'file') {
       return (
         <div>
           <span className="file-name-row-lable">File Name:</span>
           <FileOutlined style={{marginRight: '10px'}}/>
         </div>
       );
-    } else if (fileType === 'Folder') {
+    } else if (fileType === 'folder') {
       return (
         <div>
           <span className="folder-name-row-lable">Folder Name:</span>
@@ -73,22 +73,22 @@ function SearchResultCard({ record, searchConditions }) {
               'keywords'
             ] ? (
               getHighlightedText(
-                info.fileName,
+                record.name,
                 searchConditions.find((el) => el.category === 'file_name')[
                   'keywords'
                 ],
               )
             ) : (
               <>
-                {info.fileName.length > 10 ? (
-                  <Tooltip title={info.fileName}>
+                {record.name.length > 10 ? (
+                  <Tooltip title={record.name}>
                     <span className="file-name-val">
-                      {info.fileName.replace(/\s/g, '\u00a0')}
+                      {record.name.replace(/\s/g, '\u00a0')}
                     </span>
                   </Tooltip>
                 ) : (
                   <span className="file-name-val">
-                    {info.fileName.replace(/\s/g, '\u00a0')}
+                    {record.name.replace(/\s/g, '\u00a0')}
                   </span>
                 )}
               </>
@@ -113,23 +113,23 @@ function SearchResultCard({ record, searchConditions }) {
               'keywords'
             ] ? (
               getHighlightedText(
-                info.uploader,
+                record.owner,
                 searchConditions
                   .find((el) => el.category === 'uploader')
                   ['keywords'].toLowerCase(),
               )
             ) : (
               <>
-                <span className="file-name-val">{info.uploader}</span>
+                <span className="file-name-val">{record.owner}</span>
               </>
             )}
           </div>
-          {fileType === 'File' ? <div style={{ flex: 1, whiteSpace: 'nowrap' }}>
+          {fileType === 'file' ? <div style={{ flex: 1, whiteSpace: 'nowrap' }}>
             <span className="size-label">
               File Size:
             </span>
             <span className="file-name-val">
-              {info.fileSize ? getFileSize(info.fileSize) : 0}
+              {record.size ? getFileSize(record.size) : 0}
             </span>
           </div> : null}
         </div>
