@@ -604,10 +604,9 @@ function deleteFileAPI(data) {
   });
 }
 
-function searchFilesAPI(params, projectGeid) {
-  console.log(params)
+function searchFilesAPI(params, projectCode) {
   return axios({
-    url: `/v1/metadata-items`,
+    url: `/v1/${projectCode}/files/search`,
     method: 'GET',
     params,
   });
