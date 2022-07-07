@@ -99,13 +99,12 @@ function Search(props) {
       .then((res) => {
         const result = res.data.result.map((file) => ({
           ...file,
-          zone: file.zone === 0 ? 'greenroom' : 'core',
           key: file.storage_id,
         }));
         const greenroomFiles = result.filter(
-          (file) => file.zone === 'greenroom',
+          (file) => file.zone === 'Greenroom'
         );
-        const coreFiles = result.filter((file) => file.zone === 'core');
+        const coreFiles = result.filter((file) => file.zone === 'Core');
         setFiles({ all: result, greenroom: greenroomFiles, core: coreFiles });
 
         setGreenRoomTotal(greenroomFiles.length);
