@@ -18,7 +18,7 @@ import { objectKeysToSnakeCase } from '../';
 import { getPath } from './getPath';
 
 const USER_LOGOUT = 'user logged out';
-const MAX_LENGTH = 1024 * 1024 * 2;
+const MAX_LENGTH = 1024 * 1024 * 5;
 const [
   updateUploadItemDispatcher,
   setNewUploadIndicatorDispatcher,
