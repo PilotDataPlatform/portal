@@ -417,7 +417,11 @@ const AddTagsModal = ({ visible, setVisible, selectedRows, setSuccessNum }) => {
   return (
     <Modal
       className={styles.tags_modal}
-      title={<p style={{ color: '#003262', margin: '0px' }}>Add/Remove Tags</p>}
+      title={
+        <p style={{ color: variables.primaryColor1, margin: '0px' }}>
+          Add/Remove Tags
+        </p>
+      }
       visible={visible}
       width={550}
       height={330}
@@ -506,7 +510,10 @@ const AddTagsModal = ({ visible, setVisible, selectedRows, setSuccessNum }) => {
       {step === 3 ? (
         <div>
           <ExclamationCircleOutlined
-            style={{ color: '#FFC118', margin: '0px 10px 0px 20px' }}
+            style={{
+              color: variables.primaryColor5,
+              margin: '0px 10px 0px 20px',
+            }}
           />{' '}
           {skippedArray.length} file(s)/folder(s) has exceeded 10 tags
           limitation.

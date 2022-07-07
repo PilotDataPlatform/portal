@@ -21,6 +21,7 @@ import { datasetInfoCreators } from '../../../../Redux/actions';
 import i18n from '../../../../i18n';
 import logsInfo from '../../DatasetActivity/DatasetActivityLogsDisplay';
 import styles from './PublishNewVersion.module.scss';
+import variables from '../../../../Themes/base.scss';
 
 const { TextArea } = Input;
 
@@ -52,8 +53,8 @@ const PublishNewVersion = (props) => {
   const [form] = Form.useForm();
   const dispatch = useDispatch();
   const datasetInfo = useSelector((state) => state.datasetInfo.basicInfo);
-  const datasetCurrentVersion  = useSelector(
-    (state) => state.datasetInfo.currentVersion
+  const datasetCurrentVersion = useSelector(
+    (state) => state.datasetInfo.currentVersion,
   );
   const userName = useSelector((state) => state.username);
 
@@ -92,11 +93,9 @@ const PublishNewVersion = (props) => {
       setTotalItem(res.data.total);
       setActivityLogsLoading(false);
       setInputValue('');
-    } catch(error) {
+    } catch (error) {
       setActivityLogsLoading(false);
-      message.error(
-        `${i18n.t('errormessages:datasetVersionLogs.default.0')}`
-      );
+      message.error(`${i18n.t('errormessages:datasetVersionLogs.default.0')}`);
     }
   };
 
@@ -108,7 +107,7 @@ const PublishNewVersion = (props) => {
     datasetGeid,
     datasetCurrentVersion,
     datasetInfo,
-    newVersionModalVisibility
+    newVersionModalVisibility,
   ]);
 
   const handleRadioOnChange = (e) => {
@@ -142,10 +141,10 @@ const PublishNewVersion = (props) => {
         setBtnLoading(false);
         return;
       }
-    } catch(error) {
+    } catch (error) {
       setBtnLoading(false);
       message.error(
-        `${i18n.t('errormessages:publishDatasetNewVersion.default.0')}`
+        `${i18n.t('errormessages:publishDatasetNewVersion.default.0')}`,
       );
     }
   };
@@ -198,7 +197,9 @@ const PublishNewVersion = (props) => {
     <Modal
       className={styles.new_version_modal}
       title={
-        <p style={{ color: '#003262', margin: '0px' }}>Releasing Dataset Version</p>
+        <p style={{ color: variables.primaryColor1, margin: '0px' }}>
+          Releasing Dataset Version
+        </p>
       }
       visible={newVersionModalVisibility}
       maskClosable={false}
@@ -287,7 +288,11 @@ const PublishNewVersion = (props) => {
               )}
             </>
           )}
-          {activityLogsLoading && <Space style={{width: '100%', marginLeft: '50%'}}><Spin size="middle"></Spin></Space>}
+          {activityLogsLoading && (
+            <Space style={{ width: '100%', marginLeft: '50%' }}>
+              <Spin size="middle"></Spin>
+            </Space>
+          )}
         </div>
       </div>
     </Modal>

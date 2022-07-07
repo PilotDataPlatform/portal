@@ -1,3 +1,4 @@
+@import '../../../../Themes/base.scss';
 .card {
   :global {
     .ant-card {
@@ -29,7 +30,7 @@
       h2 {
         font-size: 20px;
         letter-spacing: 0px;
-        color: #003262;
+        color: $primary-color-dark-1;
         margin-left: 35px;
         margin-bottom: 10px;
       }

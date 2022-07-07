@@ -165,7 +165,7 @@ function NewProjectPanel({
               <Avatar
                 src={imgURL}
                 style={{
-                  backgroundColor: '#003262',
+                  backgroundColor: variables.primaryColor1,
                   verticalAlign: 'middle',
                   marginLeft: '83px',
                 }}
@@ -174,7 +174,7 @@ function NewProjectPanel({
             ) : (
               <Avatar
                 style={{
-                  backgroundColor: '#003262',
+                  backgroundColor: variables.primaryColor1,
                   verticalAlign: 'middle',
                   marginLeft: '83px',
                 }}

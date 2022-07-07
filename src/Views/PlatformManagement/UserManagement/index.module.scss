@@ -1,6 +1,7 @@
+@import '../../../Themes/base.scss';
 .upperMenu {
   :global {
-    background-color: #003262 !important;
+    background-color: $primary-color-1 !important;
     position: fixed !important;
     top: 120px;
     width: 51px;

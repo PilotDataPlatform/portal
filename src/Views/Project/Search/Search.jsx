@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 import SearchConditions from './Components/SearchConditions';
 import SearchResultTable from './Components/SearchResultTable';
 import { searchFilesAPI } from '../../../APIs';
+import variables from '../../../Themes/base.scss';
 import _ from 'lodash';
 
 function Search(props) {
@@ -300,7 +301,7 @@ function Search(props) {
         >
           <p
             style={{
-              color: '#003262',
+              color: variables.primaryColor1,
               fontSize: 16,
               fontWeight: 'bold',
               margin: '0px 0px 0px 20px',

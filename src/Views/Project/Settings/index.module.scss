@@ -1,3 +1,4 @@
+@import '../../../Themes/base.scss';
 .custom_tabs {
   :global {
     .ant-tabs-bar {
@@ -118,7 +119,7 @@
     .ant-card {
       .ant-card-head {
         padding: 0 18px;
-        color: #003262;
+        color: $primary-color-1;
         font-size: 14px;
         font-weight: bold;
         .ant-card-head-title {
@@ -189,14 +190,16 @@
 
 .workBench {
   padding: 24px;
-    .guacamole, .superset, .jupyterhub {
-      display: flex;
-      align-items: center;
-      height: 80px;
-      margin-bottom: 20px;
-      box-shadow: #0000001A 0px 3px 6px;;
-      border-radius: 8px;
-    }
+  .guacamole,
+  .superset,
+  .jupyterhub {
+    display: flex;
+    align-items: center;
+    height: 80px;
+    margin-bottom: 20px;
+    box-shadow: #0000001a 0px 3px 6px;
+    border-radius: 8px;
+  }
 }
 
 .workbench_modal {

@@ -1,3 +1,4 @@
+@import '../../../../Themes/base.scss';
 .not-error {
   border: none !important;
   padding: 0 !important;
@@ -5,7 +6,7 @@
   .title {
     position: relative;
     svg {
-      color: #003262;
+      color: $primary-color-1;
     }
     .file-name {
       color: #595959;

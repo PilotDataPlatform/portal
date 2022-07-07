@@ -13,6 +13,7 @@ import {
   getDatasetsListingAPI,
 } from '../../../../../../../APIs';
 import i18n from '../../../../../../../i18n';
+import variables from '../../../../../../../Themes/base.scss';
 
 const { Option } = Select;
 
@@ -125,7 +126,11 @@ const DatasetsModal = (props) => {
   return (
     <Modal
       className={styles.dataset_modal}
-      title={<p style={{ margin: '0px', color: '#003262' }}>Add to Datasets</p>}
+      title={
+        <p style={{ margin: '0px', color: variables.primaryColor1 }}>
+          Add to Datasets
+        </p>
+      }
       visible={visible}
       centered={true}
       maskClosable={false}
@@ -179,7 +184,9 @@ const DatasetsModal = (props) => {
       {modalContentStep === 2 && (
         <div style={{ display: 'flex' }}>
           <div style={{ width: '22px', margin: '0px 5px' }}>
-            <ExclamationCircleOutlined style={{ color: '#FFC118' }} />
+            <ExclamationCircleOutlined
+              style={{ color: variables.primaryColor5 }}
+            />
           </div>
           <div style={{ flex: 1 }}>
             <p style={{ marginBottom: '5px' }}>

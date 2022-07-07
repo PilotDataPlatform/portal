@@ -8,6 +8,7 @@ import {
   SearchOutlined,
   QuestionCircleOutlined,
 } from '@ant-design/icons';
+import variables from '../../Themes/base.scss';
 
 export default class BasicCard extends Component {
   state = {
@@ -117,7 +118,7 @@ export default class BasicCard extends Component {
                   style={{
                     position: 'static',
                     fontSize: '15px',
-                    color: '#3C7DA6',
+                    color: variables.primaryColorLight1,
                   }}
                 />
               </Button>

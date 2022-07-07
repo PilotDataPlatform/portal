@@ -117,19 +117,6 @@ function Portal(props) {
       if (keycloak?.tokenParsed.email) {
         setEmailDispatcher(keycloak?.tokenParsed.email);
       }
-
-      getUserstatus();
-    }
-    async function getUserstatus() {
-      try {
-        const res = await getUserstatusAPI();
-        if (res && res.data) {
-          console.log(res.data);
-          setUserStatusDispather(res.data.result.status);
-        }
-      } catch (err) {
-        message.error('User not found');
-      }
     }
     if (keycloak?.tokenParsed) {
       initUser();
