@@ -1,8 +1,9 @@
 const fs = require('fs');
 const { login, logout } = require('../../../../utils/login.js');
-const { admin } =require('../../../../users');
+const { admin } = require('../../../../users');
 const { init } = require('../../../../utils/commonActions.js');
-const { baseUrl } = require('../../../config');
+const { baseUrl, dataConfig } = require('../../../config');
+const { projectCode } = dataConfig.fileDownload;
 const {
   uploadFile,
   waitForFileExplorer,
@@ -16,7 +17,6 @@ const {
 
 describe('2.4 Folder Download', () => {
   let page;
-  const projectId = 96722;
   const newFolder = 'Test Folder';
   jest.setTimeout(7000000); //sets timeout for entire test suite
 
@@ -31,7 +31,7 @@ describe('2.4 Folder Download', () => {
 
   beforeEach(async () => {
     await page.setCacheEnabled(false);
-    await page.goto(`${baseUrl}project/${projectId}/canvas`);
+    await page.goto(`${baseUrl}project/${projectCode}/data`);
   });
 
   afterAll(async () => {
@@ -63,7 +63,7 @@ describe('2.4 Folder Download', () => {
     await downloadButton.click();
     await page.waitForTimeout(10000);
 
-    const [ downloadedFile ] = fs.readdirSync(`./tests/downloads/`);
+    const [downloadedFile] = fs.readdirSync(`./tests/downloads/`);
     expect(downloadedFile.includes('.zip')).toBeTruthy();
     // remove file
     fs.unlinkSync(`./tests/downloads/${downloadedFile}`);

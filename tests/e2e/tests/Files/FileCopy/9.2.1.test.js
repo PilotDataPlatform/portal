@@ -1,11 +1,10 @@
 const { login } = require('../../../../utils/login.js');
 const { init } = require('../../../../utils/commonActions.js');
 const { baseUrl, dataConfig } = require('../../../config');
-const { adminProjectId } = dataConfig.fileCopy;
+const { adminProjectCode } = dataConfig.fileCopy;
 
 describe('9.2 File Copy', () => {
   let page;
-  const projectId = adminProjectId;
   jest.setTimeout(700000); //sets timeout for entire test suite
 
   beforeAll(async () => {
@@ -14,7 +13,7 @@ describe('9.2 File Copy', () => {
     await page.goto(baseUrl);
     await page.setViewport({ width: 1920, height: 1080 });
     await login(page, 'admin');
-    await page.goto(`${baseUrl}project/${projectId}/canvas`);
+    await page.goto(`${baseUrl}project/${adminProjectCode}/data`);
     await init(page);
   });
   afterAll(async () => {

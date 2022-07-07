@@ -2,8 +2,8 @@ const _ = require('lodash');
 
 const { login, logout } = require('../../../../utils/login.js');
 const { init } = require('../../../../utils/commonActions.js');
-const { admin } =require('../../../../users');
-const { baseUrl } = require('../../../config');
+const { admin } = require('../../../../users');
+const { baseUrl, dataConfig } = require('../../../config');
 const {
   navigateToCore,
   navigateInsideFolder,
@@ -22,10 +22,10 @@ const {
   waitForFileExplorer,
   copyFileToCore,
 } = require('../../../../utils/greenroomActions.js');
+const { adminProjectCode } = dataConfig.fileCopy;
 
 describe('9.1 Manual Copy Workflow', () => {
   let page;
-  const projectId = 96722;
   jest.setTimeout(7000000); //sets timeout for entire test suite
 
   beforeAll(async () => {
@@ -39,7 +39,7 @@ describe('9.1 Manual Copy Workflow', () => {
 
   beforeEach(async () => {
     await page.setCacheEnabled(false);
-    await page.goto(`${baseUrl}project/${projectId}/canvas`);
+    await page.goto(`${baseUrl}project/${adminProjectCode}/data`);
   });
 
   afterAll(async () => {
@@ -58,7 +58,7 @@ describe('9.1 Manual Copy Workflow', () => {
 
     await logout(page);
     await login(page, 'collaborator');
-    await page.goto(`${baseUrl}project/${projectId}/canvas`);
+    await page.goto(`${baseUrl}project/${adminProjectCode}/data`);
 
     let collabCopyButton;
     try {

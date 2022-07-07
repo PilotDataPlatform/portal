@@ -1,13 +1,13 @@
 const fs = require('fs');
 
-const fileName = 'tinified.zip';
+const fileName = 'test001.md';
 const folderName = 'Test Files';
 const coreFolderName = 'Test Folder';
 const coreSubFolderName = 'Test Sub Folder';
 
 const waitForFileExplorer = async (page, breadcrumb) => {
   await page.waitForXPath(
-    `//div[contains(@class, 'FileExplorer_file_explore_actions')]/descendant::span[contains(@class, 'ant-breadcrumb-link') and contains(text(), '${breadcrumb}')]`,
+    `//span[contains(@class, 'ant-breadcrumb-link') and contains(text(), '${breadcrumb}')]`,
   );
 };
 
@@ -51,7 +51,7 @@ const selectCoreFile = async (page, fileName) => {
 const selectFileProperties = async (page, fileName) => {
   await selectGreenroomFile(page, fileName);
   const actionsButton = await page.waitForXPath(
-    `//div[contains(@class, "ant-table-content")]/descendant::td/button[contains(@class, "ant-dropdown-trigger")]`,
+    `//tr[contains(@class, 'ant-table-row')]/descendant::span[contains(text(), '${fileName}')]/ancestor::tr//button[contains(@class, "ant-dropdown-trigger")]`,
   );
   await actionsButton.hover();
   const properties = await page.waitForXPath(
@@ -264,6 +264,8 @@ const deleteFileFromGreenroom = async (page, fileName) => {
   await page.waitForTimeout(2000);
   await toggleFilePanel(page);
   await checkFilePanelStatus(page, fileName);
+  // await page.waitForTimeout(2000);
+  // await clickFileAction(page,'Refresh');
 
   const deletedFile = await page.waitForXPath(
     `//tr[contains(@class, 'ant-table-row')]/descendant::span[contains(text(), '${fileName}')]`,
@@ -355,9 +357,7 @@ const cleanupGreenroom = async (page) => {
   }
 };
 
-const cleanupCore = async (
-  page,
-) => {
+const cleanupCore = async (page) => {
   // wait for file explorer to load
   await page.waitForXPath(
     `//div[contains(@class, 'FileExplorer_file_folder_path')]/span[2]`,
@@ -378,7 +378,7 @@ const cleanupCore = async (
   // unselect test folder
   await deleteAction(page);
   await page.waitForTimeout(2000);
-  
+
   await toggleFilePanel(page);
   const filesDeleting = [];
   for (let file of fileNames) {
@@ -436,6 +436,7 @@ const uploadMultipleFiles = async (page, filePaths, fileNames) => {
     pendingUploads.push(checkFilePanelStatus(page, file));
   }
   await toggleFilePanel(page);
+
   await Promise.all(pendingUploads);
 
   const filePromises = [];
@@ -519,7 +520,7 @@ const clickFileAction = async (page, actionText) => {
     });
     if (showOutSide) {
       // await actionBtnOutside[0].click();
-      await actionBtnOutside[0].evaluate(ele => ele.click())
+      await actionBtnOutside[0].evaluate((ele) => ele.click());
       return;
     }
   }
@@ -545,7 +546,7 @@ const navigatePaginationAndFind = async (page, file) => {
     try {
       targetFile = await page.waitForXPath(
         `//tr[contains(@class, 'ant-table-row')]/descendant::span[contains(text(), '${file}')]`,
-        { timeout: 7500 }
+        { timeout: 7500 },
       );
     } catch {
       await nextPageLink.click();

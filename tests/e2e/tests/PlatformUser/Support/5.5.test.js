@@ -5,8 +5,13 @@ const {
   openAndWaitForTarget,
 } = require('../../../../utils/commonActions.js');
 const { clearInput } = require('../../../../utils/inputBox.js');
-const { collaborator } =require('../../../../users');
-const { baseUrl, mailHogHost, mailHogPort } = require('../../../config');
+const { collaborator } = require('../../../../users');
+const {
+  baseUrl,
+  mailHogHost,
+  mailHogPort,
+  mailHogAdminEmail,
+} = require('../../../config');
 const mailhog = require('mailhog')({
   host: mailHogHost,
   port: mailHogPort,
@@ -15,7 +20,6 @@ const mailhog = require('mailhog')({
 describe('5.5 Test Contact us form should receive an email confirmation', () => {
   let page;
   jest.setTimeout(10000000);
-  const adminEmail = 'jzhang@indocresearch.org';
 
   beforeAll(async () => {
     const context = await browser.createIncognitoBrowserContext();
@@ -73,7 +77,7 @@ describe('5.5 Test Contact us form should receive an email confirmation', () => 
       }
     });
     const adminEmailConfirmation = result.items.find((item) => {
-      const hasEmail = item.to.replace(/\+/g, '').includes(adminEmail);
+      const hasEmail = item.to.replace(/\+/g, '').includes(mailHogAdminEmail);
       const hasSubject = item.subject
         .replace(/_/g, ' ')
         .toLowerCase()
