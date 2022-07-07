@@ -1,8 +1,7 @@
 const { login, logout } = require('../../../../utils/login.js');
 const { init } = require('../../../../utils/commonActions.js');
-const { collaborator } =require('../../../../users');
+const { collaborator } = require('../../../../users');
 const { baseUrl, dataConfig } = require('../../../config');
-const { projectId } = dataConfig.userProfile;
 jest.setTimeout(700000);
 
 describe('User profile', () => {

@@ -1,8 +1,8 @@
 const { login, logout } = require('../../../../utils/login.js');
 const { init } = require('../../../../utils/commonActions.js');
-const { collaborator } =require('../../../../users');
+const { collaborator } = require('../../../../users');
 const { baseUrl, dataConfig } = require('../../../config');
-const { projectId } = dataConfig.userProfile;
+const { projectCode } = dataConfig.userProfile;
 jest.setTimeout(700000);
 
 describe('User profile', () => {
@@ -53,7 +53,7 @@ describe('User profile', () => {
     await btn.click();
   }
   it("8.3.1 Project admin could see project members' profile in the teams page by clicking ‘Action’ button and select ‘profile’, then Member Profile modal should pop up", async () => {
-    await page.goto(`${baseUrl}project/${projectId}/teams`);
+    await page.goto(`${baseUrl}project/${projectCode}/teams`);
 
     findDisabletestUser();
 

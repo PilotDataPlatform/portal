@@ -3,7 +3,7 @@ const { init } = require('../../../../utils/commonActions.js');
 const { collaborator } = require('../../../../users');
 const { baseUrl, dataConfig } = require('../../../config');
 jest.setTimeout(700000);
-const { projectId } = dataConfig.contributorCanvas;
+const { projectCode } = dataConfig.contributorCanvas;
 
 describe('Contributor Canvas', () => {
   let page;
@@ -20,7 +20,7 @@ describe('Contributor Canvas', () => {
     await page.waitForTimeout(3000);
   });
   it('2.7.1 No ‘Members’ page button on the side bar', async () => {
-    await page.goto(`${baseUrl}project/${projectId}/canvas`);
+    await page.goto(`${baseUrl}project/${projectCode}/canvas`);
 
     const member = await page.waitForXPath(
       "//span[contains(@class,'anticon-team')]",

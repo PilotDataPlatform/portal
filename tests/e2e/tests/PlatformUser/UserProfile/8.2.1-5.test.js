@@ -1,8 +1,8 @@
 const { login, logout } = require('../../../../utils/login.js');
 const { init } = require('../../../../utils/commonActions.js');
-const { disabletest } =require('../../../../users');
+const { disabletest } = require('../../../../users');
 const { baseUrl, dataConfig } = require('../../../config');
-const { projectId } = dataConfig.userProfile;
+const { projectCode } = dataConfig.userProfile;
 jest.setTimeout(700000);
 
 describe('User profile', () => {
@@ -48,7 +48,7 @@ describe('User profile', () => {
     await page.waitForTimeout(3000);
   }
   it("8.2.1 Platform admin could see all users' profile in the User Management ", async () => {
-    await page.goto(`${baseUrl}project/${projectId}/teams`);
+    await page.goto(`${baseUrl}project/${projectCode}/teams`);
 
     findDisabletestUser();
 

@@ -1,8 +1,8 @@
 const { login, logout } = require('../../../../utils/login.js');
 const { init } = require('../../../../utils/commonActions.js');
-const { disabletest } =require('../../../../users');
+const { disabletest } = require('../../../../users');
 const { baseUrl, dataConfig } = require('../../../config');
-const { projectId } = dataConfig.userProfile;
+const { projectCode } = dataConfig.userProfile;
 jest.setTimeout(700000);
 
 describe('User profile', () => {
@@ -41,7 +41,7 @@ describe('User profile', () => {
   }
   it('8.2.7 When user is disabled, all the projects relation should be removed and enable of the user will not restore the project relationship', async () => {
     //add projects
-    await page.goto(`${baseUrl}project/${projectId}/teams`);
+    await page.goto(`${baseUrl}project/${projectCode}/teams`);
     await page.waitForXPath("//tr[contains(@class,'ant-table-row')]");
     //check if disabletest not exist
     const disabletest = await page.$x("//tr[@data-row-key='disabletest']");

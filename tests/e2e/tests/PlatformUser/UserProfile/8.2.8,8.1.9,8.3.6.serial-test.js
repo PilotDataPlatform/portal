@@ -1,8 +1,8 @@
 const { login, logout } = require('../../../../utils/login.js');
 const { init } = require('../../../../utils/commonActions.js');
-const { collaborator } =require('../../../../users');
+const { collaborator } = require('../../../../users');
 const { baseUrl, dataConfig } = require('../../../config');
-const { projectId } = dataConfig.userProfile;
+const { projectCode } = dataConfig.userProfile;
 jest.setTimeout(700000);
 
 describe('User profile', () => {
@@ -42,7 +42,7 @@ describe('User profile', () => {
     await btn.click();
   }
   it('8.2.8 Recent Activities page nation should be functional, such as change page or change number per page', async () => {
-    await page.goto(`${baseUrl}project/${projectId}/teams`);
+    await page.goto(`${baseUrl}project/${projectCode}/teams`);
     await findDisabletestUser();
     const disabletest = await page.$x("//tr[@data-row-key='disabletest']");
 
@@ -133,7 +133,7 @@ describe('User profile', () => {
     expect(nextPageText).not.toBe(firstDateText);
   });
   it('8.3.6 Recent Activities page nation should be functional, such as change page or change number per page', async () => {
-    await page.goto(`${baseUrl}project/${projectId}/teams`);
+    await page.goto(`${baseUrl}project/${projectCode}/teams`);
 
     const disabletestBtn = await page.waitForXPath(
       "//tr[@data-row-key='disabletest']/td/button",

@@ -1,8 +1,8 @@
 const { login, logout } = require('../../../../utils/login.js');
 const { init } = require('../../../../utils/commonActions.js');
-const { collaborator, disabletest } =require('../../../../users');
+const { collaborator, disabletest } = require('../../../../users');
 const { baseUrl, dataConfig } = require('../../../config');
-const { projectId } = dataConfig.userProfile;
+const { projectCode } = dataConfig.userProfile;
 jest.setTimeout(700000);
 
 describe('User profile', () => {
@@ -55,7 +55,7 @@ describe('User profile', () => {
 
   it('8.3.5 User’s project record should be kept after user removed from the project, so once reinvited back to the project, project admin could see the removed log', async () => {
     //add project
-    await page.goto(`${baseUrl}project/${projectId}/teams`);
+    await page.goto(`${baseUrl}project/${projectCode}/teams`);
 
     await page.waitForXPath("//tr[contains(@class,'ant-table-row')]");
     //check if disabletest not exist

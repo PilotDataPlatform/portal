@@ -1,8 +1,8 @@
 const { login, logout } = require('../../../../utils/login.js');
 const { init } = require('../../../../utils/commonActions.js');
-const { collaborator } =require('../../../../users');
+const { collaborator } = require('../../../../users');
 const { baseUrl, dataConfig } = require('../../../config');
-const { projectId } = dataConfig.userProfile;
+const { projectCode } = dataConfig.userProfile;
 jest.setTimeout(700000);
 
 describe('User profile', () => {
@@ -47,7 +47,7 @@ describe('User profile', () => {
     await page.waitForTimeout(3000);
   }
   it('8.1.4 Project membership should contain all the projects the platform user in with following information:Project name,Project code,User role,Invited by ', async () => {
-    await page.goto(`${baseUrl}project/${projectId}/teams`);
+    await page.goto(`${baseUrl}project/${projectCode}/teams`);
 
     findDisabletestUser();
 
