@@ -1,21 +1,19 @@
 const { login, logout } = require('../../../../utils/login.js');
 const { init } = require('../../../../utils/commonActions.js');
-const { baseUrl } = require('../../../config');
+const { baseUrl, dataConfig } = require('../../../config');
 const {
-  createFolder,
   navigateInsideFolder,
   uploadFile,
   cleanupGreenroom,
 } = require('../../../../utils/greenroomActions.js');
+const { createFolder } = require('../../../../utils/fileScaffoldActions');
 const { createDummyFile } = require('../../../../utils/createDummyFile');
 const fs = require('fs');
-
-const folderName = 'Existing Folder';
-const fileName = '1gb-test';
+const { projectCode } = dataConfig.fileUpload;
 
 describe('1.5 Upload file/folder to existing folder', () => {
   let page;
-  const projectId = 96722;
+  let folderName;
   jest.setTimeout(700000000);
 
   beforeAll(async () => {
@@ -29,7 +27,7 @@ describe('1.5 Upload file/folder to existing folder', () => {
 
   beforeEach(async () => {
     await page.setCacheEnabled(false);
-    await page.goto(`${baseUrl}project/${projectId}/canvas`);
+    await page.goto(`${baseUrl}project/${projectCode}/data`);
   });
 
   afterAll(async () => {
@@ -38,14 +36,13 @@ describe('1.5 Upload file/folder to existing folder', () => {
   });
 
   it('1.5 - Upload file 1G to existing folder', async () => {
-    await createFolder(page, folderName);
+    folderName = await createFolder(page);
     await navigateInsideFolder(page, folderName);
-    if (
-      !fs.existsSync(`${process.cwd()}/tests/uploads/FileUpload/${fileName}`)
-    ) {
-      await createDummyFile('FileUpload', fileName, '1gb');
+    const fileName = '1gb-test';
+    if (!fs.existsSync(`${process.cwd()}/tests/uploads/temp/${fileName}`)) {
+      await createDummyFile('temp', fileName, '1gb');
     }
-    await uploadFile(page, 'FileUpload', fileName);
+    await uploadFile(page, 'temp', fileName);
   });
 
   it('Delete test files from test project', async () => {

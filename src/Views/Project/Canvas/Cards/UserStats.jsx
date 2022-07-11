@@ -178,10 +178,10 @@ function UserStats(props) {
             return (
               <div className={styles.file}>
                 <Row>
-                  <span className={styles.fileStreamIcon}>
+                  <span className={styles['file-stream--icon']}>
                     {fileStreamIcon(el.tag)}
                   </span>
-                  <span className={styles.fileName}>
+                  <span className={styles['file-name']}>
                     {el && el.action !== 'data_download' ? (
                       <Tooltip title={folderPath}>
                         {getFileDisplayName(el)}
@@ -194,9 +194,11 @@ function UserStats(props) {
                 <Row>
                   <div className={styles['connect-line']}></div>
                   <div className={styles['file-descr']}>
-                    <span className={styles.userName}>{el && el.operator}</span>
+                    <span className={styles['user-name']}>
+                      {el && el.operator}
+                    </span>
                     <span
-                      className={styles.userName}
+                      className={styles['user-name']}
                       style={{ margin: '-0.4rem 0.5rem' }}
                     >
                       {' '}
@@ -205,7 +207,9 @@ function UserStats(props) {
                     <span className={styles.time}>
                       {el &&
                         el.createdTime &&
-                        moment.unix(el.createdTime).format(format)}
+                        moment(el.createdTime * 1000).format(
+                          'YYYY-MM-DD HH:mm:ss',
+                        )}
                     </span>
                   </div>
                 </Row>

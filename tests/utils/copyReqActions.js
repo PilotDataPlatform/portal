@@ -17,6 +17,21 @@ exports.prepareActions = async (page, file = false, emptyFolder = false) => {
   }
   await checkBox.click();
 };
+exports.checkFile = async (page, fileName = null) => {
+  let checkBox;
+  if (!fileName) {
+    checkBox = await page.waitForXPath(
+      '//span[@class="anticon anticon-file"]//ancestor::tr//span[@class="ant-checkbox"]',
+    );
+  } else {
+    checkBox = await page.waitForXPath(
+      '//span[text()="' +
+        fileName +
+        '"]//ancestor::tr//span[@class="ant-checkbox"]',
+    );
+  }
+  await checkBox.click();
+};
 
 exports.submitCopyRequest = async (page) => {
   const copyToRequestBtn = await page.waitForXPath(

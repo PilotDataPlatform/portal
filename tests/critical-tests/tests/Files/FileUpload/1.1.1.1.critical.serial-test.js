@@ -1,7 +1,7 @@
 const { login, logout } = require('../../../../utils/login.js');
-const { admin } =require('../../../../users');
+const { admin } = require('../../../../users');
 const { init } = require('../../../../utils/commonActions.js');
-const { baseUrl } = require('../../../config');
+const { baseUrl, dataConfig } = require('../../../config');
 const {
   toggleFilePanel,
   checkFilePanelStatus,
@@ -10,12 +10,15 @@ const {
   fileName,
   uploadAction,
   waitForFileExplorer,
+  selectGreenroomFile,
+  deleteAction,
   deleteFileFromGreenroom,
 } = require('../../../../utils/greenroomActions.js');
 
 describe('1.1.1 Files upload with tags', () => {
   let page;
-  const projectId = 96722;
+  // const projectId = 96722;
+  const projectCode = dataConfig.fileUpload.projectCode;
   jest.setTimeout(7000000); //sets timeout for entire test suite
 
   beforeAll(async () => {
@@ -29,7 +32,7 @@ describe('1.1.1 Files upload with tags', () => {
 
   beforeEach(async () => {
     await page.setCacheEnabled(false);
-    await page.goto(`${baseUrl}project/${projectId}/canvas`);
+    await page.goto(`${baseUrl}project/${projectCode}/data`);
   });
 
   afterAll(async () => {
@@ -37,10 +40,37 @@ describe('1.1.1 Files upload with tags', () => {
     await page.waitForTimeout(3000);
   });
 
+  async function removeExistFile(file) {
+    const search = await page.waitForXPath("//span[contains(@class,'search')]");
+    await search.click();
+    const nameInput = await page.waitForXPath(
+      '//div[contains(@class, "ant-dropdown")]//input[@placeholder="Search name"]',
+      { visible: true },
+    );
+    await nameInput.type(file);
+    const searchFileBtn = await page.waitForXPath(
+      '//div[contains(@class, "ant-dropdown")]//button[contains(@class, "ant-btn-primary")]',
+      { visible: true },
+    );
+    await searchFileBtn.click();
+    await page.waitForTimeout(2000);
+    let fileInTable = await page.$x(
+      `//td[@class='ant-table-cell']//span[text()='${file}']`,
+    );
+
+    if (fileInTable.length !== 0) {
+      await selectGreenroomFile(page, file);
+      await deleteAction(page);
+    }
+  }
+
   it('1.1.1.1 - File should be able to upload with a tag', async () => {
     const tagName = 'test';
 
-    await waitForFileExplorer(page, admin.username);
+    // await waitForFileExplorer(page, admin.username);
+    await page.waitForTimeout(5000);
+    await removeExistFile(fileName);
+
     await uploadAction(page);
     const uploadInputField = await page.waitForSelector('#form_in_modal_file');
     await uploadInputField.uploadFile(
@@ -50,6 +80,7 @@ describe('1.1.1 Files upload with tags', () => {
       '//div[contains(@class, "ant-modal-body")]/form/descendant::input[@id="form_in_modal_tags"]',
     );
     await tagInput.type(tagName);
+
     await page.click('#file_upload_submit_btn');
 
     await toggleFilePanel(page);

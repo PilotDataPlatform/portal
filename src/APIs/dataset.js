@@ -434,7 +434,7 @@ export function getDatasetSchemaListAPI(datasetGeid) {
 
 export function getDatasetDefaultSchemaTemplateListAPI() {
   return serverAxios({
-    url: `/v1/dataset/schemaTPL/default/list`,
+    url: `/v1/dataset/schemaTPL/list`,
     method: 'post',
     data: {},
   });
