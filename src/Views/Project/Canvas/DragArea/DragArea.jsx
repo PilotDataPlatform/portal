@@ -13,33 +13,20 @@ export default class DragArea extends React.Component {
     this.state = {
       currentBreakpoint: 'lg',
       compactType: 'vertical',
-      mounted: false,
       layouts: this.props.layout,
     };
   }
 
   componentDidMount() {
-    this.setState({ mounted: true });
     window.setTimeout(() => {
       window.dispatchEvent(new Event('resize'));
-    }, 1000);
+    }, 1200);
   }
 
   onBreakpointChange = (breakpoint) => {
     this.setState({
       currentBreakpoint: breakpoint,
     });
-  };
-
-  onCompactTypeChange = () => {
-    const { compactType: oldCompactType } = this.state;
-    const compactType =
-      oldCompactType === 'horizontal'
-        ? 'vertical'
-        : oldCompactType === 'vertical'
-        ? null
-        : 'horizontal';
-    this.setState({ compactType });
   };
 
   loadLocal = () => {
