@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import moment from 'moment'
+import moment from 'moment';
 
 import { TabSwitcher } from '../../../Components/TabSwitcher';
 import HeatMap from './HeatMap';
@@ -30,9 +30,37 @@ function HeatMapTabSwitcher({
     [DELETE]: activityColorMap[DELETE][1],
     [COPY]: activityColorMap[COPY][1],
   };
+  const weeks = downloadData.reduce(
+    (allWeeks, data) => [...allWeeks, data.week],
+    [],
+  );
+  let startingWeek = downloadData.length && Math.min(...weeks);
+
+  // use array as map for formatter. formatter function gets called twice, any variables it references outside its scope does not get re-initialized (startingWeek)
+  const formatterMapping = weeks.reduce((savedWeeks, week) => {
+    if ((week - startingWeek) % 4 === 0) {
+      const startOfWeekMonth = moment(week, 'w').format('MMM');
+      const endOfWeekMonth = moment(week, 'w').endOf('week').format('MMM');
+
+      if (startOfWeekMonth !== endOfWeekMonth) {
+        startingWeek += 1;
+        return savedWeeks;
+      }
+
+      const isWeekSaved = savedWeeks.find((item) => item.week === week);
+      // unique weeks only
+      if (!isWeekSaved) {
+        savedWeeks.push({ week, month: startOfWeekMonth });
+      }
+    }
+
+    return savedWeeks;
+  }, []);
 
   const graphConfig = {
     ...dataMapping,
+    reflect: 'y',
+    shape: 'boundary-polygon',
     meta: {
       day: {
         type: 'cat',
@@ -45,8 +73,11 @@ function HeatMapTabSwitcher({
         sync: true,
       },
     },
+    yAxis: {
+      grid: null,
+    },
     xAxis: {
-      position: 'top',
+      position: 'bottom',
       tickLine: null,
       line: null,
       label: {
@@ -56,7 +87,15 @@ function HeatMapTabSwitcher({
           fill: '#666',
           textBaseline: 'top',
         },
-        formatter: (val) => moment(`${val}`, 'W').format('MMM'),
+        formatter: (val) => {
+          const validWeek = formatterMapping.find(
+            (value) => value.week === val,
+          );
+
+          if (validWeek) {
+            return validWeek.month;
+          }
+        },
       },
     },
   };

@@ -298,9 +298,40 @@ function Charts() {
               '2022-02-26': 3,
               '2022-02-27': 23,
               '2022-02-28': 13,
+              '2022-03-01': 13,
+              '2022-03-02': 13,
+              '2022-03-03': 13,
+              '2022-03-04': 13,
+              '2022-03-05': 13,
+              '2022-03-06': 13,
+              '2022-03-07': 13,
+              '2022-03-08': 13,
+              '2022-03-09': 13,
+              '2022-03-10': 13,
+              '2022-03-11': 13,
+              '2022-03-12': 13,
+              '2022-03-13': 13,
+              '2022-03-14': 13,
+              '2022-03-15': 13,
+              '2022-03-16': 13,
+              '2022-03-17': 13,
+              '2022-03-18': 13,
+              '2022-03-19': 13,
+              '2022-03-20': 13,
+              '2022-03-21': 13,
+              '2022-03-22': 13,
+              '2022-03-23': 13,
+              '2022-03-24': 13,
+              '2022-03-25': 13,
+              '2022-03-26': 13,
+              '2022-03-27': 13,
+              '2022-03-28': 13,
+              '2022-03-29': 13,
+              '2022-03-30': 13,
+              '2022-03-31': 13,
             },
           });
-        }, 3000);
+        }, 1000);
       });
     };
 
@@ -351,10 +382,12 @@ function Charts() {
             const data = allActivities[act].data.map((item) => {
               const key = Object.keys(item)[0];
               const date = moment(key, 'YYYY MM DD');
+              const fullDate = date.format('dddd, MMMM Do YYYY');
 
               return {
+                date: fullDate,
                 day: parseInt(date.format('d')),
-                week: date.format('W'),
+                week: date.format('w'),
                 frequency: item[key],
               };
             });
@@ -362,12 +395,12 @@ function Charts() {
             result[act] = data;
           }
           setProjectFileActivity(result);
-          setIsProjectFileActivityLoading(false);
         } catch {
           message.error(
             'Something went wrong while retreiving project file activity',
           );
         }
+        setIsProjectFileActivityLoading(false);
       }
     }
     fetchProjectFileActivity();
