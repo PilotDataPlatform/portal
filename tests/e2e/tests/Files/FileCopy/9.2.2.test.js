@@ -24,7 +24,6 @@ const {
 } = require('../../../../utils/fileScaffoldActions');
 const mailhog = require('mailhog')({
   host: mailHogHost,
-  port: mailHogPort,
 });
 
 const { collaboratorProjectCode } = dataConfig.fileCopy;

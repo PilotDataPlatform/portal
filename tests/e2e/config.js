@@ -9,43 +9,40 @@ let mailHogPort;
 let mailHogAdminEmail;
 let dataConfig = {
   copyReq: {
-    projectCode: 'test20220222',
-    contributorProjectCode: 'testproject0413',
+    projectCode: 'automatic001',
+    contributorProjectCode: 'automatic002',
   },
   adminCanvas: {
-    projectCode: 'test20220222',
+    projectCode: 'automatic001',
   },
   contributorCanvas: {
-    projectCode: 'testproject0413',
+    projectCode: 'automatic002',
   },
   fileCopy: {
-    adminProjectCode: 'test20220222',
-    collaboratorProjectCode: 'dluuwiptest',
+    adminProjectCode: 'automatic001',
+    collaboratorProjectCode: 'automatic006',
   },
   fileUpload: {
-    projectCode: 'test0609',
+    projectCode: 'automatic003',
   },
   userProfile: {
-    projectCode: 'test0411',
+    projectCode: 'automatic004',
   },
 };
 switch (process.env.REACT_APP_TEST_ENV) {
   case 'local':
     baseUrl = `http://localhost:3000${PORTAL_PREFIX}/`;
-    mailHogHost = '10.3.7.106';
-    mailHogPort = 8025;
+    mailHogHost = 'https://mail.dev.pilot.indocresearch.org/';
     mailHogAdminEmail = 'jzhang@indocresearch.org';
     break;
   case 'dev':
-    baseUrl = `http://${process.env.REACT_APP_DOMAIN}${PORTAL_PREFIX}/`;
-    mailHogHost = '10.3.7.106';
-    mailHogPort = 8025;
+    baseUrl = `https://dev.pilot.indocresearch.org${PORTAL_PREFIX}/`;
+    mailHogHost = 'https://mail.dev.pilot.indocresearch.org/';
     mailHogAdminEmail = 'jzhang@indocresearch.org';
     break;
   case 'staging':
     baseUrl = `https://vre-staging.indocresearch.org${PORTAL_PREFIX}/`;
-    mailHogHost = '10.3.7.142';
-    mailHogPort = 8025;
+    mailHogHost = 'https://mail.dev.pilot.indocresearch.org/';
     mailHogAdminEmail = 'jzhang@indocresearch.org';
     break;
 }
