@@ -8,7 +8,7 @@ import _ from 'lodash';
 import moment from 'moment';
 
 /**
- * Takes one prop: projectId. If projetId is given, the component will fetch the invitations on this proejct and not deisplay the project name
+ * If currentProject is given, the component will fetch the invitations on this project and not deisplay the project name
  *
  * @param {*} props
  * @returns
@@ -29,7 +29,7 @@ function InvitationTable(props) {
   const allProjects = useSelector((state) => state.containersPermission);
 
   useEffect(() => {
-    if (props.projectId) {
+    if (props.currentProject) {
       const filtersWithProject = filters;
       filtersWithProject.filters.projectCode = props.currentProject.code;
       setFilters(filtersWithProject);
@@ -171,7 +171,7 @@ function InvitationTable(props) {
       },
     },
   ];
-  if (!props.projectId) {
+  if (!props.currentProject) {
     const projectColumn = {
       title: 'Project',
       dataIndex: 'projectCode',
