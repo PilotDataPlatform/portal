@@ -114,7 +114,12 @@ describe('1.1 Project Canvas - Top Banner ', () => {
     }),
     it('1.1 Admin should be able to see Project Information (Title, Code, Description, Tags) and 1.4 Description and Tags match the information in Project Setting page ', async () => {
       await page.goto(`${baseUrl}project/${projectCode}/canvas`);
+      const titleText = await title[0].evaluate((el) => el.textContent);
+      expect(titleText.length).toBeGreaterThan(0);
 
+      const code = await page.$x("//span[contains(text(),'Project Code')]");
+      const codeText = await code[0].evaluate((el) => el.textContent);
+      expect(codeText.length).toBeGreaterThan(13);
       await page.waitForTimeout(6000);
       await page.waitForXPath("//span[@aria-label='down-circle']");
       const expandBtn = await page.waitForXPath(
