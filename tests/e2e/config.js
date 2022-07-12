@@ -32,20 +32,17 @@ let dataConfig = {
 switch (process.env.REACT_APP_TEST_ENV) {
   case 'local':
     baseUrl = `http://localhost:3000${PORTAL_PREFIX}/`;
-    mailHogHost = '10.3.7.106';
-    mailHogPort = 8025;
+    mailHogHost = 'https://mail.dev.pilot.indocresearch.org/';
     mailHogAdminEmail = 'jzhang@indocresearch.org';
     break;
   case 'dev':
     baseUrl = `https://dev.pilot.indocresearch.org${PORTAL_PREFIX}/`;
-    mailHogHost = '10.3.7.106';
-    mailHogPort = 8025;
+    mailHogHost = 'https://mail.dev.pilot.indocresearch.org/';
     mailHogAdminEmail = 'jzhang@indocresearch.org';
     break;
   case 'staging':
     baseUrl = `https://vre-staging.indocresearch.org${PORTAL_PREFIX}/`;
-    mailHogHost = '10.3.7.142';
-    mailHogPort = 8025;
+    mailHogHost = 'https://mail.dev.pilot.indocresearch.org/';
     mailHogAdminEmail = 'jzhang@indocresearch.org';
     break;
 }
