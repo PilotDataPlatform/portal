@@ -1,13 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Responsive, WidthProvider } from 'react-grid-layout';
+import { Responsive as ResponsiveGridLayout } from 'react-grid-layout';
+import { withSize } from 'react-sizeme';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import './dragArea.scss';
 
-const ResponsiveReactGridLayout = WidthProvider(Responsive);
-
-export default class DragArea extends React.Component {
+class DragArea extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -15,12 +14,6 @@ export default class DragArea extends React.Component {
       compactType: 'vertical',
       layouts: this.props.layout,
     };
-  }
-
-  componentDidMount() {
-    window.setTimeout(() => {
-      window.dispatchEvent(new Event('resize'));
-    }, 1200);
   }
 
   onBreakpointChange = (breakpoint) => {
@@ -39,10 +32,11 @@ export default class DragArea extends React.Component {
 
   render() {
     return (
-      <div style={{ minWidth: '100%' }}>
+      <>
         {this.state.layouts ? (
-          <ResponsiveReactGridLayout
+          <ResponsiveGridLayout
             {...this.props}
+            width={this.props.size.width}
             layouts={this.state.layouts}
             onBreakpointChange={this.onBreakpointChange}
             draggableHandle={'.dragarea'}
@@ -52,9 +46,9 @@ export default class DragArea extends React.Component {
             preventCollision={!this.state.compactType}
           >
             {this.props.children}
-          </ResponsiveReactGridLayout>
+          </ResponsiveGridLayout>
         ) : null}
-      </div>
+      </>
     );
   }
 }
@@ -68,3 +62,5 @@ DragArea.defaultProps = {
   onLayoutChange: function () {},
   cols: { lg: 24, md: 24, sm: 12, xs: 3, xxs: 3 },
 };
+
+export default withSize()(DragArea);
