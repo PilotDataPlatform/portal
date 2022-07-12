@@ -109,7 +109,6 @@ function RawTable(props) {
   const [lineageModalVisible, setLineageModalVisible] = useState(false);
   const [previewModalVisible, setPreviewModalVisible] = useState(false);
 
-  const [tableWidth, setTableWidth] = useState('100%');
   const [tableLoading, setTableLoading] = useState(false);
   const [detailsPanelWidth, setDetailsPanelWidth] = useState(300);
   const [tableState, setTableState] = useState(TABLE_STATE.NORMAL);
@@ -866,9 +865,7 @@ function RawTable(props) {
     const maxPanelwidth = 500;
     const panelWidth =
       parentWidth - delta > maxPanelwidth ? maxPanelwidth : parentWidth - delta;
-    const tableWidth = parentWidth - panelWidth;
 
-    setTableWidth(tableWidth < 500 ? 500 : tableWidth);
     setDetailsPanelWidth(panelWidth);
   }
 
@@ -880,7 +877,6 @@ function RawTable(props) {
   useEffect(() => {
     const debounce = _.debounce(
       () => {
-        setTableWidth('100%');
         setDetailsPanelWidth(300);
       },
       1000,
@@ -1453,7 +1449,7 @@ function RawTable(props) {
               paddingTop: '5px',
               paddingRight: '12px',
               minWidth: '215px',
-              flex: '1 0 20%',
+              flex: `1 0 ${detailsPanelWidth}px`,
             }}
           >
             <Button
