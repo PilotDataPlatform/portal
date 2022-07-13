@@ -1,5 +1,5 @@
 const { login, logout } = require('../../../../utils/login.js');
-const { clearInput, clearSelector } = require('../../../../utils/inputBox.js');
+const { clearInput, clearSelector } = require('../../../../utils/inputBox');
 const { init } = require('../../../../utils/commonActions.js');
 const { baseUrl, dataConfig } = require('../../../config');
 const { projectCode } = dataConfig.adminCanvas;

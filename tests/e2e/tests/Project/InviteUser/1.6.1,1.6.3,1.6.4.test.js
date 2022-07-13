@@ -1,7 +1,7 @@
-const { login, logout } = require('../../../../../utils/login.js');
-const { init } = require('../../../../../utils/commonActions.js');
-const { collaborator } = require('../../../../../users');
-const { baseUrl, dataConfig } = require('../../../../config');
+const { login, logout } = require('../../../../utils/login.js');
+const { init } = require('../../../../utils/commonActions.js');
+const { collaborator } = require('../../../../users');
+const { baseUrl, dataConfig } = require('../../../config');
 jest.setTimeout(700000);
 
 const projectCode = dataConfig.adminCanvas.projectCode;

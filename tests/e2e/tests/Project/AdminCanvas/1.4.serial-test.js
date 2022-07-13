@@ -2,7 +2,7 @@ const fs = require('fs');
 const { login, logout } = require('../../../../utils/login.js');
 const { init } = require('../../../../utils/commonActions.js');
 const { admin, collaborator } = require('../../../../users');
-const { baseUrl, dataConfig } = require('../../../config');
+const { baseUrl, dataConfig } = require('../../../../critical-tests/config');
 
 const {
   fileName,
