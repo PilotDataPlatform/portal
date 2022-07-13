@@ -419,8 +419,9 @@ async function downloadFilesAPI(
   }
 
   return axios(options).then((res) => {
-    let fileName = res.data.result.source;
+    let fileName = decodeURIComponent(res.data.result.source);
     const status = res.data.result.status;
+    fileName = fileName.indexOf('?') !== -1 ? fileName.split('?')[0] : fileName;
     const fileNamesArr = fileName.split('/') || [];
     fileName = fileNamesArr.length && fileNamesArr[fileNamesArr.length - 1];
     const namespaceUrl =
