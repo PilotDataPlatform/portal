@@ -15,40 +15,26 @@ switch (process.env.REACT_APP_TEST_ENV) {
 
 mailHogHost = '10.3.7.106';
 mailHogPort = 8025;
-const dataConfig = {
+let dataConfig = {
   copyReq: {
-    projectId: 60023,
-    contributorProjId: 75044,
+    projectCode: 'automatic001',
+    contributorProjectCode: 'automatic002',
   },
-  canvas: {
-    projectId: 67239,
-    projectCode: 'test20220222',
-    projectCodeContributor: 'testproject0413',
-    projectGeid: '248874d6-7a4d-4cf4-acac-d30a3007a97d',
+  adminCanvas: {
+    projectCode: 'automatic001',
   },
   contributorCanvas: {
-    projectId: 68129,
-    projectCode: 'testproject0413',
-  },
-  fileDelete: {
-    projectCode: 'tp0621',
+    projectCode: 'automatic002',
   },
   fileCopy: {
-    collaboratorProjectId: 61390,
-    adminProjectId: 104582,
-  },
-  fileDownload: {
-    projectCode: 'tp0621',
+    adminProjectCode: 'automatic001',
+    collaboratorProjectCode: 'automatic006',
   },
   fileUpload: {
-    projectCode: 'test0621',
-  },
-  fileExplorer: {
-    projectCode: 'tp0621',
+    projectCode: 'automatic003',
   },
   userProfile: {
-    projectId: 104234,
-    projectCode: 'test20220222',
+    projectCode: 'automatic004',
   },
 };
 
