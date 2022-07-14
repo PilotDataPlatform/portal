@@ -3,7 +3,7 @@ const { init } = require('../../../../utils/commonActions.js');
 const { baseUrl, dataConfig } = require('../../../config');
 jest.setTimeout(700000);
 
-describe('Platform administrator visibility', () => {
+describe('Administrator console should list all users', () => {
   let page;
   beforeAll(async () => {
     const context = await browser.createIncognitoBrowserContext();
@@ -19,17 +19,16 @@ describe('Platform administrator visibility', () => {
     await logout(page);
     await page.waitForTimeout(3000);
   });
-  it('3.1.1 Only platform administrator could see the administrator panel', async () => {
-    const platformAdminNav = await page.waitForXPath(
-      '//li[contains(@class, "ant-menu-item")]//div[contains(text(), "Platform Management")]',
+  it('3.2.9 Platform administrator will be highlighted', async () => {
+    await page.goto(`${baseUrl}users`);
+    const checkBox = await page.waitForXPath(
+      '//span[contains(text(),"Platform Administrator Only")]/ancestor::label//span[contains(@class, "ant-checkbox")]',
     );
-    expect(platformAdminNav).not.toBe(null);
-    await logout(page);
+    await checkBox.click();
     await page.waitForTimeout(3000);
-    await login(page, 'collaborator');
-    const platformAdminNavCollaborator = await page.$x(
-      '//li[contains(@class, "ant-menu-item")]//div[contains(text(), "Platform Management")]',
+    const adminRowStars = await page.$x(
+      '//table//tbody//tr[contains(@class, "ant-table-row")]//td//span[contains(@class, "anticon-crown")]',
     );
-    expect(platformAdminNavCollaborator.length).toBe(0);
+    expect(adminRowStars.length).toBeGreaterThan(0);
   });
 });
