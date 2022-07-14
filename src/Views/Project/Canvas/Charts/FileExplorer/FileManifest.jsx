@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useKeycloak } from '@react-keycloak/web';
 import { Descriptions, Input, Button, Select, message } from 'antd';
 import { EditOutlined, SaveOutlined } from '@ant-design/icons';
 import { getManifestById, updateFileManifestAPI } from '../../../../../APIs';
@@ -7,28 +6,14 @@ import _ from 'lodash';
 import { useTranslation } from 'react-i18next';
 import { ErrorMessager, namespace } from '../../../../../ErrorMessages';
 const { Option } = Select;
-function FileManifest({ currentRecord, permission, updateFileManifest }) {
+function FileManifest({ currentRecord, updateFileManifest }) {
   const { t } = useTranslation(['errormessages']);
+
   if (!currentRecord.manifest) {
     currentRecord.manifest = [];
   }
-  const { keycloak } = useKeycloak();
-  const [attributes, setAttributes] = useState(
-    currentRecord.manifest.map((item) => ({
-      ...item,
-      editing: false,
-      draft: item.value,
-    })),
-  );
-  const [manifests, setManifests] = useState(null); // manifest from the server
-  useEffect(() => {
-    const manifest = currentRecord.manifest.map((item) => ({
-      ...item,
-      editing: false,
-      draft: item.value,
-    }));
-    setAttributes(manifest);
-  }, [currentRecord]);
+  const [attributes, setAttributes] = useState([]);
+  const [manifests, setManifests] = useState([]); // manifest from the server
 
   useEffect(() => {
     const manifestId = currentRecord?.manifest[0]?.manifest_id;
@@ -48,6 +33,36 @@ function FileManifest({ currentRecord, permission, updateFileManifest }) {
     }
   }, [currentRecord.manifest[0]?.manifest_id]);
 
+  useEffect(() => {
+    if (currentRecord?.manifest?.length && manifests.length) {
+      // match id and add name to manifests
+      const manifestName = currentRecord.manifest[0].manifest_name;
+
+      const filteredManifestAttributes = manifests.filter((m) =>
+        currentRecord.manifest.find((manifest) => manifest.name === m.name)
+          ? false
+          : true,
+      );
+      const allAttributes = [
+        ...currentRecord.manifest,
+        ...filteredManifestAttributes,
+      ].map((manifest) => {
+        if (manifest.hasOwnProperty('manifestId')) {
+          manifest.manifest_id = manifest.manifestId;
+          delete manifest.manifestId;
+        }
+        return {
+          ...manifest,
+          editing: false,
+          draft: manifest.value ?? '',
+          manifest_name: manifest.manifest_name ?? manifestName,
+        };
+      });
+
+      setAttributes(allAttributes);
+    }
+  }, [currentRecord, manifests]);
+
   const editable = currentRecord.nodeLabel.indexOf('TrashFile') === -1;
   const onSave = (attrIndex) => {
     const newAttr = [...attributes];
@@ -65,7 +80,9 @@ function FileManifest({ currentRecord, permission, updateFileManifest }) {
     newAttr[attrIndex].value = draft;
     const attrObj = {};
     newAttr.forEach((item) => {
-      attrObj[item.name] = item.value;
+      if (item.value) {
+        attrObj[item.name] = item.value;
+      }
     });
     updateFileManifestAPI(currentRecord.geid, attrObj)
       .then((res) => {
@@ -78,7 +95,7 @@ function FileManifest({ currentRecord, permission, updateFileManifest }) {
       .finally(() => {
         newAttr[attrIndex].editing = false;
         setAttributes(newAttr);
-      });
+    });
   };
 
   const handleCancel = (index) => {
