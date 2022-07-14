@@ -9,12 +9,12 @@ switch (process.env.REACT_APP_TEST_ENV) {
     baseUrl = `http://localhost:3000${PORTAL_PREFIX}/`;
     break;
   case 'dev':
-    baseUrl = `http://${process.env.REACT_APP_DOMAIN}${PORTAL_PREFIX}/`;
+    baseUrl = `https://dev.pilot.indocresearch.org${PORTAL_PREFIX}/`;
     break;
 }
 
-mailHogHost = '10.3.7.106';
-mailHogPort = 8025;
+mailHogHost = 'https://mail.dev.pilot.indocresearch.org/';
+mailHogAdminEmail = 'jzhang@indocresearch.org';
 let dataConfig = {
   copyReq: {
     projectCode: 'automatic001',
@@ -41,6 +41,6 @@ let dataConfig = {
 module.exports = {
   baseUrl,
   mailHogHost,
-  mailHogPort,
+  mailHogAdminEmail,
   dataConfig,
 };

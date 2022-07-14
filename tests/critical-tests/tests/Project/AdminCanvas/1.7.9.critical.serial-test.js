@@ -50,7 +50,7 @@ describe('Project List', () => {
     const projectList = await page.$x('//*[@class="ant-list-items"]');
     expect(projectList.length).toBe(0);
   }
-  it('2.10 After change project visibility “Discoverable by all platform user”, then only project member should be able to see this project', async () => {
+  it('1.7.9 After change project visibility “Discoverable by all platform user”, then only project member should be able to see this project', async () => {
     await page.goto(`${baseUrl}project/${projectId}/settings`);
     await page.waitForXPath('//form//label[text()="Project Name"]');
     let editBtn = await page.waitForXPath(
