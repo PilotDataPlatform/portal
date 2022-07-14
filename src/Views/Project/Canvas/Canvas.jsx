@@ -409,17 +409,15 @@ class Canvas extends Component {
           <>
             <Content
               className="content"
-              style={{ position: 'relative', letterSpacing: '0.4px' }}
+              style={{ position: 'relative', letterSpacing: '0.4px', padding: '20px 11px 20px 32px' }}
             >
               <Row style={{ paddingBottom: '10px' }}>
                 <Col span={24}>
-                  <div style={{ height: 77 }} />
                   <div
                     style={{
-                      position: 'absolute',
-                      zIndex: 1,
+                      padding: '0 9px',
+                      marginBottom: '8px',
                       width: '100%',
-                      top: 0,
                     }}
                   >
                     <CanvasPageHeader />
