@@ -1,3 +1,4 @@
+const { waitForRes } = require('./api');
 const openSupportDrawer = async (page) => {
   const support = await page.waitForXPath('//li[contains(text(), "Support")]');
   await support.click();
@@ -15,16 +16,13 @@ const openAndWaitForTarget = async (browser, page, elementHandle) => {
   );
   //get the new page object:
   const newPage = await newTarget.page();
-  
+
   return newPage;
 };
 
 const closeReleaseNote = async (page, { wait = true } = {}) => {
   if (wait) {
-    await page.waitForResponse(
-      (response) =>
-        response.url().includes('/notifications') && response.status() === 200,
-    );
+    await waitForRes(page, '/notifications');
   }
   try {
     const closeModal = await page.waitForXPath(
@@ -38,10 +36,7 @@ const closeReleaseNote = async (page, { wait = true } = {}) => {
 
 const closeAllBanners = async (page, { wait = true } = {}) => {
   if (wait) {
-    await page.waitForResponse(
-      (response) =>
-        response.url().includes('/notifications') && response.status() === 200,
-    );
+    const res = await waitForRes(page, '/notifications');
   }
   let bannerLeft = true;
   while (bannerLeft) {

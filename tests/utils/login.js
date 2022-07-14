@@ -39,15 +39,6 @@ async function login(page, role) {
   await page.type('#username', username);
   await page.type('#password', password);
   await page.click('#kc-login');
-
-  await page.waitForSelector('#header_username');
-  const usernameDom = await page.$('#header_username');
-  /* istanbul ignore next */
-  const usernameDomText = await page.evaluate(
-    (element) => element.textContent,
-    usernameDom,
-  );
-  await expect(usernameDomText).toMatch(username);
 }
 
 async function logout(page) {
@@ -68,11 +59,11 @@ async function logout(page) {
 
   await page.waitForTimeout(3500);
   const url = new URL(await page.url());
-
   const pathname =
     process.env.REACT_APP_TEST_ENV === 'dev'
       ? url.pathname === process.env.REACT_APP_PORTAL_PATH ||
-        url.pathname === '/'
+        url.pathname === '/' ||
+        url.pathname === '/login'
       : url.pathname === process.env.REACT_APP_PORTAL_PATH ||
         url.pathname === process.env.REACT_APP_PORTAL_PATH + '/login';
 
