@@ -29,8 +29,8 @@ const browser = detect();
 const isSafari = browser?.name === 'safari';
 const { confirm } = Modal;
 
-let width = Window.innerWidth;
-let height = Window.innerHeight;
+let page_width = window.innerWidth;
+let page_height = window.innerHeight;
 
 class Auth extends Component {
   constructor(props) {
@@ -213,7 +213,13 @@ class Auth extends Component {
                 onClick={this.onFinish}
                 loading={this.state.btnLoading}
               >
-                <UserOutlined style={{ marginRight: 13 }} />
+                <UserOutlined
+                  style={{
+                    marginRight: 13,
+                    strokeWidth: '30',
+                    stroke: 'white',
+                  }}
+                />
                 Login
               </span>
             </div>
@@ -250,7 +256,7 @@ class Auth extends Component {
               style={{
                 marginTop: '30rem',
                 alignItems: 'center',
-                marginLeft: '19.6rem',
+                marginLeft: page_width <= 1200 ? '10rem' : '19.6rem',
               }}
             >
               <div className={styles['descr__img']}>
@@ -262,7 +268,7 @@ class Auth extends Component {
               >
                 <div
                   className={styles['descr__text']}
-                  style={{ width: '55rem' }}
+                  style={{ width: page_width <= 1260 ? '40rem' : '55rem' }}
                 >
                   Data gateway that provides project and role based access
                   controls
@@ -280,11 +286,20 @@ class Auth extends Component {
               >
                 <div
                   className={styles['descr-right']}
-                  style={{ marginRight: '18.09rem' }}
+                  style={{
+                    marginRight:
+                      page_width <= 1200
+                        ? '5rem'
+                        : page_width <= 1260
+                        ? '10rem'
+                        : '18.09rem',
+                  }}
                 >
                   <div
                     className={styles['descr__text']}
-                    style={{ width: '55rem' }}
+                    style={{
+                      width: page_width <= 1260 ? '40rem' : '55rem',
+                    }}
                   >
                     Data zones that support ingestion of all types of data
                     across modalities and sensitivities
@@ -299,7 +314,7 @@ class Auth extends Component {
               className={styles['descr']}
               style={{
                 alignItems: 'center',
-                marginLeft: '16.9rem',
+                marginLeft: page_width <= 1200 ? '10rem' : '16.9rem',
                 marginTop: '55rem',
               }}
             >
@@ -312,7 +327,7 @@ class Auth extends Component {
               >
                 <div
                   className={styles['descr__text']}
-                  style={{ width: '53rem' }}
+                  style={{ width: page_width <= 1260 ? '37rem' : '53rem' }}
                 >
                   A workbench that provides access to analysis and visualization
                   tools
