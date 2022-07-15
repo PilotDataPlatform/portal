@@ -1,10 +1,8 @@
-import React , { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import TableWrapper from './TableWrapper';
 import { connect } from 'react-redux';
 import { getResourceRequestsAPI, approveResourceRequestAPI } from '../../APIs';
-import {
-  setServiceRequestRedDot,
-} from '../../Redux/actions';
+import { setServiceRequestRedDot } from '../../Redux/actions';
 import { timeConvert } from '../../Utility';
 import { namespace, ErrorMessager } from '../../ErrorMessages/index';
 import { Button } from 'antd';
@@ -14,7 +12,7 @@ const ServiceRequestTable = (props) => {
   const [filters, setFilters] = useState({
     page: 0,
     pageSize: 10,
-    orderBy: 'request_date',
+    orderBy: 'requested_at',
     orderType: 'desc',
     filters: {},
   });
@@ -23,9 +21,14 @@ const ServiceRequestTable = (props) => {
   const [total, setTotal] = useState(0);
   const [searchText, setSearchText] = useState([]);
 
-
   const getResourceRequests = async (filters) => {
-    const {page: tablePage, pageSize, orderBy, orderType, filters: tableFilters} = filters;
+    const {
+      page: tablePage,
+      pageSize,
+      orderBy,
+      orderType,
+      filters: tableFilters,
+    } = filters;
     try {
       const res = await getResourceRequestsAPI(filters);
       if (
@@ -35,7 +38,7 @@ const ServiceRequestTable = (props) => {
         Object.keys(tableFilters).length === 0 &&
         tablePage === 0 &&
         pageSize === 10 &&
-        orderBy === 'request_date' &&
+        orderBy === 'requested_at' &&
         orderType === 'desc'
       ) {
         localStorage.setItem('serviceRequestId', res.data.result[0].id);
@@ -45,13 +48,13 @@ const ServiceRequestTable = (props) => {
       setRequests(result);
       setTotal(total);
       setPage(page);
-    } catch(error) {
+    } catch (error) {
       const errorMessager = new ErrorMessager(
         namespace.userManagement.getServiceRequestAPI,
       );
       //errorMessager.triggerMsg(error.response.status);
     }
-  }
+  };
 
   useEffect(() => {
     // eslint-disable-next-line
@@ -62,7 +65,7 @@ const ServiceRequestTable = (props) => {
   const completeRequest = async (requestId) => {
     await approveResourceRequestAPI(requestId);
     getResourceRequests(filters);
-  }
+  };
 
   const onChange = (pagination, filter, sorter) => {
     let newFilters = Object.assign({}, filters);
@@ -82,14 +85,14 @@ const ServiceRequestTable = (props) => {
     if (filter.username && filter.username.length > 0) {
       searchText.push({
         key: 'username',
-        value: filter.username[0]
+        value: filter.username[0],
       });
 
       newFilters.filters['username'] = filter.username[0];
     } else {
       delete newFilters.filters['username'];
     }
-    
+
     if (filter.email && filter.email.length > 0) {
       searchText.push({
         key: 'email',
@@ -104,7 +107,7 @@ const ServiceRequestTable = (props) => {
     //Sorters
     if (sorter && sorter.order) {
       if (sorter.columnKey) {
-          newFilters.orderBy = sorter.columnKey;
+        newFilters.orderBy = sorter.columnKey;
       }
       newFilters.orderType = sorter.order === 'ascend' ? 'asc' : 'desc';
     }
@@ -114,12 +117,12 @@ const ServiceRequestTable = (props) => {
         ...newFilters,
         orderBy: 'request_date',
         orderType: 'desc',
-      }
+      };
     }
 
     setFilters(newFilters);
     setSearchText(searchText);
-  }
+  };
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
@@ -182,15 +185,19 @@ const ServiceRequestTable = (props) => {
       width: '10%',
       render: (text, record) => {
         if (text === true) {
-          return <Button 
-          type="primary" 
-          style={{borderRadius: '6px'}}
-          onClick={() => completeRequest(record.id)}
-          >Complete</Button>
+          return (
+            <Button
+              type="primary"
+              style={{ borderRadius: '6px' }}
+              onClick={() => completeRequest(record.id)}
+            >
+              Complete
+            </Button>
+          );
         } else {
-          return <span>Completed</span>
+          return <span>Completed</span>;
         }
-      }
+      },
     },
     {
       title: 'Completed on',
@@ -199,7 +206,7 @@ const ServiceRequestTable = (props) => {
       sorter: true,
       width: '15%',
       render: (text) => {
-        if (text !== "None") {
+        if (text !== 'None') {
           return timeConvert(text, 'datetime');
         } else {
           return '';
@@ -225,7 +232,9 @@ const ServiceRequestTable = (props) => {
 const mapStateToProps = (state) => {
   return {
     showRedDot: state.serviceRequestRedDot.showRedDot,
-  }
-}
+  };
+};
 
-export default connect(mapStateToProps, { setServiceRequestRedDot })(ServiceRequestTable);
+export default connect(mapStateToProps, { setServiceRequestRedDot })(
+  ServiceRequestTable,
+);

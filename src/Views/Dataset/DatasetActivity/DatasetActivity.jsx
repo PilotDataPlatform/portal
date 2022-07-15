@@ -143,7 +143,10 @@ const DatasetActivity = (props) => {
     }
 
     try {
-      const res = await getDatasetActivityLogsAPI(datasetGeid, queryParams);
+      const res = await getDatasetActivityLogsAPI(
+        datasetInfo.code,
+        queryParams,
+      );
       let newArr = [];
       res.data.result.forEach((el, index) => {
         if (el.source.action === 'PUBLISH') {

@@ -95,7 +95,7 @@ class AppHeader extends Component {
       const res = await getResourceRequestsAPI({
         page: 0,
         pageSize: 1,
-        orderBy: 'request_date',
+        orderBy: 'requested_at',
         orderType: 'desc',
         filters: {},
       });
