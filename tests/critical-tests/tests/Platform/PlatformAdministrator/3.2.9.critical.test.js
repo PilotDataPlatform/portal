@@ -1,6 +1,6 @@
 const { login, logout } = require('../../../../utils/login.js');
 const { init } = require('../../../../utils/commonActions.js');
-const { baseUrl, dataConfig } = require('../../../config');
+const { baseUrl } = require('../../../config');
 jest.setTimeout(700000);
 
 describe('Administrator console should list all users', () => {
