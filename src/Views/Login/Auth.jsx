@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { Col, Row, Button, Modal, notification } from 'antd';
-import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { ExclamationCircleOutlined, UserOutlined } from '@ant-design/icons';
 import { instanceOf } from 'prop-types';
 import { withCookies, Cookies } from 'react-cookie';
 import styles from './index.module.scss';
 import { namespace, ErrorMessager } from '../../ErrorMessages';
 import { withRouter, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
+import variables from '../../Themes/base.scss';
 import {
   AddDatasetCreator,
   setUserListCreator,
@@ -27,6 +28,9 @@ const { detect } = require('detect-browser');
 const browser = detect();
 const isSafari = browser?.name === 'safari';
 const { confirm } = Modal;
+
+let width = Window.innerWidth;
+let height = Window.innerHeight;
 
 class Auth extends Component {
   constructor(props) {
@@ -198,63 +202,179 @@ class Auth extends Component {
     return (
       <>
         <div className={styles.bg}>
-          <Row>
-            <Col className={styles['landing-container']}>
-              <img
-                src={require('../../Images/pilot-Logo-White.svg')}
-                width={150}
-              />
-              <div className={styles['landing__description']}>
-                <p>
-                  Pilot is a data management platform that enables researchers
-                  to store, find, access, analyse, and share their data,
-                  including sensitive data, thus reducing barriers to biomedical
-                  research and innovation.
-                </p>
-                <div className={styles['landing__list']}>
-                  <p>Features:</p>
-                  <ul>
-                    <li>
-                      A data gatway that provides project- and role-based access
-                      controls
-                    </li>
-                    <li>
-                      Data zones that support ingestion of all types of data
-                      across modalities and sensitivities
-                    </li>
-                    <li>
-                      A workbench that provides access to analysis and
-                      visualization tools
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <Button
-                id="auth_login_btn"
-                type="primary"
-                htmlType="submit"
-                className={styles['landing__login-button']}
+          <div className={styles.container}>
+            <div className={styles.header}>
+              <span className={styles['header__logo']}>
+                <img src={require('../../Images/pilot-Logo-White.svg')} />
+              </span>
+              <span className={styles['header__register']}>Self-Register</span>
+              <span
+                className={styles['header__login']}
                 onClick={this.onFinish}
                 loading={this.state.btnLoading}
               >
+                <UserOutlined style={{ marginRight: 13 }} />
                 Login
-              </Button>
-            </Col>
-          </Row>
-          <div className={styles.utils}>
-            <CoookiesDrawer
-              onDrawerClose={this.onDrawerClose}
-              cookiesDrawer={this.state.cookiesDrawer}
-            />
+              </span>
+            </div>
+            <div className={styles['descr']} style={{ marginLeft: '17.2rem' }}>
+              <div
+                className={styles['descr__img']}
+                style={{ width: '34.8rem', height: '26.6rem' }}
+              >
+                <img src={require('../../Images/PILOT-Display-MockUp.png')} />
+              </div>
+              <div
+                className={styles['descr-right']}
+                style={{ marginLeft: '12rem' }}
+              >
+                <img
+                  className={styles['descr__logo']}
+                  src={require('../../Images/PilotPoweredLogo.png')}
+                />
+                <div
+                  className={styles['descr__text']}
+                  style={{
+                    fontWeight: '400',
+                    fontSize: '2.5rem',
+                    width: '30rem',
+                  }}
+                >
+                  Data management platform that enables researchers to store,
+                  find, access, analyse, and share their data.
+                </div>
+              </div>
+            </div>
+            <div
+              className={styles['descr']}
+              style={{
+                marginTop: '30rem',
+                alignItems: 'center',
+                marginLeft: '19.6rem',
+              }}
+            >
+              <div className={styles['descr__img']}>
+                <img src={require('../../Images/Illustration.png')} />
+              </div>
+              <div
+                className={styles['descr-right']}
+                style={{ marginLeft: '8.7rem' }}
+              >
+                <div
+                  className={styles['descr__text']}
+                  style={{ width: '55rem' }}
+                >
+                  Data gateway that provides project and role based access
+                  controls
+                </div>
+              </div>
+            </div>
+            <div>
+              <div className={styles['trapezoid']}></div>
+              <div
+                className={styles['descr-trapezoid']}
+                style={{
+                  alignItems: 'center',
+                  marginLeft: '16.5rem',
+                }}
+              >
+                <div
+                  className={styles['descr-right']}
+                  style={{ marginRight: '18.09rem' }}
+                >
+                  <div
+                    className={styles['descr__text']}
+                    style={{ width: '55rem' }}
+                  >
+                    Data zones that support ingestion of all types of data
+                    across modalities and sensitivities
+                  </div>
+                </div>
+                <div className={styles['descr__img']}>
+                  <img src={require('../../Images/Illustration.png')} />
+                </div>
+              </div>
+            </div>
+            <div
+              className={styles['descr']}
+              style={{
+                alignItems: 'center',
+                marginLeft: '16.9rem',
+                marginTop: '55rem',
+              }}
+            >
+              <div className={styles['descr__img']}>
+                <img src={require('../../Images/Illustration.png')} />
+              </div>
+              <div
+                className={styles['descr-right']}
+                style={{ marginLeft: '11.56rem' }}
+              >
+                <div
+                  className={styles['descr__text']}
+                  style={{ width: '53rem' }}
+                >
+                  A workbench that provides access to analysis and visualization
+                  tools
+                </div>
+              </div>
+            </div>
+            <div>
+              <div className={styles['trapezoid-rotation']}></div>
+              <div className={styles['doc']}>
+                <span className={styles['doc__title']}>Documentation</span>
+                <div className={styles['doc-content']}>
+                  <div className={styles['doc-content__img']}>
+                    <img src={require('../../Images/GitHub-Logo-White.png')} />
+                  </div>
+                  <span className={styles['doc-content__text']}>
+                    A collaborative, version-controlled code repository with
+                    shared documents and code.
+                  </span>
+                  <span className={styles['doc-content__btn']}>
+                    <img
+                      style={{ width: 14, marginRight: 17 }}
+                      src={require('../../Images/LearnMore.png')}
+                    />
+                    Learn more
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div className={styles.footer}>
+              <span className={styles['footer-logo']}>
+                <img src={require('../../Images/PilotPoweredLogo.png')} />
+              </span>
+              <div className={styles['footer-links']}>
+                <span className={styles['footer-links__text']}>
+                  Documentation
+                </span>
+                <span className={styles['footer-links__text']}>
+                  PILOT GitHub
+                </span>
+                <span className={styles['footer-links__text']}>Support</span>
+                <span className={styles['footer-links__text']}>
+                  Terms of Use
+                </span>
+              </div>
+              <div className={styles['footer-right']}>
+                <span
+                  className={styles['footer-right__login']}
+                  onClick={this.onFinish}
+                  loading={this.state.btnLoading}
+                >
+                  <UserOutlined style={{ marginRight: 13 }} />
+                  Login
+                </span>
+                <span className={styles['footer-right__version']}>
+                  V 1.0.0 Copyright ©2022, PILOT. All rights reserved
+                </span>
+              </div>
+            </div>
           </div>
-          <small className={styles.copyright}>
-            &copy; Copyright Indoc Research 2022
-          </small>
+
           <div className={styles['bg-icon']}>
-            <img
-              alt="pilot background icon"
-              src={require('../../Images/Pilot-icon-Background.svg')}
-            />
+            <img src={require('../../Images/Pilot-icon.png')} width={150} />
           </div>
         </div>
       </>
