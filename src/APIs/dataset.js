@@ -195,7 +195,7 @@ export function moveDatasetFiles(
 
 export function getDatasetActivityLogsAPI(datasetCode, params) {
   return serverAxios({
-    url: `v1/activity-logs/${datasetCode}`,
+    url: `v1/dataset-activity-logs/${datasetCode}`,
     method: 'GET',
     params: {
       ...params,
