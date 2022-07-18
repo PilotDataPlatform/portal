@@ -193,11 +193,14 @@ export function moveDatasetFiles(
   });
 }
 
-export function getDatasetActivityLogsAPI(datasetGeid, params) {
+export function getDatasetActivityLogsAPI(datasetCode, params) {
   return serverAxios({
-    url: `v1/activity-logs/${datasetGeid}`,
+    url: `v1/activity-logs/${datasetCode}`,
     method: 'GET',
-    params,
+    params: {
+      ...params,
+      container_code: datasetCode,
+    },
   });
 }
 
