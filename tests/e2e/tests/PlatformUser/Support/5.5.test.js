@@ -9,12 +9,10 @@ const { collaborator } = require('../../../../users');
 const {
   baseUrl,
   mailHogHost,
-  mailHogPort,
   mailHogAdminEmail,
 } = require('../../../config');
 const mailhog = require('mailhog')({
   host: mailHogHost,
-  port: mailHogPort,
 });
 
 describe('5.5 Test Contact us form should receive an email confirmation', () => {

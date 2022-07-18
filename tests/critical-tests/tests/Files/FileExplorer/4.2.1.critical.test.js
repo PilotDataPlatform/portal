@@ -8,7 +8,8 @@ const {
 
 describe('4.2 File explorer should display properly', () => {
   let page;
-  const projectCode = dataConfig.fileExplorer.projectCode;
+  // const projectCode = dataConfig.fileExplorer.projectCode;
+  const projectCode = 'dluufeautotest';
   jest.setTimeout(7000000); //sets timeout for entire test suite
 
   beforeAll(async () => {
