@@ -20,9 +20,9 @@ describe('8.1.1', () => {
   });
   it('8.1.1 Workbench has Guacamole, Superset and Jupyterhub', async () => {
     await page.goto(`${baseUrl}project/${projectCode}/settings`);
-    const team = await page.waitForXPath(
-      "//li[@class='ant-menu-item ant-menu-item-only-child' and @role='menuitem']//span[@aria-label='team']",
-    );
-    expect(team).not.toBe(null);
+    const workbenchTab = await page.waitForXPath('//div[text()="Workbench"]');
+    await workbenchTab.click();
+    const content = await page.waitForXPath('//span[text()="Guacamole"]');
+    expect(content).not.toBe(null);
   });
 });
