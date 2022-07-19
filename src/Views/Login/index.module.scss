@@ -88,10 +88,13 @@
     border: 1px solid #fff;
     border-radius: 0.6rem;
     height: 3rem;
+    cursor: pointer;
   }
 }
 
 .descr,
+.descr1,
+.descr2,
 .descr-trapezoid {
   z-index: 3;
   display: flex;
@@ -124,6 +127,51 @@
   }
 }
 
+.descr1 {
+  margin-left: 19.6rem;
+
+  &__text {
+    width: 40rem;
+  }
+}
+
+.descr1 {
+  margin-left: 19.6rem;
+
+  &__text {
+    width: 40rem;
+  }
+}
+
+.descr2 {
+  margin-left: 19.6rem;
+
+  &__text {
+    width: 37rem;
+  }
+}
+
+@media only screen and (max-width: 1200px) {
+  .descr1,
+  .descr2 {
+    margin-left: 10rem;
+  }
+}
+
+@media only screen and (min-width: 1260px) {
+  .descr1 {
+    &__text {
+      width: 55rem;
+    }
+  }
+
+  .descr2 {
+    &__text {
+      width: 53rem;
+    }
+  }
+}
+
 .trapezoid {
   position: absolute;
   width: 450px;
@@ -150,7 +198,7 @@
 
 .trapezoid-rotation {
   position: absolute;
-  width: 450px;
+  width: 380px;
   height: 100px;
   border-bottom: 6000px;
   border-top: 100px;
@@ -175,13 +223,37 @@
 .descr-trapezoid {
   position: absolute;
   margin-top: 20rem;
+  margin-right: 18.09rem;
+  .descr__text {
+    width: 55rem;
+  }
+}
+
+@media only screen and (max-width: 1200px) {
+  .descr-trapezoid {
+    margin-right: 5rem;
+
+    .descr__text {
+      width: 40rem;
+    }
+  }
+}
+
+@media only screen and (min-width: 1200px) and (max-width: 1260px) {
+  .descr-trapezoid {
+    margin-right: 10rem;
+
+    .descr__text {
+      width: 40rem;
+    }
+  }
 }
 
 .doc {
   display: flex;
   flex-direction: column;
   position: absolute;
-  margin-top: 15rem;
+  margin-top: 16rem;
   z-index: 4;
 
   &__title {
@@ -252,7 +324,7 @@
 .footer {
   display: flex;
   flex-direction: row;
-  margin-top: 38rem;
+  margin-top: 34rem;
   padding-top: 5.5rem;
   padding-bottom: 2rem;
   background-color: $primary-color-dark-5;
@@ -297,6 +369,7 @@
       margin-left: 14rem;
       border-radius: 0.6rem;
       height: 3rem;
+      cursor: pointer;
       // width: 9.2rem;
     }
 
@@ -307,59 +380,4 @@
       padding-bottom: 1.2rem;
     }
   }
-}
-.landing {
-  &-container {
-    font-family: Helvetica, Arial, sans-serif;
-    font-weight: 100;
-    font-size: 20px;
-    max-width: 790px !important;
-    z-index: 1;
-  }
-
-  &__description {
-    padding-left: 45px;
-    margin-top: 22px;
-
-    ul,
-    p {
-      margin-bottom: 36px;
-    }
-  }
-
-  &__list {
-    ul {
-      padding-left: 35px;
-    }
-
-    > p {
-      font-weight: 600;
-      font-size: 19px;
-      margin-bottom: 4px;
-    }
-  }
-
-  &__login-button {
-    width: 175px;
-    height: auto !important;
-    font-size: 20px !important;
-    font-weight: 100;
-    background-color: transparent !important;
-    border-radius: 9px !important;
-    border: 1px solid #f0f0f0 !important;
-  }
-}
-
-.utils {
-  position: fixed;
-  bottom: 8px;
-  left: 16px;
-}
-
-.copyright {
-  font-size: 16px;
-  position: absolute;
-  bottom: 32px;
-  right: 93px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }

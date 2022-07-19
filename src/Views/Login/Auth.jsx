@@ -29,9 +29,6 @@ const browser = detect();
 const isSafari = browser?.name === 'safari';
 const { confirm } = Modal;
 
-let page_width = window.innerWidth;
-let page_height = window.innerHeight;
-
 class Auth extends Component {
   constructor(props) {
     super(props);
@@ -248,89 +245,6 @@ class Auth extends Component {
                 >
                   Data management platform that enables researchers to store,
                   find, access, analyse, and share their data.
-                </div>
-              </div>
-            </div>
-            <div
-              className={styles['descr']}
-              style={{
-                marginTop: '30rem',
-                alignItems: 'center',
-                marginLeft: page_width <= 1200 ? '10rem' : '19.6rem',
-              }}
-            >
-              <div className={styles['descr__img']}>
-                <img src={require('../../Images/Illustration.png')} />
-              </div>
-              <div
-                className={styles['descr-right']}
-                style={{ marginLeft: '8.7rem' }}
-              >
-                <div
-                  className={styles['descr__text']}
-                  style={{ width: page_width <= 1260 ? '40rem' : '55rem' }}
-                >
-                  Data gateway that provides project and role based access
-                  controls
-                </div>
-              </div>
-            </div>
-            <div>
-              <div className={styles['trapezoid']}></div>
-              <div
-                className={styles['descr-trapezoid']}
-                style={{
-                  alignItems: 'center',
-                  marginLeft: '16.5rem',
-                }}
-              >
-                <div
-                  className={styles['descr-right']}
-                  style={{
-                    marginRight:
-                      page_width <= 1200
-                        ? '5rem'
-                        : page_width <= 1260
-                        ? '10rem'
-                        : '18.09rem',
-                  }}
-                >
-                  <div
-                    className={styles['descr__text']}
-                    style={{
-                      width: page_width <= 1260 ? '40rem' : '55rem',
-                    }}
-                  >
-                    Data zones that support ingestion of all types of data
-                    across modalities and sensitivities
-                  </div>
-                </div>
-                <div className={styles['descr__img']}>
-                  <img src={require('../../Images/Illustration.png')} />
-                </div>
-              </div>
-            </div>
-            <div
-              className={styles['descr']}
-              style={{
-                alignItems: 'center',
-                marginLeft: page_width <= 1200 ? '10rem' : '16.9rem',
-                marginTop: '55rem',
-              }}
-            >
-              <div className={styles['descr__img']}>
-                <img src={require('../../Images/Illustration.png')} />
-              </div>
-              <div
-                className={styles['descr-right']}
-                style={{ marginLeft: '11.56rem' }}
-              >
-                <div
-                  className={styles['descr__text']}
-                  style={{ width: page_width <= 1260 ? '37rem' : '53rem' }}
-                >
-                  A workbench that provides access to analysis and visualization
-                  tools
                 </div>
               </div>
             </div>
