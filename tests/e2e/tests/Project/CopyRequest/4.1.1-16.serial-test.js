@@ -47,11 +47,6 @@ describe('CopyRequest', () => {
     await logout(page);
     await page.waitForTimeout(3000);
   });
-  /**
-   * Before running this test, plese make sure you have following files under your user folder
-   *  - one folder named test-folder-files with 2 files within
-   *  - one zip file (with tags & manifest)
-   */
   it('prepare files', async () => {
     await page.goto(`${baseUrl}project/${projectCode}/data`);
     await page.waitForSelector('#files_table > div > div > table > tbody > tr');
