@@ -6,7 +6,7 @@
 
 ### Frontend
 
-This is the front end react application of Indoc Pilot project. The project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). The back end is on `./server` folder.
+This is the front end react application of Indoc Pilot project. The project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 #### Prerequisites
 
@@ -27,8 +27,10 @@ run `npm i` on the `ROOT/` folder to install all the dependencies.
 | REACT_APP_BRANDING_PATH              | page path for your own branding page. logout/login/session expired                      | /login  |
 | REACT_APP_API_PATH                   | backend api endpoint for bff                                                            |
 | REACT_APP_UPLOAD_URL                 | backend api endpoint for upload service                                                 |
-| REACT_APP_DOWNLOAD_URL               | backend api endpoint for download service                                               |
+| REACT_APP_DOWNLOAD_URL_V2            | backend api endpoint for download service                                               |
 | REACT_APP_DOWNLOAD_URL_V1            | backend api endpoint for download service v1                                            |
+| REACT_APP_DOWNLOAD_GR                | url path for greenroom download service v1                                              |
+| REACT_APP_DOWNLOAD_CORE              | url path for greenroom core service v1                                                  |
 | REACT_APP_DEFAULT_AUTH_URL           | url for keycloak auth                                                                   |
 | REACT_APP_KEYCLOAK_REALM             | keycloak realm                                                                          |
 | REACT_APP_PLATFORM                   | Platform Name                                                                           | Pilot   |
