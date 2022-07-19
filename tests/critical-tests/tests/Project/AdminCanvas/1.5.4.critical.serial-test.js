@@ -14,7 +14,7 @@ const {
 } = require('../../../../utils/greenroomActions.js');
 const { createDummyFile } = require('../../../../utils/createDummyFile');
 const fs = require('fs');
-const { projectId, projectCode } = dataConfig.canvas;
+const { projectCode } = dataConfig.adminCanvas;
 jest.setTimeout(700000);
 
 describe('1.5.4', () => {
