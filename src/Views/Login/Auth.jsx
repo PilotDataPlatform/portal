@@ -248,6 +248,67 @@ class Auth extends Component {
                 </div>
               </div>
             </div>
+            <div
+              className={styles['descr1']}
+              style={{
+                marginTop: '30rem',
+                alignItems: 'center',
+              }}
+            >
+              <div className={styles['descr__img']}>
+                <img src={require('../../Images/Illustration.png')} />
+              </div>
+              <div
+                className={styles['descr-right']}
+                style={{ marginLeft: '8.7rem' }}
+              >
+                <div className={styles['descr1__text']} style={{}}>
+                  Data gateway that provides project and role based access
+                  controls
+                </div>
+              </div>
+            </div>
+            <div>
+              <div className={styles['trapezoid']}></div>
+              <div
+                className={styles['descr-trapezoid']}
+                style={{
+                  alignItems: 'center',
+                  marginLeft: '16.5rem',
+                }}
+              >
+                <div className={styles['descr-right']} style={{}}>
+                  <div className={styles['descr__text']} style={{}}>
+                    Data zones that support ingestion of all types of data
+                    across modalities and sensitivities
+                  </div>
+                </div>
+                <div className={styles['descr__img']}>
+                  <img src={require('../../Images/Illustration.png')} />
+                </div>
+              </div>
+            </div>
+            <div
+              className={styles['descr2']}
+              style={{
+                alignItems: 'center',
+
+                marginTop: '55rem',
+              }}
+            >
+              <div className={styles['descr__img']}>
+                <img src={require('../../Images/Illustration.png')} />
+              </div>
+              <div
+                className={styles['descr-right']}
+                style={{ marginLeft: '11.56rem' }}
+              >
+                <div className={styles['descr2__text']} style={{}}>
+                  A workbench that provides access to analysis and visualization
+                  tools
+                </div>
+              </div>
+            </div>
             <div>
               <div className={styles['trapezoid-rotation']}></div>
               <div className={styles['doc']}>
