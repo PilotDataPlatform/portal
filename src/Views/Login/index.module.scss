@@ -116,7 +116,7 @@
   }
 
   &__text {
-    line-height: 3.2rem;
+    line-height: 2.8rem;
     font-size: 3rem;
     font-weight: 600;
   }
@@ -273,7 +273,9 @@
   }
 
   &-content__text {
+    line-height: 2.3rem;
     font-size: 1.8rem;
+    font-weight: 300;
     width: 38rem;
     margin-left: 4.8rem;
     margin-right: 6.8rem;
@@ -289,8 +291,9 @@
     padding-top: 0.9rem;
     padding-bottom: 0.9rem;
     text-align: center;
-    background-color: $primary-color-dark-7;
+    background-color: $primary-color-1;
     border-radius: 0.9rem;
+    cursor: pointer;
   }
 
   &-content {
@@ -312,16 +315,13 @@
 
     &-content__btn {
       font-size: 1.5rem;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
+
       padding-left: 2.9rem;
       padding-right: 2rem;
       padding-top: 0.5rem;
       padding-bottom: 0.5rem;
-      text-align: center;
-      background-color: $primary-color-dark-7;
-      border-radius: 0.9rem;
+
+      cursor: pointer;
     }
   }
 }
@@ -392,6 +392,7 @@
       font-size: 1rem;
       margin-right: 6.1rem;
       padding-bottom: 1.2rem;
+      font-style: italic;
     }
   }
 }
