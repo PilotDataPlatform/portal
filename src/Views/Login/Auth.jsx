@@ -238,7 +238,7 @@ class Auth extends Component {
                 <div
                   className={styles['descr__text']}
                   style={{
-                    fontWeight: '400',
+                    fontWeight: '600',
                     fontSize: '2.5rem',
                     width: '30rem',
                   }}
