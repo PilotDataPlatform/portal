@@ -309,6 +309,20 @@
     &-content {
       margin-left: 25rem;
     }
+
+    &-content__btn {
+      font-size: 1.5rem;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      padding-left: 2.9rem;
+      padding-right: 2rem;
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+      text-align: center;
+      background-color: $primary-color-dark-7;
+      border-radius: 0.9rem;
+    }
   }
 }
 
