@@ -605,14 +605,6 @@ function deleteFileAPI(data) {
   });
 }
 
-function searchFilesAPI(params, projectCode) {
-  return axios({
-    url: `/v1/${projectCode}/files/search`,
-    method: 'GET',
-    params,
-  });
-}
-
 function validateRepeatFiles(
   targets,
   destination,
@@ -733,7 +725,6 @@ export {
   getZipContentAPI,
   deleteFileAPI,
   getFileManifestAttrs,
-  searchFilesAPI,
   getFiles,
   getRequestFiles,
   validateRepeatFiles,

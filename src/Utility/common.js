@@ -7,14 +7,16 @@ exports.sleep = (milliseconds) => {
  * @param {number} size 
  * @returns 
  */
-exports.getFileSize = (size) => {
+exports.getFileSize = (size, options = {}) => {
+  options.roundingLimit = options.roundingLimit ?? 2;
+
   return size < 1024
     ? size.toString().concat(' B')
     : size < 1024 * 1024
-    ? (size / 1024).toFixed(2).toString().concat(' KB')
+    ? (size / 1024).toFixed(options.roundingLimit).toString().concat(' KB')
     : size < 1024 * 1024 * 1024
-    ? (size / (1024 * 1024)).toFixed(2).toString().concat(' MB')
-    : (size / (1024 * 1024 * 1024)).toFixed(2).toString().concat(' GB');
+    ? (size / (1024 * 1024)).toFixed(options.roundingLimit).toString().concat(' MB')
+    : (size / (1024 * 1024 * 1024)).toFixed(options.roundingLimit).toString().concat(' GB');
 };
 
 exports.trimString = (str) => {

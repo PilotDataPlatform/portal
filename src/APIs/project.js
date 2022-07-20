@@ -1,7 +1,39 @@
 import { serverAxios, axios } from './config';
-import { objectKeysToCamelCase, objectKeysToSnakeCase } from '../Utility';
-import _, { result } from 'lodash';
+import { objectKeysToSnakeCase } from '../Utility';
+import _ from 'lodash';
 import { keycloak } from '../Service/keycloak';
+
+function getProjectStatistics(params, projectCode) {
+  return serverAxios({
+    url: `v1/project-files/${projectCode}/statistics`,
+    method: 'GET',
+    params,
+  });
+}
+
+function getProjectFileSize(params, projectCode) {
+  return serverAxios({
+    url: `v1/project-files/${projectCode}/size`,
+    method: 'GET',
+    params,
+  });
+}
+
+function getProjectActivity(params, projectCode) {
+  return serverAxios({
+    url: `v1/project-files/${projectCode}/activity`,
+    method: 'GET',
+    params,
+  });
+}
+
+function searchProjectFiles(params, projectCode) {
+  return axios({
+    url: `/v1/project-files/${projectCode}/search`,
+    method: 'GET',
+    params,
+  });
+}
 
 function getUserProjectActivitiesAPI(params) {
   return serverAxios({
@@ -651,6 +683,10 @@ function requestCompleteAPI(projectCode, requestId, status, reviewNotes) {
   });
 }
 export {
+  getProjectStatistics,
+  getProjectFileSize,
+  getProjectActivity,
+  searchProjectFiles,
   getUserProjectActivitiesAPI,
   getDatasetsAPI,
   createProjectAPI,
