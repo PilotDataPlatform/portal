@@ -4,7 +4,7 @@ import HeatMapLegend from './HeatMapLegend';
 
 import styles from './index.module.scss';
 
-function HeatMap({ data, color, showLegend = true }) {
+function HeatMap({ data, color, graphConfig, showLegend = true }) {
   G2.registerShape('polygon', 'boundary-polygon', {
     draw(cfg, container) {
       const group = container.addGroup();
@@ -14,7 +14,7 @@ function HeatMap({ data, color, showLegend = true }) {
         fill: cfg.color,
         path: [],
       };
-    const points = cfg.points;
+      const points = cfg.points;
       const path = [
         ['M', points[0].x, points[0].y],
         ['L', points[1].x, points[1].y],
@@ -37,34 +37,8 @@ function HeatMap({ data, color, showLegend = true }) {
     height: 220,
     appendPadding: 3,
     autoFit: true,
-    xField: 'week',
-    yField: 'day',
-    colorField: 'commits',
     color,
     shape: 'boundary-polygon',
-    meta: {
-      day: {
-        type: 'cat',
-        values: [
-          'Sun',
-          'Mon',
-          'Tue',
-          'Wed',
-          'Thu',
-          'Fri',
-          'Sat',
-        ],
-      },
-      week: {
-        type: 'cat',
-      },
-      commits: {
-        sync: true,
-      },
-      date: {
-        type: 'cat',
-      },
-    },
     yAxis: {
       grid: null,
     },
@@ -80,25 +54,21 @@ function HeatMap({ data, color, showLegend = true }) {
           fill: '#666',
           textBaseline: 'top',
         },
-        formatter: (val) => {
-          if (val === '2') {
-            return 'MAY';
-          } else if (val === '6') {
-            return 'JUN';
-          } else if (val === '10') {
-            return 'JUL';
-          } else if (val === '15') {
-            return 'AUG';
-          } else if (val === '19') {
-            return 'SEP';
-          } else if (val === '24') {
-            return 'OCT';
-          }
-
-          return '';
-        },
       },
     },
+    meta: {
+      [graphConfig.xField]: {
+        type: 'cat',
+        values: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+      },
+      [graphConfig.yField]: {
+        type: 'cat',
+      },
+      [graphConfig.seriesField]: {
+        sync: true,
+      },
+    },
+    ...graphConfig,
   };
 
   return (

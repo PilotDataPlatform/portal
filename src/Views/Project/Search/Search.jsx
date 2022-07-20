@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { v4 as uuidv4 } from 'uuid';
 import SearchConditions from './Components/SearchConditions';
 import SearchResultTable from './Components/SearchResultTable';
-import { searchFilesAPI } from '../../../APIs';
+import { searchProjectFiles } from '../../../APIs';
 import variables from '../../../Themes/base.scss';
 import _ from 'lodash';
 
@@ -95,14 +95,17 @@ function Search(props) {
       {},
     );
     // handle the search when click on search button
-    searchFilesAPI({ ...queryParams, ...pagination }, props.currentProject.code)
+    searchProjectFiles(
+      { ...queryParams, ...pagination },
+      props.currentProject.code,
+    )
       .then((res) => {
         const result = res.data.result.map((file) => ({
           ...file,
           key: file.storage_id,
         }));
         const greenroomFiles = result.filter(
-          (file) => file.zone === 'Greenroom'
+          (file) => file.zone === 'Greenroom',
         );
         const coreFiles = result.filter((file) => file.zone === 'Core');
         setFiles({ all: result, greenroom: greenroomFiles, core: coreFiles });

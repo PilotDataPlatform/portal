@@ -22,6 +22,7 @@ import {
   formatDate,
   timeConvert,
   timezone,
+  curTimeZoneOffset,
 } from './timeCovert';
 import { partialString } from './column';
 import { displayTitle, nestedLoop } from './fileTree';
@@ -34,6 +35,8 @@ import {
   checkRootFolder,
   checkGreenAndCore,
 } from './panelKey';
+
+import { convertToFileSizeInUnit, setLabelsDate, getCurrentYear } from './cavasCharts';
 export { useQueryParams } from './useQueryParams';
 export {
   fileUpload,
@@ -53,6 +56,7 @@ export {
   formatRole,
   convertRole,
   convertUTCDateToLocalDate,
+  curTimeZoneOffset,
   timeConvert,
   formatDate,
   timezone,
@@ -71,6 +75,9 @@ export {
   checkGreenAndCore,
   getTags,
   usePrevious,
+  convertToFileSizeInUnit,
+  setLabelsDate,
+  getCurrentYear,
 };
 export { randomTxt } from './randomTxt';
 export { logout, refresh, login } from './keycloakActions';

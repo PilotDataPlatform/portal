@@ -33,8 +33,6 @@ const Promise = require('bluebird');
 
 /**
  * Slice files into chunks
- * Author: 橙红年代
- * https://juejin.im/post/5cf765275188257c6b51775f
  *
  * @param {array} file file[]
  * @param {number} [piece=1024 * 1024 * 5]

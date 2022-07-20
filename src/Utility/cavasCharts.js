@@ -7,13 +7,22 @@ export const convertToFileSizeInUnit = (size) => {
     return (size / sizeThreshold).toFixed(0).toString().concat('Kb');
   }
   if (size < Math.pow(sizeThreshold, 3)) {
-    return (size / Math.pow(sizeThreshold, 2)).toFixed(0).toString().concat('Mb');
+    return (size / Math.pow(sizeThreshold, 2))
+      .toFixed(0)
+      .toString()
+      .concat('Mb');
   }
   if (size < Math.pow(sizeThreshold, 4)) {
-    return (size / Math.pow(sizeThreshold, 3)).toFixed(0).toString().concat('Gb');
+    return (size / Math.pow(sizeThreshold, 3))
+      .toFixed(0)
+      .toString()
+      .concat('Gb');
   }
   if (size < Math.pow(sizeThreshold, 5)) {
-    return (size / Math.pow(sizeThreshold, 4)).toFixed(1).toString().concat('Tb');
+    return (size / Math.pow(sizeThreshold, 4))
+      .toFixed(1)
+      .toString()
+      .concat('Tb');
   }
 };
 
@@ -63,7 +72,7 @@ export const setLabelsDate = (date, currentYear) => {
       month = 'Invalid Month';
   }
 
-  if ( year === currentYear && month === 'Jan' ) {
+  if (year === currentYear && month === 'Jan') {
     return `${month} \n ${year}`;
   }
   return month;

@@ -5,13 +5,18 @@ import {
   PaperClipOutlined,
   CloudServerOutlined,
 } from '@ant-design/icons';
-import { listAllVirtualFolder, projectFileCountTotal } from '../../../../APIs';
+import {
+  listAllVirtualFolder,
+  projectFileCountTotal,
+  getProjectStatistics,
+} from '../../../../APIs';
 import moment from 'moment';
+import { message } from 'antd';
 import { useSelector } from 'react-redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import styles from './index.module.scss';
-import { useCurrentProject } from '../../../../Utility';
+import { useCurrentProject, curTimeZoneOffset } from '../../../../Utility';
 import { canvasPageActions } from '../../../../Redux/actions';
 import { useDispatch } from 'react-redux';
 import '../../../../Themes/base.scss';
@@ -22,11 +27,25 @@ function FileStats(props) {
   const [coreCount, setCoreCount] = useState(0);
   const [collections, setCollections] = useState([]);
   const [currentProject] = useCurrentProject();
-
+  const tzOffset = curTimeZoneOffset();
   const dispatch = useDispatch();
 
   useEffect(() => {
+    async function loadNumbers() {
+      const params = { time_zone: tzOffset };
+      try {
+        const statsResults = await getProjectStatistics(
+          params,
+          currentProject.code,
+        );
+      } catch {
+        message.error(
+          'Something went wrong while retrieving project statistics',
+        );
+      }
+    }
     if (currentProject) {
+      loadNumbers();
       //need new api to get
       // projectFileCountTotal(currentProject.globalEntityId, {
       //   start_date: moment().startOf('day').unix(),
@@ -40,6 +59,7 @@ function FileStats(props) {
       //     setCoreCount(statistics.core);
       //   }
       // });
+
       listAllVirtualFolder(currentProject.code, props.username).then((res) => {
         setCollections(res.data.result);
       });
