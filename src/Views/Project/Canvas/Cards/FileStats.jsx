@@ -5,7 +5,7 @@ import {
   PaperClipOutlined,
   CloudServerOutlined,
 } from '@ant-design/icons';
-import { listAllVirtualFolder, projectFileCountTotal } from '../../../../APIs';
+import { listAllVirtualFolder, searchProjectFilesAPI } from '../../../../APIs';
 import moment from 'moment';
 import { useSelector } from 'react-redux';
 import { connect } from 'react-redux';
@@ -27,19 +27,10 @@ function FileStats(props) {
 
   useEffect(() => {
     if (currentProject) {
-      //need new api to get
-      // projectFileCountTotal(currentProject.globalEntityId, {
-      //   start_date: moment().startOf('day').unix(),
-      //   end_date: moment().endOf('day').unix(),
-      // }).then((res) => {
-      //   const statistics = res?.data?.result;
-      //   console.log(res);
-      //   if (res.status === 200 && statistics) {
-      //     console.log(statistics);
-      //     setGreenRoomCount(statistics.greenroom);
-      //     setCoreCount(statistics.core);
-      //   }
-      // });
+      searchProjectFilesAPI({}, currentProject.code).then((res) => {
+        setGreenRoomCount(res.data.totalPerZone.greenroom);
+        setCoreCount(res.data.totalPerZone.core);
+      });
       listAllVirtualFolder(currentProject.code, props.username).then((res) => {
         setCollections(res.data.result);
       });
