@@ -3,6 +3,15 @@ import { objectKeysToCamelCase, objectKeysToSnakeCase } from '../Utility';
 import _, { result } from 'lodash';
 import { keycloak } from '../Service/keycloak';
 
+function searchProjectFilesAPI(params, projectCode){
+  console.log(params)
+  return serverAxios({
+    url: `/v1/project-files/${projectCode}/search`,
+    method: 'GET',
+    params,
+  });
+}
+
 function getUserProjectActivitiesAPI(params) {
   return serverAxios({
     url: '/v1/user/events',
@@ -651,6 +660,7 @@ function requestCompleteAPI(projectCode, requestId, status, reviewNotes) {
   });
 }
 export {
+  searchProjectFilesAPI,
   getUserProjectActivitiesAPI,
   getDatasetsAPI,
   createProjectAPI,
