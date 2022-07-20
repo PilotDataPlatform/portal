@@ -28,7 +28,6 @@ function getProjectActivity(params, projectCode) {
 }
 
 function searchProjectFiles(params, projectCode) {
-  console.log(params)
   return axios({
     url: `/v1/project-files/${projectCode}/search`,
     method: 'GET',

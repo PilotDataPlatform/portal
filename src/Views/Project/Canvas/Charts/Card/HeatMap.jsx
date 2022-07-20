@@ -59,6 +59,7 @@ function HeatMap({ data, color, graphConfig, showLegend = true }) {
     meta: {
       [graphConfig.xField]: {
         type: 'cat',
+        values: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
       },
       [graphConfig.yField]: {
         type: 'cat',

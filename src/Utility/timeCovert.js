@@ -22,6 +22,11 @@ const formatDate = (utc) => {
   return utc;
 };
 
+const curTimeZoneOffset = () => {
+  const t = moment.tz.guess();
+  return moment.tz(t).format('Z');
+}
+
 const curTimeZoneAbbr = () => {
   const t = moment.tz.guess();
   const timezone = moment.tz(t).zoneAbbr();
@@ -74,6 +79,7 @@ export {
   convertUTCDateToLocalDate,
   timeConvert,
   formatDate,
+  curTimeZoneOffset,
   curTimeZoneAbbr,
   timezone,
   CalTimeDiff,

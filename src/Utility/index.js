@@ -22,6 +22,7 @@ import {
   formatDate,
   timeConvert,
   timezone,
+  curTimeZoneOffset,
 } from './timeCovert';
 import { partialString } from './column';
 import { displayTitle, nestedLoop } from './fileTree';
@@ -55,6 +56,7 @@ export {
   formatRole,
   convertRole,
   convertUTCDateToLocalDate,
+  curTimeZoneOffset,
   timeConvert,
   formatDate,
   timezone,

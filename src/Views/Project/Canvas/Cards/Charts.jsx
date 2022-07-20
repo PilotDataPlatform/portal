@@ -18,6 +18,7 @@ import {
   setLabelsDate,
   getCurrentYear,
   getFileSize,
+  curTimeZoneOffset,
 } from '../../../../Utility';
 import {
   getProjectStatistics,
@@ -46,7 +47,7 @@ function Charts() {
   const [isProjectFileActivityLoading, setIsProjectFileActivityLoading] =
     useState(true);
 
-  const tzOffset = moment().utcOffset() / 60 + ':00';
+  const tzOffset = curTimeZoneOffset();
 
   const SAPDataField = {
     xField: 'date',
@@ -75,35 +76,35 @@ function Charts() {
 
   const getStatAttrs = (meta, stat) => {
     switch (meta) {
-      case 'total_count':
+      case 'totalCount':
         return {
           class: 'file-total',
           title: 'Total Files',
           icon: <FileTextOutlined />,
           stat,
         };
-      case 'total_size':
+      case 'totalSize':
         return {
           class: 'file-size',
           title: 'Total File Size',
           icon: <HddOutlined />,
           stat: getFileSize(stat, { roundingLimit: 1 }),
         };
-      case 'total_users':
+      case 'totalUsers':
         return {
           class: 'users-total',
           title: 'Project Members',
           icon: <TeamOutlined />,
           stat,
         };
-      case 'today_uploaded':
+      case 'todayUploaded':
         return {
           class: 'uploaded',
           title: 'Uploaded',
           icon: <CloudUploadOutlined />,
           stat,
         };
-      case 'today_downloaded':
+      case 'todayDownloaded':
         return {
           class: 'downloaded',
           title: 'Downloaded',
@@ -115,26 +116,16 @@ function Charts() {
 
   useEffect(() => {
     async function fetchProjectStats() {
-      if (project.profile?.id) {
+      if (project.profile?.code) {
         const params = { time_zone: tzOffset };
         try {
-          // let statsResults = await getProjectStatistics(
-          //   params,
-          //   project.profile.code,
-          // );
-          const statsResults = {
-            files: {
-              total_count: 226,
-              total_size: 16000000000,
-            },
-            activity: {
-              today_uploaded: 100,
-              today_downloaded: 150,
-            },
-          };
+          const statsResults = await getProjectStatistics(
+            params,
+            project.profile.code,
+          );
 
-          const result = Object.keys(statsResults).map((stat) => ({
-            [stat]: statsResults[stat],
+          const result = Object.keys(statsResults.data).map((stat) => ({
+            [stat]: statsResults.data[stat],
           }));
 
           if (role === 'admin') {
@@ -146,7 +137,7 @@ function Charts() {
             });
             // move user stat to second item in array
             result.splice(1, 0, {
-              user: { total_users: usersResults.data.total },
+              user: { totalUsers: usersResults.data.total },
             });
           }
           setProjectStats(result);
@@ -164,7 +155,7 @@ function Charts() {
 
   useEffect(() => {
     async function fetchProjectFileSize() {
-      if (project.profile?.id) {
+      if (project.profile?.code) {
         const toMonth = moment().startOf('month').format('YYYY-MM-DDTHH:mm:ss');
         const fromMonth = moment()
           .subtract(15, 'months')
@@ -178,22 +169,23 @@ function Charts() {
           time_zone: tzOffset,
         };
         try {
-          // const fileSizeResults = await getProjectFileSize(params, project.profile.id);
-          const fileSizeResults = {
-            data: {
-              labels: ['2022-01', '2022-02', '2022-03'],
-              datasets: [
-                {
-                  label: 0, // Will be mapped to "greenroom" in bff
-                  values: [536870912, 715827882, 920350134],
-                },
-                {
-                  label: 1, // Will be mapped to "core" in bff
-                  values: [107374182, 143165576, 184070026],
-                },
-              ],
-            },
-          };
+          const fileSizeResults = await getProjectFileSize(params, project.profile.code);
+          // const fileSizeResults = {
+          //   data: {
+          //     labels: ['2022-01', '2022-02', '2022-03'],
+          //     datasets: [
+          //       {
+          //         label: 0, // Will be mapped to "greenroom" in bff
+          //         values: [536870912, 715827882, 920350134],
+          //       },
+          //       {
+          //         label: 1, // Will be mapped to "core" in bff
+          //         values: [107374182, 143165576, 184070026],
+          //       },
+          //     ],
+          //   },
+          // };
+          console.log(fileSizeResults);
 
           const plotData = fileSizeResults.data.datasets.reduce(
             (result, dataset) => {
@@ -203,7 +195,7 @@ function Charts() {
 
               values.forEach((val, index) => {
                 result.push({
-                  // to remove when API is live, labels will have proper names
+                  //TODO:to remove when API is live, labels will have proper names
                   [SAPDataField.seriesField]:
                     label === 0 ? 'Greenroom' : 'Core',
                   [SAPDataField.xField]: fileSizeResults.data.labels[index]
@@ -234,136 +226,36 @@ function Charts() {
   }, [project?.profile]);
 
   useEffect(() => {
-    const mockAPI = () => {
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          resolve({
-            data: {
-              '2022-01-01': 1,
-              '2022-01-02': 0,
-              '2022-01-03': 10,
-              '2022-01-04': 23,
-              '2022-01-05': 40,
-              '2022-01-06': 10,
-              '2022-01-07': 39,
-              '2022-01-08': 22,
-              '2022-01-09': 33,
-              '2022-01-10': 18,
-              '2022-01-11': 38,
-              '2022-01-12': 19,
-              '2022-01-13': 27,
-              '2022-01-14': 38,
-              '2022-01-15': 17,
-              '2022-01-16': 27,
-              '2022-01-17': 42,
-              '2022-01-18': 41,
-              '2022-01-19': 27,
-              '2022-01-20': 15,
-              '2022-01-21': 8,
-              '2022-01-22': 4,
-              '2022-01-23': 3,
-              '2022-01-24': 27,
-              '2022-01-25': 2,
-              '2022-01-26': 0,
-              '2022-01-27': 49,
-              '2022-01-28': 38,
-              '2022-01-29': 14,
-              '2022-01-30': 17,
-              '2022-01-31': 19,
-              '2022-02-01': 3,
-              '2022-02-02': 14,
-              '2022-02-03': 23,
-              '2022-02-04': 43,
-              '2022-02-05': 12,
-              '2022-02-06': 22,
-              '2022-02-07': 32,
-              '2022-02-08': 33,
-              '2022-02-09': 23,
-              '2022-02-10': 13,
-              '2022-02-11': 13,
-              '2022-02-12': 43,
-              '2022-02-13': 23,
-              '2022-02-14': 3,
-              '2022-02-15': 37,
-              '2022-02-16': 7,
-              '2022-02-17': 27,
-              '2022-02-18': 47,
-              '2022-02-19': 50,
-              '2022-02-20': 1,
-              '2022-02-21': 13,
-              '2022-02-22': 31,
-              '2022-02-23': 33,
-              '2022-02-24': 43,
-              '2022-02-25': 32,
-              '2022-02-26': 3,
-              '2022-02-27': 23,
-              '2022-02-28': 13,
-              '2022-03-01': 13,
-              '2022-03-02': 13,
-              '2022-03-03': 13,
-              '2022-03-04': 13,
-              '2022-03-05': 13,
-              '2022-03-06': 13,
-              '2022-03-07': 13,
-              '2022-03-08': 13,
-              '2022-03-09': 13,
-              '2022-03-10': 13,
-              '2022-03-11': 13,
-              '2022-03-12': 13,
-              '2022-03-13': 13,
-              '2022-03-14': 13,
-              '2022-03-15': 13,
-              '2022-03-16': 13,
-              '2022-03-17': 13,
-              '2022-03-18': 13,
-              '2022-03-19': 13,
-              '2022-03-20': 13,
-              '2022-03-21': 13,
-              '2022-03-22': 13,
-              '2022-03-23': 13,
-              '2022-03-24': 13,
-              '2022-03-25': 13,
-              '2022-03-26': 13,
-              '2022-03-27': 13,
-              '2022-03-28': 13,
-              '2022-03-29': 13,
-              '2022-03-30': 13,
-              '2022-03-31': 13,
-            },
-          });
-        }, 1000);
-      });
-    };
-
     async function fetchProjectFileActivity() {
       if (project?.profile?.id) {
-        const toMonth = moment().startOf('month').format('YYYY-MM-DDTHH:mm:ss');
+        const toMonth = moment().format('YYYY-MM-DDTHH:mm:ss');
         const fromMonth = moment()
           .subtract(6, 'months')
           .startOf('month')
           .format('YYYY-MM-DDTHH:mm:ss');
 
-        const params = {
-          from: fromMonth,
-          to: toMonth,
-          group_by: 'day',
-          time_zone: tzOffset,
-        };
         const response = [];
 
         const activity = ['download', 'upload', 'delete', 'copy'];
         for (let act of activity) {
-          params.activity = act;
-          response.push(mockAPI(params, project.profile.id));
-          // response.push(getProjectActivity(params, project.profile.id));
+          const params = {
+            from: fromMonth,
+            to: toMonth,
+            group_by: 'day',
+            time_zone: tzOffset,
+            type: act
+          };
+
+          response.push(getProjectActivity(params, project.profile.code));
         }
 
         try {
           // response array of 4 api calls
           const activitiesResponse = await Promise.all(response);
+          const activitiesResult = activitiesResponse.map(activity => ({data: activity.data.data})) 
           const allActivities = {};
           // transform data property of each activity into an array of objects
-          activitiesResponse.forEach((activityData, index) => {
+          activitiesResult.forEach((activityData, index) => {
             const dataKey = Object.keys(activityData)[0];
             const activityObject = activityData[dataKey];
             const data = Object.keys(activityObject).map(
@@ -394,6 +286,7 @@ function Charts() {
 
             result[act] = data;
           }
+          console.log(result)
           setProjectFileActivity(result);
         } catch {
           message.error(
