@@ -14,13 +14,9 @@ const {
 } = require('../../../../utils/greenroomActions.js');
 const { createDummyFile } = require('../../../../utils/createDummyFile');
 const fs = require('fs');
-const { projectId, projectCode } = dataConfig.canvas;
+const { projectCode } = dataConfig.adminCanvas;
 jest.setTimeout(700000);
-/**
- * Before running this test, plese make sure you have following files under your user folder
- *  - one folder named test-folder-files with 2 files within
- *  - one file
- */
+
 describe('1.5.4', () => {
   let page;
   const fileName = 'file-manifest-test';

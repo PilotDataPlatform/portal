@@ -15,7 +15,7 @@ const {
   selectGreenroomFile,
   clickFileAction,
 } = require('../../../../utils/greenroomActions.js');
-const { projectId, projectCode, projectGeid } = dataConfig.canvas;
+const { projectCode } = dataConfig.adminCanvas;
 const moment = require('moment-timezone');
 const { TestScheduler } = require('jest');
 jest.setTimeout(700000);

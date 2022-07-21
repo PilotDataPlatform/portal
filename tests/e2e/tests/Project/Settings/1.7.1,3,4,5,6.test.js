@@ -4,11 +4,7 @@ const { init } = require('../../../../utils/commonActions.js');
 const { baseUrl, dataConfig } = require('../../../config');
 const { projectCode } = dataConfig.adminCanvas;
 jest.setTimeout(700000);
-/**
- * Before running this test, plese make sure you have following files under your user folder
- *  - one folder named test-folder-files with 2 files within
- *  - one file
- */
+
 describe('Project administrator should be able to edit project information', () => {
   let page;
   beforeAll(async () => {
@@ -23,43 +19,9 @@ describe('Project administrator should be able to edit project information', () 
     await logout(page);
     await page.waitForTimeout(3000);
   });
-  it('a. Project admin should be able to edit project name. If user changed project name then user can see the change immediately in the project page and teams page', async () => {
+  it('b. Project admin should be able to add tags or edit tags, each tag should not contain space', async () => {
     await page.goto(`${baseUrl}project/${projectCode}/settings`);
     await page.waitForXPath('//form//label[text()="Project Name"]');
-    const editBtn = await page.waitForXPath(
-      '//div[contains(@class, "ant-tabs-top-bar")]//button',
-    );
-    await editBtn.click();
-    const nameInput = await page.waitForXPath(
-      '//form[contains(@class, "Settings_custom_general_info_form")]//div[contains(@class, "ant-form-item") and position()=1]//input',
-    );
-    const previousName = await page.evaluate((nameInput) => {
-      return nameInput.value;
-    }, nameInput);
-    await clearInput(
-      page,
-      'form > div > .ant-row .ant-form-item-control-input-content input',
-    );
-    let nextName = 'Frontend Automation - ' + parseInt(Math.random() * 1000);
-    while (nextName === previousName) {
-      nextName = 'Frontend Automation - ' + parseInt(Math.random() * 1000);
-    }
-    await nameInput.type(nextName);
-    const saveBtn = await page.waitForXPath(
-      '//div[contains(@class, "ant-tabs-top-bar")]//button//span[text()="Save"]',
-    );
-    await saveBtn.click();
-    await page.waitForTimeout(3000);
-    const changedName = await page.waitForXPath(
-      '//span[@class="ant-page-header-heading-title"]//div//div//span',
-    );
-    const changedNameTxt = await page.evaluate(
-      (node) => node.textContent,
-      changedName,
-    );
-    expect(changedNameTxt).toBe(nextName);
-  });
-  it('b. Project admin should be able to add tags or edit tags, each tag should not contain space', async () => {
     let editBtn = await page.waitForXPath(
       '//div[contains(@class, "ant-tabs-top-bar")]//button',
     );

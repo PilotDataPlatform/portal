@@ -16,7 +16,7 @@ const {
 const { createDummyFile } = require('../../../../utils/createDummyFile');
 const { collaborator, admin } = require('../../../../users');
 const fs = require('fs');
-const { projectCode } = dataConfig.canvas;
+const { projectCode } = dataConfig.adminCanvas;
 jest.setTimeout(700000);
 
 describe('1.5.13', () => {

@@ -4,11 +4,7 @@ const { init } = require('../../../../utils/commonActions.js');
 const { baseUrl, dataConfig } = require('../../../config');
 const { projectCode } = dataConfig.adminCanvas;
 jest.setTimeout(700000);
-/**
- * Before running this test, plese make sure you have following files under your user folder
- *  - one folder named test-folder-files with 2 files within
- *  - one file
- */
+
 describe('click cancel button', () => {
   let page;
   let newName;

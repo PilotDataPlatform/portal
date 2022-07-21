@@ -17,7 +17,7 @@ function SearchResultTable({
   page,
   setPage,
   pageSize,
-  zone,
+  filters,
   setFilters,
   onTableChange,
   loading,
@@ -26,6 +26,8 @@ function SearchResultTable({
   greenRoomTotal,
   coreTotal,
 }) {
+
+  console.log(files)
   const [selectedRows, setSelectedRows] = useState([]);
   const [showDataSetsModal, setShowDataSetsModal] = useState(false);
   const currentProject = useCurrentProject();
@@ -56,8 +58,9 @@ function SearchResultTable({
   };
 
   const locationOnChange = (e) => {
-    setFilters({ zone: e.target.value.toLowerCase() });
-    setPage(0);
+    console.log('locationOnChange');
+    setFilters({ ...filters, zone: e.target.value.toLowerCase() });
+    setPage(1);
   };
 
   const openDatasetsModal = () => {
@@ -67,7 +70,7 @@ function SearchResultTable({
   return (
     <div style={{ position: 'relative' }}>
       <div className={styles.search_result_actions}>
-        {zone === 'core' ? (
+        {filters.zone === 'core' ? (
           <Button
             type="link"
             icon={<DeploymentUnitOutlined />}
@@ -97,7 +100,7 @@ function SearchResultTable({
 
             <Radio.Group
               style={{ marginLeft: 10 }}
-              value={zone}
+              value={filters.zone}
               onChange={locationOnChange}
             >
               <Radio value="greenroom" style={{ marginRight: '50px' }}>
@@ -140,11 +143,11 @@ function SearchResultTable({
               }}
               className={styles.search_result_table}
               columns={columns}
-              dataSource={files[zone]}
+              dataSource={files[filters.zone]}
               pagination={{
-                total: zone === 'greenroom' ? greenRoomTotal : coreTotal,
+                total: filters.zone === 'greenroom' ? greenRoomTotal : coreTotal,
                 pageSize: pageSize,
-                current: page + 1,
+                current: page,
                 showSizeChanger: true,
               }}
               onChange={onTableChange}

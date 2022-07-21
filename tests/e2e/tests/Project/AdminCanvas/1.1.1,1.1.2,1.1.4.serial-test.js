@@ -3,7 +3,7 @@ const { init } = require('../../../../utils/commonActions.js');
 const { collaborator } = require('../../../../users');
 const { baseUrl, dataConfig } = require('../../../config');
 jest.setTimeout(700000);
-const { projectCode } = dataConfig.canvas;
+const { projectCode } = dataConfig.adminCanvas;
 
 describe('1.1 Project Canvas - Top Banner ', () => {
   let page;
