@@ -38,15 +38,16 @@ const datasetDownloadInfoDisplay = (details) => {
       <DownloadOutlined
         style={{ color: variables.primaryColor1, marginRight: '10px' }}
       />
-      {typeof details.source === 'string' ? (
+      {details.activityType === 'download' ? (
         <p style={{ margin: '0px' }}>Downloaded a Dataset</p>
       ) : (
-        <p style={{ margin: '0px' }}>
-          {details.source.length > 1
-            ? `Downloaded ${details.source.length} files: `
-            : `Downloaded ${details.source.length} file: `}
-          <span style={{ fontWeight: 600 }}>{details.source.join(', ')}</span>
-        </p>
+        <p></p>
+        // <p style={{ margin: '0px' }}>
+        //   {details.source.length > 1
+        //     ? `Downloaded ${details..length} files: `
+        //     : `Downloaded ${details.source.length} file: `}
+        //   <span style={{ fontWeight: 600 }}>{details.source.join(', ')}</span>
+        // </p>
       )}
     </div>
   );
@@ -285,13 +286,13 @@ const schemaInfoDisplay = {
         <p style={{ margin: '0px' }}>
           Created a schema:{' '}
           <span style={{ fontWeight: 600 }}>
-            {details.name.length > 40 ? (
-              <Tooltip title={details.name}>{`${details.name.slice(
+            {details.targetName.length > 40 ? (
+              <Tooltip title={details.targetName}>{`${details.targetName.slice(
                 0,
                 40,
               )}...`}</Tooltip>
             ) : (
-              details.name
+              details.targetName
             )}
           </span>
         </p>
@@ -307,13 +308,13 @@ const schemaInfoDisplay = {
         <p style={{ margin: '0px' }}>
           Deleted a schema:{' '}
           <span style={{ fontWeight: 600 }}>
-            {details.name.length > 40 ? (
-              <Tooltip title={details.name}>{`${details.name.slice(
+            {details.targetName.length > 40 ? (
+              <Tooltip title={details.targetName}>{`${details.targetName.slice(
                 0,
                 40,
               )}...`}</Tooltip>
             ) : (
-              details.name
+              details.targetName
             )}
           </span>
         </p>
@@ -321,6 +322,8 @@ const schemaInfoDisplay = {
     );
   },
   schemaUpdateInfoDisplay: (details) => {
+    let properties = details.changes.map((e) => e.property);
+
     return (
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <SyncOutlined
@@ -328,23 +331,23 @@ const schemaInfoDisplay = {
         />
         <p style={{ margin: '0px' }}>
           {`Updated a schema (${
-            details.name.length > 40 ? (
-              <Tooltip title={details.name}>{`${details.name.slice(
+            details.targetName.length > 40 ? (
+              <Tooltip title={details.targetName}>{`${details.targetName.slice(
                 0,
                 40,
               )}...`}</Tooltip>
             ) : (
-              details.name
+              details.targetName
             )
           })`}
-          {details.targets && details.targets.length ? ': ' : ''}
+          {properties && properties.length ? ': ' : ''}
           <span style={{ fontWeight: 600 }}>
-            {details.targets.join(', ').length > 80 ? (
-              <Tooltip title={details.targets.join(', ')}>{`${details.targets
+            {properties.join(', ').length > 80 ? (
+              <Tooltip title={properties.join(', ')}>{`${properties
                 .join(', ')
                 .slice(0, 80)}...`}</Tooltip>
             ) : (
-              details.targets.join(', ')
+              properties.join(', ')
             )}
           </span>
         </p>
@@ -363,13 +366,13 @@ const schemaTemplateInfoDisplay = {
         <p style={{ margin: '0px' }}>
           Added a Custom Schema Template:{' '}
           <span style={{ fontWeight: 600 }}>
-            {details.name.length > 40 ? (
-              <Tooltip title={details.name}>{`${details.name.slice(
+            {details.targetName.length > 40 ? (
+              <Tooltip title={details.targetName}>{`${details.targetName.slice(
                 0,
                 40,
               )}...`}</Tooltip>
             ) : (
-              details.name
+              details.targetName
             )}
           </span>
         </p>
@@ -552,16 +555,22 @@ const logsInfo = (activityType, detail) => {
     //         detail,
     //       );
     //   }
-    // case 'Dataset':
-    //   switch (action) {
-    //     case 'create':
-    //       return datasetCreateInfoDisplay();
-    //     case 'download':
-    //       return datasetDownloadInfoDisplay(detail);
-    //   }
+
+    case 'create':
+      return datasetCreateInfoDisplay();
+    case 'download':
+      return datasetDownloadInfoDisplay(detail);
     case 'release': {
       return datasetVersionInfoDisplay(detail);
     }
+    case 'schema_create':
+      return schemaInfoDisplay.schemaCreateInfoDisplay(detail);
+    case 'schema_delete':
+      return schemaInfoDisplay.schemaRemoveInfoDisplay(detail);
+    case 'schema_update':
+      return schemaInfoDisplay.schemaUpdateInfoDisplay(detail);
+    case 'template_create':
+      return schemaTemplateInfoDisplay.schemaTemplateCreateInfoDisplay(detail);
     // case 'File':
     //   switch (action) {
     //     case 'MOVE':
@@ -573,22 +582,7 @@ const logsInfo = (activityType, detail) => {
     //     case 'UPDATE':
     //       return fileInfoDisplay('File', 'UPDATE', detail);
     //   }
-    // case 'Schema':
-    //   switch (action) {
-    //     case 'schema_create':
-    //       return schemaInfoDisplay.schemaCreateInfoDisplay(detail);
-    //     case 'schema_remove':
-    //       return schemaInfoDisplay.schemaRemoveInfoDisplay(detail);
-    //     case 'schema_update':
-    //       return schemaInfoDisplay.schemaUpdateInfoDisplay(detail);
-    //   }
-    // case 'Dataset.Schema.Template':
-    //   switch (action) {
-    //     case 'template_create':
-    //       return schemaTemplateInfoDisplay.schemaTemplateCreateInfoDisplay(
-    //         detail,
-    //       );
-    //   }
+
     default:
       return null;
   }
