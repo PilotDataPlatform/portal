@@ -113,9 +113,9 @@ function SearchConditions(props) {
   };
 
   const submitForm = (values) => {
-    props.setPage(0);
+    props.setPage(1);
     props.setPageSize(10);
-    props.searchFiles();
+    props.searchFiles({ page_size: 200 });
     props.setSearchConditions(_.cloneDeep(props.conditions));
   };
 

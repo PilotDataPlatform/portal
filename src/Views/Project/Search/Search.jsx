@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
+import moment from 'moment';
 import { Button, message } from 'antd';
-import { withCurrentProject, toFixedNumber } from '../../../Utility';
+import {
+  withCurrentProject,
+  toFixedNumber,
+  timeConvert,
+  formatDate,
+} from '../../../Utility';
 import { useTranslation } from 'react-i18next';
 import { v4 as uuidv4 } from 'uuid';
 import SearchConditions from './Components/SearchConditions';
 import SearchResultTable from './Components/SearchResultTable';
-import { searchProjectFiles } from '../../../APIs';
+import { searchProjectFilesAPI } from '../../../APIs';
 import variables from '../../../Themes/base.scss';
 import _ from 'lodash';
 
@@ -14,7 +20,7 @@ function Search(props) {
   const [conditions, setConditions] = useState([]);
   const [searchConditions, setSearchConditions] = useState([]);
   const [files, setFiles] = useState([]);
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [greenRoomTotal, setGreenRoomTotal] = useState('');
   const [coreTotal, setCoreTotal] = useState('');
@@ -43,8 +49,8 @@ function Search(props) {
       case 'time_created':
         const [timeStart, timeEnd] = condition.calendar;
         return {
-          created_time_start: timeStart,
-          created_time_end: timeEnd,
+          from: moment.unix(timeStart).format(),
+          to: moment.unix(timeEnd).format(),
         };
 
       case 'file_size':
@@ -95,23 +101,27 @@ function Search(props) {
       {},
     );
     // handle the search when click on search button
-    searchProjectFiles(
+    searchProjectFilesAPI(
       { ...queryParams, ...pagination },
       props.currentProject.code,
     )
       .then((res) => {
-        const result = res.data.result.map((file) => ({
-          ...file,
-          key: file.storage_id,
-        }));
+        const result = res.data.result
+          .map((file) => ({
+            ...file,
+            key: file.storage_id,
+          }))
+          // TODO: filter out dirty data. bandaid fix, back end to resolve
+          .filter((record) => record.parentPath);
+
         const greenroomFiles = result.filter(
           (file) => file.zone === 'Greenroom',
         );
         const coreFiles = result.filter((file) => file.zone === 'Core');
         setFiles({ all: result, greenroom: greenroomFiles, core: coreFiles });
 
-        setGreenRoomTotal(greenroomFiles.length);
-        setCoreTotal(coreFiles.length);
+        setGreenRoomTotal(res.data.totalPerZone.greenroom);
+        setCoreTotal(res.data.totalPerZone.core);
       })
       .catch(() => {
         message.error('Something went wrong while searching for files');
@@ -120,18 +130,18 @@ function Search(props) {
   };
 
   const onTableChange = (pagination) => {
-    const page = pagination.current - 1;
+    const page = pagination.current;
     const pageSize = pagination.pageSize;
 
     setPage(page);
     setPageSize(pageSize);
 
-    const paginationParams = {
-      page,
-      page_size: pageSize,
-    };
+    // const paginationParams = {
+    //   page,
+    //   page_size: pageSize,
+    // };
 
-    searchFiles(paginationParams);
+    // searchFiles(paginationParams);
   };
 
   const resetConditions = () => {
@@ -209,7 +219,7 @@ function Search(props) {
           onTableChange={onTableChange}
           pageSize={pageSize}
           setFilters={setFilters}
-          zone={filters.zone}
+          filters={filters}
           loading={loading}
           attributeList={attributeList}
           searchConditions={searchConditions}
