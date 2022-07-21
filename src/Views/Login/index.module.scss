@@ -95,12 +95,14 @@
 }
 
 .descr-banner,
-.descr1,
-.descr2,
+.descr-dataGateway,
+.descr-workbench,
 .descr-trapezoid {
   z-index: 3;
   display: flex;
   flex-direction: row;
+  margin-left: 50%;
+  transform: translateX(-50rem);
 
   &__logo {
     width: 19.2rem;
@@ -109,11 +111,9 @@
 
   &__img {
     width: 36.5rem;
-    height: 22.01rem;
 
     img {
-      width: 100%;
-      height: 100%;
+      width: 36.5rem;
     }
   }
 
@@ -129,8 +129,11 @@
   }
 }
 .descr-banner {
-  margin-left: 50%;
-  transform: translateX(-50rem);
+  &__text {
+    font-weight: 600;
+    font-size: 2.5rem;
+    width: 30rem;
+  }
   &__img {
     width: 34.8rem;
     img {
@@ -138,45 +141,78 @@
     }
   }
 }
-.descr1 {
-  margin-left: 19.6rem;
+
+@media only screen and (min-width: 1799px) {
+  .descr-banner {
+    &__text {
+      width: 50rem;
+    }
+  }
+}
+
+.descr-dataGateway {
+  margin-top: 30rem;
+  align-items: center;
 
   &__text {
     width: 50rem;
   }
 }
 
-.descr2 {
-  margin-left: 19.6rem;
+.descr-workbench {
+  // margin-left: 19.6rem;
 
   &__text {
     width: 53rem;
   }
 }
 
-@media only screen and (max-width: 1200px) {
-  .descr1,
-  .descr2 {
-    margin-left: 10rem;
+.descr-trapezoid {
+  align-items: center;
+
+  &-right {
+    width: 55rem;
+    margin-right: 10.2rem;
   }
 }
 
+// @media only screen and (max-width: 1200px) {
+//   .descr-dataGateway,
+//   .descr2 {
+//     margin-left: 10rem;
+//   }
+// }
+
 @media only screen and (max-width: 1260px) {
   .descr-trapezoid {
+    margin-left: 55%;
+    transform: translateX(-50rem);
+    &-right {
+      // margin-right: rem;
+      width: 40rem;
+    }
     &__text {
       width: 40rem;
     }
   }
-  .descr1 {
+  .descr-dataGateway {
+    margin-left: 55%;
+    transform: translateX(-50rem);
     &__text {
       width: 40rem;
     }
   }
 
-  .descr2 {
+  .descr-workbench {
+    margin-left: 55%;
+    transform: translateX(-50rem);
     &__text {
       width: 37rem;
     }
+  }
+  .descr-banner {
+    margin-left: 55%;
+    transform: translateX(-50rem);
   }
 }
 
@@ -267,7 +303,7 @@
   &__title {
     font-size: 3.5rem;
     font-weight: 400;
-    margin-left: 22.8rem;
+    margin-left: 16%;
     margin-bottom: 1.5rem;
   }
 
@@ -289,6 +325,10 @@
     margin-right: 6.8rem;
   }
 
+  a {
+    color: #f0f0f0;
+  }
+
   &-content__btn {
     font-size: 2rem;
     display: flex;
@@ -307,16 +347,16 @@
   &-content {
     display: flex;
     flex-direction: row;
-    margin-left: 32rem;
+    margin-left: 25rem;
     align-items: center;
   }
 }
 
 @media only screen and (max-width: 1200px) {
   .doc {
-    &__title {
-      margin-left: 17rem;
-    }
+    // &__title {
+    //   margin-left: 17rem;
+    // }
     &-content {
       margin-left: 25rem;
     }
@@ -336,6 +376,12 @@
 
 @media only screen and (max-width: 1090px) {
   .doc {
+    &__title {
+      margin-left: 12%;
+    }
+    &-content {
+      margin-left: 17rem;
+    }
     &-content__text {
       width: 28rem;
       margin-right: 4rem;
@@ -351,6 +397,9 @@
   padding-bottom: 2rem;
   background-color: $primary-color-dark-5;
   z-index: 5;
+  a {
+    color: #f0f0f0;
+  }
   &-logo {
     width: 10.4rem;
     height: 5.4rem;
@@ -358,7 +407,6 @@
 
     img {
       width: 100%;
-      height: 100%;
     }
   }
   &-links {

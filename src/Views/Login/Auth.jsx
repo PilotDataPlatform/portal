@@ -232,34 +232,21 @@ class Auth extends Component {
                   className={styles['descr-banner__logo']}
                   src={require('../../Images/PilotPoweredLogo.png')}
                 />
-                <div
-                  className={styles['descr-banner__text']}
-                  style={{
-                    fontWeight: '600',
-                    fontSize: '2.5rem',
-                    width: '30rem',
-                  }}
-                >
+                <div className={styles['descr-banner__text']} style={{}}>
                   Data management platform that enables researchers to store,
                   find, access, analyse, and share their data.
                 </div>
               </div>
             </div>
-            <div
-              className={styles['descr1']}
-              style={{
-                marginTop: '30rem',
-                alignItems: 'center',
-              }}
-            >
-              <div className={styles['descr__img']}>
+            <div className={styles['descr-dataGateway']} style={{}}>
+              <div className={styles['descr-dataGateway__img']}>
                 <img src={require('../../Images/Illustration.png')} />
               </div>
               <div
-                className={styles['descr-right']}
+                className={styles['descr-dataGateway-right']}
                 style={{ marginLeft: '8.7rem' }}
               >
-                <div className={styles['descr1__text']} style={{}}>
+                <div className={styles['descr-dataGateway__text']} style={{}}>
                   Data gateway that provides project and role based access
                   controls
                 </div>
@@ -267,40 +254,34 @@ class Auth extends Component {
             </div>
             <div>
               <div className={styles['trapezoid']}></div>
-              <div
-                className={styles['descr-trapezoid']}
-                style={{
-                  alignItems: 'center',
-                  marginLeft: '16.5rem',
-                }}
-              >
-                <div className={styles['descr-right']} style={{}}>
-                  <div className={styles['descr__text']} style={{}}>
+              <div className={styles['descr-trapezoid']} style={{}}>
+                <div className={styles['descr-trapezoid-right']} style={{}}>
+                  <div className={styles['descr-trapezoid__text']} style={{}}>
                     Data zones that support ingestion of all types of data
                     across modalities and sensitivities
                   </div>
                 </div>
-                <div className={styles['descr__img']}>
+                <div className={styles['descr-trapezoid__img']}>
                   <img src={require('../../Images/Illustration.png')} />
                 </div>
               </div>
             </div>
             <div
-              className={styles['descr2']}
+              className={styles['descr-workbench']}
               style={{
                 alignItems: 'center',
 
                 marginTop: '55rem',
               }}
             >
-              <div className={styles['descr__img']}>
+              <div className={styles['descr-workbench__img']}>
                 <img src={require('../../Images/Illustration.png')} />
               </div>
               <div
-                className={styles['descr-right']}
+                className={styles['descr-workbench-right']}
                 style={{ marginLeft: '11.56rem' }}
               >
-                <div className={styles['descr2__text']} style={{}}>
+                <div className={styles['descr-workbench__text']} style={{}}>
                   A workbench that provides access to analysis and visualization
                   tools
                 </div>
@@ -334,11 +315,11 @@ class Auth extends Component {
               </div>
             </div>
             <div className={styles.footer}>
-              <a target="_blank" href="https://www.indocresearch.org/">
-                <span className={styles['footer-logo']}>
+              <span className={styles['footer-logo']}>
+                <a target="_blank" href="https://www.indocresearch.org/">
                   <img src={require('../../Images/PilotPoweredLogo.png')} />
-                </span>
-              </a>
+                </a>
+              </span>
 
               <div className={styles['footer-links']}>
                 <span className={styles['footer-links__text']}>
