@@ -325,11 +325,16 @@ class Auth extends Component {
                 <span className={styles['footer-links__text']}>
                   Documentation
                 </span>
-                <a target="_blank" href="https://github.com/PilotDataPlatform">
-                  <span className={styles['footer-links__text']}>
-                    PILOT GitHub
-                  </span>
-                </a>
+
+                <span className={styles['footer-links__text']}>
+                  <a
+                    target="_blank"
+                    href="https://github.com/PilotDataPlatform"
+                  >
+                    PILOT GitHub{' '}
+                  </a>
+                </span>
+
                 <span className={styles['footer-links__text']}>Support</span>
                 <span className={styles['footer-links__text']}>
                   Terms of Use

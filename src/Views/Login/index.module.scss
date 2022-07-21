@@ -3,6 +3,7 @@
   height: 100vh;
   min-width: 950px;
   min-height: 800px;
+  overflow-x: hidden;
   z-index: 0;
   background-color: $primary-color-dark-7 !important;
   color: #f0f0f0;
@@ -299,6 +300,9 @@
   position: absolute;
   margin-top: 15rem;
   z-index: 4;
+  margin-left: 50%;
+  overflow: hidden;
+  transform: translateX(-60rem);
 
   &__title {
     font-size: 3.5rem;
@@ -341,7 +345,12 @@
     text-align: center;
     background-color: $primary-color-1;
     border-radius: 0.9rem;
+    white-space: nowrap;
     cursor: pointer;
+    &:hover {
+      color: white;
+      opacity: 0.6;
+    }
   }
 
   &-content {
@@ -354,13 +363,6 @@
 
 @media only screen and (max-width: 1200px) {
   .doc {
-    // &__title {
-    //   margin-left: 17rem;
-    // }
-    &-content {
-      margin-left: 25rem;
-    }
-
     &-content__btn {
       font-size: 1.5rem;
 
@@ -376,12 +378,6 @@
 
 @media only screen and (max-width: 1090px) {
   .doc {
-    &__title {
-      margin-left: 12%;
-    }
-    &-content {
-      margin-left: 17rem;
-    }
     &-content__text {
       width: 28rem;
       margin-right: 4rem;
