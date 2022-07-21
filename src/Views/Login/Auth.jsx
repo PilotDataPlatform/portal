@@ -204,7 +204,7 @@ class Auth extends Component {
               <span className={styles['header__logo']}>
                 <img src={require('../../Images/pilot-Logo-White.svg')} />
               </span>
-              <span className={styles['header__register']}>Self-Register</span>
+              {/* <span className={styles['header__register']}>Self-Register</span> */}
               <span
                 className={styles['header__login']}
                 onClick={this.onFinish}
@@ -220,49 +220,33 @@ class Auth extends Component {
                 Login
               </span>
             </div>
-            <div className={styles['descr']} style={{ marginLeft: '17.2rem' }}>
-              <div
-                className={styles['descr__img']}
-                style={{ width: '34.8rem', height: '26.6rem' }}
-              >
+            <div className={styles['descr-banner']}>
+              <div className={styles['descr-banner__img']}>
                 <img src={require('../../Images/PILOT-Display-MockUp.png')} />
               </div>
               <div
-                className={styles['descr-right']}
+                className={styles['descr-banner-right']}
                 style={{ marginLeft: '12rem' }}
               >
                 <img
-                  className={styles['descr__logo']}
+                  className={styles['descr-banner__logo']}
                   src={require('../../Images/PilotPoweredLogo.png')}
                 />
-                <div
-                  className={styles['descr__text']}
-                  style={{
-                    fontWeight: '600',
-                    fontSize: '2.5rem',
-                    width: '30rem',
-                  }}
-                >
+                <div className={styles['descr-banner__text']} style={{}}>
                   Data management platform that enables researchers to store,
                   find, access, analyse, and share their data.
                 </div>
               </div>
             </div>
-            <div
-              className={styles['descr1']}
-              style={{
-                marginTop: '30rem',
-                alignItems: 'center',
-              }}
-            >
-              <div className={styles['descr__img']}>
+            <div className={styles['descr-dataGateway']} style={{}}>
+              <div className={styles['descr-dataGateway__img']}>
                 <img src={require('../../Images/Illustration.png')} />
               </div>
               <div
-                className={styles['descr-right']}
+                className={styles['descr-dataGateway-right']}
                 style={{ marginLeft: '8.7rem' }}
               >
-                <div className={styles['descr1__text']} style={{}}>
+                <div className={styles['descr-dataGateway__text']} style={{}}>
                   Data gateway that provides project and role based access
                   controls
                 </div>
@@ -270,40 +254,34 @@ class Auth extends Component {
             </div>
             <div>
               <div className={styles['trapezoid']}></div>
-              <div
-                className={styles['descr-trapezoid']}
-                style={{
-                  alignItems: 'center',
-                  marginLeft: '16.5rem',
-                }}
-              >
-                <div className={styles['descr-right']} style={{}}>
-                  <div className={styles['descr__text']} style={{}}>
+              <div className={styles['descr-trapezoid']} style={{}}>
+                <div className={styles['descr-trapezoid-right']} style={{}}>
+                  <div className={styles['descr-trapezoid__text']} style={{}}>
                     Data zones that support ingestion of all types of data
                     across modalities and sensitivities
                   </div>
                 </div>
-                <div className={styles['descr__img']}>
+                <div className={styles['descr-trapezoid__img']}>
                   <img src={require('../../Images/Illustration.png')} />
                 </div>
               </div>
             </div>
             <div
-              className={styles['descr2']}
+              className={styles['descr-workbench']}
               style={{
                 alignItems: 'center',
 
                 marginTop: '55rem',
               }}
             >
-              <div className={styles['descr__img']}>
+              <div className={styles['descr-workbench__img']}>
                 <img src={require('../../Images/Illustration.png')} />
               </div>
               <div
-                className={styles['descr-right']}
+                className={styles['descr-workbench-right']}
                 style={{ marginLeft: '11.56rem' }}
               >
-                <div className={styles['descr2__text']} style={{}}>
+                <div className={styles['descr-workbench__text']} style={{}}>
                   A workbench that provides access to analysis and visualization
                   tools
                 </div>
@@ -321,27 +299,42 @@ class Auth extends Component {
                     A collaborative, version-controlled code repository with
                     shared documents and code.
                   </span>
-                  <span className={styles['doc-content__btn']}>
-                    <img
-                      style={{ width: 14, marginRight: 17 }}
-                      src={require('../../Images/LearnMore.png')}
-                    />
-                    Learn more
-                  </span>
+                  <a
+                    target="_blank"
+                    href="https://github.com/PilotDataPlatform"
+                  >
+                    <span className={styles['doc-content__btn']}>
+                      <img
+                        style={{ width: 14, marginRight: 17 }}
+                        src={require('../../Images/LearnMore.png')}
+                      />
+                      Learn more
+                    </span>
+                  </a>
                 </div>
               </div>
             </div>
             <div className={styles.footer}>
               <span className={styles['footer-logo']}>
-                <img src={require('../../Images/PilotPoweredLogo.png')} />
+                <a target="_blank" href="https://www.indocresearch.org/">
+                  <img src={require('../../Images/PilotPoweredLogo.png')} />
+                </a>
               </span>
+
               <div className={styles['footer-links']}>
                 <span className={styles['footer-links__text']}>
                   Documentation
                 </span>
+
                 <span className={styles['footer-links__text']}>
-                  PILOT GitHub
+                  <a
+                    target="_blank"
+                    href="https://github.com/PilotDataPlatform"
+                  >
+                    PILOT GitHub{' '}
+                  </a>
                 </span>
+
                 <span className={styles['footer-links__text']}>Support</span>
                 <span className={styles['footer-links__text']}>
                   Terms of Use
