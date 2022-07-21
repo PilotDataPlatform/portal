@@ -101,8 +101,7 @@ function Search(props) {
     // handle the search when click on search button
     const zoneQueryParams = {
       ...queryParams,
-      // TODO: zone query to be updated on bff, use strings when updated
-      zone: filters.zone === 'greenroom' ? 0 : 1,
+      zone: filters.zone
     };
     try {
       const searchResponses = [
