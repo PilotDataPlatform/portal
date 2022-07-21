@@ -27,28 +27,25 @@ function FileStats(props) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    async function loadNumbers() {
+    async function getStats() {
       const params = { time_zone: tzOffset };
       try {
-        const statsResults = await getProjectStatistics(
-          params,
-          currentProject.code,
-        );
+        const [statsResults, collections] = await Promise.all([
+          getProjectStatistics(params, currentProject.code),
+          listAllVirtualFolder(currentProject.code, props.username),
+        ]);
         const totalPerZone = statsResults.data.files.totalPerZone;
 
         setGreenRoomCount(totalPerZone.greenroom ?? 0);
         setCoreCount(totalPerZone.core ?? null);
+        setCollections(collections.data.result);
       } catch {
         message.error(t('errormessages:projectMetaData.statistics.0'));
       }
       setIsLoading(false);
     }
     if (currentProject) {
-      loadNumbers();
-
-      listAllVirtualFolder(currentProject.code, props.username).then((res) => {
-        setCollections(res.data.result);
-      });
+      getStats();
     }
   }, [currentProject, props.successNum]);
 
