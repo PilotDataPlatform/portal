@@ -62,7 +62,7 @@ const datasetVersionInfoDisplay = (details) => {
           margin: '0px 0px 0px 23px',
         }}
       >
-        Version {details.source}
+        Version {details.version}
       </p>
     </div>
   );
@@ -486,108 +486,109 @@ const fileInfoDisplay = (caseType, action, details) => {
 };
 
 //display logs information
-const logsInfo = (action, detail, resource) => {
-  switch (resource) {
-    case 'Dataset.Title':
-      return datasetUpdateInfoDisplay('Dataset.Title');
-    case 'Dataset.License':
-      return datasetUpdateInfoDisplay('Dataset.License');
-    case 'Dataset.Type':
-      return datasetUpdateInfoDisplay('Dataset.Type');
-    case 'Dataset.Description':
-      return datasetUpdateInfoDisplay('Dataset.Description');
-    case 'Dataset.Authors':
-      switch (action) {
-        case 'ADD':
-          return datasetAddAndRemoveInfoDisplay(
-            'Dataset.Authors',
-            'ADD',
-            detail,
-          );
-        case 'REMOVE':
-          return datasetAddAndRemoveInfoDisplay(
-            'Dataset.Authors',
-            'REMOVE',
-            detail,
-          );
-      }
-    case 'Dataset.Modality':
-      switch (action) {
-        case 'ADD':
-          return datasetAddAndRemoveInfoDisplay(
-            'Dataset.Modality',
-            'ADD',
-            detail,
-          );
-        case 'REMOVE':
-          return datasetAddAndRemoveInfoDisplay(
-            'Dataset.Modality',
-            'REMOVE',
-            detail,
-          );
-      }
-    case 'Dataset.CollectionMethod':
-      switch (action) {
-        case 'ADD':
-          return datasetAddAndRemoveInfoDisplay(
-            'Dataset.CollectionMethod',
-            'ADD',
-            detail,
-          );
-        case 'REMOVE':
-          return datasetAddAndRemoveInfoDisplay(
-            'Dataset.CollectionMethod',
-            'REMOVE',
-            detail,
-          );
-      }
-    case 'Dataset.Tags':
-      switch (action) {
-        case 'ADD':
-          return datasetAddAndRemoveInfoDisplay('Dataset.Tags', 'ADD', detail);
-        case 'REMOVE':
-          return datasetAddAndRemoveInfoDisplay(
-            'Dataset.Tags',
-            'REMOVE',
-            detail,
-          );
-      }
-    case 'Dataset':
-      switch (action) {
-        case 'create':
-          return datasetCreateInfoDisplay();
-        case 'download':
-          return datasetDownloadInfoDisplay(detail);
-        case 'release':
-          return datasetVersionInfoDisplay(detail);
-      }
-    case 'File':
-      switch (action) {
-        case 'MOVE':
-          return fileInfoDisplay('File', 'MOVE', detail);
-        case 'ADD':
-          return fileInfoDisplay('File', 'ADD', detail);
-        case 'REMOVE':
-          return fileInfoDisplay('File', 'REMOVE', detail);
-        case 'UPDATE':
-          return fileInfoDisplay('File', 'UPDATE', detail);
-      }
-    case 'Schema':
-      switch (action) {
-        case 'schema_create':
-          return schemaInfoDisplay.schemaCreateInfoDisplay(detail);
-        case 'schema_remove':
-          return schemaInfoDisplay.schemaRemoveInfoDisplay(detail);
-        case 'schema_update':
-          return schemaInfoDisplay.schemaUpdateInfoDisplay(detail);
-      }
-    case 'Dataset.Schema.Template':
-      switch (action) {
-        case 'template_create':
-          return schemaTemplateInfoDisplay.schemaTemplateCreateInfoDisplay(
-            detail,
-          );
-      }
+const logsInfo = (activityType, detail) => {
+  switch (activityType) {
+    // case 'Dataset.Title':
+    //   return datasetUpdateInfoDisplay('Dataset.Title');
+    // case 'Dataset.License':
+    //   return datasetUpdateInfoDisplay('Dataset.License');
+    // case 'Dataset.Type':
+    //   return datasetUpdateInfoDisplay('Dataset.Type');
+    // case 'Dataset.Description':
+    //   return datasetUpdateInfoDisplay('Dataset.Description');
+    // case 'Dataset.Authors':
+    //   switch (action) {
+    //     case 'ADD':
+    //       return datasetAddAndRemoveInfoDisplay(
+    //         'Dataset.Authors',
+    //         'ADD',
+    //         detail,
+    //       );
+    //     case 'REMOVE':
+    //       return datasetAddAndRemoveInfoDisplay(
+    //         'Dataset.Authors',
+    //         'REMOVE',
+    //         detail,
+    //       );
+    //   }
+    // case 'Dataset.Modality':
+    //   switch (action) {
+    //     case 'ADD':
+    //       return datasetAddAndRemoveInfoDisplay(
+    //         'Dataset.Modality',
+    //         'ADD',
+    //         detail,
+    //       );
+    //     case 'REMOVE':
+    //       return datasetAddAndRemoveInfoDisplay(
+    //         'Dataset.Modality',
+    //         'REMOVE',
+    //         detail,
+    //       );
+    //   }
+    // case 'Dataset.CollectionMethod':
+    //   switch (action) {
+    //     case 'ADD':
+    //       return datasetAddAndRemoveInfoDisplay(
+    //         'Dataset.CollectionMethod',
+    //         'ADD',
+    //         detail,
+    //       );
+    //     case 'REMOVE':
+    //       return datasetAddAndRemoveInfoDisplay(
+    //         'Dataset.CollectionMethod',
+    //         'REMOVE',
+    //         detail,
+    //       );
+    //   }
+    // case 'Dataset.Tags':
+    //   switch (action) {
+    //     case 'ADD':
+    //       return datasetAddAndRemoveInfoDisplay('Dataset.Tags', 'ADD', detail);
+    //     case 'REMOVE':
+    //       return datasetAddAndRemoveInfoDisplay(
+    //         'Dataset.Tags',
+    //         'REMOVE',
+    //         detail,
+    //       );
+    //   }
+    // case 'Dataset':
+    //   switch (action) {
+    //     case 'create':
+    //       return datasetCreateInfoDisplay();
+    //     case 'download':
+    //       return datasetDownloadInfoDisplay(detail);
+    //   }
+    case 'release': {
+      return datasetVersionInfoDisplay(detail);
+    }
+    // case 'File':
+    //   switch (action) {
+    //     case 'MOVE':
+    //       return fileInfoDisplay('File', 'MOVE', detail);
+    //     case 'ADD':
+    //       return fileInfoDisplay('File', 'ADD', detail);
+    //     case 'REMOVE':
+    //       return fileInfoDisplay('File', 'REMOVE', detail);
+    //     case 'UPDATE':
+    //       return fileInfoDisplay('File', 'UPDATE', detail);
+    //   }
+    // case 'Schema':
+    //   switch (action) {
+    //     case 'schema_create':
+    //       return schemaInfoDisplay.schemaCreateInfoDisplay(detail);
+    //     case 'schema_remove':
+    //       return schemaInfoDisplay.schemaRemoveInfoDisplay(detail);
+    //     case 'schema_update':
+    //       return schemaInfoDisplay.schemaUpdateInfoDisplay(detail);
+    //   }
+    // case 'Dataset.Schema.Template':
+    //   switch (action) {
+    //     case 'template_create':
+    //       return schemaTemplateInfoDisplay.schemaTemplateCreateInfoDisplay(
+    //         detail,
+    //       );
+    //   }
     default:
       return null;
   }

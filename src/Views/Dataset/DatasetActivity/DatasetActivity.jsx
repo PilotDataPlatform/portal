@@ -60,7 +60,7 @@ const DatasetActivity = (props) => {
       width: '70%',
       render: (item, row, index) => {
         // const { action, detail, resource } = item.changes;
-        return logsInfo(item.type, item.target_name, item.type);
+        return logsInfo(item.activityType, item);
       },
     },
     {
