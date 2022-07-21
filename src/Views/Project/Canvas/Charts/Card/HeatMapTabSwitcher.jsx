@@ -60,7 +60,6 @@ function HeatMapTabSwitcher({
 
     return savedWeeks;
   }, []);
-  console.log(formatterMapping);
 
   const graphConfig = {
     ...dataMapping,
@@ -101,9 +100,6 @@ function HeatMapTabSwitcher({
           );
 
           if (validWeek) {
-            console.log('val ' + val)
-            console.log('validWeek ' + validWeek.week)
-            console.log('return ' + validWeek.month)
             return validWeek.month;
           }
         },

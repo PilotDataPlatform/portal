@@ -507,13 +507,6 @@ function emailUploadedFileListAPI(fileList, uploader) {
  *
  * @param {int} containerId containerId
  */
-function projectFileCountTotal(geid, params) {
-  return axios({
-    url: `v1/files/project/${geid}/files/statistics`,
-    params,
-  });
-}
-
 /**
  * Add new tags to existed file entities
  *
@@ -708,7 +701,6 @@ export {
   checkDownloadStatusAPI,
   checkPendingStatusAPI,
   emailUploadedFileListAPI,
-  projectFileCountTotal,
   preUploadApi,
   uploadFileApi2,
   combineChunksApi,
