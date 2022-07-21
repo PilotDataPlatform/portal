@@ -169,7 +169,10 @@ function Charts() {
           time_zone: tzOffset,
         };
         try {
-          const fileSizeResults = await getProjectFileSize(params, project.profile.code);
+          const fileSizeResults = await getProjectFileSize(
+            params,
+            project.profile.code,
+          );
           // const fileSizeResults = {
           //   data: {
           //     labels: ['2022-01', '2022-02', '2022-03'],
@@ -243,7 +246,7 @@ function Charts() {
             to: toMonth,
             group_by: 'day',
             time_zone: tzOffset,
-            type: act
+            type: act,
           };
 
           response.push(getProjectActivity(params, project.profile.code));
@@ -252,7 +255,9 @@ function Charts() {
         try {
           // response array of 4 api calls
           const activitiesResponse = await Promise.all(response);
-          const activitiesResult = activitiesResponse.map(activity => ({data: activity.data.data})) 
+          const activitiesResult = activitiesResponse.map((activity) => ({
+            data: activity.data.data,
+          }));
           const allActivities = {};
           // transform data property of each activity into an array of objects
           activitiesResult.forEach((activityData, index) => {
@@ -286,7 +291,7 @@ function Charts() {
 
             result[act] = data;
           }
-          console.log(result)
+          console.log(result);
           setProjectFileActivity(result);
         } catch {
           message.error(
@@ -310,7 +315,9 @@ function Charts() {
       const statKeys = Object.keys(statsObj);
 
       for (let stat of statKeys) {
-        statMapping.push({ [stat]: statsObj[stat] });
+        if (stat !== 'totalPerZone') {
+          statMapping.push({ [stat]: statsObj[stat] });
+        }
       }
     }
 
