@@ -46,11 +46,11 @@ const DatasetActivity = (props) => {
                 margin: '0px',
               }}
             >
-              {moment(moment(item.activity_time).unxi()).toLocaleString}
+              {moment(item.activityTime).format('YYYY-MM-DD HH:MM:SS')}
             </p>
           );
         } else {
-          return item.activity_time;
+          return moment(item.activityTime).format('YYYY-MM-DD HH:MM:SS');
         }
       },
     },
@@ -60,7 +60,7 @@ const DatasetActivity = (props) => {
       width: '70%',
       render: (item, row, index) => {
         // const { action, detail, resource } = item.changes;
-        return logsInfo(item.type, item.target_name, item.type);
+        return logsInfo(item.activityType, item);
       },
     },
     {
@@ -154,11 +154,11 @@ const DatasetActivity = (props) => {
       );
 
       let newArr = [];
-      // res.data.result.forEach((el, index) => {
-      //   if (el.type === 'release') {
-      //     newArr.push(index);
-      //   }
-      // });
+      res.data.result.forEach((el, index) => {
+        if (el.activity_type === 'release') {
+          newArr.push(index);
+        }
+      });
       setPublishRecord(res.data.result);
       setActivityLogs(res.data.result);
       setTotalItem(res.data.total);
