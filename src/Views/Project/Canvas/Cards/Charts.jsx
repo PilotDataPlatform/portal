@@ -173,24 +173,7 @@ function Charts() {
             params,
             project.profile.code,
           );
-          // const fileSizeResults = {
-          //   data: {
-          //     labels: ['2022-01', '2022-02', '2022-03'],
-          //     datasets: [
-          //       {
-          //         label: 0, // Will be mapped to "greenroom" in bff
-          //         values: [536870912, 715827882, 920350134],
-          //       },
-          //       {
-          //         label: 1, // Will be mapped to "core" in bff
-          //         values: [107374182, 143165576, 184070026],
-          //       },
-          //     ],
-          //   },
-          // };
-          console.log(fileSizeResults);
-
-          const plotData = fileSizeResults.data.datasets.reduce(
+          const plotData = fileSizeResults.data.data.datasets.reduce(
             (result, dataset) => {
               const datasetKeys = Object.keys(dataset);
               const label = dataset[datasetKeys[0]];
@@ -201,7 +184,7 @@ function Charts() {
                   //TODO:to remove when API is live, labels will have proper names
                   [SAPDataField.seriesField]:
                     label === 0 ? 'Greenroom' : 'Core',
-                  [SAPDataField.xField]: fileSizeResults.data.labels[index]
+                  [SAPDataField.xField]: fileSizeResults.data.data.labels[index]
                     .split('-')
                     .reverse()
                     .join('-'),
@@ -213,14 +196,12 @@ function Charts() {
             },
             [],
           );
-
           setProjectFileSize(plotData);
         } catch {
           message.error(
             'Something went wrong while retrieving project file size',
           );
         }
-
         setIsProjectFileSizeLoading(false);
       }
     }
@@ -291,7 +272,6 @@ function Charts() {
 
             result[act] = data;
           }
-          console.log(result);
           setProjectFileActivity(result);
         } catch {
           message.error(
