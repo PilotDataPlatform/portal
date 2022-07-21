@@ -1,5 +1,6 @@
 .git
 .gitignore
+.github
 Dockerfile*
 kubernetes
 Jenkinsfile
@@ -8,3 +9,5 @@ Jenkinsfile
 .DS_Store
 .env.local
 .MISC
+
+node_modules
