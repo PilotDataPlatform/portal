@@ -27,8 +27,7 @@ function getProjectActivity(params, projectCode) {
   });
 }
 
-function searchProjectFilesAPI(params, projectCode) {
-  console.log(params);
+function searchProjectFilesAPI(params, projectCode){
   return serverAxios({
     url: `/v1/project-files/${projectCode}/search`,
     method: 'GET',

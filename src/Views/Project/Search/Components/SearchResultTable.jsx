@@ -58,8 +58,7 @@ function SearchResultTable({
   };
 
   const locationOnChange = (e) => {
-    console.log('locationOnChange');
-    setFilters({ ...filters, zone: e.target.value.toLowerCase() });
+    setFilters({ ...filters, zone: e.target.value });
     setPage(1);
   };
 
@@ -114,7 +113,7 @@ function SearchResultTable({
                   '-'
                 )}
               </Radio>
-              <Radio value="Core">
+              <Radio value="core">
                 <CloudServerOutlined style={{ margin: '0px 5px 0px 3px' }} />
                 Core{' '}
                 {typeof coreTotal === 'number' ? (
@@ -143,7 +142,7 @@ function SearchResultTable({
               }}
               className={styles.search_result_table}
               columns={columns}
-              dataSource={files[filters.zone]}
+              dataSource={files}
               pagination={{
                 total: filters.zone === 'greenroom' ? greenRoomTotal : coreTotal,
                 pageSize: pageSize,

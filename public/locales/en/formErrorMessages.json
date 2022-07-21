@@ -17,6 +17,7 @@
       "valid": "Please enter a valid email address"
     }
   },
+  "search": "Something went wrong while searching for project files",
   "project": {
     "code": {
       "empty": "Please enter the project code",

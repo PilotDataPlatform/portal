@@ -112,10 +112,13 @@ function SearchConditions(props) {
     required: '${label} is required!',
   };
 
-  const submitForm = (values) => {
-    props.setPage(1);
-    props.setPageSize(10);
-    props.searchFiles({ page_size: 200 });
+  const submitForm = () => {
+    const page = 1;
+    const pageSize = 10;
+
+    props.setPage(page);
+    props.setPageSize(pageSize);
+    props.searchFiles({page, page_size: pageSize});
     props.setSearchConditions(_.cloneDeep(props.conditions));
   };
 

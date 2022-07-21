@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import { Button, message } from 'antd';
 import {
   withCurrentProject,
   toFixedNumber,
-  timeConvert,
-  formatDate,
 } from '../../../Utility';
 import { useTranslation } from 'react-i18next';
 import { v4 as uuidv4 } from 'uuid';
@@ -94,39 +92,49 @@ function Search(props) {
     }
   };
 
-  const searchFiles = (pagination = {}) => {
+  const searchFiles = async (pagination = {page, page_size: pageSize}) => {
     setLoading(true);
     const queryParams = conditions.reduce(
       (params, condition) => ({ ...params, ...queryTransformer(condition) }),
       {},
     );
     // handle the search when click on search button
-    searchProjectFilesAPI(
-      { ...queryParams, ...pagination },
-      props.currentProject.code,
-    )
-      .then((res) => {
-        const result = res.data.result
-          .map((file) => ({
-            ...file,
-            key: file.storage_id,
-          }))
-          // TODO: filter out dirty data. bandaid fix, back end to resolve
-          .filter((record) => record.parentPath);
+    const zoneQueryParams = {
+      ...queryParams,
+      // TODO: zone query to be updated on bff, use strings when updated
+      zone: filters.zone === 'greenroom' ? 0 : 1,
+    };
+    try {
+      const searchResponses = [
+        searchProjectFilesAPI(
+          { ...queryParams, ...pagination },
+          props.currentProject.code,
+        ),
+        searchProjectFilesAPI(
+          { ...zoneQueryParams, ...pagination },
+          props.currentProject.code,
+        ),
+      ];
+      const [allResponse, zoneResponse] = await Promise.all(searchResponses);
 
-        const greenroomFiles = result.filter(
-          (file) => file.zone === 'Greenroom',
-        );
-        const coreFiles = result.filter((file) => file.zone === 'Core');
-        setFiles({ all: result, greenroom: greenroomFiles, core: coreFiles });
+      const { greenroom: greenRoomTotal, core: coreTotal } =
+        allResponse.data.totalPerZone;
 
-        setGreenRoomTotal(res.data.totalPerZone.greenroom);
-        setCoreTotal(res.data.totalPerZone.core);
-      })
-      .catch(() => {
-        message.error('Something went wrong while searching for files');
-      })
-      .finally(() => setLoading(false));
+      const zoneResults = zoneResponse.data.result
+        .map((file) => ({
+          ...file,
+          key: file.storage_id,
+        }))
+        // TODO: filter out dirty data. bandaid fix, back end to resolve
+        .filter((record) => record.parentPath);
+
+      setGreenRoomTotal(greenRoomTotal);
+      setCoreTotal(coreTotal);
+      setFiles(zoneResults);
+    } catch {
+      message.error(t('formErrorMessages:search'));
+    }
+    setLoading(false);
   };
 
   const onTableChange = (pagination) => {
@@ -152,6 +160,13 @@ function Search(props) {
     setFiles([]);
     setPage(0);
   };
+
+  useEffect(() => {
+    // condition prevents search on comnponent mount
+    if (conditions[0]?.condition) {
+      searchFiles();
+    }
+  }, [filters]);
 
   return (
     <>
