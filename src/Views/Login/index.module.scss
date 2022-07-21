@@ -37,17 +37,19 @@
     }
   }
 }
-
 .container {
   height: 100%;
-  width: 100%;
-  z-index: 2;
-  overflow-y: scroll;
-  overflow-x: hidden;
   display: flex;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  z-index: 2;
   flex-direction: column;
-  // padding-top: 28rem;
   position: relative;
+  margin-right: -14px;
+  // padding-top: 28rem;
+  &::-webkit-scrollbar {
+    background-color: transparent;
+  }
 }
 
 .header {
@@ -92,7 +94,7 @@
   }
 }
 
-.descr,
+.descr-banner,
 .descr1,
 .descr2,
 .descr-trapezoid {
@@ -126,7 +128,16 @@
     flex-direction: column;
   }
 }
-
+.descr-banner {
+  margin-left: 50%;
+  transform: translateX(-50rem);
+  &__img {
+    width: 34.8rem;
+    img {
+      width: 34.8rem;
+    }
+  }
+}
 .descr1 {
   margin-left: 19.6rem;
 

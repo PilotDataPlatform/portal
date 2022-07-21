@@ -204,7 +204,7 @@ class Auth extends Component {
               <span className={styles['header__logo']}>
                 <img src={require('../../Images/pilot-Logo-White.svg')} />
               </span>
-              <span className={styles['header__register']}>Self-Register</span>
+              {/* <span className={styles['header__register']}>Self-Register</span> */}
               <span
                 className={styles['header__login']}
                 onClick={this.onFinish}
@@ -220,23 +220,20 @@ class Auth extends Component {
                 Login
               </span>
             </div>
-            <div className={styles['descr']} style={{ marginLeft: '17.2rem' }}>
-              <div
-                className={styles['descr__img']}
-                style={{ width: '34.8rem', height: '26.6rem' }}
-              >
+            <div className={styles['descr-banner']}>
+              <div className={styles['descr-banner__img']}>
                 <img src={require('../../Images/PILOT-Display-MockUp.png')} />
               </div>
               <div
-                className={styles['descr-right']}
+                className={styles['descr-banner-right']}
                 style={{ marginLeft: '12rem' }}
               >
                 <img
-                  className={styles['descr__logo']}
+                  className={styles['descr-banner__logo']}
                   src={require('../../Images/PilotPoweredLogo.png')}
                 />
                 <div
-                  className={styles['descr__text']}
+                  className={styles['descr-banner__text']}
                   style={{
                     fontWeight: '600',
                     fontSize: '2.5rem',
@@ -321,27 +318,37 @@ class Auth extends Component {
                     A collaborative, version-controlled code repository with
                     shared documents and code.
                   </span>
-                  <span className={styles['doc-content__btn']}>
-                    <img
-                      style={{ width: 14, marginRight: 17 }}
-                      src={require('../../Images/LearnMore.png')}
-                    />
-                    Learn more
-                  </span>
+                  <a
+                    target="_blank"
+                    href="https://github.com/PilotDataPlatform"
+                  >
+                    <span className={styles['doc-content__btn']}>
+                      <img
+                        style={{ width: 14, marginRight: 17 }}
+                        src={require('../../Images/LearnMore.png')}
+                      />
+                      Learn more
+                    </span>
+                  </a>
                 </div>
               </div>
             </div>
             <div className={styles.footer}>
-              <span className={styles['footer-logo']}>
-                <img src={require('../../Images/PilotPoweredLogo.png')} />
-              </span>
+              <a target="_blank" href="https://www.indocresearch.org/">
+                <span className={styles['footer-logo']}>
+                  <img src={require('../../Images/PilotPoweredLogo.png')} />
+                </span>
+              </a>
+
               <div className={styles['footer-links']}>
                 <span className={styles['footer-links__text']}>
                   Documentation
                 </span>
-                <span className={styles['footer-links__text']}>
-                  PILOT GitHub
-                </span>
+                <a target="_blank" href="https://github.com/PilotDataPlatform">
+                  <span className={styles['footer-links__text']}>
+                    PILOT GitHub
+                  </span>
+                </a>
                 <span className={styles['footer-links__text']}>Support</span>
                 <span className={styles['footer-links__text']}>
                   Terms of Use
