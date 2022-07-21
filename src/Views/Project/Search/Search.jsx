@@ -131,7 +131,7 @@ function Search(props) {
       setCoreTotal(coreTotal);
       setFiles(zoneResults);
     } catch {
-      message.error(t('formErrorMessages:search'));
+      message.error(t('formErrorMessages:search:default:0'));
     }
     setLoading(false);
   };

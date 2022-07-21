@@ -9,6 +9,7 @@ import {
   DownloadOutlined,
   TeamOutlined,
 } from '@ant-design/icons';
+import { useTranslation } from 'react-i18next';
 import HeatMapTabSwitcher from '../Charts/Card/HeatMapTabSwitcher';
 import { StackedAreaPlot } from '../Charts/Card';
 import { useTheme } from '../../../../Themes/theme';
@@ -29,6 +30,7 @@ import {
 
 function Charts() {
   const theme = useTheme();
+  const { t } = useTranslation(['errorMessages']);
   const { project, role } = useSelector((state) => state);
 
   const [projectStats, setProjectStats] = useState([]);
@@ -142,9 +144,7 @@ function Charts() {
           }
           setProjectStats(result);
         } catch {
-          message.error(
-            'Something went wrong while retrieving project statistics',
-          );
+          message.error(t('errorMessages:projectMetaData:statistics:0'));
         }
 
         setIsProjectStatsLoading(false);
@@ -198,9 +198,7 @@ function Charts() {
           );
           setProjectFileSize(plotData);
         } catch {
-          message.error(
-            'Something went wrong while retrieving project file size',
-          );
+          message.error(t('errorMessages:projectMetaData:size:0'));
         }
         setIsProjectFileSizeLoading(false);
       }
@@ -274,9 +272,7 @@ function Charts() {
           }
           setProjectFileActivity(result);
         } catch {
-          message.error(
-            'Something went wrong while retreiving project file activity',
-          );
+          message.error(t('errorMessages:projectMetaData:activity:0'));
         }
         setIsProjectFileActivityLoading(false);
       }

@@ -4,13 +4,11 @@ import {
   PaperClipOutlined,
   CloudServerOutlined,
 } from '@ant-design/icons';
-import {
-  listAllVirtualFolder,
-  getProjectStatistics,
-} from '../../../../APIs';
+import { listAllVirtualFolder, getProjectStatistics } from '../../../../APIs';
 import { message, Spin } from 'antd';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import styles from './index.module.scss';
 import { useCurrentProject, curTimeZoneOffset } from '../../../../Utility';
 import { canvasPageActions } from '../../../../Redux/actions';
@@ -19,6 +17,7 @@ import '../../../../Themes/base.scss';
 import { history } from '../../../../Routes';
 
 function FileStats(props) {
+  const { t } = useTranslation(['errorMessages']);
   const [greenRoomCount, setGreenRoomCount] = useState(0);
   const [coreCount, setCoreCount] = useState(0);
   const [collections, setCollections] = useState([]);
@@ -40,9 +39,7 @@ function FileStats(props) {
         setGreenRoomCount(totalPerZone.greenroom ?? 0);
         setCoreCount(totalPerZone.core ?? null);
       } catch {
-        message.error(
-          'Something went wrong while retrieving project statistics',
-        );
+        message.error(t('errormessages:projectMetaData.statistics.0'));
       }
       setIsLoading(false);
     }
@@ -79,7 +76,7 @@ function FileStats(props) {
 
   return currentProject ? (
     isLoading ? (
-      <Spin spinning={isLoading} />
+      <Spin spinning={isLoading} style={{ width: '100%', marginTop: '32px' }} />
     ) : (
       <div style={{ flexDirection: 'column', display: 'flex', minWidth: 130 }}>
         <div

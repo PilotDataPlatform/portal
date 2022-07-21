@@ -675,5 +675,10 @@
     "default": [
       "Something went wrong while trying to update the notification, please try again later."
     ]
+  },
+  "projectMetaData": {
+    "statistics": ["Something went wrong while retrieving project statistics"],
+    "size": ["Something went wrong while retrieving project file sizes"],
+    "activity": ["Something went wrong while retreiving project file activity"]
   }
 }
