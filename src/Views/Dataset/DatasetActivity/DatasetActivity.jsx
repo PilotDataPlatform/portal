@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Table, DatePicker } from 'antd';
-import { CalTimeDiff } from '../../../Utility/timeCovert';
+import {
+  convertUTCDateToLocalDate,
+  CalTimeDiff,
+} from '../../../Utility/timeCovert';
 import 'antd/dist/antd.css';
 import moment from 'moment';
 import { DatasetCard as Card } from '../Components/DatasetCard/DatasetCard';
@@ -43,11 +46,11 @@ const DatasetActivity = (props) => {
                 margin: '0px',
               }}
             >
-              {moment.unix(item.source.createTimestamp).format(format)}
+              {moment(moment(item.activity_time).unxi()).toLocaleString}
             </p>
           );
         } else {
-          return moment.unix(item.source.createTimestamp).format(format);
+          return item.activity_time;
         }
       },
     },
@@ -56,8 +59,8 @@ const DatasetActivity = (props) => {
       key: 'action',
       width: '70%',
       render: (item, row, index) => {
-        const { action, detail, resource } = item.source;
-        return logsInfo(action, detail, resource);
+        // const { action, detail, resource } = item.changes;
+        return logsInfo(item.type, item.target_name, item.type);
       },
     },
     {
@@ -74,11 +77,11 @@ const DatasetActivity = (props) => {
                 margin: '0px',
               }}
             >
-              {item.source.operator}
+              {item.user}
             </p>
           );
         } else {
-          return <p style={{ margin: '0px' }}>{item.source.operator}</p>;
+          return <p style={{ margin: '0px' }}>{item.user}</p>;
         }
       },
     },
@@ -88,11 +91,13 @@ const DatasetActivity = (props) => {
     let queryParams;
     let toTime = moment().endOf('day').unix();
     let fromTime;
+    console.log(datasetInfo);
     const params = {
       page_size: pageSize,
-      page: currentPage - 1,
-      order_by: 'create_timestamp',
-      order_type: 'desc',
+      // page_size: 50,
+      page: currentPage,
+      sort_by: 'activity_time',
+      sort_order: 'desc',
     };
 
     //Calculate timestamp
@@ -107,24 +112,24 @@ const DatasetActivity = (props) => {
         fromTime = moment().subtract(6, 'months').unix();
       }
 
-      params.query = {
-        create_timestamp: { value: [fromTime, toTime], condition: 'between' },
+      // params.query = {
+      //   activity_time_start: fromTime,
+      //   activity_time_end: toTime,
+      // };
+      queryParams = {
+        ...params,
+        activity_time_start: fromTime,
+        activity_time_end: toTime,
       };
-      queryParams = { ...params };
     };
 
     if (viewValue === 'Custom') {
       if (customTimeRange?.length && customTimeRange[0] && customTimeRange[1]) {
-        params.query = {
-          create_timestamp: {
-            value: [
-              customTimeRange[0].startOf('day').unix(),
-              customTimeRange[1].endOf('day').unix(),
-            ],
-            condition: 'between',
-          },
+        queryParams = {
+          ...params,
+          activity_time_start: customTimeRange[0].startOf('day').unix(),
+          activity_time_end: customTimeRange[1].endOf('day').unix(),
         };
-        queryParams = { ...params };
       } else {
         queryParams = { ...params };
       }
@@ -147,18 +152,19 @@ const DatasetActivity = (props) => {
         datasetInfo.code,
         queryParams,
       );
+
       let newArr = [];
-      res.data.result.forEach((el, index) => {
-        if (el.source.action === 'PUBLISH') {
-          newArr.push(index);
-        }
-      });
-      setPublishRecord(newArr);
+      // res.data.result.forEach((el, index) => {
+      //   if (el.type === 'release') {
+      //     newArr.push(index);
+      //   }
+      // });
+      setPublishRecord(res.data.result);
       setActivityLogs(res.data.result);
       setTotalItem(res.data.total);
       if (viewValue === 'All') {
         if (res.data.result.length) {
-          setLastUpdateTime(res.data.result[0].source.createTimestamp);
+          setLastUpdateTime(res.data.result[0].activity_time);
         } else {
           setLastUpdateTime(null);
         }
@@ -213,7 +219,7 @@ const DatasetActivity = (props) => {
       </div>
       <div className={styles.last_update}>
         <p style={{ fontStyle: 'Italic' }}>
-          Last update: {CalTimeDiff(lastUpdateTime)}
+          Last update: {CalTimeDiff(moment(lastUpdateTime).unix())}
         </p>
       </div>
     </div>

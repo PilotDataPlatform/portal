@@ -554,11 +554,11 @@ const logsInfo = (action, detail, resource) => {
       }
     case 'Dataset':
       switch (action) {
-        case 'CREATE':
+        case 'create':
           return datasetCreateInfoDisplay();
-        case 'DOWNLOAD':
+        case 'download':
           return datasetDownloadInfoDisplay(detail);
-        case 'PUBLISH':
+        case 'release':
           return datasetVersionInfoDisplay(detail);
       }
     case 'File':
@@ -574,16 +574,16 @@ const logsInfo = (action, detail, resource) => {
       }
     case 'Schema':
       switch (action) {
-        case 'CREATE':
+        case 'schema_create':
           return schemaInfoDisplay.schemaCreateInfoDisplay(detail);
-        case 'REMOVE':
+        case 'schema_remove':
           return schemaInfoDisplay.schemaRemoveInfoDisplay(detail);
-        case 'UPDATE':
+        case 'schema_update':
           return schemaInfoDisplay.schemaUpdateInfoDisplay(detail);
       }
     case 'Dataset.Schema.Template':
       switch (action) {
-        case 'CREATE':
+        case 'template_create':
           return schemaTemplateInfoDisplay.schemaTemplateCreateInfoDisplay(
             detail,
           );
