@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import moment from 'moment';
 import { message, Spin } from 'antd';
@@ -49,6 +49,22 @@ function Charts() {
   const [isProjectFileActivityLoading, setIsProjectFileActivityLoading] =
     useState(true);
 
+  // formatter functions causes unnecessary re-render in StackedAreaPlot. Meta property in config is dependant on the data and must be reintialized when projectFileSize data is ready
+  const SAPConfig = useMemo(
+    () => ({
+      meta: {
+        size: {
+          type: 'linear',
+          formatter: (val) => convertToFileSizeInUnit(val),
+        },
+        date: {
+          range: [0, 1],
+          formatter: (val) => setLabelsDate(val, SAPCurrentYear),
+        },
+      },
+    }),
+    [projectFileSize],
+  );
   const tzOffset = curTimeZoneOffset();
 
   const SAPDataField = {
@@ -57,18 +73,6 @@ function Charts() {
     seriesField: 'source',
   };
   const SAPCurrentYear = getCurrentYear(projectFileSize);
-  const SAPConfig = {
-    meta: {
-      size: {
-        type: 'linear',
-        formatter: (val) => convertToFileSizeInUnit(val),
-      },
-      date: {
-        range: [0, 1],
-        formatter: (val) => setLabelsDate(val, SAPCurrentYear),
-      },
-    },
-  };
 
   const heatMapDataField = {
     xField: 'week',

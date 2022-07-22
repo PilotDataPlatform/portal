@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'lodash'
 import { Area } from '@ant-design/plots';
 
 const StackedAreaPlot = function ({
@@ -7,7 +8,7 @@ const StackedAreaPlot = function ({
   yField,
   seriesField,
   color,
-  chartConfig
+  chartConfig,
 }) {
   const config = {
     data,
@@ -26,4 +27,6 @@ const StackedAreaPlot = function ({
   return <Area {...config} />;
 };
 
-export default StackedAreaPlot;
+export default React.memo(StackedAreaPlot, (prevProps, nextProps) =>
+  _.isEqual(prevProps, nextProps),
+);
