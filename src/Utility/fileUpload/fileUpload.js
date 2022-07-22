@@ -181,11 +181,6 @@ async function fileUpload(data, resolve, reject) {
         projectCode,
         uploadedTime: Date.now(),
       });
-      message.success(
-        `${i18n.t('success:fileUpload.0')} ${file.name} ${i18n.t(
-          'success:fileUpload.1',
-        )}`,
-      );
     } catch (err) {
       const errorMessage = new ErrorMessager(
         namespace.project.files.combineChunk,
