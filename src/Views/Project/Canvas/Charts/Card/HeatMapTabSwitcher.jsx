@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import _ from 'lodash';
 import moment from 'moment';
 
 import { TabSwitcher } from '../../../Components/TabSwitcher';
@@ -81,7 +82,7 @@ function HeatMapTabSwitcher({
       grid: null,
     },
     tooltip: {
-      title: 'date'
+      title: 'date',
     },
     xAxis: {
       position: 'bottom',
@@ -144,4 +145,6 @@ function HeatMapTabSwitcher({
   return <TabSwitcher contentMap={heatMapGraphs} colorMap={tabColorMap} />;
 }
 
-export default HeatMapTabSwitcher;
+export default React.memo(HeatMapTabSwitcher, (prevProps, nextProps) =>
+  _.isEqual(prevProps, nextProps),
+);
