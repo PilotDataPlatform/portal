@@ -214,7 +214,7 @@ function Charts() {
   useEffect(() => {
     async function fetchProjectFileActivity() {
       if (project?.profile?.id) {
-        const toMonth = moment().format('YYYY-MM-DDTHH:mm:ss');
+        const toMonth = moment().subtract(1, 'months').endOf('month').format('YYYY-MM-DDTHH:mm:ss');
         const fromMonth = moment()
           .subtract(6, 'months')
           .startOf('month')

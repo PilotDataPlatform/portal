@@ -36,16 +36,12 @@ function HeatMapTabSwitcher({
     [],
   );
   let startingWeek = downloadData.length && Math.min(...weeks);
-  // console.log(startingWeek)
 
   // use array as map for formatter. formatter function gets called twice, any variables it references outside its scope does not get re-initialized (startingWeek)
   const formatterMapping = weeks.reduce((savedWeeks, week) => {
     if ((week - startingWeek) % 4 === 0) {
       const startOfWeekMonth = moment(week, 'w').format('MMM');
       const endOfWeekMonth = moment(week, 'w').endOf('week').format('MMM');
-      // console.log(week)
-      // console.log(startOfWeekMonth);
-      // console.log(endOfWeekMonth);
 
       if (startOfWeekMonth !== endOfWeekMonth) {
         startingWeek += 1;
@@ -61,6 +57,7 @@ function HeatMapTabSwitcher({
 
     return savedWeeks;
   }, []);
+  console.log(formatterMapping);
 
   const graphConfig = {
     ...dataMapping,
@@ -91,7 +88,7 @@ function HeatMapTabSwitcher({
       label: {
         offsetY: -8,
         style: {
-          fontSize: 12,
+          fontSize: 10,
           fill: '#666',
           textBaseline: 'top',
         },
