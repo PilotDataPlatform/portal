@@ -47,6 +47,7 @@ import semver from 'semver';
 import AccountDisabled from './Views/AccountDisabled/AccountDisabled';
 import { JOB_STATUS } from './Components/Layout/FilePanel/jobStatus';
 import { PORTAL_PREFIX } from './config';
+import i18n from './i18n';
 
 // router change
 history.listen(() => {
@@ -236,9 +237,15 @@ function Portal(props) {
         if (code === 200) {
           const newUploadList = [];
           for (const item of result) {
-            if (
-              [JOB_STATUS.TERMINATED, JOB_STATUS.SUCCEED].includes(item.status)
-            ) {
+            if (item.status === JOB_STATUS.TERMINATED) {
+              newUploadList.push({
+                fileName: item.source,
+                status: itemStatus(item.status),
+                progress: 1,
+                uploadedTime: parseInt(item.updateTimestamp),
+                projectCode: item.projectCode,
+              });
+            } else if (item.status === JOB_STATUS.SUCCEED) {
               newUploadList.push({
                 fileName: item.source,
                 status: itemStatus(item.status),
@@ -396,6 +403,11 @@ function Portal(props) {
               const isSuccess =
                 fileStatus && fileStatus.status === JOB_STATUS.SUCCEED;
               if (isSuccess) {
+                message.success(
+                  `${i18n.t('success:fileUpload.0')} ${fileName} ${i18n.t(
+                    'success:fileUpload.1',
+                  )}`,
+                );
                 const manifestItem = uploadFileManifest.find((x) => {
                   const fileNameFromPath = x.files[0];
                   return fileNameFromPath.normalize() == fileName.normalize();
