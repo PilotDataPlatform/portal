@@ -67,7 +67,7 @@ pipeline {
   
       stage('DEV Remove portal image') {
         steps{
-          sh "docker rmi $imagename:$commit"
+          sh "docker rmi $imagename:$commit-CAC"
         }
       }
   

@@ -32,7 +32,7 @@ function refresh() {
   return keycloak.updateToken(-1);
 }
 function login() {
-  return keycloak.login();
+  return keycloak.login({ redirectUri: window.location.origin + '/landing' });
 }
 
 export { logout, refresh, login };
