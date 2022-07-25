@@ -1,4 +1,3 @@
-import { message } from 'antd';
 import { combineChunksApi, uploadFileApi2 } from '../../APIs';
 import { cancelRequestReg } from '../../APIs/config';
 import { ErrorMessager, namespace } from '../../ErrorMessages';
@@ -10,7 +9,6 @@ import {
 import { store } from '../../Redux/store';
 import { sleep } from '../common';
 import reduxActionWrapper from '../reduxActionWrapper';
-import i18n from '../../i18n';
 import { keepAlive } from '../';
 import { tokenManager } from '../../Service/tokenManager';
 import _ from 'lodash';
