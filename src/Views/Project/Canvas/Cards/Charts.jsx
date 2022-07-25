@@ -160,7 +160,7 @@ function Charts() {
   useEffect(() => {
     async function fetchProjectFileSize() {
       if (project.profile?.code) {
-        const toMonth = moment().startOf('month').format('YYYY-MM-DDTHH:mm:ss');
+        const toMonth = moment().endOf('month').format('YYYY-MM-DDTHH:mm:ss');
         const fromMonth = moment()
           .subtract(15, 'months')
           .startOf('month')

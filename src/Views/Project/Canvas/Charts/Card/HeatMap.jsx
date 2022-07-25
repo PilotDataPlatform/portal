@@ -41,6 +41,11 @@ function HeatMap({ data, color, graphConfig, showLegend = true }) {
     shape: 'boundary-polygon',
     yAxis: {
       grid: null,
+      label: {
+        style: {
+          fontSize: 11
+        }
+      }
     },
     tooltip: false,
     xAxis: {
