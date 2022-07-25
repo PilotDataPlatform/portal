@@ -77,7 +77,6 @@
     "uuid": "^8.3.0"
   },
   "scripts": {
-    "foo": "echo \"fooo\" && exit 0",
     "start": "craco start",
     "build": "craco build",
     "build-dev": "export REACT_APP_ENV=dev; craco build",
@@ -90,9 +89,6 @@
     "test:dev": "export REACT_APP_TEST_ENV=dev; jest --clearCache && jest --maxWorkers=5",
     "test:staging": "export REACT_APP_TEST_ENV=staging; jest --clearCache && jest --maxWorkers=5"
   },
-  "pre-commit": [
-    "foo"
-  ],
   "eslintConfig": {
     "extends": "react-app"
   },
@@ -114,10 +110,10 @@
     "cross-env": "^7.0.3",
     "cz-conventional-changelog": "^3.2.0",
     "dotenv": "^15.0.0",
+    "husky": "^8.0.1",
     "jest": "^24.9.0",
     "jest-puppeteer": "^4.4.0",
     "jest-serial-runner": "^1.2.0",
-    "pre-commit": "^1.2.2",
     "puppeteer": "^5.3.1",
     "puppeteer-to-istanbul": "^1.4.0",
     "react-error-overlay": "^6.0.9"
