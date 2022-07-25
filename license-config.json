@@ -1,0 +1,14 @@
+{
+  "ignore": ["*.txt"],
+  "license": "LICENSE",
+  "licenseFormats": {
+    "js|jsx": {
+      "prepend": "/*",
+      "append": " */",
+      "eachLine": {
+        "prepend": " * "
+      }
+    }
+  },
+  "trailingWhitespace": "TRIM"
+}
