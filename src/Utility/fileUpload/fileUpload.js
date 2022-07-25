@@ -213,7 +213,7 @@ async function fileUpload(data, resolve, reject) {
           });
       },
       {
-        concurrency: 3,
+        concurrency: 1,
       },
     );
   } catch (err) {
