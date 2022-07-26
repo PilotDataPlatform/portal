@@ -51,7 +51,7 @@ function FileStats(props) {
           listAllVirtualFolder(currentProject.code, props.username),
         ]);
         const totalPerZone = statsResults.data.files.totalPerZone;
-
+        console.log(totalPerZone);
         setGreenRoomCount(totalPerZone.greenroom ?? 0);
         setCoreCount(totalPerZone.core ?? null);
         setCollections(collections.data.result);
@@ -100,9 +100,11 @@ function FileStats(props) {
             <HomeOutlined className={styles['icon--greenhome']} />
           </span>
           <span className={styles['file-font']}>Green Room</span>
-          <span className={styles['file-number ']}>Files {greenRoomCount}</span>
+          <span className={styles['file-number ']}>
+            Files {greenRoomCount !== null ? greenRoomCount : 0}
+          </span>
         </div>
-        {props.projectRole !== 'contributor' && coreCount !== null ? (
+        {props.projectRole !== 'contributor' ? (
           <div
             className={styles['shortcut--core']}
             onClick={() => goToPage('core-home')}
@@ -111,7 +113,9 @@ function FileStats(props) {
               <CloudServerOutlined className={styles['icon--core']} />
             </span>
             <span className={styles['file-font']}>Core</span>
-            <span className={styles['file-number ']}>Files {coreCount}</span>
+            <span className={styles['file-number ']}>
+              Files {coreCount !== null ? coreCount : 0}
+            </span>
           </div>
         ) : null}
         {props.projectRole !== 'contributor' ? (
