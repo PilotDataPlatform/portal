@@ -139,9 +139,19 @@ function RawTable(props) {
   let permission = false;
   if (currentDataset) permission = currentDataset.permission;
   const updateFileManifest = (record, manifestIndex) => {
+    console.log(rawFiles);
+    console.log(record);
+    console.log(manifestIndex);
+
+    console.log('updateFileManifest');
     const index = _.findIndex(rawFiles.data, (item) => item.key === record.key);
-    rawFiles.data[index].manifest[manifestIndex].value =
-      record.manifest[manifestIndex].value;
+
+    if (manifestIndex >= rawFiles.data[index].manifest.length) {
+      rawFiles.data[index].manifest.push(record.manifest[manifestIndex].value);
+    } else {
+      rawFiles.data[index].manifest[manifestIndex].value =
+        record.manifest[manifestIndex].value;
+    }
     setRawFiles({ ...rawFiles, data: [...rawFiles.data] });
   };
   const isRootFolder =
