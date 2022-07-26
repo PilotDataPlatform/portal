@@ -1,8 +1,8 @@
 {
-  "ignore": ["*.txt"],
-  "license": "LICENSE",
+  "ignore": ["!(src)/**", "**/*.!(js|jsx)"],
+  "license": "COPYRIGHT",
   "licenseFormats": {
-    "js|jsx": {
+    "js": {
       "prepend": "/*",
       "append": " */",
       "eachLine": {
