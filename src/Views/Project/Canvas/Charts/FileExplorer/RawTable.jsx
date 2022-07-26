@@ -143,15 +143,18 @@ function RawTable(props) {
     console.log(record);
     console.log(manifestIndex);
 
-    console.log('updateFileManifest');
     const index = _.findIndex(rawFiles.data, (item) => item.key === record.key);
 
     if (manifestIndex >= rawFiles.data[index].manifest.length) {
-      rawFiles.data[index].manifest.push(record.manifest[manifestIndex].value);
+      rawFiles.data[index].manifest.push(record.manifest[manifestIndex]);
     } else {
       rawFiles.data[index].manifest[manifestIndex].value =
         record.manifest[manifestIndex].value;
     }
+    rawFiles.data[index].manifest.sort((a, b) =>
+      a.name > b.name ? 1 : b.name > a.name ? -1 : 0,
+    );
+
     setRawFiles({ ...rawFiles, data: [...rawFiles.data] });
   };
   const isRootFolder =
