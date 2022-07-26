@@ -90,12 +90,13 @@ function FileManifest({ currentRecord, updateFileManifest }) {
         updateFileManifest(currentRecord, attrIndex);
       })
       .catch((err) => {
+        // console.log(err);
         message.error(t('errormessages:updateFileManifestAPI.default.0'));
       })
       .finally(() => {
         newAttr[attrIndex].editing = false;
         setAttributes(newAttr);
-    });
+      });
   };
 
   const handleCancel = (index) => {
