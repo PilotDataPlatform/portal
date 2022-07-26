@@ -159,12 +159,12 @@ function Search(props) {
     setPage(page);
     setPageSize(pageSize);
 
-    // const paginationParams = {
-    //   page,
-    //   page_size: pageSize,
-    // };
+    const paginationParams = {
+      page,
+      page_size: pageSize,
+    };
 
-    // searchFiles(paginationParams);
+    searchFiles(paginationParams);
   };
 
   const resetConditions = () => {
