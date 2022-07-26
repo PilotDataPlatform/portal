@@ -90,7 +90,7 @@ function FileManifest({ currentRecord, updateFileManifest }) {
         updateFileManifest(currentRecord, attrIndex);
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
         message.error(t('errormessages:updateFileManifestAPI.default.0'));
       })
       .finally(() => {

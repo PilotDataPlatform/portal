@@ -139,10 +139,6 @@ function RawTable(props) {
   let permission = false;
   if (currentDataset) permission = currentDataset.permission;
   const updateFileManifest = (record, manifestIndex) => {
-    console.log(rawFiles);
-    console.log(record);
-    console.log(manifestIndex);
-
     const index = _.findIndex(rawFiles.data, (item) => item.key === record.key);
 
     if (manifestIndex >= rawFiles.data[index].manifest.length) {
