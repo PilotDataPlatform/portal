@@ -19,6 +19,8 @@ install both npm and nodejs on `https://nodejs.org/en/`
 
 run `npm i` on the `ROOT/` folder to install all the dependencies.
 
+if you are a developer, please additionally run `npm run prepare` to enable husky hooks
+
 #### Config .env file
 
 | Parameter                            | Description                                                                             | Default |
