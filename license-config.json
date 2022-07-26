@@ -1,8 +1,9 @@
 {
-  "ignore": ["!(src)/**", "**/*.!(js|jsx)"],
+  "ignore": ["!(src|tests)/**", "src/Images/*"],
+  "ignoreFile": ".gitignore",
   "license": "COPYRIGHT",
   "licenseFormats": {
-    "js": {
+    "js|jsx|scss|less": {
       "prepend": "/*",
       "append": " */",
       "eachLine": {

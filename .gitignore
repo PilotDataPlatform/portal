@@ -13,7 +13,7 @@
 # testing
 .nyc_output
 /coverage
-/tests/users.js
+/tests/users.js*
 
 # production
 /build
