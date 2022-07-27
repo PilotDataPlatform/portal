@@ -153,7 +153,7 @@ const RequestToCore = (props) => {
     try {
       setBtnLoading(true);
       const res = await requestCompleteAPI(
-        activeReq.projectGeid,
+        projectCode,
         activeReq.id,
         'complete',
         reviewNotes,
