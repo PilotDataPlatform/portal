@@ -17,18 +17,14 @@
 import React from 'react';
 import { Descriptions, Tooltip } from 'antd';
 import FileTags from './FileTags';
-import {
-  getFileSize,
-  timeConvert,
-  checkIsVirtualFolder,
-} from '../../../../../Utility';
+import { getFileSize, timeConvert } from '../../../../../Utility';
 function FileBasics(props) {
   const { record, panelKey } = props;
   let pathsArr;
   let pathStr;
   if (record.displayPath) {
-    pathsArr = record.displayPath.split('/');
-    pathStr = pathsArr.slice(0, pathsArr.length - 1).join('/');
+    pathsArr = record.displayPath.split('.');
+    pathStr = pathsArr.join('/');
   }
 
   return (

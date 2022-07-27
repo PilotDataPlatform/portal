@@ -23,8 +23,8 @@ function FileBasics(props) {
   let pathsArr;
   let pathStr;
   if (record.displayPath) {
-    pathsArr = record.displayPath.split('/');
-    pathStr = pathsArr.slice(0, pathsArr.length - 1).join('/');
+    pathsArr = record.displayPath.split('.');
+    pathStr = pathsArr.join('/');
   }
 
   return (
