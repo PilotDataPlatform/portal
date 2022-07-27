@@ -247,7 +247,7 @@ const ToolBar = ({
             >
               <span role="img" className="anticon">
                 <img
-                  style={{ height: 10 }}
+                  className={style['superset-img']}
                   src={require('../../../Images/SuperSet.svg')}
                 />
               </span>
@@ -267,7 +267,7 @@ const ToolBar = ({
           >
             <span role="img" className="anticon">
               <img
-                style={{ height: 10 }}
+                className={style['superset-img']}
                 src={require('../../../Images/SuperSet.svg')}
               />
             </span>
@@ -285,7 +285,7 @@ const ToolBar = ({
         >
           <span role="img" className="anticon">
             <img
-              style={{ height: 10 }}
+              className={style['superset-img']}
               src={require('../../../Images/SuperSet.svg')}
             />
           </span>
@@ -323,7 +323,7 @@ const ToolBar = ({
             >
               <span role="img" className="anticon">
                 <img
-                  style={{ width: 14 }}
+                  className={style['guacamole-img']}
                   src={require('../../../Images/Guacamole.svg')}
                 />
               </span>
@@ -343,7 +343,7 @@ const ToolBar = ({
           >
             <span role="img" className="anticon">
               <img
-                style={{ width: 14 }}
+                className={style['guacamole-img']}
                 src={require('../../../Images/Guacamole.svg')}
               />
             </span>
@@ -363,7 +363,7 @@ const ToolBar = ({
         >
           <span role="img" className="anticon">
             <img
-              style={{ width: 14 }}
+              className={style['guacamole-img']}
               src={require('../../../Images/Guacamole.svg')}
             />
           </span>
@@ -395,7 +395,7 @@ const ToolBar = ({
           >
             <span role="img" className="anticon">
               <img
-                style={{ width: 17 }}
+                className={style['jupyter-img']}
                 src={require('../../../Images/Jupyter.svg')}
               />
             </span>
@@ -415,7 +415,7 @@ const ToolBar = ({
         >
           <span role="img" className="anticon">
             <img
-              style={{ width: 17 }}
+              className={style['jupyter-img']}
               src={require('../../../Images/Jupyter.svg')}
             />
           </span>
@@ -768,7 +768,7 @@ const ToolBar = ({
           >
             <span role="img" className="anticon">
               <img
-                style={{ width: 18 }}
+                className={style['xwiki-img']}
                 src={require('../../../Images/XWIKI.svg')}
               />
             </span>

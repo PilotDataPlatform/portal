@@ -204,6 +204,42 @@
       margin-bottom: 10px !important;
     }
   }
+  .superset-img {
+    height: 10px;
+  }
+  .guacamole-img {
+    width: 14px;
+  }
+
+  .jupyter-img {
+    width: 17px;
+  }
+
+  .xwiki-img {
+    width: 18px;
+  }
+}
+
+@media screen and (max-height: 600px) {
+  .lowerMenu {
+    top: 69%;
+
+    .superset-img {
+      height: 9px;
+    }
+
+    .guacamole-img {
+      width: 13px;
+    }
+
+    .jupyter-img {
+      width: 16px;
+    }
+
+    .xwiki-img {
+      width: 17px;
+    }
+  }
 }
 
 .upperMenu {
@@ -249,6 +285,7 @@
     }
   }
 }
+
 :global {
   .ant-menu-inline-collapsed {
     width: 80px !important;
