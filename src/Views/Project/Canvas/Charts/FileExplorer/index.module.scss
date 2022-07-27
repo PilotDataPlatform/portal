@@ -403,6 +403,8 @@
 .vfolder-rename__form {
   display: flex;
   position: relative;
+  background: white;
+  margin-right: -10px;
   &::after {
     content: '';
     position: absolute;

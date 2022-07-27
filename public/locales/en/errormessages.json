@@ -492,6 +492,9 @@
   },
   "updateVirtualFolder": {
     "default": ["Failed to update collection. Please try again later"],
+    "duplicate": [
+      "A collection by this name already exists, please enter a new name."
+    ],
     "noFoldersToUpdate": [
       "Please change the collections' name you want to update!"
     ]

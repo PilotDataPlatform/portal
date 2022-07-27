@@ -587,11 +587,23 @@ function FilesContent(props) {
           );
         }
       } catch (error) {
-        console.log(error);
+        switch (error.response?.status) {
+          case 409: {
+            message.error(
+              `${i18n.t('errormessages:updateVirtualFolder.duplicate.0')}`,
+              3,
+            );
+            break;
+          }
+          default: {
+            message.error(
+              `${i18n.t('errormessages:updateVirtualFolder.default.0')}`,
+              3,
+            );
+            break;
+          }
+        }
         setUpdateBtnLoading(false);
-        message.error(
-          `${i18n.t('errormessages:updateVirtualFolder.default.0')}`,
-        );
       }
     });
   };
