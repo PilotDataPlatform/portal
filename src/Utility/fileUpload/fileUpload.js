@@ -227,7 +227,7 @@ async function fileUpload(data, resolve, reject) {
           });
       },
       {
-        concurrency: 1,
+        concurrency: 2,
       },
     );
   } catch (err) {
