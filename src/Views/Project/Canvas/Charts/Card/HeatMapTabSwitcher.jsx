@@ -33,6 +33,7 @@ function HeatMapTabSwitcher({
   deleteData,
   copyData,
   dataMapping,
+  role,
 }) {
   const { charts } = useTheme();
   const activityColorMap = {
@@ -146,13 +147,15 @@ function HeatMapTabSwitcher({
           graphConfig={graphConfig}
         />
       ),
-      [COPY]: (
-        <HeatMap
-          data={copyData}
-          color={activityColorMap[COPY]}
-          graphConfig={graphConfig}
-        />
-      ),
+      ...(role === 'admin' && {
+        [COPY]: (
+          <HeatMap
+            data={copyData}
+            color={activityColorMap[COPY]}
+            graphConfig={graphConfig}
+          />
+        ),
+      }),
     }),
     [downloadData, uploadData, deleteData, copyData],
   );
