@@ -51,7 +51,6 @@ function FileStats(props) {
           listAllVirtualFolder(currentProject.code, props.username),
         ]);
         const totalPerZone = statsResults.data.files.totalPerZone;
-        console.log(totalPerZone);
         setGreenRoomCount(totalPerZone.greenroom ?? 0);
         setCoreCount(totalPerZone.core ?? null);
         setCollections(collections.data.result);
