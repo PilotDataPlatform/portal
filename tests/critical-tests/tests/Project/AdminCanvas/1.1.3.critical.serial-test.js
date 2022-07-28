@@ -15,7 +15,7 @@ const {
 // const { projectCode } = dataConfig.adminCanvas;
 jest.setTimeout(700000000);
 
-// TODO: update when backend services are back up
+// TODO: update when 'project-file/size' and 'project-file/activity' routes are live for all projects
 const projectCode = 'indoctestproject';
 
 describe('Project Admin Canvas - Charts', function () {
