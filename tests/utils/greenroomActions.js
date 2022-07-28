@@ -411,6 +411,25 @@ const cleanupCore = async (page) => {
   }
 };
 
+const downloadFile = async (page, fileName, waitFn) => {
+  await page._client.send('Page.setDownloadBehavior', {
+    behavior: 'allow',
+    downloadPath: './tests/downloads',
+  });
+  await selectGreenroomFile(page, fileName);
+  const downloadButton = await page.waitForXPath(
+    '//div[contains(@class, "FileExplorer_file_explore_actions")]/descendant::span[contains(text(), "Download")]/parent::button',
+  );
+  await downloadButton.click();
+  await waitFn();
+
+  const [downloadedFile] = fs.readdirSync(`./tests/downloads/`);
+  // TODO: expect needs to be updated ?
+  expect(downloadedFile.includes('.zip')).toBeTruthy();
+  // remove file
+  fs.unlinkSync(`./tests/downloads/${downloadedFile}`);
+};
+
 const uploadAction = async (page) => {
   await clickFileAction(page, 'Upload');
 };
@@ -604,6 +623,7 @@ module.exports = {
   uploadFile,
   uploadMultipleFiles,
   uploadFolder,
+  downloadFile,
   clickFileAction,
   navigatePaginationAndFind,
 };
