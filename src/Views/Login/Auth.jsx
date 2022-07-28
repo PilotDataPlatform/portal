@@ -223,6 +223,7 @@ class Auth extends Component {
               {/* <span className={styles['header__register']}>Self-Register</span> */}
               <span
                 className={styles['header__login']}
+                id="auth_login_btn"
                 onClick={this.onFinish}
                 loading={this.state.btnLoading}
               >
