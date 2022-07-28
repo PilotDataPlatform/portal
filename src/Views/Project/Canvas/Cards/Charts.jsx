@@ -201,9 +201,7 @@ function Charts() {
 
               values.forEach((val, index) => {
                 result.push({
-                  //TODO:to remove when API is live, labels will have proper name
-                  [SAPDataField.seriesField]:
-                    label === 0 ? 'Greenroom' : 'Core',
+                  [SAPDataField.seriesField]: label,
                   [SAPDataField.xField]: fileSizeResults.data.data.labels[index]
                     .split('-')
                     .reverse()
