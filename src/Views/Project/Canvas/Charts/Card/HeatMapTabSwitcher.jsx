@@ -73,7 +73,6 @@ function HeatMapTabSwitcher({
 
     return savedWeeks;
   }, []);
-  console.log(formatterMapping);
 
   const graphConfig = {
     ...dataMapping,
@@ -96,6 +95,9 @@ function HeatMapTabSwitcher({
     },
     tooltip: {
       title: 'date',
+      formatter: (datum) => {
+        return { name: 'Total', value: datum.frequency };
+      },
     },
     xAxis: {
       position: 'bottom',
