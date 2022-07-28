@@ -36,6 +36,7 @@ import {
   getCurrentYear,
   getFileSize,
   curTimeZoneOffset,
+  useCurrentProject,
 } from '../../../../Utility';
 import {
   getProjectStatistics,
@@ -47,7 +48,7 @@ import {
 function Charts() {
   const theme = useTheme();
   const { t } = useTranslation(['errorMessages']);
-  const { project, role } = useSelector((state) => state);
+  const [currentProject] = useCurrentProject();
 
   const [projectStats, setProjectStats] = useState([]);
   const [isProjectStatsLoading, setIsProjectStatsLoading] = useState(true);
@@ -138,20 +139,20 @@ function Charts() {
 
   useEffect(() => {
     async function fetchProjectStats() {
-      if (project.profile?.code) {
+      if (currentProject?.code) {
         const params = { time_zone: tzOffset };
         try {
           const statsResults = await getProjectStatistics(
             params,
-            project.profile.code,
+            currentProject.code,
           );
 
           const result = Object.keys(statsResults.data).map((stat) => ({
             [stat]: statsResults.data[stat],
           }));
 
-          if (role === 'admin') {
-            const usersResults = await getUserOnProjectAPI(project.profile.id, {
+          if (currentProject.permission === 'admin') {
+            const usersResults = await getUserOnProjectAPI(currentProject.id, {
               page: 0,
               pageSize: 10,
               orderBy: 'time_created',
@@ -171,11 +172,11 @@ function Charts() {
       }
     }
     fetchProjectStats();
-  }, [project?.profile]);
+  }, [currentProject]);
 
   useEffect(() => {
     async function fetchProjectFileSize() {
-      if (project.profile?.code) {
+      if (currentProject?.code) {
         const toMonth = moment().endOf('month').format('YYYY-MM-DDTHH:mm:ss');
         const fromMonth = moment()
           .subtract(15, 'months')
@@ -191,7 +192,7 @@ function Charts() {
         try {
           const fileSizeResults = await getProjectFileSize(
             params,
-            project.profile.code,
+            currentProject.code,
           );
           const plotData = fileSizeResults.data.data.datasets.reduce(
             (result, dataset) => {
@@ -223,11 +224,11 @@ function Charts() {
     }
 
     fetchProjectFileSize();
-  }, [project?.profile]);
+  }, [currentProject]);
 
   useEffect(() => {
     async function fetchProjectFileActivity() {
-      if (project?.profile?.id) {
+      if (currentProject?.id) {
         const toMonth = moment().format('YYYY-MM-DDTHH:mm:ss');
         const fromMonth = moment()
           .subtract(5, 'months')
@@ -236,7 +237,8 @@ function Charts() {
 
         const response = [];
 
-        const activity = ['download', 'upload', 'delete', 'copy'];
+        const activity = ['download', 'upload', 'delete'];
+        if (currentProject.permission === 'admin') activity.push('copy');
         for (let act of activity) {
           const params = {
             from: fromMonth,
@@ -246,7 +248,7 @@ function Charts() {
             type: act,
           };
 
-          response.push(getProjectActivity(params, project.profile.code));
+          response.push(getProjectActivity(params, currentProject.code));
         }
 
         try {
@@ -296,7 +298,7 @@ function Charts() {
       }
     }
     fetchProjectFileActivity();
-  }, [project?.profile]);
+  }, [currentProject]);
 
   function sortProjectStats() {
     const stats = projectStats.map((item) => {
@@ -369,6 +371,7 @@ function Charts() {
               deleteData={projectFileActivity.delete}
               copyData={projectFileActivity.copy}
               dataMapping={heatMapDataField}
+              role={currentProject.permission}
             />
           </Spin>
         </div>
