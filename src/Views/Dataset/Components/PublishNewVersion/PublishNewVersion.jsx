@@ -31,7 +31,7 @@ import { RocketOutlined } from '@ant-design/icons';
 import {
   publishNewVersionAPI,
   checkPublishStatusAPI,
-  datasetVersionLogs,
+  getDatasetActivityLogsAPI,
 } from '../../../../APIs/index';
 import { datasetInfoCreators } from '../../../../Redux/actions';
 import i18n from '../../../../i18n';
@@ -50,8 +50,6 @@ const PublishNewVersion = (props) => {
   const [validateInput, setValidateInput] = useState(true);
   const [btnLoading, setBtnLoading] = useState(false);
   const [activityLogs, setActivityLogs] = useState([]);
-  const [pageSize, setPageSize] = useState(1000);
-  const [totalItem, setTotalItem] = useState(0);
   const [activityLogsLoading, setActivityLogsLoading] = useState(false);
 
   const columns = [
@@ -60,8 +58,7 @@ const PublishNewVersion = (props) => {
       key: 'action',
       width: '100%',
       render: (item) => {
-        const { action, detail, resource } = item.source;
-        return logsInfo(action, detail, resource);
+        return logsInfo(item.activityType, item);
       },
     },
   ];
@@ -100,15 +97,23 @@ const PublishNewVersion = (props) => {
       setActivityLogsLoading(true);
       const params = {
         version: datasetCurrentVersion,
-        page: 0,
-        page_size: pageSize,
       };
-
-      const res = await datasetVersionLogs(datasetGeid, params);
-      setActivityLogs(res.data.result);
-      setTotalItem(res.data.total);
-      setActivityLogsLoading(false);
-      setInputValue('');
+      const res = await getDatasetActivityLogsAPI(datasetInfo.code, params);
+      if (res.data.result && res.data.result.length) {
+        const lastPubTime = new Date(res.data.result[0].activityTime).getTime();
+        const listSinceLastPub = await getDatasetActivityLogsAPI(
+          datasetInfo.code,
+          {
+            activity_time_start: parseInt(lastPubTime / 1000),
+            activity_time_end: parseInt(new Date().getTime() / 1000),
+            sort_by: 'activity_time',
+            sort_order: 'desc',
+          },
+        );
+        setActivityLogs(listSinceLastPub.data.result);
+        setActivityLogsLoading(false);
+        setInputValue('');
+      }
     } catch (error) {
       setActivityLogsLoading(false);
       message.error(`${i18n.t('errormessages:datasetVersionLogs.default.0')}`);

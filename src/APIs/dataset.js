@@ -335,14 +335,6 @@ export function datasetDownloadAPI(hash) {
   });
 }
 
-export function datasetVersionLogs(datsetGeid, params) {
-  return serverAxios({
-    url: `v1/activity-logs/version/${datsetGeid}`,
-    method: 'GET',
-    params,
-  });
-}
-
 export function checkPublishStatusAPI(datasetGeid, statusId) {
   return serverAxios({
     url: `/v1/dataset/${datasetGeid}/publish/status`,
