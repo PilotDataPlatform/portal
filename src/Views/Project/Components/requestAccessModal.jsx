@@ -62,7 +62,7 @@ const RequestAccessModal = (props) => {
         }
         await createResourceRequestAPI({
           userId: userGeid,
-          projectGeid: props.projectGeid,
+          projectId: props.projectGeid,
           requestFor,
         });
         toggleShowConfirmationContent(true);
