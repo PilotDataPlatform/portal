@@ -30,7 +30,7 @@ jest.setTimeout(700000000);
 // TODO: update when 'project-file/size' and 'project-file/activity' routes are live for all projects
 const projectCode = 'indoctestproject';
 
-describe('1.3 Canvas Page - Charts', () => {
+describe('2.3 Canvas Page - Charts', () => {
   beforeAll(async () => {
     const context = await browser.createIncognitoBrowserContext();
     page = await context.newPage();

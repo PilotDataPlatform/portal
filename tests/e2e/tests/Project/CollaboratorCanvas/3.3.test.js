@@ -30,7 +30,7 @@ jest.setTimeout(700000000);
 // TODO: update when 'project-file/size' and 'project-file/activity' routes are live for all projects
 const projectCode = 'indoctestproject';
 
-describe('1.3 Canvas Page - Charts', () => {
+describe('3.3 Canvas Page - Charts', () => {
   beforeAll(async () => {
     const context = await browser.createIncognitoBrowserContext();
     page = await context.newPage();
@@ -79,13 +79,13 @@ describe('1.3 Canvas Page - Charts', () => {
     const tabs = ['downloads', 'upload', 'deletion'];
     const heatmapColors = await getHeatmapColors(page, tabs);
 
-    let copyTab
+    let copyTab;
     try {
       copyTab = await page.waitForXPath(
         `//li[contains(@class, 'Components_tab-switcher__tabs') and contains(text(), 'copy')]`,
         { timeout: 5000 },
       );
-      console.log(copyTab)
+      console.log(copyTab);
     } catch {}
 
     expect(heatmapColors.length).toBe(tabs.length);
