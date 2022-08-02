@@ -489,36 +489,6 @@ function checkPendingStatusAPI(containerId, taskId) {
 }
 
 /**
- * call this api to email the project admin with the uploaded file list
- * @param {Object[]} fileList the uploaded files from redux
- * @param {string} number the user who upload the files
- */
-function emailUploadedFileListAPI(fileList, uploader) {
-  if (fileList.length === 0) {
-    return Promise.resolve();
-  }
-  fileList.forEach((ele) => {
-    Object.keys(ele).forEach((item) => {
-      if (typeof ele[item] !== 'string') {
-        ele[item] = String(ele[item]);
-      }
-    });
-  });
-
-  return axios({
-    url: '/v1/report/upload',
-    method: 'post',
-    data: {
-      uploader,
-      files: fileList.map((item) => {
-        const timestamp = Number(item.uploadedTime);
-        return { ...item, uploadedTime: new Date(timestamp) };
-      }),
-    },
-  });
-}
-
-/**
  * Get total number of the raw files and processed files
  *
  * @param {int} containerId containerId
@@ -716,7 +686,6 @@ export {
   downloadFilesAPI,
   checkDownloadStatusAPI,
   checkPendingStatusAPI,
-  emailUploadedFileListAPI,
   preUploadApi,
   uploadFileApi2,
   combineChunksApi,
