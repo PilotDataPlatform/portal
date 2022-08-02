@@ -88,7 +88,8 @@
     "test": "export REACT_APP_TEST_ENV=dev; jest --clearCache && jest --maxWorkers=5 --watchAll=false",
     "test:local": "export REACT_APP_TEST_ENV=local; jest --clearCache && jest --maxWorkers=5 --watchAll=false",
     "test:dev": "export REACT_APP_TEST_ENV=dev; jest --clearCache && jest --maxWorkers=5",
-    "test:staging": "export REACT_APP_TEST_ENV=staging; jest --clearCache && jest --maxWorkers=5"
+    "test:staging": "export REACT_APP_TEST_ENV=staging; jest --clearCache && jest --maxWorkers=5",
+    "test:critical": "export REACT_APP_TEST_ENV=dev; jest --clearCache && jest --watchAll=false \"critical-tests/tests/.*\\.sample.critical.test\\.js\" && jest --watchAll=false --runner=jest-serial-runner \"critical-tests/tests/.*\\.sample.critical.serial-test\\.js\""
   },
   "eslintConfig": {
     "extends": "react-app"
