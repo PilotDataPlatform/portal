@@ -174,22 +174,25 @@ const ServiceRequestTable = (props) => {
     {
       title: 'Project',
       dataIndex: 'projectName',
-      key: 'project_name',
+      key: 'project.name',
       sorter: true,
       width: '15%',
+      render: (text, node) => {
+        return node.project.name;
+      },
     },
     {
       title: 'Request Date',
-      dataIndex: 'requestDate',
-      key: 'request_date',
+      dataIndex: 'requestedAt',
+      key: 'requested_at',
       sorter: true,
       width: '15%',
       render: (text) => text && timeConvert(text, 'datetime'),
     },
     {
       title: 'Request for',
-      dataIndex: 'requestFor',
-      key: 'request_for',
+      dataIndex: 'requestedFor',
+      key: 'requested_for',
       sorter: true,
       width: '10%',
     },
@@ -217,12 +220,12 @@ const ServiceRequestTable = (props) => {
     },
     {
       title: 'Completed on',
-      dataIndex: 'completeDate',
-      key: 'complete_date',
+      dataIndex: 'completedAt',
+      key: 'completed_at',
       sorter: true,
       width: '15%',
       render: (text) => {
-        if (text !== 'None') {
+        if (text) {
           return timeConvert(text, 'datetime');
         } else {
           return '';
