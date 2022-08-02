@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 const { baseUrl } = require('../config');
-const pti = require('puppeteer-to-istanbul');
-const fs = require('fs');
+// const pti = require('puppeteer-to-istanbul');
+// const fs = require('fs');
 
 jest.setTimeout(30000);
 /*
@@ -31,14 +31,14 @@ describe('Admin Canvas', () => {
     const context = await browser.createIncognitoBrowserContext();
     page = await context.newPage();
 
-    await page.coverage.startJSCoverage();
+    // await page.coverage.startJSCoverage();
     await page.goto(baseUrl);
     await page.setViewport({ width: 1920, height: 1080 });
   });
 
   afterAll(async () => {
     const jsCoverage = await page.coverage.stopJSCoverage();
-    pti.write(jsCoverage);
+    // pti.write(jsCoverage);
   });
 
   it('see login button', async () => {
