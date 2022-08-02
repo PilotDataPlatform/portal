@@ -9,6 +9,7 @@
 .pnp.js
 
 /tests/uploads/temp
+/tests/downloads
 
 # testing
 .nyc_output
