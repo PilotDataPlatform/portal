@@ -101,7 +101,7 @@ const PublishNewVersion = (props) => {
       const res = await getDatasetActivityLogsAPI(datasetInfo.code, params);
       if (res.data.result && res.data.result.length) {
         const lastPubTime = new Date(res.data.result[0].activityTime).getTime();
-        const listSinceLastPub = await getDatasetActivityLogsAPI(
+        let listSinceLastPub = await getDatasetActivityLogsAPI(
           datasetInfo.code,
           {
             activity_time_start: parseInt(lastPubTime / 1000),
@@ -109,6 +109,9 @@ const PublishNewVersion = (props) => {
             sort_by: 'activity_time',
             sort_order: 'desc',
           },
+        );
+        listSinceLastPub.data.result = listSinceLastPub.data.result.filter(
+          (v) => v.activityType !== 'release',
         );
         setActivityLogs(listSinceLastPub.data.result);
         setActivityLogsLoading(false);
